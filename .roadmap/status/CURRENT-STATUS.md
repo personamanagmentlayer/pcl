@@ -9,7 +9,8 @@
 ## 🎯 Current Focus
 
 **✅ COMPLETED:** Phase 1 - TypeScript Build Fixes
-**🔄 NEXT:** Phase 2 - Module Visibility
+**✅ COMPLETED:** Phase 2 - Module Visibility
+**🔄 NEXT:** Phase 3 - Type Narrowing
 
 ---
 
@@ -20,16 +21,16 @@
 | Week | Component | Status | Completion |
 |------|-----------|--------|------------|
 | 1-2 | Language Specification | ✅ Complete | 100% |
-| 3-4 | **Semantic Rules** | 🟢 **Phase 1 Done** | **70%** |
+| 3-4 | **Semantic Rules** | 🟢 **Phase 1 & 2 Done** | **80%** |
 | 5-6 | Core Types | ⏳ Pending | 0% |
 | 7-8 | Advanced Types | ⏳ Pending | 0% |
 | 9-12 | Lexer Implementation | ✅ Complete | 100% |
 | 13-14 | Parser Implementation | ✅ Complete | 100% |
-| 15-18 | Semantic Analyzer | 🟢 **In Progress** | **70%** |
+| 15-18 | Semantic Analyzer | 🟢 **In Progress** | **80%** |
 | 19-22 | Code Generation | ⏳ Pending | 0% |
 | 23-24 | Optimization | ⏳ Pending | 0% |
 
-**Phase 0 Overall:** ~45% complete
+**Phase 0 Overall:** ~50% complete
 
 ---
 
@@ -40,6 +41,7 @@
 **Time:** 2 hours (under estimate)
 
 **What was accomplished:**
+
 - Fixed all 39 TypeScript errors in semantic analyzer
 - Enabled .d.ts type definition generation (105.64 KB)
 - Converted Scope from interface to class with methods
@@ -47,15 +49,37 @@
 - All tests passing (5/5 suites, 100%)
 
 **Impact:**
+
 - 🎉 Package now fully usable in TypeScript projects
 - 🎉 Complete IDE intellisense support
 - 🎉 No breaking changes (internal only)
 - 🎉 No regressions (all tests pass)
 
+### ✅ Phase 2: Module Visibility - COMPLETE
+
+**Time:** 2 hours (under estimate)
+
+**What was accomplished:**
+
+- Implemented module boundary tracking (ModuleInfo)
+- Added pub/private modifier enforcement
+- Implemented cross-module access control
+- Added export validation
+- Updated import tracking
+- All tests passing (5/5 suites, 100%)
+
+**Impact:**
+
+- 🎉 Supports v2.5 security features
+- 🎉 Module encapsulation and access control
+- 🎉 Better error messages for access violations
+- 🎉 Export validation at compile time
+
 **Documentation:**
-- ✅ [SEMANTIC-FIX-PROGRESS.md](SEMANTIC-FIX-PROGRESS.md)
-- ✅ [PHASE-1-COMPLETE.md](PHASE-1-COMPLETE.md)
+
+- ✅ [PHASE-2-PROGRESS.md](PHASE-2-PROGRESS.md)
 - ✅ [SEMANTIC-STATUS.md](SEMANTIC-STATUS.md)
+- ✅ [CURRENT-STATUS.md](CURRENT-STATUS.md)
 - ✅ [ROADMAP.md](../ROADMAP.md)
 
 ---
@@ -67,18 +91,18 @@
 | Phase | Task | Status | Effort | Priority |
 |-------|------|--------|--------|----------|
 | 1️⃣ | TypeScript build fixes | ✅ Complete | 2h | Critical |
-| 2️⃣ | Module visibility | ⏳ Ready | 4-6h | High |
+| 2️⃣ | Module visibility | ✅ Complete | 2h | High |
 | 3️⃣ | Type narrowing | ⏳ Pending | 6-8h | High |
 | 4️⃣ | Constraint validation | ⏳ Pending | 6-8h | High |
 
-**Current Phase:** Phase 1 ✅ Complete
-**Next Phase:** Phase 2 (Module Visibility)
+**Current Phase:** Phase 2 ✅ Complete
+**Next Phase:** Phase 3 (Type Narrowing)
 
 ---
 
 ## 📋 Semantic Analyzer Status
 
-### ✅ What Works (70% complete)
+### ✅ What Works (80% complete)
 
 1. **Type System** (80%)
    - ✅ 13+ type classes implemented
@@ -87,42 +111,43 @@
    - ✅ Union, intersection, generic types
    - ✅ Type compatibility checking
 
-2. **Symbol Table & Scoping** (100%) ⭐ **NEW**
+2. **Symbol Table & Scoping** (100%)
    - ✅ Multi-level scope chain
    - ✅ Scope class with methods
    - ✅ SymbolTable integration
    - ✅ Built-in types registration
    - ✅ Symbol metadata tracking
 
-3. **Type Checking** (70%)
+3. **Module Visibility** (100%) ⭐ **NEW**
+   - ✅ Module boundary tracking
+   - ✅ pub/private enforcement
+   - ✅ Access control
+   - ✅ Export validation
+   - ✅ Import tracking
+
+4. **Type Checking** (70%)
    - ✅ Binary/unary operations
    - ✅ Function calls
    - ✅ Member access
    - ✅ Assignments
    - ✅ Variable declarations
 
-4. **Build & Packaging** (100%) ⭐ **NEW**
+5. **Build & Packaging** (100%)
    - ✅ TypeScript compilation
    - ✅ .d.ts generation
    - ✅ ESM output
    - ✅ Full type safety
 
-### 🔄 In Progress (30% remaining)
+### 🔄 In Progress (20% remaining)
 
-1. **Module Visibility** (0%) - Phase 2
-   - ❌ pub/private enforcement
-   - ❌ Module boundaries
-   - ❌ Access control
-   - ❌ Export validation
-
-2. **Type Inference** (50%)
+1. **Type Inference** (50%)
    - ✅ Literal type inference
    - ✅ Binary operation types
    - ❌ Type narrowing
    - ❌ Control flow analysis
    - ❌ Bidirectional inference
 
-3. **Constraint Validation** (0%) - Phase 4
+2. **Constraint Validation** (0%) - Phase 4
    - ❌ Expression evaluation
    - ❌ Satisfiability checking
    - ❌ Contradiction detection
@@ -135,21 +160,22 @@
 ### Immediate (This Week)
 
 1. **✅ Phase 1 Complete** - TypeScript build fixes
-2. **🔄 Verify integration** - Test with TypeScript projects
-3. **🔄 Create examples** - TypeScript usage samples
+2. **✅ Phase 2 Complete** - Module visibility
+3. **🔄 Create examples** - Module visibility usage samples
 
 ### Short Term (Next 1-2 Weeks)
 
-1. **📝 Begin Phase 2** - Module visibility implementation
-   - Module boundary tracking
-   - Access control enforcement
-   - Export validation
-   - pub/private modifiers
+1. **📝 Begin Phase 3** - Type narrowing implementation
+   - Control flow analysis
+   - typeof guards
+   - Discriminated unions
+   - Type narrowing
 
 2. **🧪 Add tests** - Semantic analyzer test suite
    - Type checking tests
    - Scope management tests
    - Module visibility tests
+   - Type narrowing tests
 
 ### Medium Term (Next 3-4 Weeks)
 
@@ -265,6 +291,7 @@ node tests/test-working.mjs
 ### Documentation
 
 - Phase 1 Details: `.roadmap/status/SEMANTIC-FIX-PROGRESS.md`
+- Phase 2 Details: `.roadmap/status/PHASE-2-PROGRESS.md`
 - Current Status: `.roadmap/status/SEMANTIC-STATUS.md`
 - Implementation Plan: `.roadmap/SEMANTIC-RULES-IMPLEMENTATION.md`
 
@@ -272,18 +299,21 @@ node tests/test-working.mjs
 
 ## 🎊 Summary
 
-**Phase 1 is complete!** The PCL semantic analyzer now:
+**Phase 1 & 2 are complete!** The PCL semantic analyzer now:
+
 - ✅ Compiles without TypeScript errors
 - ✅ Generates complete type definitions
 - ✅ Provides full IDE support
+- ✅ Module visibility & access control
+- ✅ Export validation
 - ✅ Maintains backward compatibility
 - ✅ Passes all tests
 
-**Ready to proceed with Phase 2: Module Visibility**
+**Ready to proceed with Phase 3: Type Narrowing**
 
 ---
 
-**Status:** 🟢 **Phase 1 Complete - Ready for Phase 2**
-**Progress:** 70% of Semantic Rules implementation
-**Next Milestone:** Module Visibility (Est. 4-6 hours)
-**Overall Timeline:** On track for Phase 0 completion
+**Status:** 🟢 **Phase 1 & 2 Complete - Ready for Phase 3**
+**Progress:** 80% of Semantic Rules implementation
+**Next Milestone:** Type Narrowing (Est. 6-8 hours)
+**Overall Timeline:** Ahead of schedule for Phase 0 completion

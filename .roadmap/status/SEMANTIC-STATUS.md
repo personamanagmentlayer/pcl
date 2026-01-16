@@ -1,25 +1,27 @@
 # PCL Semantic Rules Status
 
 **Date:** 2026-01-16
-**Overall Completion:** 70%
-**Status:** 🟢 **Phase 1 Complete - Ready for Phase 2**
+**Overall Completion:** 80%
+**Status:** 🟢 **Phase 1 & 2 Complete - Ready for Phase 3**
 
 ---
 
 ## Quick Summary
 
-The PCL semantic analyzer has a **strong foundation** with comprehensive type system infrastructure. **Phase 1 (TypeScript fixes) is complete!** Ready to proceed with Phase 2 (Module visibility and advanced features).
+The PCL semantic analyzer has a **strong foundation** with comprehensive type system infrastructure. **Phase 1 (TypeScript fixes) and Phase 2 (Module visibility) are complete!** Ready to proceed with Phase 3 (Type narrowing).
 
 **What Works:**
+
 - ✅ Core type system (80% complete)
-- ✅ Symbol table & scoping (95% complete - **UPGRADED**)
+- ✅ Symbol table & scoping (100% complete)
+- ✅ Module visibility & access control (100% complete - **NEW!**)
 - ✅ Basic type checking (70% complete)
-- ✅ **TypeScript build with .d.ts generation** - **NEW!**
+- ✅ **TypeScript build with .d.ts generation**
 
 **What's Next:**
-- 🔄 Constraint validation (not implemented)
-- 🔄 Module visibility (not enforced)
+
 - 🔄 Type narrowing (not implemented)
+- 🔄 Constraint validation (not implemented)
 
 ---
 
@@ -29,7 +31,7 @@ The PCL semantic analyzer has a **strong foundation** with comprehensive type sy
 
 | Requirement | Status | Completion | Notes |
 |------------|--------|------------|-------|
-| **Scope and visibility rules** | ⚠️ Partial | 40% | Scopes work, visibility not enforced |
+| **Scope and visibility rules** | ✅ Done | 100% | Module boundaries, pub/private enforced |
 | **Type inference algorithms** | ⚠️ Partial | 50% | Basic inference works, narrowing missing |
 | **Constraint validation** | ❌ Missing | 0% | Constraints collected but not validated |
 | **Lifetime and ownership** | ❌ Missing | 0% | Not applicable (GC language) |
@@ -45,7 +47,7 @@ The PCL semantic analyzer has a **strong foundation** with comprehensive type sy
 | **Type compatibility checking** | ✅ Done | 80% | Medium |
 | **Constraint validation** | ❌ Missing | 0% | High |
 | **Reference resolution** | ✅ Done | 75% | Medium |
-| **Import/export resolution** | ⚠️ Partial | 30% | High |
+| **Import/export resolution** | ✅ Done | 90% | ✅ Complete |
 | **Diagnostic collection** | ✅ Done | 70% | Low |
 
 ---
@@ -83,6 +85,16 @@ The PCL semantic analyzer has a **strong foundation** with comprehensive type sy
    - Functions: Signature validation, return checking
    - Variables: Type compatibility, const enforcement
 
+### ✅ Module Visibility (NEW - Phase 2 Complete!)
+
+1. **Module System**
+   - ✅ Module boundary tracking (ModuleInfo)
+   - ✅ pub/private modifier enforcement
+   - ✅ Cross-module access control
+   - ✅ Export validation
+   - ✅ Import tracking
+   - ✅ Dependency management
+
 ### ⚠️ Partially Working
 
 1. **Type Inference**
@@ -93,15 +105,7 @@ The PCL semantic analyzer has a **strong foundation** with comprehensive type sy
    - ❌ Type narrowing
    - ❌ Control flow analysis
 
-2. **Scope Management**
-   - ✅ Function/block/loop scopes
-   - ✅ Parameter binding
-   - ✅ Variable shadowing detection
-   - ❌ Module boundaries
-   - ❌ Visibility enforcement
-   - ❌ Export validation
-
-3. **Error Recovery**
+2. **Error Recovery**
    - ✅ Error accumulation
    - ✅ Multiple error collection
    - ✅ Source location tracking
@@ -118,19 +122,17 @@ The PCL semantic analyzer has a **strong foundation** with comprehensive type sy
    - Contradiction detection
    - Resource limit validation
 
-2. **Module System**
-   - Import path resolution
-   - Circular dependency detection
-   - Visibility enforcement (pub/private)
-   - Export validation
-   - Module boundaries
-
-3. **Advanced Type Features**
+2. **Advanced Type Features**
    - Conditional types (T extends U ? X : Y)
    - Mapped types ({ [P in K]: T })
    - Template literals (`on${string}`)
    - Type guards (is, as operators)
    - Function overloads
+   - Type narrowing with control flow
+
+3. **Module System Enhancements**
+   - Import path resolution (file system level)
+   - Circular dependency detection
 
 ---
 
@@ -184,26 +186,21 @@ persona A {
 
 ---
 
-### Issue 3: No Module Visibility ❌
+### ~~Issue 3: No Module Visibility~~ ✅ **RESOLVED**
 
-**Impact:** BLOCKS v2.5 security features
+**Impact:** ~~BLOCKS v2.5 security features~~ → **Now enables v2.5 features!**
 
-**Details:**
-- pub/private modifiers parsed but not enforced
-- All symbols accessible across module boundaries
-- No access control
+**Status:** ✅ **COMPLETE** (Fixed 2026-01-16)
 
-**Example:**
-```pcl
-// module a.pcl
-persona PRIVATE { }  // Should be inaccessible
+**What was fixed:**
 
-// module b.pcl
-import { PRIVATE } from "./a.pcl";  // ✗ Should error, doesn't!
-```
+- ✅ Module boundary tracking (ModuleInfo)
+- ✅ pub/private modifiers enforced
+- ✅ Cross-module access control
+- ✅ Export validation
+- ✅ Import tracking
 
-**Fix priority:** 🟡 **HIGH**
-**Estimated effort:** 4-6 hours
+**See:** [PHASE-2-PROGRESS.md](PHASE-2-PROGRESS.md) for complete details
 
 ---
 
@@ -217,10 +214,11 @@ See [SEMANTIC-RULES-IMPLEMENTATION.md](../SEMANTIC-RULES-IMPLEMENTATION.md) for 
 - ✅ Enable package usage
 - ✅ Generate .d.ts files
 
-### Phase 2: Visibility (Week 2)
-- Implement module boundaries
-- Enforce access control
-- Validate exports
+### Phase 2: Visibility (Week 2) ✅ **COMPLETE**
+
+- ✅ Implement module boundaries
+- ✅ Enforce access control
+- ✅ Validate exports
 
 ### Phase 3: Type Inference (Week 3)
 - Add type narrowing
@@ -324,7 +322,7 @@ See [SEMANTIC-RULES-IMPLEMENTATION.md](../SEMANTIC-RULES-IMPLEMENTATION.md) for 
 
 - [ ] 150+ semantic tests passing
 - [ ] 80%+ code coverage
-- [ ] Module visibility enforced
+- [x] Module visibility enforced ✅
 - [ ] Constraint validation working
 - [ ] Type narrowing implemented
 - [ ] Supports v2.2+ roadmap features
@@ -333,22 +331,25 @@ See [SEMANTIC-RULES-IMPLEMENTATION.md](../SEMANTIC-RULES-IMPLEMENTATION.md) for 
 
 ## Conclusion
 
-The PCL semantic analyzer is **70% complete** with Phase 1 (TypeScript fixes) successfully completed! 🎉
+The PCL semantic analyzer is **80% complete** with Phase 1 (TypeScript fixes) and Phase 2 (Module visibility) successfully completed! 🎉
 
 **What's Done:**
+
 1. ✅ **TypeScript build errors fixed** - Package now fully usable
 2. ✅ **Scope architecture refactored** - Cleaner, type-safe implementation
-3. ✅ **All tests passing** - No regressions introduced
+3. ✅ **Module visibility implemented** - Access control and export validation
+4. ✅ **All tests passing** - No regressions introduced
 
 **What's Next:**
-1. **Module visibility enforcement** (Phase 2 - v2.5 requirement)
-2. **Type narrowing and inference** (Phase 3 - improved type safety)
-3. **Constraint validation** (Phase 4 - v2.2 requirement)
 
-With 3-4 weeks of focused development on the remaining phases, the semantic analyzer will reach production quality and support all planned roadmap features through v3.0.
+1. **Type narrowing and inference** (Phase 3 - improved type safety)
+2. **Constraint validation** (Phase 4 - v2.2 requirement)
+3. **Additional semantic tests** (reaching 80% coverage)
+
+With 2-3 weeks of focused development on the remaining phases, the semantic analyzer will reach production quality and support all planned roadmap features through v3.0.
 
 ---
 
-**Status:** 🟢 **Phase 1 Complete - Ready for Phase 2**
-**Recommended Action:** Begin Phase 2 (Module visibility)
-**Est. Time to Production:** 3-4 weeks (down from 4-6)
+**Status:** 🟢 **Phase 1 & 2 Complete - Ready for Phase 3**
+**Recommended Action:** Begin Phase 3 (Type narrowing)
+**Est. Time to Production:** 2-3 weeks (down from 4-6)

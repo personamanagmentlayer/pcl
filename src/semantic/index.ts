@@ -1063,6 +1063,9 @@ export class SemanticAnalyzer {
     // Second pass: resolve types and check
     this.checkProgram(program);
 
+    // Third pass: validate exports
+    this.validateExports();
+
     return Ok({
       symbols: this.symbolTable,
       errors: this.errors,
@@ -1513,12 +1516,19 @@ export class SemanticAnalyzer {
   }
 
   private collectImport(decl: AST.ImportDeclaration): void {
+    // Track module dependency
+    if (this.currentModule) {
+      this.currentModule.dependencies.add(decl.source.value);
+    }
+
     // For now, just create placeholder symbols
-    // Full implementation would resolve the module
+    // Full implementation would resolve the module and validate access
     for (const spec of decl.specifiers) {
+      let symbol: Symbol;
+
       if (spec.kind === 'ImportNamedSpecifier') {
         const named = spec as AST.ImportNamedSpecifier;
-        this.currentScope.define({
+        symbol = {
           name: named.local.name,
           kind: 'variable',
           type: BuiltinTypes.Any,
@@ -1526,10 +1536,13 @@ export class SemanticAnalyzer {
           span: spec.span,
           exported: false,
           mutable: false,
-        });
+          visibility: 'pub', // Imported symbols are accessible in current module
+          module: decl.source.value, // Track source module
+        };
+        this.currentScope.define(symbol);
       } else if (spec.kind === 'ImportDefaultSpecifier') {
         const def = spec as AST.ImportDefaultSpecifier;
-        this.currentScope.define({
+        symbol = {
           name: def.local.name,
           kind: 'variable',
           type: BuiltinTypes.Any,
@@ -1537,10 +1550,13 @@ export class SemanticAnalyzer {
           span: spec.span,
           exported: false,
           mutable: false,
-        });
+          visibility: 'pub',
+          module: decl.source.value,
+        };
+        this.currentScope.define(symbol);
       } else if (spec.kind === 'ImportNamespaceSpecifier') {
         const ns = spec as AST.ImportNamespaceSpecifier;
-        this.currentScope.define({
+        symbol = {
           name: ns.local.name,
           kind: 'module',
           type: BuiltinTypes.Any,
@@ -1548,7 +1564,15 @@ export class SemanticAnalyzer {
           span: spec.span,
           exported: false,
           mutable: false,
-        });
+          visibility: 'pub',
+          module: decl.source.value,
+        };
+        this.currentScope.define(symbol);
+      }
+
+      // Track imported symbol
+      if (this.currentModule && symbol!) {
+        this.currentModule.imports.set(symbol.name, symbol);
       }
     }
   }
@@ -1561,10 +1585,44 @@ export class SemanticAnalyzer {
         const name = (decl.declaration.id as AST.Identifier).name;
         const symbol = this.currentScope.symbols.get(name);
         if (symbol) {
-          this.currentScope.define({
+          const exportedSymbol = {
             ...symbol,
             exported: true,
-          });
+          };
+          this.currentScope.define(exportedSymbol);
+
+          // Track in module exports
+          if (this.currentModule) {
+            this.currentModule.exports.set(name, exportedSymbol);
+          }
+        }
+      }
+    }
+
+    // Handle export specifiers (export { foo, bar })
+    for (const spec of decl.specifiers) {
+      if (spec.kind === 'ExportNamedSpecifier') {
+        const named = spec as AST.ExportNamedSpecifier;
+        const localName = named.local.name;
+        const exportedName = named.exported ? named.exported.name : localName;
+
+        const symbol = this.currentScope.lookup(localName);
+        if (symbol) {
+          const exportedSymbol = {
+            ...symbol,
+            name: exportedName,
+            exported: true,
+          };
+
+          // Track in module exports
+          if (this.currentModule) {
+            this.currentModule.exports.set(exportedName, exportedSymbol);
+          }
+        } else {
+          this.error(
+            `Cannot export '${localName}': symbol not found`,
+            spec.span
+          );
         }
       }
     }
@@ -2091,6 +2149,10 @@ export class SemanticAnalyzer {
       this.error(`Unknown identifier: ${id.name}`, id.span);
       return BuiltinTypes.Any;
     }
+
+    // Check module visibility
+    this.checkSymbolAccess(symbol, id.span);
+
     return symbol.type;
   }
 
@@ -2666,6 +2728,62 @@ export class SemanticAnalyzer {
       visibility: options.modifiers ? this.getVisibility(options.modifiers) : 'priv',
       module: this.currentModule?.path,
     };
+  }
+
+  /**
+   * Validate exported symbols
+   */
+  private validateExports(): void {
+    if (!this.currentModule) return;
+
+    for (const [name, symbol] of this.currentModule.exports) {
+      // Verify symbol exists in scope
+      const found = this.globalScope.lookup(name);
+      if (!found) {
+        this.error(
+          `Exported symbol '${name}' is not defined`,
+          symbol.span
+        );
+        continue;
+      }
+
+      // Warn if exporting a private symbol
+      if (found.visibility === 'priv' && !found.exported) {
+        this.warning(
+          `Exporting private symbol '${name}'. Consider marking it as 'pub'`,
+          symbol.span
+        );
+      }
+    }
+  }
+
+  /**
+   * Check if a symbol can be accessed from the current module
+   */
+  private checkSymbolAccess(symbol: Symbol, accessSpan?: Span): boolean {
+    // No module tracking - allow all access (backward compatibility)
+    if (!this.currentModule || !symbol.module) {
+      return true;
+    }
+
+    // Symbol is public or explicitly exported - allow access
+    if (symbol.visibility === 'pub' || symbol.exported) {
+      return true;
+    }
+
+    // Symbol is in same module - allow access
+    if (symbol.module === this.currentModule.path) {
+      return true;
+    }
+
+    // Private symbol accessed from different module - error
+    if (accessSpan) {
+      this.error(
+        `Cannot access private symbol '${symbol.name}' from module '${symbol.module}'`,
+        accessSpan
+      );
+    }
+    return false;
   }
 
   private createScope(parent: Scope | null, kind: string): Scope {
