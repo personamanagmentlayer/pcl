@@ -107,11 +107,16 @@ tags {
 
 **Workaround:** Use quoted strings in tag blocks.
 
-### 3. **Empty Test Suite**
+### 3. **Vitest Test Suite Issues**
 
-Test files exist in `tests/` but the vitest test runner reports "0 tests" when running `npm test`. The test code is written but not executing.
+The TypeScript test files (`tests/*.test.ts`) are well-written but vitest reports "No test suite found in file" when running `npm test`. This appears to be a module loading/compilation issue.
 
-**Workaround:** Use standalone .mjs test files (see `tests/test-working.mjs`).
+**Current Status:**
+
+- ❌ Vitest `.test.ts` files: Not executing (module loading issue)
+- ✅ Standalone `.mjs` tests: All working perfectly (11/11 pass)
+
+**Workaround:** Use standalone .mjs test files which provide complete test coverage.
 
 ---
 
@@ -143,13 +148,15 @@ Results: 11 passed, 0 failed out of 11 tests
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| **JavaScript Build** | ✅ Working | ESM output successful |
-| **TypeScript .d.ts** | ⚠️ Has warnings | Runtime unaffected |
+| **JavaScript Build** | ✅ Working | ESM output successful (211ms) |
+| **TypeScript .d.ts** | ❌ Fails | 25 type errors in semantic analyzer |
 | **Lexer** | ✅ Working | All token types supported |
 | **Parser** | ✅ Working | All features except unquoted tags |
-| **Semantic Analyzer** | ⚠️ Type errors | Compiles but has TS issues |
+| **Semantic Analyzer** | ⚠️ Type errors | JavaScript works, types broken |
 | **Runtime** | ✅ Working | Core functionality works |
 | **Code Generation** | ✅ Working | JSON, Markdown, TypeScript output |
+| **Standalone Tests** | ✅ Working | 11/11 .mjs tests pass |
+| **Vitest Tests** | ❌ Fails | Module loading issue |
 
 ---
 

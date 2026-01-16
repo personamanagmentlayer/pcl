@@ -82,6 +82,8 @@
     "dev": "tsx watch src/cli/index.ts",
     "start": "node dist/cli/index.js",
     "test": "vitest run",
+    "test:standalone": "node run-all-tests.mjs",
+    "test:quick": "node tests/test-working.mjs",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",

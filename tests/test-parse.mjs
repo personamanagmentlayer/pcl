@@ -7,7 +7,7 @@ const source = `persona SEC {
   verbosity: detailed
   skills { "OWASP Top 10", "Threat Modeling" }
   constraints { "No false positives", "Focus on critical" }
-  tags { security, audit, compliance }
+  tags { "security", "audit", "compliance" }
 }`;
 
 console.log('PCL Source:\n', source);

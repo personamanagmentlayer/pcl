@@ -16,10 +16,12 @@ if (result.ok) {
   console.log('Body members:', persona.body?.members?.length || 0);
   if (persona.body?.members) {
     persona.body.members.forEach((member, idx) => {
-      console.log(`  [${idx}] ${member.kind}: ${member.name?.name || 'unnamed'}`);
+      console.log(
+        `  [${idx}] ${member.kind}: ${member.name?.name || 'unnamed'}`
+      );
     });
   }
 } else {
   console.log('Errors:', result.error.length);
-  result.error.forEach(err => console.log('  -', err.message));
+  result.error.forEach((err) => console.log('  -', err.message));
 }

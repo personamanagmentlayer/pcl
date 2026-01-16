@@ -206,6 +206,8 @@ class PromptGenerator {
   private extractProperties(persona: AST.PersonaDeclaration): {
     intent: string | null;
     tone: string | null;
+    depth: string | null;
+    verbosity: string | null;
     skills: string[];
     constraints: string[];
     tags: string[];
@@ -213,6 +215,8 @@ class PromptGenerator {
   } {
     let intent: string | null = null;
     let tone: string | null = null;
+    let depth: string | null = null;
+    let verbosity: string | null = null;
     const skills: string[] = [];
     const constraints: string[] = [];
     const tags: string[] = [];
@@ -233,6 +237,18 @@ class PromptGenerator {
             prop.initializer?.kind === 'Identifier'
           ) {
             tone = (prop.initializer as AST.Identifier).name;
+          }
+          if (
+            prop.name.name === 'depth' &&
+            prop.initializer?.kind === 'Identifier'
+          ) {
+            depth = (prop.initializer as AST.Identifier).name;
+          }
+          if (
+            prop.name.name === 'verbosity' &&
+            prop.initializer?.kind === 'Identifier'
+          ) {
+            verbosity = (prop.initializer as AST.Identifier).name;
           }
           break;
         }
@@ -282,7 +298,16 @@ class PromptGenerator {
       }
     }
 
-    return { intent, tone, skills, constraints, tags, methods };
+    return {
+      intent,
+      tone,
+      depth,
+      verbosity,
+      skills,
+      constraints,
+      tags,
+      methods,
+    };
   }
 
   private extractTeamConfig(team: AST.TeamDeclaration): {

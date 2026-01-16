@@ -1351,6 +1351,19 @@ export class Runtime {
           ) {
             config.tone = (prop.initializer as AST.Identifier).name as Tone;
           }
+          if (
+            prop.name.name === 'depth' &&
+            prop.initializer?.kind === 'Identifier'
+          ) {
+            config.depth = (prop.initializer as AST.Identifier).name as Depth;
+          }
+          if (
+            prop.name.name === 'verbosity' &&
+            prop.initializer?.kind === 'Identifier'
+          ) {
+            config.verbosity = (prop.initializer as AST.Identifier)
+              .name as Verbosity;
+          }
           break;
         }
 
