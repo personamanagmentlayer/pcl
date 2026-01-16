@@ -95,7 +95,7 @@ describe('PCL Integration', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const persona = parseResult.value.statements.find(
+      const persona = parseResult.value.program.statements.find(
         s => s.kind === 'PersonaDeclaration' && (s as PersonaDeclaration).id.name === 'SEC'
       ) as PersonaDeclaration;
       
@@ -113,7 +113,7 @@ describe('PCL Integration', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const json = generateJSON(parseResult.value);
+      const json = generateJSON(parseResult.value.program);
       const config = JSON.parse(json);
       
       expect(config.personas).toBeDefined();
@@ -128,7 +128,7 @@ describe('PCL Integration', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const ts = generateTypeScript(parseResult.value);
+      const ts = generateTypeScript(parseResult.value.program);
       
       expect(ts).toContain('export const SECConfig');
       expect(ts).toContain('export const DEVConfig');
@@ -140,7 +140,7 @@ describe('PCL Integration', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const md = generateMarkdown(parseResult.value);
+      const md = generateMarkdown(parseResult.value.program);
       
       expect(md).toContain('# PCL Documentation');
       expect(md).toContain('## Personas');
@@ -346,7 +346,7 @@ describe('End-to-End Scenarios', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const securityPersona = parseResult.value.statements.find(
+      const securityPersona = parseResult.value.program.statements.find(
         s => s.kind === 'PersonaDeclaration' && (s as PersonaDeclaration).id.name === 'SECURITY'
       ) as PersonaDeclaration;
       
@@ -466,7 +466,7 @@ describe('End-to-End Scenarios', () => {
         // Get JSON config
         const parseResult = parse(analysisSource);
         if (parseResult.ok) {
-          const json = generateJSON(parseResult.value);
+          const json = generateJSON(parseResult.value.program);
           const config = JSON.parse(json);
           
           expect(config.personas.ANALYST.skills).toContain('Statistical analysis');

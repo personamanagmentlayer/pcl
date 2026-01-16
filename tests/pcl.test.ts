@@ -296,8 +296,8 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        expect(result.value.statements.length).toBe(1);
-        const stmt = result.value.statements[0];
+        expect(result.value.program.statements.length).toBe(1);
+        const stmt = result.value.program.statements[0];
         expect(stmt.kind).toBe('PersonaDeclaration');
       }
     });
@@ -313,7 +313,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const persona = result.value.statements[0] as any;
+        const persona = result.value.program.statements[0] as any;
         expect(persona.kind).toBe('PersonaDeclaration');
         const skills = persona.body.members.find((m: any) => m.kind === 'SkillBlock');
         expect(skills).toBeDefined();
@@ -332,7 +332,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const persona = result.value.statements[0] as any;
+        const persona = result.value.program.statements[0] as any;
         const constraints = persona.body.members.find((m: any) => m.kind === 'ConstraintBlock');
         expect(constraints).toBeDefined();
         expect(constraints.items.length).toBe(2);
@@ -351,7 +351,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const persona = result.value.statements[0] as any;
+        const persona = result.value.program.statements[0] as any;
         const tags = persona.body.members.find((m: any) => m.kind === 'TagBlock');
         expect(tags).toBeDefined();
         expect(tags.items.length).toBe(3);
@@ -368,7 +368,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const persona = result.value.statements[0] as any;
+        const persona = result.value.program.statements[0] as any;
         const method = persona.body.members.find((m: any) => m.kind === 'MethodDeclaration');
         expect(method).toBeDefined();
         expect(method.name.name).toBe('analyze');
@@ -383,7 +383,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const persona = result.value.statements[0] as any;
+        const persona = result.value.program.statements[0] as any;
         expect(persona.extends.length).toBe(1);
         expect(persona.extends[0].typeName.parts[0].name).toBe('SEC');
       }
@@ -397,7 +397,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const persona = result.value.statements[0] as any;
+        const persona = result.value.program.statements[0] as any;
         expect(persona.typeParameters.length).toBe(2);
         expect(persona.typeParameters[0].name.name).toBe('T');
         expect(persona.typeParameters[0].constraint).toBeDefined();
@@ -416,7 +416,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const team = result.value.statements[0] as any;
+        const team = result.value.program.statements[0] as any;
         expect(team.kind).toBe('TeamDeclaration');
         const members = team.body.members.find((m: any) => m.kind === 'TeamMembersDeclaration');
         expect(members.members.length).toBe(3);
@@ -433,7 +433,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const team = result.value.statements[0] as any;
+        const team = result.value.program.statements[0] as any;
         const primary = team.body.members.find((m: any) => m.kind === 'TeamPrimaryDeclaration');
         const merge = team.body.members.find((m: any) => m.kind === 'TeamMergeDeclaration');
         expect(primary).toBeDefined();
@@ -450,7 +450,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const team = result.value.statements[0] as any;
+        const team = result.value.program.statements[0] as any;
         const quorum = team.body.members.find((m: any) => m.kind === 'TeamQuorumDeclaration');
         expect(quorum).toBeDefined();
         expect(quorum.required.value).toBe(3);
@@ -467,7 +467,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const team = result.value.statements[0] as any;
+        const team = result.value.program.statements[0] as any;
         const conflict = team.body.members.find((m: any) => m.kind === 'TeamConflictDeclaration');
         expect(conflict).toBeDefined();
         expect(conflict.order.length).toBe(3);
@@ -486,7 +486,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const workflow = result.value.statements[0] as any;
+        const workflow = result.value.program.statements[0] as any;
         expect(workflow.kind).toBe('WorkflowDeclaration');
         const steps = workflow.body.members.find((m: any) => m.kind === 'WorkflowStepsDeclaration');
         expect(steps).toBeDefined();
@@ -502,7 +502,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const workflow = result.value.statements[0] as any;
+        const workflow = result.value.program.statements[0] as any;
         const steps = workflow.body.members.find((m: any) => m.kind === 'WorkflowStepsDeclaration');
         expect(steps.steps.steps[0].kind).toBe('WorkflowParallelExpr');
       }
@@ -518,7 +518,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const workflow = result.value.statements[0] as any;
+        const workflow = result.value.program.statements[0] as any;
         const input = workflow.body.members.find((m: any) => m.kind === 'WorkflowInputDeclaration');
         const output = workflow.body.members.find((m: any) => m.kind === 'WorkflowOutputDeclaration');
         expect(input).toBeDefined();
@@ -536,7 +536,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const workflow = result.value.statements[0] as any;
+        const workflow = result.value.program.statements[0] as any;
         const timeout = workflow.body.members.find((m: any) => m.kind === 'WorkflowTimeoutDeclaration');
         const retry = workflow.body.members.find((m: any) => m.kind === 'WorkflowRetryDeclaration');
         expect(timeout).toBeDefined();
@@ -552,7 +552,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const workflow = result.value.statements[0] as any;
+        const workflow = result.value.program.statements[0] as any;
         const steps = workflow.body.members.find((m: any) => m.kind === 'WorkflowStepsDeclaration');
         expect(steps.steps.steps[1].kind).toBe('WorkflowMergeExpr');
       }
@@ -568,7 +568,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.kind).toBe('TypeDeclaration');
         expect(decl.type.kind).toBe('UnionType');
       }
@@ -580,7 +580,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.typeParameters.length).toBe(1);
       }
     });
@@ -591,7 +591,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.type.kind).toBe('IntersectionType');
       }
     });
@@ -610,7 +610,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.kind).toBe('InterfaceDeclaration');
         expect(decl.members.length).toBeGreaterThan(0);
       }
@@ -624,7 +624,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.extends.length).toBe(1);
       }
     });
@@ -641,7 +641,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.kind).toBe('FunctionDeclaration');
         expect(decl.parameters.length).toBe(1);
       }
@@ -655,7 +655,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.kind).toBe('FunctionDeclaration');
         expect(decl.async).toBe(true);
       }
@@ -669,7 +669,7 @@ describe('Parser', () => {
       const result = parse(`let x = 42;`);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.kind).toBe('VariableDeclaration');
         expect(decl.declarationKind).toBe('let');
       }
@@ -679,7 +679,7 @@ describe('Parser', () => {
       const result = parse(`const PI = 3.14;`);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.declarationKind).toBe('const');
       }
     });
@@ -688,7 +688,7 @@ describe('Parser', () => {
       const result = parse(`let name: String = "test";`);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.declarations[0].type).toBeDefined();
       }
     });
@@ -768,7 +768,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.kind).toBe('IfStatement');
         expect(stmt.alternate).toBeDefined();
       }
@@ -782,7 +782,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.kind).toBe('ForInStatement');
       }
     });
@@ -795,7 +795,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.kind).toBe('WhileStatement');
       }
     });
@@ -812,7 +812,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.kind).toBe('TryStatement');
         expect(stmt.handlers.length).toBe(1);
         expect(stmt.finalizer).toBeDefined();
@@ -829,7 +829,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const decl = result.value.statements[0] as any;
+        const decl = result.value.program.statements[0] as any;
         expect(decl.declarations[0].init.kind).toBe('MatchExpression');
       }
     });
@@ -844,7 +844,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.kind).toBe('ImportDeclaration');
         expect(stmt.specifiers.length).toBe(2);
       }
@@ -856,7 +856,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.specifiers[0].kind).toBe('ImportNamespaceSpecifier');
       }
     });
@@ -867,7 +867,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.kind).toBe('ExportDeclaration');
       }
     });
@@ -878,7 +878,7 @@ describe('Parser', () => {
       `);
       expect(result.ok).toBe(true);
       if (result.ok) {
-        const stmt = result.value.statements[0] as any;
+        const stmt = result.value.program.statements[0] as any;
         expect(stmt.default).toBe(true);
       }
     });
@@ -1016,10 +1016,10 @@ describe('Integration', () => {
     const result = parse(source);
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value.statements.length).toBe(3);
-      expect(result.value.statements[0].kind).toBe('PersonaDeclaration');
-      expect(result.value.statements[1].kind).toBe('TeamDeclaration');
-      expect(result.value.statements[2].kind).toBe('WorkflowDeclaration');
+      expect(result.value.program.statements.length).toBe(3);
+      expect(result.value.program.statements[0].kind).toBe('PersonaDeclaration');
+      expect(result.value.program.statements[1].kind).toBe('TeamDeclaration');
+      expect(result.value.program.statements[2].kind).toBe('WorkflowDeclaration');
     }
   });
   

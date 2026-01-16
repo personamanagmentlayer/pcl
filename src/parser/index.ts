@@ -253,7 +253,7 @@ export class Parser {
     decorators: AST.Decorator[],
     modifiers: AST.Modifier[]
   ): AST.PersonaDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('persona');
     
     const id = this.parseIdentifier();
@@ -584,7 +584,7 @@ export class Parser {
     decorators: AST.Decorator[],
     modifiers: AST.Modifier[]
   ): AST.TeamDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('team');
     
     const id = this.parseIdentifier();
@@ -751,7 +751,7 @@ export class Parser {
     decorators: AST.Decorator[],
     modifiers: AST.Modifier[]
   ): AST.WorkflowDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('workflow');
     
     const id = this.parseIdentifier();
@@ -3004,7 +3004,7 @@ export class Parser {
   
   // Stub implementations for remaining declarations
   private parseTypeDeclaration(decorators: AST.Decorator[], modifiers: AST.Modifier[]): AST.TypeDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('type');
     const id = this.parseIdentifier();
     const typeParameters = this.parseOptionalTypeParameters();
@@ -3024,7 +3024,7 @@ export class Parser {
   }
   
   private parseInterfaceDeclaration(decorators: AST.Decorator[], modifiers: AST.Modifier[]): AST.InterfaceDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('interface');
     const id = this.parseIdentifier();
     const typeParameters = this.parseOptionalTypeParameters();
@@ -3056,7 +3056,7 @@ export class Parser {
   }
   
   private parseEnumDeclaration(decorators: AST.Decorator[], modifiers: AST.Modifier[]): AST.EnumDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('enum');
     const id = this.parseIdentifier();
     
@@ -3092,11 +3092,11 @@ export class Parser {
   }
   
   private parseFunctionDeclaration(
-    decorators: AST.Decorator[], 
+    decorators: AST.Decorator[],
     modifiers: AST.Modifier[],
     isAsync: boolean
   ): AST.FunctionDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('fn');
     const id = this.parseIdentifier();
     const typeParameters = this.parseOptionalTypeParameters();
@@ -3129,7 +3129,7 @@ export class Parser {
   }
   
   private parseSkillDeclaration(decorators: AST.Decorator[], modifiers: AST.Modifier[]): AST.SkillDeclaration {
-    const start = this.previous().span.start;
+    const start = this.peek().span.start;
     this.expectKeyword('skill');
     const id = this.parseIdentifier();
     const typeParameters = this.parseOptionalTypeParameters();

@@ -1,0 +1,76 @@
+{
+  "recommendations": [
+    // ============================================
+    // Essential - GitHub Copilot & AI
+    // ============================================
+    "github.copilot",
+    "github.copilot-chat",
+
+    // ============================================
+    // TypeScript & JavaScript Development
+    // ============================================
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "usernamehw.errorlens",
+    "streetsidesoftware.code-spell-checker",
+    "wayou.vscode-todo-highlight",
+    "aaron-bond.better-comments",
+
+    // ============================================
+    // Testing & Quality
+    // ============================================
+    "vitest.explorer",
+    "orta.vscode-jest",
+    "ryanluker.vscode-coverage-gutters",
+
+    // ============================================
+    // Git & Version Control
+    // ============================================
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+    "mhutchie.git-graph",
+    "donjayamanne.githistory",
+
+    // ============================================
+    // Navigation & Productivity
+    // ============================================
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    "gruntfuggly.todo-tree",
+    "alefragnani.bookmarks",
+    "alefragnani.project-manager",
+
+    // ============================================
+    // UI & Themes
+    // ============================================
+    "pkief.material-icon-theme",
+    "github.github-vscode-theme",
+    "sdras.night-owl",
+
+    // ============================================
+    // Code Quality & Documentation
+    // ============================================
+    "shd101wyy.markdown-preview-enhanced",
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+    "visualstudioexptteam.vscodeintellicode",
+    "visualstudioexptteam.intellicode-api-usage-examples",
+
+    // ============================================
+    // Utilities
+    // ============================================
+    "wix.vscode-import-cost",
+    "mikestead.dotenv",
+    "editorconfig.editorconfig",
+    "gruntfuggly.todo-tree",
+    "ms-vscode.vscode-typescript-next",
+
+    // ============================================
+    // Performance & Monitoring
+    // ============================================
+    "wix.vscode-import-cost",
+    "formulahendry.auto-rename-tag",
+    "naumovs.color-highlight"
+  ],
+  "unwantedRecommendations": []
+}

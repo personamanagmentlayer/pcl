@@ -613,100 +613,276 @@ export const BuiltinTypes = {
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//                              TYPES NAMESPACE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const TypeKind = {
+  Primitive: 'primitive',
+  Literal: 'literal',
+  Array: 'array',
+  Tuple: 'tuple',
+  Object: 'object',
+  Function: 'function',
+  Union: 'union',
+  Intersection: 'intersection',
+  TypeVariable: 'typeVariable',
+  Generic: 'generic',
+  Persona: 'persona',
+  Team: 'team',
+  Workflow: 'workflow',
+  Skill: 'skill',
+  Any: 'any',
+  Unknown: 'unknown',
+  Never: 'never',
+  Void: 'void',
+} as const;
+
+export type TypeKind = typeof TypeKind[keyof typeof TypeKind];
+
+export const Types = {
+  // Primitive types
+  String: BuiltinTypes.String,
+  Int: BuiltinTypes.Int,
+  Float: BuiltinTypes.Float,
+  Bool: BuiltinTypes.Bool,
+  Any: BuiltinTypes.Any,
+  Unknown: BuiltinTypes.Unknown,
+  Never: BuiltinTypes.Never,
+  Void: BuiltinTypes.Void,
+
+  // Factory methods
+  array: (elementType: Type) => new ArrayType(elementType),
+  tuple: (elements: Type[]) => new TupleType(elements),
+  union: (members: Type[]) => new UnionType(members),
+  intersection: (members: Type[]) => new IntersectionType(members),
+  literal: (value: string | number | boolean) => new LiteralType(value),
+  object: (properties: ObjectType['properties']) => new ObjectType(properties),
+  function: (params: FunctionType['parameters'], returnType: Type) => new FunctionType(params, returnType),
+  typeVariable: (name: string, constraint?: Type) => new TypeVariable(name, constraint),
+  generic: (base: Type, args: Type[]) => new GenericType(base, args),
+  persona: (name: string, skills: string[], constraints: string[]) => new PersonaType(name, skills, constraints),
+  team: (name: string, members: PersonaType[]) => new TeamType(name, members),
+  workflow: (name: string, input: Type, output: Type) => new WorkflowType(name, input, output),
+  skill: (name: string, items: string[]) => new SkillType(name, items),
+} as const;
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//                              TYPE CHECKER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export class TypeChecker {
+  /**
+   * Check if two types are structurally equal
+   */
+  isEqual(a: Type, b: Type): boolean {
+    return a.equals(b);
+  }
+
+  /**
+   * Check if type 'a' is assignable to type 'b'
+   */
+  isAssignableTo(a: Type, b: Type): boolean {
+    return a.isAssignableTo(b);
+  }
+
+  /**
+   * Get the common type of two types (for type inference)
+   */
+  getCommonType(a: Type, b: Type): Type {
+    // If same type, return it
+    if (a.equals(b)) return a;
+
+    // If one is assignable to the other, return the wider type
+    if (a.isAssignableTo(b)) return b;
+    if (b.isAssignableTo(a)) return a;
+
+    // For numeric types, prefer Float
+    if ((a.kind === 'primitive' && b.kind === 'primitive')) {
+      const aName = (a as PrimitiveType).name;
+      const bName = (b as PrimitiveType).name;
+      if ((aName === 'Int' && bName === 'Float') || (aName === 'Float' && bName === 'Int')) {
+        return Types.Float;
+      }
+    }
+
+    // Otherwise create a union
+    return new UnionType([a, b]);
+  }
+
+  /**
+   * Widen a literal type to its base type
+   */
+  widenType(type: Type): Type {
+    if (type instanceof LiteralType) {
+      return type.baseType;
+    }
+    if (type instanceof ArrayType) {
+      return new ArrayType(this.widenType(type.elementType));
+    }
+    if (type instanceof TupleType) {
+      return new TupleType(type.elements.map(e => this.widenType(e)));
+    }
+    if (type instanceof UnionType) {
+      const widened = type.members.map(m => this.widenType(m));
+      // Deduplicate
+      const unique: Type[] = [];
+      for (const t of widened) {
+        if (!unique.some(u => u.equals(t))) {
+          unique.push(t);
+        }
+      }
+      return unique.length === 1 ? unique[0] : new UnionType(unique);
+    }
+    return type;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
 //                              SYMBOL TABLE
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type SymbolKind = 
-  | 'variable'
-  | 'function'
-  | 'parameter'
-  | 'type'
-  | 'interface'
-  | 'enum'
-  | 'persona'
-  | 'team'
-  | 'workflow'
-  | 'skill'
-  | 'module';
+export const SymbolKind = {
+  Variable: 'variable',
+  Function: 'function',
+  Parameter: 'parameter',
+  Type: 'type',
+  Interface: 'interface',
+  Enum: 'enum',
+  Persona: 'persona',
+  Team: 'team',
+  Workflow: 'workflow',
+  Skill: 'skill',
+  Module: 'module',
+} as const;
+
+export type SymbolKind = typeof SymbolKind[keyof typeof SymbolKind];
 
 export interface Symbol {
   readonly name: string;
   readonly kind: SymbolKind;
   readonly type: Type;
-  readonly declaration?: AST.ASTNode;
+  readonly declaration?: AST.ASTNode | null;
   readonly span?: Span;
-  readonly exported: boolean;
-  readonly mutable: boolean;
+  readonly scope?: Scope;
+  readonly flags?: number;
+  readonly exported?: boolean;
+  readonly mutable?: boolean;
+}
+
+export interface Scope {
+  kind: string;
+  parent: Scope | null;
+  symbols: Map<string, Symbol>;
+  types: Map<string, Type>;
+  declaration?: AST.ASTNode;
 }
 
 export class SymbolTable {
-  private symbols: Map<string, Symbol> = new Map();
-  private types: Map<string, Type> = new Map();
-  
-  constructor(
-    readonly parent?: SymbolTable,
-    readonly name?: string
-  ) {
-    // Add built-in types
-    if (!parent) {
-      this.types.set('String', BuiltinTypes.String);
-      this.types.set('Int', BuiltinTypes.Int);
-      this.types.set('Float', BuiltinTypes.Float);
-      this.types.set('Bool', BuiltinTypes.Bool);
-      this.types.set('Any', BuiltinTypes.Any);
-      this.types.set('Unknown', BuiltinTypes.Unknown);
-      this.types.set('Never', BuiltinTypes.Never);
-      this.types.set('Void', BuiltinTypes.Void);
+  private currentScope: Scope;
+  private globalScope: Scope;
+
+  constructor() {
+    // Create global scope
+    this.globalScope = {
+      kind: 'Global',
+      parent: null,
+      symbols: new Map(),
+      types: new Map(),
+    };
+    this.currentScope = this.globalScope;
+
+    // Add built-in types to global scope
+    this.globalScope.types.set('String', BuiltinTypes.String);
+    this.globalScope.types.set('Int', BuiltinTypes.Int);
+    this.globalScope.types.set('Float', BuiltinTypes.Float);
+    this.globalScope.types.set('Bool', BuiltinTypes.Bool);
+    this.globalScope.types.set('Any', BuiltinTypes.Any);
+    this.globalScope.types.set('Unknown', BuiltinTypes.Unknown);
+    this.globalScope.types.set('Never', BuiltinTypes.Never);
+    this.globalScope.types.set('Void', BuiltinTypes.Void);
+  }
+
+  getCurrentScope(): Scope {
+    return this.currentScope;
+  }
+
+  enterScope(kind: string, declaration?: AST.ASTNode | null): Scope {
+    const newScope: Scope = {
+      kind,
+      parent: this.currentScope,
+      symbols: new Map(),
+      types: new Map(),
+      declaration: declaration ?? undefined,
+    };
+    this.currentScope = newScope;
+    return newScope;
+  }
+
+  exitScope(): Scope {
+    if (this.currentScope.parent) {
+      this.currentScope = this.currentScope.parent;
     }
+    return this.currentScope;
   }
-  
+
   define(symbol: Symbol): void {
-    this.symbols.set(symbol.name, symbol);
+    this.currentScope.symbols.set(symbol.name, symbol);
   }
-  
+
   defineType(name: string, type: Type): void {
-    this.types.set(name, type);
+    this.currentScope.types.set(name, type);
   }
-  
+
   lookup(name: string): Symbol | undefined {
-    const symbol = this.symbols.get(name);
-    if (symbol) return symbol;
-    return this.parent?.lookup(name);
+    let scope: Scope | null = this.currentScope;
+    while (scope) {
+      const symbol = scope.symbols.get(name);
+      if (symbol) return symbol;
+      scope = scope.parent;
+    }
+    return undefined;
   }
-  
+
   lookupType(name: string): Type | undefined {
-    const type = this.types.get(name);
-    if (type) return type;
-    return this.parent?.lookupType(name);
+    let scope: Scope | null = this.currentScope;
+    while (scope) {
+      const type = scope.types.get(name);
+      if (type) return type;
+      scope = scope.parent;
+    }
+    return undefined;
   }
-  
+
   lookupLocal(name: string): Symbol | undefined {
-    return this.symbols.get(name);
+    return this.currentScope.symbols.get(name);
   }
-  
+
   has(name: string): boolean {
-    return this.symbols.has(name) || (this.parent?.has(name) ?? false);
+    return this.lookup(name) !== undefined;
   }
-  
+
   hasLocal(name: string): boolean {
-    return this.symbols.has(name);
+    return this.currentScope.symbols.has(name);
   }
-  
+
   getAllSymbols(): Map<string, Symbol> {
     const all = new Map<string, Symbol>();
-    if (this.parent) {
-      for (const [name, symbol] of this.parent.getAllSymbols()) {
-        all.set(name, symbol);
+    let scope: Scope | null = this.currentScope;
+    while (scope) {
+      for (const [name, symbol] of scope.symbols) {
+        if (!all.has(name)) {
+          all.set(name, symbol);
+        }
       }
-    }
-    for (const [name, symbol] of this.symbols) {
-      all.set(name, symbol);
+      scope = scope.parent;
     }
     return all;
   }
-  
+
   getExportedSymbols(): Symbol[] {
-    return Array.from(this.symbols.values()).filter(s => s.exported);
+    return Array.from(this.globalScope.symbols.values()).filter(s => s.exported);
   }
 }
 

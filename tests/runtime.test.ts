@@ -344,7 +344,7 @@ describe('Runtime', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      runtime.load(parseResult.value);
+      runtime.load(parseResult.value.program);
       
       expect(runtime.getAllPersonas().length).toBe(2);
       expect(runtime.getPersona('SEC')).toBeDefined();
@@ -365,7 +365,7 @@ describe('Runtime', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      runtime.load(parseResult.value);
+      runtime.load(parseResult.value.program);
       
       expect(runtime.getAllTeams().length).toBe(1);
       expect(runtime.getTeam('AB')).toBeDefined();
@@ -381,7 +381,7 @@ describe('Runtime', () => {
       `;
       const parseResult = parse(source);
       if (parseResult.ok) {
-        runtime.load(parseResult.value);
+        runtime.load(parseResult.value.program);
       }
     });
     
@@ -418,7 +418,7 @@ describe('Runtime', () => {
       `;
       const parseResult = parse(source);
       if (parseResult.ok) {
-        runtime.load(parseResult.value);
+        runtime.load(parseResult.value.program);
         runtime.activate('CHAT');
       }
     });
@@ -457,7 +457,7 @@ describe('Runtime', () => {
       `;
       const parseResult = parse(source);
       if (parseResult.ok) {
-        runtime.load(parseResult.value);
+        runtime.load(parseResult.value.program);
         runtime.activate('A');
         runtime.activate('B');
       }
@@ -486,7 +486,7 @@ describe('Runtime', () => {
       `;
       const parseResult = parse(source);
       if (parseResult.ok) {
-        runtime.load(parseResult.value);
+        runtime.load(parseResult.value.program);
       }
       
       runtime.activate('A');
@@ -502,7 +502,7 @@ describe('Runtime', () => {
       `;
       const parseResult = parse(source);
       if (parseResult.ok) {
-        runtime.load(parseResult.value);
+        runtime.load(parseResult.value.program);
       }
       
       runtime.activate('TEST');
@@ -521,7 +521,7 @@ describe('Runtime', () => {
       `;
       const parseResult = parse(source);
       if (parseResult.ok) {
-        runtime.load(parseResult.value);
+        runtime.load(parseResult.value.program);
       }
       
       runtime.activate('TEST');

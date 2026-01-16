@@ -1,0 +1,86 @@
+[
+  // ============================================
+  // Custom Keybindings for Professional Workflow
+  // ============================================
+
+  // GitHub Copilot
+  {
+    "key": "ctrl+shift+i",
+    "command": "github.copilot.generate",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+/",
+    "command": "github.copilot.interactiveEditor.explain",
+    "when": "editorTextFocus"
+  },
+
+  // Quick File Navigation
+  {
+    "key": "ctrl+shift+o",
+    "command": "workbench.action.gotoSymbol"
+  },
+  {
+    "key": "ctrl+shift+f12",
+    "command": "references-view.findReferences",
+    "when": "editorHasReferenceProvider"
+  },
+
+  // Terminal
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+
+  // Testing
+  {
+    "key": "ctrl+shift+t",
+    "command": "testing.runCurrentFile"
+  },
+  {
+    "key": "ctrl+shift+r",
+    "command": "testing.reRunLastRun"
+  },
+
+  // Git
+  {
+    "key": "ctrl+shift+g g",
+    "command": "workbench.view.scm"
+  },
+  {
+    "key": "ctrl+shift+g c",
+    "command": "git.commit"
+  },
+  {
+    "key": "ctrl+shift+g p",
+    "command": "git.push"
+  },
+
+  // Code Actions
+  {
+    "key": "ctrl+.",
+    "command": "editor.action.quickFix",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+.",
+    "command": "editor.action.autoFix",
+    "when": "editorTextFocus"
+  },
+
+  // Refactoring
+  {
+    "key": "ctrl+shift+r",
+    "command": "editor.action.rename",
+    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+x",
+    "command": "editor.action.refactor",
+    "when": "editorTextFocus"
+  }
+]

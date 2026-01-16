@@ -276,7 +276,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
     
@@ -294,7 +294,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(false);
     });
     
@@ -313,7 +313,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
   });
@@ -334,7 +334,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
   });
@@ -351,7 +351,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
     
@@ -365,7 +365,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(false);
     });
   });
@@ -382,7 +382,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
     
@@ -397,7 +397,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
   });
@@ -413,7 +413,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
     
@@ -429,7 +429,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
     
@@ -446,7 +446,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
   });
@@ -468,7 +468,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
   });
@@ -484,7 +484,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
     
@@ -499,7 +499,7 @@ describe('SemanticAnalyzer', () => {
       expect(parseResult.ok).toBe(true);
       if (!parseResult.ok) return;
       
-      const analysisResult = analyze(parseResult.value);
+      const analysisResult = analyze(parseResult.value.program);
       expect(analysisResult.ok).toBe(true);
     });
   });

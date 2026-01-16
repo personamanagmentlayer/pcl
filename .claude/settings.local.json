@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm install)",
+      "Bash(npm test)",
+      "Bash(node -e:*)",
+      "Bash(timeout 60 npm test)",
+      "Bash(npx vitest:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node:*)",
+      "Bash(npx tsx:*)"
     ]
   }
 }
