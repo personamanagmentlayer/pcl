@@ -1205,7 +1205,7 @@ class TypeScriptGenerator {
         const params = func.parameters
           .map((p) => {
             const name =
-              p.name.kind === 'Identifier'
+              p.name && p.name.kind === 'Identifier'
                 ? (p.name as AST.Identifier).name
                 : '_';
             return `${name}: ${p.type ? this.typeToString(p.type) : 'any'}`;
@@ -1541,8 +1541,12 @@ class MarkdownGenerator {
           if (
             (member as AST.TeamPrimaryDeclaration).primary.ref.type === 'id'
           ) {
-            primary = (member as AST.TeamPrimaryDeclaration).primary.ref.id
-              .name;
+            primary = (
+              (member as AST.TeamPrimaryDeclaration).primary.ref as {
+                readonly type: 'id';
+                readonly id: AST.Identifier;
+              }
+            ).id.name;
           }
           break;
         case 'TeamMergeDeclaration':

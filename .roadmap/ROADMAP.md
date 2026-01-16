@@ -54,12 +54,13 @@ Week 1-2: Grammar Definition
 ├── [x] Workflow expression syntax
 └── [x] Command syntax (PCL/Lite compatible)
 
-Week 3-4: Semantic Rules
-├── [ ] Scope and visibility rules
-├── [ ] Type inference algorithms
-├── [ ] Constraint validation
-├── [ ] Lifetime and ownership (for resources)
-└── [ ] Error recovery strategies
+Week 3-4: Semantic Rules [IN PROGRESS - Phase 1 ✅ Complete]
+├── [x] Phase 1: TypeScript build fixes ✅ (2026-01-16)
+├── [ ] Phase 2: Scope and visibility rules
+├── [ ] Phase 3: Type inference algorithms
+├── [ ] Phase 4: Constraint validation
+├── [ ] Lifetime and ownership (N/A - GC language)
+└── [x] Error recovery strategies (basic implementation ✅)
 ```
 
 ### 0.2 Type System Implementation

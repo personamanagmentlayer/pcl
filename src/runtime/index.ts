@@ -575,7 +575,21 @@ export class TeamInstance {
     // Return primary persona's response, or first if no primary
     const primaryId = this.state.primary?.id;
     const primaryResponse = responses.find((r) => r.personaId === primaryId);
-    return primaryResponse ?? responses[0];
+    const selectedResponse = primaryResponse ?? responses[0];
+
+    // Return response marked as coming from the team
+    return {
+      ...selectedResponse,
+      personaId: 'team:' + this.state.id,
+      metadata: {
+        ...selectedResponse.metadata,
+        context: {
+          ...selectedResponse.metadata.context,
+          team: this.state.id,
+          primary: selectedResponse.personaId,
+        },
+      },
+    };
   }
 
   private mergeConsensus(responses: Response[]): Response {
@@ -599,7 +613,20 @@ export class TeamInstance {
     // Simple majority voting (by content similarity)
     // For now, just return most confident response
     const sorted = [...responses].sort((a, b) => b.confidence - a.confidence);
-    return sorted[0];
+    const selectedResponse = sorted[0];
+
+    return {
+      ...selectedResponse,
+      personaId: 'team:' + this.state.id,
+      metadata: {
+        ...selectedResponse.metadata,
+        context: {
+          ...selectedResponse.metadata.context,
+          team: this.state.id,
+          majority: selectedResponse.personaId,
+        },
+      },
+    };
   }
 
   private mergeAppend(responses: Response[]): Response {
@@ -647,13 +674,38 @@ export class TeamInstance {
     scored.sort((a, b) => b.score - a.score);
 
     // Return highest scored
-    return scored[0].response;
+    const selectedResponse = scored[0].response;
+    return {
+      ...selectedResponse,
+      personaId: 'team:' + this.state.id,
+      metadata: {
+        ...selectedResponse.metadata,
+        context: {
+          ...selectedResponse.metadata.context,
+          team: this.state.id,
+          weighted: selectedResponse.personaId,
+        },
+      },
+    };
   }
 
   private mergeRandom(responses: Response[]): Response {
     // Random selection
     const index = Math.floor(Math.random() * responses.length);
-    return responses[index];
+    const selectedResponse = responses[index];
+
+    return {
+      ...selectedResponse,
+      personaId: 'team:' + this.state.id,
+      metadata: {
+        ...selectedResponse.metadata,
+        context: {
+          ...selectedResponse.metadata.context,
+          team: this.state.id,
+          random: selectedResponse.personaId,
+        },
+      },
+    };
   }
 
   private calculateAverageConfidence(responses: Response[]): number {
@@ -1333,7 +1385,18 @@ export class Runtime {
   private extractPersonaConfig(
     decl: AST.PersonaDeclaration
   ): Partial<PersonaConfig> {
-    const config: Partial<PersonaConfig> = {};
+    const config: {
+      intent?: string;
+      tone?: Tone;
+      depth?: Depth;
+      verbosity?: Verbosity;
+      outputFormat?: OutputFormat;
+      maxTokens?: number;
+      temperature?: number;
+      skills?: string[];
+      constraints?: string[];
+      tags?: string[];
+    } = {};
 
     for (const member of decl.body.members) {
       switch (member.kind) {

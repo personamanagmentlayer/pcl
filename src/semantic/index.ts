@@ -689,14 +689,19 @@ export const Types = {
     }
     return new LiteralType(value, baseType);
   },
-  object: (properties: ObjectType['properties']) => new ObjectType(properties),
+  object: (members: ObjectType['members']) => new ObjectType(members),
   function: (params: FunctionType['parameters'], returnType: Type) =>
     new FunctionType(params, returnType),
   typeVariable: (name: string, constraint?: Type) =>
     new TypeVariable(name, constraint),
   generic: (base: Type, args: Type[]) => new GenericType(base, args),
-  persona: (name: string, skills: string[], constraints: string[]) =>
-    new PersonaType(name, skills, constraints),
+  persona: (
+    name: string,
+    intent: string,
+    skills: string[],
+    constraints: string[],
+    methods: Map<string, FunctionType> = new Map()
+  ) => new PersonaType(name, intent, skills, constraints, methods),
   team: (name: string, members: PersonaType[]) => new TeamType(name, members),
   workflow: (name: string, input: Type, output: Type) =>
     new WorkflowType(name, input, output),
@@ -811,14 +816,39 @@ export interface Symbol {
   readonly flags?: number;
   readonly exported?: boolean;
   readonly mutable?: boolean;
+  readonly visibility?: 'pub' | 'priv';  // Public or private visibility
+  readonly module?: string;               // Module path where symbol is defined
 }
 
-export interface Scope {
-  kind: string;
-  parent: Scope | null;
-  symbols: Map<string, Symbol>;
-  types: Map<string, Type>;
+export class Scope {
+  symbols = new Map<string, Symbol>();
+  types = new Map<string, Type>();
   declaration?: AST.ASTNode;
+
+  constructor(
+    public kind: string,
+    public parent: Scope | null
+  ) {}
+
+  hasLocal(name: string): boolean {
+    return this.symbols.has(name);
+  }
+
+  lookup(name: string): Symbol | undefined {
+    return this.symbols.get(name) || this.parent?.lookup(name);
+  }
+
+  define(symbol: Symbol): void {
+    this.symbols.set(symbol.name, symbol);
+  }
+
+  defineType(name: string, type: Type): void {
+    this.types.set(name, type);
+  }
+
+  lookupType(name: string): Type | undefined {
+    return this.types.get(name) || this.parent?.lookupType(name);
+  }
 }
 
 export class SymbolTable {
@@ -827,12 +857,7 @@ export class SymbolTable {
 
   constructor() {
     // Create global scope
-    this.globalScope = {
-      kind: 'Global',
-      parent: null,
-      symbols: new Map(),
-      types: new Map(),
-    };
+    this.globalScope = new Scope('Global', null);
     this.currentScope = this.globalScope;
 
     // Add built-in types to global scope
@@ -876,14 +901,15 @@ export class SymbolTable {
     return this.currentScope;
   }
 
+  getGlobalScope(): Scope {
+    return this.globalScope;
+  }
+
   enterScope(kind: string, declaration?: AST.ASTNode | null): Scope {
-    const newScope: Scope = {
-      kind,
-      parent: this.currentScope,
-      symbols: new Map(),
-      types: new Map(),
-      declaration: declaration ?? undefined,
-    };
+    const newScope = new Scope(kind, this.currentScope);
+    if (declaration) {
+      newScope.declaration = declaration;
+    }
     this.currentScope = newScope;
     return newScope;
   }
@@ -963,12 +989,23 @@ export class SymbolTable {
 export interface AnalyzerOptions {
   source?: string;
   strict?: boolean;
+  modulePath?: string;  // Path to the module being analyzed
 }
 
 export interface AnalysisResult {
   symbols: SymbolTable;
   errors: PCLError[];
   warnings: PCLError[];
+}
+
+/**
+ * Module information for tracking imports, exports, and dependencies
+ */
+export interface ModuleInfo {
+  path: string;                    // Module file path
+  exports: Map<string, Symbol>;    // Exported symbols
+  imports: Map<string, Symbol>;    // Imported symbols
+  dependencies: Set<string>;       // Imported module paths
 }
 
 /**
@@ -981,12 +1018,17 @@ export interface AnalysisResult {
  * - Scope management
  */
 export class SemanticAnalyzer {
-  private globalScope: SymbolTable;
-  private currentScope: SymbolTable;
+  private symbolTable: SymbolTable;
+  private globalScope: Scope;
+  private currentScope: Scope;
   private errors: PCLError[] = [];
   private warnings: PCLError[] = [];
   private readonly source: string;
   private readonly strict: boolean;
+
+  // Module visibility tracking
+  private currentModule: ModuleInfo | null = null;
+  private modules: Map<string, ModuleInfo> = new Map();
 
   // Type inference context
   private typeVariables: Map<string, Type> = new Map();
@@ -995,8 +1037,20 @@ export class SemanticAnalyzer {
   constructor(options: AnalyzerOptions = {}) {
     this.source = options.source ?? '<anonymous>';
     this.strict = options.strict ?? false;
-    this.globalScope = new SymbolTable(undefined, 'global');
+    this.symbolTable = new SymbolTable();
+    this.globalScope = this.symbolTable.getGlobalScope();
     this.currentScope = this.globalScope;
+
+    // Initialize module context if path provided
+    if (options.modulePath) {
+      this.currentModule = {
+        path: options.modulePath,
+        exports: new Map(),
+        imports: new Map(),
+        dependencies: new Set(),
+      };
+      this.modules.set(options.modulePath, this.currentModule);
+    }
   }
 
   /**
@@ -1010,7 +1064,7 @@ export class SemanticAnalyzer {
     this.checkProgram(program);
 
     return Ok({
-      symbols: this.globalScope,
+      symbols: this.symbolTable,
       errors: this.errors,
       warnings: this.warnings,
     });
@@ -1267,7 +1321,11 @@ export class SemanticAnalyzer {
       if (member.kind === 'PropertySignature') {
         const prop = member as AST.PropertySignature;
         const propName =
-          typeof prop.name === 'string' ? prop.name : prop.name.name;
+          typeof prop.name === 'string'
+            ? prop.name
+            : prop.name.kind === 'Identifier'
+            ? prop.name.name
+            : prop.name.value;
         members.set(propName, {
           name: propName,
           type: this.resolveTypeNode(prop.type),
@@ -1277,7 +1335,7 @@ export class SemanticAnalyzer {
       } else if (member.kind === 'MethodSignature') {
         const method = member as AST.MethodSignature;
         const params: FunctionParameter[] = method.parameters.map((p) => ({
-          name: p.name.kind === 'Identifier' ? p.name.name : '',
+          name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
           type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
           optional: p.optional,
           rest: p.rest,
@@ -1501,7 +1559,7 @@ export class SemanticAnalyzer {
       // Mark as exported
       if ('id' in decl.declaration && decl.declaration.id) {
         const name = (decl.declaration.id as AST.Identifier).name;
-        const symbol = this.currentScope.lookupLocal(name);
+        const symbol = this.currentScope.symbols.get(name);
         if (symbol) {
           this.currentScope.define({
             ...symbol,
@@ -1516,7 +1574,7 @@ export class SemanticAnalyzer {
     const name = decl.id.parts.map((p) => p.name).join('::');
 
     // Create module scope
-    const moduleScope = new SymbolTable(this.currentScope, name);
+    const moduleScope = this.createScope(this.currentScope,name);
     const savedScope = this.currentScope;
     this.currentScope = moduleScope;
 
@@ -1708,8 +1766,11 @@ export class SemanticAnalyzer {
   private checkFunction(decl: AST.FunctionDeclaration): void {
     if (!decl.body) return;
 
-    // Enter function scope using globalScope's scope management
-    this.globalScope.enterScope('Function', decl);
+    // Enter function scope
+    const funcScope = this.createScope(this.currentScope, 'Function');
+    funcScope.declaration = decl;
+    const savedScope = this.currentScope;
+    this.currentScope = funcScope;
 
     // Add parameters to function scope
     for (const param of decl.parameters) {
@@ -1718,7 +1779,7 @@ export class SemanticAnalyzer {
           ? this.resolveTypeNode(param.type)
           : BuiltinTypes.Any;
 
-        this.globalScope.define({
+        this.currentScope.define({
           name: param.name.name,
           kind: 'parameter',
           type: paramType,
@@ -1740,14 +1801,14 @@ export class SemanticAnalyzer {
     this.checkBlock(decl.body);
 
     this.returnType = savedReturnType;
-    this.globalScope.exitScope();
+    this.currentScope = savedScope;
   }
 
   private checkMethod(decl: AST.MethodDeclaration): void {
     if (!decl.body) return;
 
     // Enter method scope
-    const methodScope = new SymbolTable(this.currentScope, decl.name.name);
+    const methodScope = this.createScope(this.currentScope,decl.name.name);
     const savedScope = this.currentScope;
     this.currentScope = methodScope;
 
@@ -1826,7 +1887,7 @@ export class SemanticAnalyzer {
   private checkForStatement(
     stmt: AST.ForStatement | AST.ForInStatement | AST.ForOfStatement
   ): void {
-    const loopScope = new SymbolTable(this.currentScope, 'for');
+    const loopScope = this.createScope(this.currentScope,'for');
     const savedScope = this.currentScope;
     this.currentScope = loopScope;
 
@@ -1879,7 +1940,7 @@ export class SemanticAnalyzer {
     this.checkBlock(stmt.block);
 
     for (const handler of stmt.handlers) {
-      const catchScope = new SymbolTable(this.currentScope, 'catch');
+      const catchScope = this.createScope(this.currentScope,'catch');
       const savedScope = this.currentScope;
       this.currentScope = catchScope;
 
@@ -1926,7 +1987,7 @@ export class SemanticAnalyzer {
   }
 
   private checkBlock(block: AST.BlockStatement): void {
-    const blockScope = new SymbolTable(this.currentScope, 'block');
+    const blockScope = this.createScope(this.currentScope,'block');
     const savedScope = this.currentScope;
     this.currentScope = blockScope;
 
@@ -2269,9 +2330,12 @@ export class SemanticAnalyzer {
         });
       } else if (prop.kind === 'ObjectMethodProperty') {
         const methodProp = prop as AST.ObjectMethodProperty;
-        const name = methodProp.key.name;
+        const name =
+          methodProp.key.kind === 'Identifier'
+            ? methodProp.key.name
+            : String(methodProp.key.value);
         const params: FunctionParameter[] = methodProp.parameters.map((p) => ({
-          name: p.name.kind === 'Identifier' ? p.name.name : '',
+          name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
           type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
           optional: p.optional,
           rest: p.rest,
@@ -2291,7 +2355,7 @@ export class SemanticAnalyzer {
 
   private inferArrowFunction(expr: AST.ArrowFunctionExpression): Type {
     const params: FunctionParameter[] = expr.parameters.map((p) => ({
-      name: p.name.kind === 'Identifier' ? p.name.name : '',
+      name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
@@ -2312,7 +2376,7 @@ export class SemanticAnalyzer {
 
   private inferFunctionExpression(expr: AST.FunctionExpression): Type {
     const params: FunctionParameter[] = expr.parameters.map((p) => ({
-      name: p.name.kind === 'Identifier' ? p.name.name : '',
+      name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
@@ -2420,10 +2484,10 @@ export class SemanticAnalyzer {
       case 'FunctionType':
         const funcNode = node as AST.FunctionType;
         const params: FunctionParameter[] = funcNode.parameters.map((p) => ({
-          name: p.name.kind === 'Identifier' ? p.name.name : '',
-          type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
-          optional: p.optional,
-          rest: p.rest,
+          name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
+          type: this.resolveTypeNode(p.type),
+          optional: false,
+          rest: false,
         }));
         return new FunctionType(
           params,
@@ -2436,7 +2500,11 @@ export class SemanticAnalyzer {
           if (member.kind === 'PropertySignature') {
             const prop = member as AST.PropertySignature;
             const name =
-              typeof prop.name === 'string' ? prop.name : prop.name.name;
+              typeof prop.name === 'string'
+                ? prop.name
+                : prop.name.kind === 'Identifier'
+                ? prop.name.name
+                : prop.name.value;
             members.set(name, {
               name,
               type: this.resolveTypeNode(prop.type),
@@ -2499,7 +2567,7 @@ export class SemanticAnalyzer {
 
   private functionToType(decl: AST.FunctionDeclaration): FunctionType {
     const params: FunctionParameter[] = decl.parameters.map((p) => ({
-      name: p.name.kind === 'Identifier' ? p.name.name : '',
+      name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
@@ -2523,7 +2591,7 @@ export class SemanticAnalyzer {
 
   private methodToFunctionType(decl: AST.MethodDeclaration): FunctionType {
     const params: FunctionParameter[] = decl.parameters.map((p) => ({
-      name: p.name.kind === 'Identifier' ? p.name.name : '',
+      name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
@@ -2558,8 +2626,50 @@ export class SemanticAnalyzer {
     return '';
   }
 
-  private hasModifier(modifiers: AST.Modifier[], type: string): boolean {
+  private hasModifier(modifiers: readonly AST.Modifier[], type: string): boolean {
     return modifiers.some((m) => m.type === type);
+  }
+
+  /**
+   * Extract visibility from modifiers
+   */
+  private getVisibility(modifiers: readonly AST.Modifier[]): 'pub' | 'priv' {
+    if (this.hasModifier(modifiers, 'pub')) return 'pub';
+    if (this.hasModifier(modifiers, 'priv')) return 'priv';
+    return 'priv'; // Default to private
+  }
+
+  /**
+   * Create a symbol with visibility and module information
+   */
+  private createSymbol(
+    name: string,
+    kind: SymbolKind,
+    type: Type,
+    declaration: AST.ASTNode | null,
+    span: Span,
+    options: {
+      exported?: boolean;
+      mutable?: boolean;
+      modifiers?: readonly AST.Modifier[];
+    } = {}
+  ): Symbol {
+    return {
+      name,
+      kind,
+      type,
+      declaration,
+      span,
+      scope: this.currentScope,
+      exported: options.exported ?? false,
+      mutable: options.mutable ?? false,
+      visibility: options.modifiers ? this.getVisibility(options.modifiers) : 'priv',
+      module: this.currentModule?.path,
+    };
+  }
+
+  private createScope(parent: Scope | null, kind: string): Scope {
+    return new Scope(kind, parent);
   }
 
   private error(message: string, span?: Span): void {

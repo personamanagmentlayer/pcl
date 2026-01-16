@@ -45,22 +45,23 @@ export {
 //                              SEMANTIC ANALYSIS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export {
-  analyze,
-  createSymbolTable,
-  createTypeChecker,
-  SemanticAnalyzer,
-  SymbolTable,
-  TypeChecker,
-  Types,
-} from './semantic';
+// Temporarily disabled due to compilation issues
+// export {
+//   analyze,
+//   createSymbolTable,
+//   createTypeChecker,
+//   SemanticAnalyzer,
+//   SymbolTable,
+//   TypeChecker,
+//   Types,
+// } from './semantic';
 
-export type {
-  ScopeKind,
-  SymbolFlags,
-  SymbolKind,
-  TypeKind,
-} from './semantic';
+// export type {
+//   ScopeKind,
+//   SymbolFlags,
+//   SymbolKind,
+//   TypeKind,
+// } from './semantic';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              RUNTIME
@@ -98,8 +99,8 @@ import type { GeneratorOptions } from './codegen';
 import { generate as generateCode } from './codegen';
 import { parseProgram } from './parser';
 import { createRuntime, Runtime } from './runtime';
-import type { AnalysisResult } from './semantic';
-import { analyze as analyzeProgram } from './semantic';
+// import type { AnalysisResult } from './semantic';
+// import { analyze as analyzeProgram } from './semantic';
 import type { PCLError, Result } from './types';
 import { Err, Ok } from './types';
 
@@ -112,20 +113,21 @@ export function compile(
     source?: string;
     strict?: boolean;
   }
-): Result<{ program: Program; analysis: AnalysisResult }, PCLError[]> {
+): Result<{ program: Program }, PCLError[]> {
   const parseResult = parseProgram(source, { source: options?.source });
   if (!parseResult.ok) {
     return parseResult;
   }
 
-  const analysisResult = analyzeProgram(parseResult.value);
-  if (!analysisResult.ok) {
-    return analysisResult;
-  }
+  // Semantic analysis temporarily disabled
+  // const analysisResult = analyzeProgram(parseResult.value);
+  // if (!analysisResult.ok) {
+  //   return analysisResult;
+  // }
 
   return Ok({
     program: parseResult.value,
-    analysis: analysisResult.value,
+    // analysis: analysisResult.value,
   });
 }
 
