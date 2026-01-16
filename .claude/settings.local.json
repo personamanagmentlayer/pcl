@@ -11,7 +11,8 @@
       "Bash(npx vitest:*)",
       "Bash(npx tsc:*)",
       "Bash(node:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }

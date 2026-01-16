@@ -66,6 +66,18 @@ export class PrimitiveType implements Type {
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof UnknownType) return true;
+    // Check if assignable to any member of a union
+    if (other instanceof UnionType) {
+      return other.members.some((m) => this.isAssignableTo(m));
+    }
+    // Allow Int → Float widening
+    if (
+      this.name === 'Int' &&
+      other instanceof PrimitiveType &&
+      other.name === 'Float'
+    ) {
+      return true;
+    }
     return this.equals(other);
   }
 }
@@ -664,7 +676,19 @@ export const Types = {
   tuple: (elements: Type[]) => new TupleType(elements),
   union: (members: Type[]) => new UnionType(members),
   intersection: (members: Type[]) => new IntersectionType(members),
-  literal: (value: string | number | boolean) => new LiteralType(value),
+  literal: (value: string | number | boolean) => {
+    let baseType: PrimitiveType;
+    if (typeof value === 'string') {
+      baseType = Types.String;
+    } else if (typeof value === 'boolean') {
+      baseType = Types.Bool;
+    } else if (Number.isInteger(value)) {
+      baseType = Types.Int;
+    } else {
+      baseType = Types.Float;
+    }
+    return new LiteralType(value, baseType);
+  },
   object: (properties: ObjectType['properties']) => new ObjectType(properties),
   function: (params: FunctionType['parameters'], returnType: Type) =>
     new FunctionType(params, returnType),
@@ -701,28 +725,32 @@ export class TypeChecker {
   /**
    * Get the common type of two types (for type inference)
    */
-  getCommonType(a: Type, b: Type): Type {
-    // If same type, return it
-    if (a.equals(b)) return a;
+  getCommonType(types: Type[]): Type {
+    if (types.length === 0) return Types.Never;
+    if (types.length === 1) return types[0];
 
-    // If one is assignable to the other, return the wider type
-    if (a.isAssignableTo(b)) return b;
-    if (b.isAssignableTo(a)) return a;
+    // If all types are equal, return that type
+    const first = types[0];
+    if (types.every((t) => t.equals(first))) return first;
 
-    // For numeric types, prefer Float
-    if (a.kind === 'primitive' && b.kind === 'primitive') {
-      const aName = (a as PrimitiveType).name;
-      const bName = (b as PrimitiveType).name;
-      if (
-        (aName === 'Int' && bName === 'Float') ||
-        (aName === 'Float' && bName === 'Int')
-      ) {
-        return Types.Float;
+    // Try to find a type that all others can be assigned to
+    for (const candidate of types) {
+      if (types.every((t) => t.isAssignableTo(candidate))) {
+        return candidate;
       }
     }
 
+    // For numeric types, prefer Float
+    const allNumeric = types.every(
+      (t) =>
+        t instanceof PrimitiveType && (t.name === 'Int' || t.name === 'Float')
+    );
+    if (allNumeric) {
+      return Types.Float;
+    }
+
     // Otherwise create a union
-    return new UnionType([a, b]);
+    return UnionType.create(types);
   }
 
   /**
@@ -816,6 +844,32 @@ export class SymbolTable {
     this.globalScope.types.set('Unknown', BuiltinTypes.Unknown);
     this.globalScope.types.set('Never', BuiltinTypes.Never);
     this.globalScope.types.set('Void', BuiltinTypes.Void);
+
+    // Also add built-in types as symbols for convenience
+    const builtInTypes = [
+      { name: 'String', type: BuiltinTypes.String },
+      { name: 'Int', type: BuiltinTypes.Int },
+      { name: 'Float', type: BuiltinTypes.Float },
+      { name: 'Bool', type: BuiltinTypes.Bool },
+      { name: 'Any', type: BuiltinTypes.Any },
+      { name: 'Unknown', type: BuiltinTypes.Unknown },
+      { name: 'Never', type: BuiltinTypes.Never },
+      { name: 'Void', type: BuiltinTypes.Void },
+    ];
+    for (const { name, type } of builtInTypes) {
+      this.globalScope.symbols.set(name, {
+        name,
+        kind: SymbolKind.Type,
+        type,
+        declaration: null,
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+          source: '',
+        },
+        scope: this.globalScope,
+      });
+    }
   }
 
   getCurrentScope(): Scope {

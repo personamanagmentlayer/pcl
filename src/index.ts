@@ -49,14 +49,17 @@ export {
   analyze,
   createSymbolTable,
   createTypeChecker,
-  ScopeKind,
   SemanticAnalyzer,
-  SymbolFlags,
-  SymbolKind,
   SymbolTable,
   TypeChecker,
-  TypeKind,
   Types,
+} from './semantic';
+
+export type {
+  ScopeKind,
+  SymbolFlags,
+  SymbolKind,
+  TypeKind,
 } from './semantic';
 
 // ═══════════════════════════════════════════════════════════════════════════════
