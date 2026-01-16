@@ -3,11 +3,13 @@
  * Quick PCL Demo - Testing if PCL works
  */
 
-import * as PCL from './dist/index.js';
+import * as PCL from '../dist/index.js';
 
 console.log('═══════════════════════════════════════════════════════════════');
 console.log('PCL - Persona Control Language - Quick Test');
-console.log('═══════════════════════════════════════════════════════════════\n');
+console.log(
+  '═══════════════════════════════════════════════════════════════\n'
+);
 
 // Test 1: Tokenization
 console.log('📝 Test 1: Tokenization');
@@ -80,7 +82,9 @@ console.log();
 console.log('⚠️  Test 5: Error Handling');
 const invalidCode = 'persona INVALID @ syntax error';
 const errorResult = PCL.parse(invalidCode);
-console.log(`   Result: ${errorResult.ok ? '✓ Parsed (unexpected)' : '✓ Error detected (expected)'}`);
+console.log(
+  `   Result: ${errorResult.ok ? '✓ Parsed (unexpected)' : '✓ Error detected (expected)'}`
+);
 if (!errorResult.ok) {
   console.log(`   Errors found: ${errorResult.error.length}`);
   console.log(`   First error: ${errorResult.error[0].message}`);
@@ -93,5 +97,7 @@ console.log('Summary: PCL Core Features Working ✓');
 console.log('  • Lexer: Tokenization works');
 console.log('  • Parser: Persona, Team, Workflow parsing works');
 console.log('  • Error Handling: Error detection and reporting works');
-console.log('  • Note: Some TypeScript build warnings exist but do not affect runtime');
+console.log(
+  '  • Note: Some TypeScript build warnings exist but do not affect runtime'
+);
 console.log('═══════════════════════════════════════════════════════════════');

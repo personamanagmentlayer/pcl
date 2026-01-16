@@ -3,23 +3,28 @@
  * PCL — PERSONA CONTROL LANGUAGE
  * Runtime Engine
  * ═══════════════════════════════════════════════════════════════════════════════
- * 
+ *
  * Executes PCL programs by:
  * - Managing persona instances
  * - Orchestrating teams
  * - Running workflows
  * - Handling message passing
- * 
+ *
  * @packageDocumentation
  * @module @pcl/runtime
  * @version 1.0.0
  */
 
-import type { Result } from '../types';
-import { Ok, Err, ErrorCode, PCLError as createError } from '../types';
 import type * as AST from '../ast';
-import type { MergeMode, Tone, OutputFormat, Depth, Verbosity } from '../types';
-
+import type {
+  Depth,
+  MergeMode,
+  OutputFormat,
+  Result,
+  Tone,
+  Verbosity,
+} from '../types';
+import { Err, Ok } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              RUNTIME TYPES
@@ -148,7 +153,7 @@ export interface WorkflowState {
   readonly endTime: Date | null;
 }
 
-export type WorkflowStatus = 
+export type WorkflowStatus =
   | 'pending'
   | 'running'
   | 'paused'
@@ -177,7 +182,12 @@ export type RuntimeEvent =
   | { type: 'persona:response'; persona: PersonaState; response: Response }
   | { type: 'team:formed'; team: TeamState }
   | { type: 'team:disbanded'; team: TeamState }
-  | { type: 'team:merge'; team: TeamState; responses: Response[]; merged: Response }
+  | {
+      type: 'team:merge';
+      team: TeamState;
+      responses: Response[];
+      merged: Response;
+    }
   | { type: 'workflow:started'; workflow: WorkflowState }
   | { type: 'workflow:step'; workflow: WorkflowState; step: WorkflowStepState }
   | { type: 'workflow:completed'; workflow: WorkflowState }
@@ -185,7 +195,6 @@ export type RuntimeEvent =
   | { type: 'error'; error: Error };
 
 export type RuntimeEventHandler = (event: RuntimeEvent) => void;
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              PERSONA RUNTIME
@@ -196,10 +205,10 @@ export type RuntimeEventHandler = (event: RuntimeEvent) => void;
  */
 const DEFAULT_PERSONA_CONFIG: PersonaConfig = {
   intent: '',
-  tone: 'balanced',
+  tone: 'formal',
   depth: 'standard',
   verbosity: 'normal',
-  outputFormat: 'text',
+  outputFormat: 'prose',
   maxTokens: 4096,
   temperature: 0.7,
   skills: [],
@@ -214,12 +223,8 @@ export class PersonaInstance {
   private state: PersonaState;
   private readonly handlers: Map<string, Function> = new Map();
   private readonly eventHandlers: Set<RuntimeEventHandler> = new Set();
-  
-  constructor(
-    id: string,
-    name: string,
-    config: Partial<PersonaConfig> = {}
-  ) {
+
+  constructor(id: string, name: string, config: Partial<PersonaConfig> = {}) {
     this.state = {
       id,
       name,
@@ -239,20 +244,20 @@ export class PersonaInstance {
       },
     };
   }
-  
+
   /**
    * Get persona state
    */
   getState(): PersonaState {
     return this.state;
   }
-  
+
   /**
    * Activate the persona
    */
   activate(): void {
     if (this.state.active) return;
-    
+
     this.state = {
       ...this.state,
       active: true,
@@ -262,54 +267,54 @@ export class PersonaInstance {
         lastActive: new Date(),
       },
     };
-    
+
     this.emit({ type: 'persona:activated', persona: this.state });
   }
-  
+
   /**
    * Deactivate the persona
    */
   deactivate(): void {
     if (!this.state.active) return;
-    
+
     this.state = {
       ...this.state,
       active: false,
     };
-    
+
     this.emit({ type: 'persona:deactivated', persona: this.state });
   }
-  
+
   /**
    * Process a message and generate a response
    */
   async process(message: Message): Promise<Response> {
     const startTime = Date.now();
-    
+
     // Add to short-term memory
     this.addToMemory(message);
-    
+
     this.emit({ type: 'persona:message', persona: this.state, message });
-    
+
     // Generate response (placeholder - would integrate with LLM)
     const response = await this.generateResponse(message);
-    
+
     // Update stats
     const duration = Date.now() - startTime;
     this.updateStats(duration);
-    
+
     this.emit({ type: 'persona:response', persona: this.state, response });
-    
+
     return response;
   }
-  
+
   /**
    * Register a hook handler
    */
   registerHook(hook: string, handler: Function): void {
     this.handlers.set(hook, handler);
   }
-  
+
   /**
    * Subscribe to events
    */
@@ -317,7 +322,7 @@ export class PersonaInstance {
     this.eventHandlers.add(handler);
     return () => this.eventHandlers.delete(handler);
   }
-  
+
   /**
    * Update persona configuration
    */
@@ -327,40 +332,40 @@ export class PersonaInstance {
       config: { ...this.state.config, ...config },
     };
   }
-  
+
   /**
    * Set context value
    */
   setContext(key: string, value: unknown): void {
     this.state.memory.context.set(key, value);
   }
-  
+
   /**
    * Get context value
    */
   getContext(key: string): unknown {
     return this.state.memory.context.get(key);
   }
-  
+
   /**
    * Store a fact
    */
   remember(key: string, value: unknown): void {
     this.state.memory.facts.set(key, value);
   }
-  
+
   /**
    * Recall a fact
    */
   recall(key: string): unknown {
     return this.state.memory.facts.get(key);
   }
-  
+
   private addToMemory(message: Message): void {
     const shortTerm = [...this.state.memory.shortTerm, message];
     // Keep only last 100 messages
     const trimmed = shortTerm.slice(-100);
-    
+
     this.state = {
       ...this.state,
       memory: {
@@ -369,7 +374,7 @@ export class PersonaInstance {
       },
     };
   }
-  
+
   private async generateResponse(message: Message): Promise<Response> {
     // This would integrate with an LLM API
     // For now, return a placeholder response
@@ -385,12 +390,12 @@ export class PersonaInstance {
       timestamp: new Date(),
     };
   }
-  
+
   private updateStats(duration: number): void {
     const processed = this.state.stats.messagesProcessed + 1;
     const currentAvg = this.state.stats.averageResponseTime;
-    const newAvg = ((currentAvg * (processed - 1)) + duration) / processed;
-    
+    const newAvg = (currentAvg * (processed - 1) + duration) / processed;
+
     this.state = {
       ...this.state,
       stats: {
@@ -401,7 +406,7 @@ export class PersonaInstance {
       },
     };
   }
-  
+
   private emit(event: RuntimeEvent): void {
     for (const handler of this.eventHandlers) {
       try {
@@ -412,7 +417,6 @@ export class PersonaInstance {
     }
   }
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TEAM RUNTIME
@@ -436,7 +440,7 @@ const DEFAULT_TEAM_CONFIG: TeamConfig = {
 export class TeamInstance {
   private state: TeamState;
   private readonly eventHandlers: Set<RuntimeEventHandler> = new Set();
-  
+
   constructor(
     id: string,
     name: string,
@@ -446,10 +450,11 @@ export class TeamInstance {
     this.state = {
       id,
       name,
-      members: members.map(m => m.getState()),
-      primary: config.mergeMode === 'primary' && members.length > 0
-        ? members[0].getState()
-        : null,
+      members: members.map((m) => m.getState()),
+      primary:
+        config.mergeMode === 'primary' && members.length > 0
+          ? members[0].getState()
+          : null,
       config: { ...DEFAULT_TEAM_CONFIG, ...config },
       stats: {
         requestsProcessed: 0,
@@ -459,14 +464,14 @@ export class TeamInstance {
       },
     };
   }
-  
+
   /**
    * Get team state
    */
   getState(): TeamState {
     return this.state;
   }
-  
+
   /**
    * Process a message through the team
    */
@@ -475,22 +480,22 @@ export class TeamInstance {
     members: PersonaInstance[]
   ): Promise<Response> {
     const startTime = Date.now();
-    
+
     // Collect responses from all members
     const responses = await this.collectResponses(message, members);
-    
+
     // Merge responses based on mode
     const merged = await this.mergeResponses(responses);
-    
+
     // Update stats
     const duration = Date.now() - startTime;
     this.updateStats(duration, responses);
-    
+
     this.emit({ type: 'team:merge', team: this.state, responses, merged });
-    
+
     return merged;
   }
-  
+
   /**
    * Subscribe to events
    */
@@ -498,7 +503,7 @@ export class TeamInstance {
     this.eventHandlers.add(handler);
     return () => this.eventHandlers.delete(handler);
   }
-  
+
   /**
    * Update team configuration
    */
@@ -508,7 +513,7 @@ export class TeamInstance {
       config: { ...this.state.config, ...config },
     };
   }
-  
+
   private async collectResponses(
     message: Message,
     members: PersonaInstance[]
@@ -516,36 +521,36 @@ export class TeamInstance {
     // Check quorum
     const quorum = this.state.config.quorum;
     const requiredCount = quorum ? quorum.required : members.length;
-    
+
     // Collect responses with timeout
     const timeout = this.state.config.timeout;
-    const responsePromises = members.map(m => 
+    const responsePromises = members.map((m) =>
       Promise.race([
         m.process(message),
-        new Promise<Response>((_, reject) => 
+        new Promise<Response>((_, reject) =>
           setTimeout(() => reject(new Error('Timeout')), timeout)
         ),
-      ]).catch(e => null)
+      ]).catch((e) => null)
     );
-    
+
     const results = await Promise.all(responsePromises);
     const responses = results.filter((r): r is Response => r !== null);
-    
+
     // Check if quorum is met
     if (responses.length < requiredCount) {
       throw new Error(`Quorum not met: ${responses.length}/${requiredCount}`);
     }
-    
+
     return responses;
   }
-  
+
   private async mergeResponses(responses: Response[]): Promise<Response> {
     if (responses.length === 0) {
       throw new Error('No responses to merge');
     }
-    
+
     const mode = this.state.config.mergeMode;
-    
+
     switch (mode) {
       case 'primary':
         return this.mergePrimary(responses);
@@ -565,20 +570,21 @@ export class TeamInstance {
         return responses[0];
     }
   }
-  
+
   private mergePrimary(responses: Response[]): Response {
     // Return primary persona's response, or first if no primary
     const primaryId = this.state.primary?.id;
-    const primaryResponse = responses.find(r => r.personaId === primaryId);
+    const primaryResponse = responses.find((r) => r.personaId === primaryId);
     return primaryResponse ?? responses[0];
   }
-  
+
   private mergeConsensus(responses: Response[]): Response {
     // Find common themes/agreement (simplified)
-    const contents = responses.map(r => r.content);
-    const merged = `[Consensus from ${responses.length} personas]\n\n` +
+    const contents = responses.map((r) => r.content);
+    const merged =
+      `[Consensus from ${responses.length} personas]\n\n` +
       contents.join('\n\n---\n\n');
-    
+
     return {
       id: generateId(),
       personaId: 'team:' + this.state.id,
@@ -588,20 +594,18 @@ export class TeamInstance {
       timestamp: new Date(),
     };
   }
-  
+
   private mergeMajority(responses: Response[]): Response {
     // Simple majority voting (by content similarity)
     // For now, just return most confident response
     const sorted = [...responses].sort((a, b) => b.confidence - a.confidence);
     return sorted[0];
   }
-  
+
   private mergeAppend(responses: Response[]): Response {
     // Concatenate all responses
-    const contents = responses.map(r => 
-      `[${r.personaId}]\n${r.content}`
-    );
-    
+    const contents = responses.map((r) => `[${r.personaId}]\n${r.content}`);
+
     return {
       id: generateId(),
       personaId: 'team:' + this.state.id,
@@ -611,16 +615,14 @@ export class TeamInstance {
       timestamp: new Date(),
     };
   }
-  
+
   private mergeDebate(responses: Response[]): Response {
     // Present as a debate (showing different perspectives)
     const topic = this.state.config.topic ?? 'the topic';
-    const contents = responses.map(r => 
-      `**${r.personaId}**: ${r.content}`
-    );
-    
+    const contents = responses.map((r) => `**${r.personaId}**: ${r.content}`);
+
     const merged = `[Debate on ${topic}]\n\n` + contents.join('\n\n');
-    
+
     return {
       id: generateId(),
       personaId: 'team:' + this.state.id,
@@ -630,41 +632,41 @@ export class TeamInstance {
       timestamp: new Date(),
     };
   }
-  
+
   private mergeWeighted(responses: Response[]): Response {
     // Weight by configured weights
     const weights = this.state.config.weights;
-    
+
     // Score each response
-    const scored = responses.map(r => ({
+    const scored = responses.map((r) => ({
       response: r,
       score: (weights.get(r.personaId) ?? 1) * r.confidence,
     }));
-    
+
     // Sort by score
     scored.sort((a, b) => b.score - a.score);
-    
+
     // Return highest scored
     return scored[0].response;
   }
-  
+
   private mergeRandom(responses: Response[]): Response {
     // Random selection
     const index = Math.floor(Math.random() * responses.length);
     return responses[index];
   }
-  
+
   private calculateAverageConfidence(responses: Response[]): number {
     if (responses.length === 0) return 0;
     const sum = responses.reduce((acc, r) => acc + r.confidence, 0);
     return sum / responses.length;
   }
-  
+
   private updateStats(duration: number, responses: Response[]): void {
     const processed = this.state.stats.requestsProcessed + 1;
     const currentAvg = this.state.stats.averageResponseTime;
-    const newAvg = ((currentAvg * (processed - 1)) + duration) / processed;
-    
+    const newAvg = (currentAvg * (processed - 1) + duration) / processed;
+
     this.state = {
       ...this.state,
       stats: {
@@ -674,7 +676,7 @@ export class TeamInstance {
       },
     };
   }
-  
+
   private emit(event: RuntimeEvent): void {
     for (const handler of this.eventHandlers) {
       try {
@@ -685,7 +687,6 @@ export class TeamInstance {
     }
   }
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              WORKFLOW RUNTIME
@@ -698,7 +699,7 @@ export class WorkflowExecutor {
   private state: WorkflowState | null = null;
   private readonly eventHandlers: Set<RuntimeEventHandler> = new Set();
   private aborted = false;
-  
+
   /**
    * Execute a workflow
    */
@@ -709,7 +710,7 @@ export class WorkflowExecutor {
     teams: Map<string, TeamInstance>
   ): Promise<Result<unknown, Error>> {
     const id = generateId();
-    
+
     this.state = {
       id,
       name: workflow.id.name,
@@ -721,22 +722,22 @@ export class WorkflowExecutor {
       startTime: new Date(),
       endTime: null,
     };
-    
+
     this.aborted = false;
-    
+
     try {
       this.updateStatus('running');
       this.emit({ type: 'workflow:started', workflow: this.state });
-      
+
       // Find steps declaration
       const stepsDecl = workflow.body.members.find(
-        m => m.kind === 'WorkflowStepsDeclaration'
+        (m) => m.kind === 'WorkflowStepsDeclaration'
       ) as AST.WorkflowStepsDeclaration | undefined;
-      
+
       if (!stepsDecl) {
         throw new Error('Workflow has no steps');
       }
-      
+
       // Execute workflow expression
       const result = await this.executeExpression(
         stepsDecl.steps,
@@ -744,32 +745,36 @@ export class WorkflowExecutor {
         personas,
         teams
       );
-      
+
       this.state = {
         ...this.state!,
         status: 'completed',
         output: result,
         endTime: new Date(),
       };
-      
+
       this.emit({ type: 'workflow:completed', workflow: this.state });
-      
+
       return Ok(result);
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
-      
+
       this.state = {
         ...this.state!,
         status: 'failed',
         endTime: new Date(),
       };
-      
-      this.emit({ type: 'workflow:failed', workflow: this.state, error: err.message });
-      
+
+      this.emit({
+        type: 'workflow:failed',
+        workflow: this.state,
+        error: err.message,
+      });
+
       return Err(err);
     }
   }
-  
+
   /**
    * Abort the workflow
    */
@@ -779,14 +784,14 @@ export class WorkflowExecutor {
       this.updateStatus('cancelled');
     }
   }
-  
+
   /**
    * Get current state
    */
   getState(): WorkflowState | null {
     return this.state;
   }
-  
+
   /**
    * Subscribe to events
    */
@@ -794,7 +799,7 @@ export class WorkflowExecutor {
     this.eventHandlers.add(handler);
     return () => this.eventHandlers.delete(handler);
   }
-  
+
   private async executeExpression(
     expr: AST.WorkflowExpression,
     input: unknown,
@@ -804,30 +809,60 @@ export class WorkflowExecutor {
     if (this.aborted) {
       throw new Error('Workflow aborted');
     }
-    
+
     switch (expr.kind) {
       case 'WorkflowSequenceExpr':
-        return this.executeSequence(expr as AST.WorkflowSequenceExpr, input, personas, teams);
-      
+        return this.executeSequence(
+          expr as AST.WorkflowSequenceExpr,
+          input,
+          personas,
+          teams
+        );
+
       case 'WorkflowParallelExpr':
-        return this.executeParallel(expr as AST.WorkflowParallelExpr, input, personas, teams);
-      
+        return this.executeParallel(
+          expr as AST.WorkflowParallelExpr,
+          input,
+          personas,
+          teams
+        );
+
       case 'WorkflowChoiceExpr':
-        return this.executeChoice(expr as AST.WorkflowChoiceExpr, input, personas, teams);
-      
+        return this.executeChoice(
+          expr as AST.WorkflowChoiceExpr,
+          input,
+          personas,
+          teams
+        );
+
       case 'WorkflowConditionalExpr':
-        return this.executeConditional(expr as AST.WorkflowConditionalExpr, input, personas, teams);
-      
+        return this.executeConditional(
+          expr as AST.WorkflowConditionalExpr,
+          input,
+          personas,
+          teams
+        );
+
       case 'WorkflowLoopExpr':
-        return this.executeLoop(expr as AST.WorkflowLoopExpr, input, personas, teams);
-      
+        return this.executeLoop(
+          expr as AST.WorkflowLoopExpr,
+          input,
+          personas,
+          teams
+        );
+
       case 'WorkflowPersonaRef':
-        return this.executePersonaRef(expr as AST.WorkflowPersonaRef, input, personas, teams);
-      
+        return this.executePersonaRef(
+          expr as AST.WorkflowPersonaRef,
+          input,
+          personas,
+          teams
+        );
+
       case 'WorkflowMergeExpr':
         // Merge is handled in parallel execution
         return input;
-      
+
       case 'WorkflowGroupExpr':
         return this.executeExpression(
           (expr as AST.WorkflowGroupExpr).expr,
@@ -835,12 +870,12 @@ export class WorkflowExecutor {
           personas,
           teams
         );
-      
+
       default:
         throw new Error(`Unknown workflow expression: ${expr.kind}`);
     }
   }
-  
+
   private async executeSequence(
     expr: AST.WorkflowSequenceExpr,
     input: unknown,
@@ -848,14 +883,14 @@ export class WorkflowExecutor {
     teams: Map<string, TeamInstance>
   ): Promise<unknown> {
     let current = input;
-    
+
     for (const step of expr.steps) {
       current = await this.executeExpression(step, current, personas, teams);
     }
-    
+
     return current;
   }
-  
+
   private async executeParallel(
     expr: AST.WorkflowParallelExpr,
     input: unknown,
@@ -863,14 +898,14 @@ export class WorkflowExecutor {
     teams: Map<string, TeamInstance>
   ): Promise<unknown[]> {
     const results = await Promise.all(
-      expr.branches.map(branch =>
+      expr.branches.map((branch) =>
         this.executeExpression(branch, input, personas, teams)
       )
     );
-    
+
     return results;
   }
-  
+
   private async executeChoice(
     expr: AST.WorkflowChoiceExpr,
     input: unknown,
@@ -885,10 +920,10 @@ export class WorkflowExecutor {
         continue;
       }
     }
-    
+
     throw new Error('All choice branches failed');
   }
-  
+
   private async executeConditional(
     expr: AST.WorkflowConditionalExpr,
     input: unknown,
@@ -897,16 +932,16 @@ export class WorkflowExecutor {
   ): Promise<unknown> {
     // Evaluate condition (simplified - would need expression evaluator)
     const condition = true; // Placeholder
-    
+
     if (condition) {
       return this.executeExpression(expr.then, input, personas, teams);
     } else if (expr.else) {
       return this.executeExpression(expr.else, input, personas, teams);
     }
-    
+
     return input;
   }
-  
+
   private async executeLoop(
     expr: AST.WorkflowLoopExpr,
     input: unknown,
@@ -916,7 +951,7 @@ export class WorkflowExecutor {
     let current = input;
     let iterations = 0;
     const maxIterations = 100;
-    
+
     while (iterations < maxIterations && !this.aborted) {
       switch (expr.loopType) {
         case 'times':
@@ -924,25 +959,30 @@ export class WorkflowExecutor {
             return current;
           }
           break;
-        
+
         case 'while':
           // Evaluate condition (simplified)
           if (iterations > 0) return current;
           break;
-        
+
         case 'until':
           // Evaluate condition (simplified)
           if (iterations > 0) return current;
           break;
       }
-      
-      current = await this.executeExpression(expr.body, current, personas, teams);
+
+      current = await this.executeExpression(
+        expr.body,
+        current,
+        personas,
+        teams
+      );
       iterations++;
     }
-    
+
     return current;
   }
-  
+
   private async executePersonaRef(
     expr: AST.WorkflowPersonaRef,
     input: unknown,
@@ -951,17 +991,17 @@ export class WorkflowExecutor {
   ): Promise<unknown> {
     const ref = expr.ref;
     let name: string;
-    
+
     if (ref.ref.type === 'id') {
       name = ref.ref.id.name;
     } else if (ref.ref.type === 'qualified') {
-      name = ref.ref.path.parts.map(p => p.name).join('::');
+      name = ref.ref.path.parts.map((p) => p.name).join('::');
     } else if (ref.ref.type === 'spawn') {
       name = ref.ref.persona.name;
     } else {
       throw new Error('Invalid persona reference');
     }
-    
+
     // Try to find persona
     const persona = personas.get(name);
     if (persona) {
@@ -973,11 +1013,11 @@ export class WorkflowExecutor {
         metadata: {},
         timestamp: new Date(),
       };
-      
+
       const response = await persona.process(message);
       return response.content;
     }
-    
+
     // Try to find team
     const team = teams.get(name);
     if (team) {
@@ -989,25 +1029,25 @@ export class WorkflowExecutor {
         metadata: {},
         timestamp: new Date(),
       };
-      
+
       // Get team members
-      const memberInstances = Array.from(personas.values()).filter(p =>
-        team.getState().members.some(m => m.id === p.getState().id)
+      const memberInstances = Array.from(personas.values()).filter((p) =>
+        team.getState().members.some((m) => m.id === p.getState().id)
       );
-      
+
       const response = await team.process(message, memberInstances);
       return response.content;
     }
-    
+
     throw new Error(`Unknown persona or team: ${name}`);
   }
-  
+
   private updateStatus(status: WorkflowStatus): void {
     if (this.state) {
       this.state = { ...this.state, status };
     }
   }
-  
+
   private emit(event: RuntimeEvent): void {
     for (const handler of this.eventHandlers) {
       try {
@@ -1018,7 +1058,6 @@ export class WorkflowExecutor {
     }
   }
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              RUNTIME ENGINE
@@ -1054,11 +1093,11 @@ export class Runtime {
   private readonly teams: Map<string, TeamInstance> = new Map();
   private readonly workflows: Map<string, WorkflowExecutor> = new Map();
   private readonly eventHandlers: Set<RuntimeEventHandler> = new Set();
-  
+
   constructor(config: Partial<RuntimeConfig> = {}) {
     this.config = { ...DEFAULT_RUNTIME_CONFIG, ...config };
   }
-  
+
   /**
    * Load a program into the runtime
    */
@@ -1074,21 +1113,21 @@ export class Runtime {
       }
     }
   }
-  
+
   /**
    * Get or create a persona instance
    */
   getPersona(name: string): PersonaInstance | undefined {
     return this.personas.get(name);
   }
-  
+
   /**
    * Get or create a team instance
    */
   getTeam(name: string): TeamInstance | undefined {
     return this.teams.get(name);
   }
-  
+
   /**
    * Activate a persona
    */
@@ -1097,11 +1136,11 @@ export class Runtime {
     if (!persona) {
       return Err(new Error(`Unknown persona: ${name}`));
     }
-    
+
     persona.activate();
     return Ok(persona);
   }
-  
+
   /**
    * Deactivate a persona
    */
@@ -1110,11 +1149,11 @@ export class Runtime {
     if (!persona) {
       return Err(new Error(`Unknown persona: ${name}`));
     }
-    
+
     persona.deactivate();
     return Ok(undefined);
   }
-  
+
   /**
    * Activate all personas in a team
    */
@@ -1123,15 +1162,15 @@ export class Runtime {
     if (!team) {
       return Err(new Error(`Unknown team: ${name}`));
     }
-    
+
     for (const member of team.getState().members) {
       const persona = this.personas.get(member.id);
       persona?.activate();
     }
-    
+
     return Ok(team);
   }
-  
+
   /**
    * Send a message to a persona
    */
@@ -1144,11 +1183,11 @@ export class Runtime {
     if (!persona) {
       return Err(new Error(`Unknown persona: ${personaName}`));
     }
-    
+
     if (!persona.getState().active) {
       return Err(new Error(`Persona ${personaName} is not active`));
     }
-    
+
     const message: Message = {
       id: generateId(),
       from: null,
@@ -1157,7 +1196,7 @@ export class Runtime {
       metadata,
       timestamp: new Date(),
     };
-    
+
     try {
       const response = await persona.process(message);
       return Ok(response);
@@ -1165,7 +1204,7 @@ export class Runtime {
       return Err(error instanceof Error ? error : new Error(String(error)));
     }
   }
-  
+
   /**
    * Send a message to a team
    */
@@ -1178,7 +1217,7 @@ export class Runtime {
     if (!team) {
       return Err(new Error(`Unknown team: ${teamName}`));
     }
-    
+
     const message: Message = {
       id: generateId(),
       from: null,
@@ -1187,16 +1226,19 @@ export class Runtime {
       metadata,
       timestamp: new Date(),
     };
-    
+
     // Get active team members
-    const members = team.getState().members
-      .map(m => this.personas.get(m.id))
-      .filter((p): p is PersonaInstance => p !== undefined && p.getState().active);
-    
+    const members = team
+      .getState()
+      .members.map((m) => this.personas.get(m.id))
+      .filter(
+        (p): p is PersonaInstance => p !== undefined && p.getState().active
+      );
+
     if (members.length === 0) {
       return Err(new Error('No active team members'));
     }
-    
+
     try {
       const response = await team.process(message, members);
       return Ok(response);
@@ -1204,7 +1246,7 @@ export class Runtime {
       return Err(error instanceof Error ? error : new Error(String(error)));
     }
   }
-  
+
   /**
    * Execute a workflow
    */
@@ -1214,16 +1256,21 @@ export class Runtime {
   ): Promise<Result<unknown, Error>> {
     const executor = new WorkflowExecutor();
     this.workflows.set(workflow.id.name, executor);
-    
+
     // Forward events
-    executor.on(event => this.emit(event));
-    
-    const result = await executor.execute(workflow, input, this.personas, this.teams);
-    
+    executor.on((event) => this.emit(event));
+
+    const result = await executor.execute(
+      workflow,
+      input,
+      this.personas,
+      this.teams
+    );
+
     this.workflows.delete(workflow.id.name);
     return result;
   }
-  
+
   /**
    * Subscribe to runtime events
    */
@@ -1231,28 +1278,28 @@ export class Runtime {
     this.eventHandlers.add(handler);
     return () => this.eventHandlers.delete(handler);
   }
-  
+
   /**
    * Get all personas
    */
   getAllPersonas(): PersonaInstance[] {
     return Array.from(this.personas.values());
   }
-  
+
   /**
    * Get all teams
    */
   getAllTeams(): TeamInstance[] {
     return Array.from(this.teams.values());
   }
-  
+
   /**
    * Get active personas
    */
   getActivePersonas(): PersonaInstance[] {
-    return this.getAllPersonas().filter(p => p.getState().active);
+    return this.getAllPersonas().filter((p) => p.getState().active);
   }
-  
+
   /**
    * Clear all state
    */
@@ -1264,84 +1311,92 @@ export class Runtime {
     this.teams.clear();
     this.workflows.clear();
   }
-  
+
   private loadPersona(decl: AST.PersonaDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.personas.size >= this.config.maxPersonas) {
       throw new Error(`Maximum personas reached: ${this.config.maxPersonas}`);
     }
-    
+
     // Extract configuration from declaration
     const config = this.extractPersonaConfig(decl);
-    
+
     const instance = new PersonaInstance(name, name, config);
-    
+
     // Forward events
-    instance.on(event => this.emit(event));
-    
+    instance.on((event) => this.emit(event));
+
     this.personas.set(name, instance);
   }
-  
-  private extractPersonaConfig(decl: AST.PersonaDeclaration): Partial<PersonaConfig> {
+
+  private extractPersonaConfig(
+    decl: AST.PersonaDeclaration
+  ): Partial<PersonaConfig> {
     const config: Partial<PersonaConfig> = {};
-    
+
     for (const member of decl.body.members) {
       switch (member.kind) {
         case 'PropertyDeclaration': {
           const prop = member as AST.PropertyDeclaration;
-          if (prop.name.name === 'intent' && prop.initializer?.kind === 'StringLiteral') {
+          if (
+            prop.name.name === 'intent' &&
+            prop.initializer?.kind === 'StringLiteral'
+          ) {
             config.intent = (prop.initializer as AST.StringLiteral).value;
           }
-          if (prop.name.name === 'tone' && prop.initializer?.kind === 'Identifier') {
+          if (
+            prop.name.name === 'tone' &&
+            prop.initializer?.kind === 'Identifier'
+          ) {
             config.tone = (prop.initializer as AST.Identifier).name as Tone;
           }
           break;
         }
-        
+
         case 'SkillBlock': {
           const block = member as AST.SkillBlock;
           config.skills = block.items
-            .filter(i => i.kind === 'StringSkill')
-            .map(i => (i as { value: string }).value);
+            .filter((i) => i.kind === 'StringSkill')
+            .map((i) => (i as { value: string }).value);
           break;
         }
-        
+
         case 'ConstraintBlock': {
           const block = member as AST.ConstraintBlock;
           config.constraints = block.items
-            .filter(i => i.kind === 'StringConstraint')
-            .map(i => (i as { value: string }).value);
+            .filter((i) => i.kind === 'StringConstraint')
+            .map((i) => (i as { value: string }).value);
           break;
         }
-        
+
         case 'TagBlock': {
           const block = member as AST.TagBlock;
-          config.tags = block.items.map(i => 
-            i.kind === 'StringTag' 
-              ? (i as { value: string }).value 
+          config.tags = block.items.map((i) =>
+            i.kind === 'StringTag'
+              ? (i as { value: string }).value
               : (i as { name: AST.Identifier }).name.name
           );
           break;
         }
       }
     }
-    
+
     return config;
   }
-  
+
   private loadTeam(decl: AST.TeamDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.teams.size >= this.config.maxTeams) {
       throw new Error(`Maximum teams reached: ${this.config.maxTeams}`);
     }
-    
+
     // Collect team members
     const memberNames: string[] = [];
     let mergeMode: MergeMode = 'primary';
     let primaryName: string | null = null;
-    
+
     for (const member of decl.body.members) {
       switch (member.kind) {
         case 'TeamMembersDeclaration': {
@@ -1352,12 +1407,14 @@ export class Runtime {
           }
           break;
         }
-        
+
         case 'TeamPrimaryDeclaration': {
-          primaryName = this.getPersonaRefName((member as AST.TeamPrimaryDeclaration).primary);
+          primaryName = this.getPersonaRefName(
+            (member as AST.TeamPrimaryDeclaration).primary
+          );
           break;
         }
-        
+
         case 'TeamMergeDeclaration': {
           const mergeDecl = member as AST.TeamMergeDeclaration;
           if (mergeDecl.mode.kind === 'SimpleMergeMode') {
@@ -1367,37 +1424,37 @@ export class Runtime {
         }
       }
     }
-    
+
     // Get persona instances
     const memberInstances = memberNames
-      .map(n => this.personas.get(n))
+      .map((n) => this.personas.get(n))
       .filter((p): p is PersonaInstance => p !== undefined);
-    
+
     const teamConfig: Partial<TeamConfig> = {
       mergeMode,
     };
-    
+
     const instance = new TeamInstance(name, name, memberInstances, teamConfig);
-    
+
     // Forward events
-    instance.on(event => this.emit(event));
-    
+    instance.on((event) => this.emit(event));
+
     this.teams.set(name, instance);
   }
-  
+
   private getPersonaRefName(ref: AST.PersonaReference): string | null {
     if (ref.ref.type === 'id') {
       return ref.ref.id.name;
     }
     if (ref.ref.type === 'qualified') {
-      return ref.ref.path.parts.map(p => p.name).join('::');
+      return ref.ref.path.parts.map((p) => p.name).join('::');
     }
     if (ref.ref.type === 'spawn') {
       return ref.ref.persona.name;
     }
     return null;
   }
-  
+
   private emit(event: RuntimeEvent): void {
     for (const handler of this.eventHandlers) {
       try {
@@ -1409,7 +1466,6 @@ export class Runtime {
   }
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              UTILITIES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1419,7 +1475,6 @@ let idCounter = 0;
 function generateId(): string {
   return `${Date.now()}-${++idCounter}`;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              EXPORTS

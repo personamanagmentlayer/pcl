@@ -12,7 +12,8 @@
       "Bash(npx tsc:*)",
       "Bash(node:*)",
       "Bash(npx tsx:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(ls:*)"
     ]
   }
 }
