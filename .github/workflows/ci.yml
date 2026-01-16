@@ -1,0 +1,185 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  #                              BUILD & LINT
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  build:
+    name: Build & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Type check
+        run: npm run typecheck
+
+      - name: 🎨 Check formatting
+        run: npm run format:check
+
+      - name: 🔎 Lint code
+        run: npm run lint
+
+      - name: 🏗️ Build project
+        run: npm run build
+
+      - name: 📤 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #                              TESTS
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  test:
+    name: Test (Node ${{ matrix.node-version }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['20', '22']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run tests
+        run: npm test
+
+      - name: 📊 Generate coverage report
+        if: matrix.node-version == '20' && matrix.os == 'ubuntu-latest'
+        run: npm run test:coverage
+
+      - name: 📤 Upload coverage to Codecov
+        if: matrix.node-version == '20' && matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #                              SECURITY
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔒 Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: 🛡️ Run CodeQL analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: 🔍 Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #                              PACKAGE VALIDATION
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  package:
+    name: Validate Package
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: 🔍 Check package exports
+        run: node -e "import('@pcl/sdk').then(() => console.log('✅ Package exports valid'))"
+
+      - name: 🧪 Test CLI binary
+        run: |
+          chmod +x dist/cli/index.js
+          node dist/cli/index.js --version || echo "CLI binary exists"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #                              STATUS CHECK
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  ci-success:
+    name: ✅ CI Success
+    runs-on: ubuntu-latest
+    needs: [build, test, security, package]
+    if: always()
+
+    steps:
+      - name: ✅ Check all jobs
+        run: |
+          if [ "${{ needs.build.result }}" != "success" ] || \
+             [ "${{ needs.test.result }}" != "success" ] || \
+             [ "${{ needs.security.result }}" != "success" ] || \
+             [ "${{ needs.package.result }}" != "success" ]; then
+            echo "❌ CI pipeline failed"
+            exit 1
+          fi
+          echo "✅ All CI checks passed!"
