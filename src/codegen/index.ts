@@ -29,8 +29,15 @@ export type GeneratorTarget =
   | 'markdown' // Documentation
   | 'yaml'; // YAML configuration
 
+export type PromptProvider =
+  | 'generic' // Generic format (default)
+  | 'claude' // Anthropic Claude format
+  | 'openai' // OpenAI GPT format
+  | 'gemini'; // Google Gemini format
+
 export interface GeneratorOptions {
   target: GeneratorTarget;
+  provider?: PromptProvider; // For prompt generation
   minify?: boolean;
   includeComments?: boolean;
   includeMetadata?: boolean;
@@ -40,6 +47,7 @@ export interface GeneratorOptions {
 
 const DEFAULT_OPTIONS: Required<GeneratorOptions> = {
   target: 'prompt',
+  provider: 'generic',
   minify: false,
   includeComments: true,
   includeMetadata: true,
@@ -87,12 +95,31 @@ class PromptGenerator {
   generate(persona: AST.PersonaDeclaration): string {
     this.output = [];
 
+    // Extract properties
+    const props = this.extractProperties(persona);
+
+    // Generate based on provider format
+    switch (this.options.provider) {
+      case 'claude':
+        return this.generateClaudeFormat(persona, props);
+      case 'openai':
+        return this.generateOpenAIFormat(persona, props);
+      case 'gemini':
+        return this.generateGeminiFormat(persona, props);
+      default:
+        return this.generateGenericFormat(persona, props);
+    }
+  }
+
+  private generateGenericFormat(
+    persona: AST.PersonaDeclaration,
+    props: ReturnType<typeof this.extractProperties>
+  ): string {
+    this.output = [];
+
     // Header
     this.section('PERSONA CONFIGURATION');
     this.line(`Name: ${persona.id.name}`);
-
-    // Extract properties
-    const props = this.extractProperties(persona);
 
     // Identity
     if (props.intent) {
@@ -143,6 +170,215 @@ class PromptGenerator {
         );
       }
     }
+
+    return this.output.join('\n');
+  }
+
+  private generateClaudeFormat(
+    persona: AST.PersonaDeclaration,
+    props: ReturnType<typeof this.extractProperties>
+  ): string {
+    this.output = [];
+
+    // Claude prefers XML-style tags for structure
+    this.line('<persona>');
+    this.line(`<name>${persona.id.name}</name>`);
+    this.blank();
+
+    // Identity and purpose
+    if (props.intent) {
+      this.line('<identity>');
+      this.line(props.intent);
+      this.line('</identity>');
+      this.blank();
+    }
+
+    // Skills - Claude works well with explicit capability lists
+    if (props.skills.length > 0) {
+      this.line('<expertise>');
+      for (const skill of props.skills) {
+        this.line(`- ${skill}`);
+      }
+      this.line('</expertise>');
+      this.blank();
+    }
+
+    // Constraints - Claude responds well to clear guidelines
+    if (props.constraints.length > 0) {
+      this.line('<guidelines>');
+      for (const constraint of props.constraints) {
+        this.line(`- ${constraint}`);
+      }
+      this.line('</guidelines>');
+      this.blank();
+    }
+
+    // Communication style
+    if (props.tone) {
+      this.line('<style>');
+      this.line(`Tone: ${props.tone}`);
+      if (props.verbosity) {
+        this.line(`Verbosity: ${props.verbosity}`);
+      }
+      if (props.depth) {
+        this.line(`Depth: ${props.depth}`);
+      }
+      this.line('</style>');
+      this.blank();
+    }
+
+    // Methods as tools
+    if (props.methods.length > 0) {
+      this.line('<capabilities>');
+      for (const method of props.methods) {
+        this.line(
+          `- ${method.name}: ${method.description || 'Available action'}`
+        );
+      }
+      this.line('</capabilities>');
+      this.blank();
+    }
+
+    this.line('</persona>');
+
+    return this.output.join('\n');
+  }
+
+  private generateOpenAIFormat(
+    persona: AST.PersonaDeclaration,
+    props: ReturnType<typeof this.extractProperties>
+  ): string {
+    this.output = [];
+
+    // OpenAI prefers direct, imperative instructions
+    this.line(`# ${persona.id.name}`);
+    this.blank();
+
+    // Identity - OpenAI responds well to "You are..." format
+    if (props.intent) {
+      this.line(`You are ${persona.id.name}.`);
+      this.line(props.intent);
+      this.blank();
+    }
+
+    // Skills as capabilities
+    if (props.skills.length > 0) {
+      this.line('## Your Expertise');
+      this.blank();
+      this.line('You have expertise in:');
+      for (const skill of props.skills) {
+        this.line(`- ${skill}`);
+      }
+      this.blank();
+    }
+
+    // Constraints as rules
+    if (props.constraints.length > 0) {
+      this.line('## Rules You Must Follow');
+      this.blank();
+      for (const constraint of props.constraints) {
+        this.line(`- ${constraint}`);
+      }
+      this.blank();
+    }
+
+    // Communication style
+    if (props.tone || props.verbosity || props.depth) {
+      this.line('## Communication Style');
+      this.blank();
+      if (props.tone) {
+        this.line(`- Use a ${props.tone} tone`);
+      }
+      if (props.verbosity) {
+        this.line(`- Be ${props.verbosity} in your responses`);
+      }
+      if (props.depth) {
+        this.line(`- Provide ${props.depth} explanations`);
+      }
+      this.blank();
+    }
+
+    // Methods as functions
+    if (props.methods.length > 0) {
+      this.line('## Available Functions');
+      this.blank();
+      this.line('You can perform the following actions:');
+      for (const method of props.methods) {
+        this.line(
+          `- ${method.name}: ${method.description || 'Available action'}`
+        );
+      }
+      this.blank();
+    }
+
+    return this.output.join('\n').trim();
+  }
+
+  private generateGeminiFormat(
+    persona: AST.PersonaDeclaration,
+    props: ReturnType<typeof this.extractProperties>
+  ): string {
+    this.output = [];
+
+    // Gemini prefers conversational, context-rich prompts
+    this.line(`Context: You are ${persona.id.name}`);
+    this.blank();
+
+    // Identity with context
+    if (props.intent) {
+      this.line('Your Purpose:');
+      this.line(props.intent);
+      this.blank();
+    }
+
+    // Skills as knowledge areas
+    if (props.skills.length > 0) {
+      this.line('Your Knowledge and Skills:');
+      for (const skill of props.skills) {
+        this.line(`• ${skill}`);
+      }
+      this.blank();
+    }
+
+    // Constraints as behavioral guidelines
+    if (props.constraints.length > 0) {
+      this.line('Behavioral Guidelines:');
+      for (const constraint of props.constraints) {
+        this.line(`• ${constraint}`);
+      }
+      this.blank();
+    }
+
+    // Communication preferences
+    if (props.tone || props.verbosity || props.depth) {
+      this.line('Communication Preferences:');
+      if (props.tone) {
+        this.line(`• Tone: ${props.tone}`);
+      }
+      if (props.verbosity) {
+        this.line(`• Response length: ${props.verbosity}`);
+      }
+      if (props.depth) {
+        this.line(`• Explanation depth: ${props.depth}`);
+      }
+      this.blank();
+    }
+
+    // Methods as capabilities
+    if (props.methods.length > 0) {
+      this.line('Your Capabilities:');
+      for (const method of props.methods) {
+        this.line(
+          `• ${method.name}: ${method.description || 'Available action'}`
+        );
+      }
+      this.blank();
+    }
+
+    // Gemini-specific: Add instruction footer
+    this.line(
+      'Instructions: Follow these guidelines in all your responses and interactions.'
+    );
 
     return this.output.join('\n');
   }
@@ -862,6 +1098,612 @@ class JSONGenerator {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//                              YAML GENERATOR
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Generate YAML configuration from PCL program
+ */
+export function generateYAML(
+  program: AST.Program,
+  options: Partial<GeneratorOptions> = {}
+): string {
+  const opts = { ...DEFAULT_OPTIONS, ...options, target: 'yaml' as const };
+  const generator = new YAMLGenerator(opts);
+  return generator.generate(program);
+}
+
+class YAMLGenerator {
+  private readonly options: Required<GeneratorOptions>;
+  private indentLevel = 0;
+
+  constructor(options: Required<GeneratorOptions>) {
+    this.options = options;
+  }
+
+  generate(program: AST.Program): string {
+    const lines: string[] = [];
+
+    // Header comment
+    if (this.options.includeComments) {
+      lines.push('# Generated by PCL Compiler');
+      lines.push('# https://pcl-lang.org');
+      lines.push('');
+    }
+
+    // Version and schema
+    lines.push('version: "1.0.0"');
+    if (this.options.includeMetadata) {
+      lines.push('$schema: "https://pcl-lang.org/schema/v1.yaml"');
+    }
+    lines.push('');
+
+    // Collect declarations by type
+    const personas = program.statements.filter(
+      (s) => s.kind === 'PersonaDeclaration'
+    ) as AST.PersonaDeclaration[];
+    const teams = program.statements.filter(
+      (s) => s.kind === 'TeamDeclaration'
+    ) as AST.TeamDeclaration[];
+    const workflows = program.statements.filter(
+      (s) => s.kind === 'WorkflowDeclaration'
+    ) as AST.WorkflowDeclaration[];
+    const skills = program.statements.filter(
+      (s) => s.kind === 'SkillDeclaration'
+    ) as AST.SkillDeclaration[];
+
+    // Generate sections
+    if (personas.length > 0) {
+      lines.push('personas:');
+      this.indentLevel++;
+      for (const persona of personas) {
+        lines.push(...this.generatePersona(persona));
+      }
+      this.indentLevel--;
+      lines.push('');
+    }
+
+    if (teams.length > 0) {
+      lines.push('teams:');
+      this.indentLevel++;
+      for (const team of teams) {
+        lines.push(...this.generateTeam(team));
+      }
+      this.indentLevel--;
+      lines.push('');
+    }
+
+    if (workflows.length > 0) {
+      lines.push('workflows:');
+      this.indentLevel++;
+      for (const workflow of workflows) {
+        lines.push(...this.generateWorkflow(workflow));
+      }
+      this.indentLevel--;
+      lines.push('');
+    }
+
+    if (skills.length > 0) {
+      lines.push('skills:');
+      this.indentLevel++;
+      for (const skill of skills) {
+        lines.push(...this.generateSkill(skill));
+      }
+      this.indentLevel--;
+      lines.push('');
+    }
+
+    return lines.join('\n').trim() + '\n';
+  }
+
+  private generatePersona(decl: AST.PersonaDeclaration): string[] {
+    const lines: string[] = [];
+    const indent = this.getIndent();
+
+    lines.push(`${indent}${decl.id.name}:`);
+    this.indentLevel++;
+    const innerIndent = this.getIndent();
+
+    // ID
+    lines.push(`${innerIndent}id: ${decl.id.name}`);
+
+    // Extends
+    if (decl.extends.length > 0) {
+      lines.push(`${innerIndent}extends:`);
+      for (const ext of decl.extends) {
+        const extName = ext.typeName.parts.map((p) => p.name).join('::');
+        lines.push(`${innerIndent}  - ${extName}`);
+      }
+    }
+
+    // Extract members
+    for (const member of decl.body.members) {
+      switch (member.kind) {
+        case 'PropertyDeclaration': {
+          const prop = member as AST.PropertyDeclaration;
+          const value = this.extractValue(prop.initializer);
+          if (value !== undefined) {
+            lines.push(
+              `${innerIndent}${prop.name.name}: ${this.formatValue(value)}`
+            );
+          }
+          break;
+        }
+
+        case 'SkillBlock': {
+          const block = member as AST.SkillBlock;
+          const skills = block.items
+            .map((item) => {
+              if (item.kind === 'StringSkill') {
+                return (item as { value: string }).value;
+              }
+              if (item.kind === 'IdentifierSkill') {
+                return (item as { name: AST.Identifier }).name.name;
+              }
+              return null;
+            })
+            .filter(Boolean);
+
+          if (skills.length > 0) {
+            lines.push(`${innerIndent}skills:`);
+            for (const skill of skills) {
+              lines.push(`${innerIndent}  - ${this.formatValue(skill)}`);
+            }
+          }
+          break;
+        }
+
+        case 'ConstraintBlock': {
+          const block = member as AST.ConstraintBlock;
+          const constraints = block.items
+            .map((item) => {
+              if (item.kind === 'StringConstraint') {
+                return (item as { value: string }).value;
+              }
+              return null;
+            })
+            .filter(Boolean);
+
+          if (constraints.length > 0) {
+            lines.push(`${innerIndent}constraints:`);
+            for (const constraint of constraints) {
+              lines.push(`${innerIndent}  - ${this.formatValue(constraint)}`);
+            }
+          }
+          break;
+        }
+
+        case 'TagBlock': {
+          const block = member as AST.TagBlock;
+          const tags = block.items
+            .map((item) => {
+              if (item.kind === 'StringTag') {
+                return (item as { value: string }).value;
+              }
+              if (item.kind === 'IdentifierTag') {
+                return (item as { name: AST.Identifier }).name.name;
+              }
+              return null;
+            })
+            .filter(Boolean);
+
+          if (tags.length > 0) {
+            lines.push(`${innerIndent}tags:`);
+            for (const tag of tags) {
+              lines.push(`${innerIndent}  - ${this.formatValue(tag)}`);
+            }
+          }
+          break;
+        }
+
+        case 'MethodDeclaration': {
+          const method = member as AST.MethodDeclaration;
+          if (!lines.find((l) => l.includes('methods:'))) {
+            lines.push(`${innerIndent}methods:`);
+          }
+          lines.push(`${innerIndent}  ${method.name.name}:`);
+          lines.push(`${innerIndent}    async: ${method.async}`);
+          if (method.parameters.length > 0) {
+            lines.push(`${innerIndent}    parameters:`);
+            for (const param of method.parameters) {
+              const paramName =
+                param.name.kind === 'Identifier'
+                  ? (param.name as AST.Identifier).name
+                  : 'unknown';
+              lines.push(`${innerIndent}      - name: ${paramName}`);
+              lines.push(`${innerIndent}        optional: ${param.optional}`);
+            }
+          }
+          break;
+        }
+      }
+    }
+
+    this.indentLevel--;
+    return lines;
+  }
+
+  private generateTeam(decl: AST.TeamDeclaration): string[] {
+    const lines: string[] = [];
+    const indent = this.getIndent();
+
+    lines.push(`${indent}${decl.id.name}:`);
+    this.indentLevel++;
+    const innerIndent = this.getIndent();
+
+    lines.push(`${innerIndent}id: ${decl.id.name}`);
+
+    for (const member of decl.body.members) {
+      switch (member.kind) {
+        case 'TeamMembersDeclaration': {
+          const membersDecl = member as AST.TeamMembersDeclaration;
+          lines.push(`${innerIndent}members:`);
+          for (const ref of membersDecl.members) {
+            lines.push(`${innerIndent}  - ${this.personaRefToString(ref)}`);
+          }
+          break;
+        }
+
+        case 'TeamPrimaryDeclaration': {
+          const primaryDecl = member as AST.TeamPrimaryDeclaration;
+          lines.push(
+            `${innerIndent}primary: ${this.personaRefToString(primaryDecl.primary)}`
+          );
+          break;
+        }
+
+        case 'TeamMergeDeclaration': {
+          const mergeDecl = member as AST.TeamMergeDeclaration;
+          if (mergeDecl.mode.kind === 'SimpleMergeMode') {
+            lines.push(`${innerIndent}merge: ${mergeDecl.mode.mode}`);
+          } else {
+            lines.push(`${innerIndent}merge:`);
+            lines.push(`${innerIndent}  mode: custom`);
+          }
+          break;
+        }
+
+        case 'TeamQuorumDeclaration': {
+          const quorumDecl = member as AST.TeamQuorumDeclaration;
+          lines.push(`${innerIndent}quorum:`);
+          lines.push(`${innerIndent}  required: ${quorumDecl.required.value}`);
+          lines.push(`${innerIndent}  total: ${quorumDecl.total.value}`);
+          break;
+        }
+
+        case 'TeamConflictDeclaration': {
+          const conflictDecl = member as AST.TeamConflictDeclaration;
+          lines.push(`${innerIndent}conflictOrder:`);
+          for (const ref of conflictDecl.order) {
+            lines.push(`${innerIndent}  - ${this.personaRefToString(ref)}`);
+          }
+          break;
+        }
+      }
+    }
+
+    this.indentLevel--;
+    return lines;
+  }
+
+  private generateWorkflow(decl: AST.WorkflowDeclaration): string[] {
+    const lines: string[] = [];
+    const indent = this.getIndent();
+
+    lines.push(`${indent}${decl.id.name}:`);
+    this.indentLevel++;
+    const innerIndent = this.getIndent();
+
+    lines.push(`${innerIndent}id: ${decl.id.name}`);
+
+    for (const member of decl.body.members) {
+      switch (member.kind) {
+        case 'WorkflowInputDeclaration': {
+          lines.push(
+            `${innerIndent}input: ${this.typeNodeToString((member as AST.WorkflowInputDeclaration).type)}`
+          );
+          break;
+        }
+
+        case 'WorkflowOutputDeclaration': {
+          lines.push(
+            `${innerIndent}output: ${this.typeNodeToString((member as AST.WorkflowOutputDeclaration).type)}`
+          );
+          break;
+        }
+
+        case 'WorkflowStepsDeclaration': {
+          lines.push(`${innerIndent}steps:`);
+          const stepsYaml = this.workflowExprToYAML(
+            (member as AST.WorkflowStepsDeclaration).steps,
+            this.indentLevel + 1
+          );
+          lines.push(...stepsYaml);
+          break;
+        }
+
+        case 'WorkflowTimeoutDeclaration': {
+          const timeout = member as AST.WorkflowTimeoutDeclaration;
+          lines.push(
+            `${innerIndent}timeout: "${timeout.duration.value}${timeout.duration.unit}"`
+          );
+          break;
+        }
+
+        case 'WorkflowRetryDeclaration': {
+          const retry = member as AST.WorkflowRetryDeclaration;
+          if (retry.config.kind === 'NumberLiteral') {
+            lines.push(
+              `${innerIndent}retry: ${(retry.config as AST.NumberLiteral).value}`
+            );
+          } else {
+            lines.push(`${innerIndent}retry:`);
+            lines.push(
+              `${innerIndent}  count: ${(retry.config as AST.RetryConfigNode).count.value}`
+            );
+          }
+          break;
+        }
+
+        case 'WorkflowFallbackDeclaration': {
+          const fallback = member as AST.WorkflowFallbackDeclaration;
+          lines.push(
+            `${innerIndent}fallback: ${this.personaRefToString(fallback.fallback)}`
+          );
+          break;
+        }
+      }
+    }
+
+    this.indentLevel--;
+    return lines;
+  }
+
+  private generateSkill(decl: AST.SkillDeclaration): string[] {
+    const lines: string[] = [];
+    const indent = this.getIndent();
+
+    lines.push(`${indent}${decl.id.name}:`);
+    this.indentLevel++;
+    const innerIndent = this.getIndent();
+
+    lines.push(`${innerIndent}id: ${decl.id.name}`);
+
+    for (const member of decl.body.members) {
+      if (member.kind === 'SkillItemsDeclaration') {
+        const items = (member as AST.SkillItemsDeclaration).items;
+        lines.push(`${innerIndent}items:`);
+        for (const item of items) {
+          lines.push(`${innerIndent}  - ${this.formatValue(item.value)}`);
+        }
+      }
+      if (member.kind === 'SkillCategoryDeclaration') {
+        lines.push(
+          `${innerIndent}category: ${this.formatValue((member as AST.SkillCategoryDeclaration).category.value)}`
+        );
+      }
+    }
+
+    this.indentLevel--;
+    return lines;
+  }
+
+  private workflowExprToYAML(
+    expr: AST.WorkflowExpression,
+    baseIndent: number
+  ): string[] {
+    const lines: string[] = [];
+    const indent = '  '.repeat(baseIndent);
+
+    switch (expr.kind) {
+      case 'WorkflowSequenceExpr': {
+        const seq = expr as AST.WorkflowSequenceExpr;
+        lines.push(`${indent}type: sequence`);
+        lines.push(`${indent}steps:`);
+        for (const step of seq.steps) {
+          lines.push(`${indent}  -`);
+          const stepLines = this.workflowExprToYAML(step, baseIndent + 2);
+          lines.push(...stepLines.map((l) => `  ${l}`));
+        }
+        break;
+      }
+
+      case 'WorkflowParallelExpr': {
+        const par = expr as AST.WorkflowParallelExpr;
+        lines.push(`${indent}type: parallel`);
+        lines.push(`${indent}branches:`);
+        for (const branch of par.branches) {
+          lines.push(`${indent}  -`);
+          const branchLines = this.workflowExprToYAML(branch, baseIndent + 2);
+          lines.push(...branchLines.map((l) => `  ${l}`));
+        }
+        break;
+      }
+
+      case 'WorkflowChoiceExpr': {
+        const choice = expr as AST.WorkflowChoiceExpr;
+        lines.push(`${indent}type: choice`);
+        lines.push(`${indent}branches:`);
+        for (const branch of choice.branches) {
+          lines.push(`${indent}  -`);
+          const branchLines = this.workflowExprToYAML(branch, baseIndent + 2);
+          lines.push(...branchLines.map((l) => `  ${l}`));
+        }
+        break;
+      }
+
+      case 'WorkflowPersonaRef': {
+        const ref = expr as AST.WorkflowPersonaRef;
+        lines.push(`${indent}type: persona`);
+        lines.push(`${indent}ref: ${this.personaRefToString(ref.ref)}`);
+        break;
+      }
+
+      case 'WorkflowMergeExpr': {
+        const merge = expr as AST.WorkflowMergeExpr;
+        lines.push(`${indent}type: merge`);
+        const mode =
+          merge.mode.kind === 'SimpleMergeMode'
+            ? merge.mode.mode
+            : 'custom';
+        lines.push(`${indent}mode: ${mode}`);
+        break;
+      }
+
+      case 'WorkflowConditionalExpr': {
+        const cond = expr as AST.WorkflowConditionalExpr;
+        lines.push(`${indent}type: conditional`);
+        lines.push(`${indent}then:`);
+        const thenLines = this.workflowExprToYAML(cond.then, baseIndent + 1);
+        lines.push(...thenLines);
+        if (cond.else) {
+          lines.push(`${indent}else:`);
+          const elseLines = this.workflowExprToYAML(cond.else, baseIndent + 1);
+          lines.push(...elseLines);
+        }
+        break;
+      }
+
+      case 'WorkflowLoopExpr': {
+        const loop = expr as AST.WorkflowLoopExpr;
+        lines.push(`${indent}type: loop`);
+        lines.push(`${indent}loopType: ${loop.loopType}`);
+        lines.push(`${indent}body:`);
+        const bodyLines = this.workflowExprToYAML(loop.body, baseIndent + 1);
+        lines.push(...bodyLines);
+        break;
+      }
+
+      case 'WorkflowGroupExpr':
+        return this.workflowExprToYAML(
+          (expr as AST.WorkflowGroupExpr).expr,
+          baseIndent
+        );
+
+      default:
+        lines.push(`${indent}type: unknown`);
+    }
+
+    return lines;
+  }
+
+  private extractValue(expr: AST.Expression | null): unknown {
+    if (!expr) return undefined;
+
+    switch (expr.kind) {
+      case 'StringLiteral':
+        return (expr as AST.StringLiteral).value;
+      case 'NumberLiteral':
+        return (expr as AST.NumberLiteral).value;
+      case 'BooleanLiteral':
+        return (expr as AST.BooleanLiteral).value;
+      case 'NullLiteral':
+        return null;
+      case 'Identifier':
+        return (expr as AST.Identifier).name;
+      case 'ArrayExpression':
+        return (expr as AST.ArrayExpression).elements
+          .filter(
+            (e): e is AST.Expression => e !== null && e.kind !== 'SpreadElement'
+          )
+          .map((e) => this.extractValue(e));
+      case 'ObjectExpression':
+        const obj: any = {};
+        for (const prop of (expr as AST.ObjectExpression).properties) {
+          if (prop.kind === 'ObjectKeyValueProperty') {
+            const kv = prop as AST.ObjectKeyValueProperty;
+            const key =
+              kv.key.kind === 'Identifier'
+                ? (kv.key as AST.Identifier).name
+                : kv.key.kind === 'StringLiteral'
+                  ? (kv.key as AST.StringLiteral).value
+                  : String((kv.key as AST.NumberLiteral).value);
+            obj[key] = this.extractValue(kv.value);
+          }
+        }
+        return obj;
+      default:
+        return undefined;
+    }
+  }
+
+  private formatValue(value: unknown): string {
+    if (value === null) {
+      return 'null';
+    }
+    if (typeof value === 'string') {
+      // Escape strings with special YAML characters
+      if (
+        value.includes(':') ||
+        value.includes('#') ||
+        value.includes('"') ||
+        value.includes("'") ||
+        value.includes('\n') ||
+        value.startsWith(' ') ||
+        value.endsWith(' ')
+      ) {
+        return `"${value.replace(/"/g, '\\"')}"`;
+      }
+      return value;
+    }
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      return String(value);
+    }
+    if (Array.isArray(value)) {
+      return `[${value.map((v) => this.formatValue(v)).join(', ')}]`;
+    }
+    if (typeof value === 'object') {
+      return JSON.stringify(value);
+    }
+    return String(value);
+  }
+
+  private personaRefToString(ref: AST.PersonaReference): string {
+    if (ref.ref.type === 'id') {
+      return ref.ref.id.name;
+    }
+    if (ref.ref.type === 'qualified') {
+      return ref.ref.path.parts.map((p) => p.name).join('::');
+    }
+    if (ref.ref.type === 'spawn') {
+      return `${ref.ref.count.value}x${ref.ref.persona.name}`;
+    }
+    return '';
+  }
+
+  private typeNodeToString(type: AST.TypeNode): string {
+    switch (type.kind) {
+      case 'TypeReference': {
+        const ref = type as AST.TypeReference;
+        const name = ref.typeName.parts.map((p) => p.name).join('::');
+        if (ref.typeArguments.length > 0) {
+          return `${name}<${ref.typeArguments.map((a) => this.typeNodeToString(a)).join(', ')}>`;
+        }
+        return name;
+      }
+      case 'UnionType':
+        return (type as AST.UnionType).types
+          .map((t) => this.typeNodeToString(t))
+          .join(' | ');
+      case 'IntersectionType':
+        return (type as AST.IntersectionType).types
+          .map((t) => this.typeNodeToString(t))
+          .join(' & ');
+      case 'ArrayType':
+        return `${this.typeNodeToString((type as AST.ArrayType).elementType)}[]`;
+      case 'TupleType':
+        return `[${(type as AST.TupleType).elements.map((e) => this.typeNodeToString(e)).join(', ')}]`;
+      default:
+        return 'Unknown';
+    }
+  }
+
+  private getIndent(): string {
+    return '  '.repeat(this.indentLevel);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPESCRIPT GENERATOR
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -946,8 +1788,23 @@ class TypeScriptGenerator {
     const skills: string[] = [];
     const constraints: string[] = [];
     const tags: string[] = [];
+    const methods: AST.MethodDeclaration[] = [];
     let intent = '';
     let tone = 'balanced';
+    let depth = 'standard';
+    let verbosity = 'balanced';
+    let outputFormat = 'text';
+    let maxTokens = 4096;
+    let temperature = 0.7;
+    let parentName: string | null = null;
+
+    // Extract parent if extends
+    if (decl.extends.length > 0) {
+      const firstExtends = decl.extends[0];
+      parentName = firstExtends.typeName.parts
+        .map((p) => p.name)
+        .join('.');
+    }
 
     for (const member of decl.body.members) {
       if (member.kind === 'PropertyDeclaration') {
@@ -963,6 +1820,36 @@ class TypeScriptGenerator {
           prop.initializer?.kind === 'Identifier'
         ) {
           tone = (prop.initializer as AST.Identifier).name;
+        }
+        if (
+          prop.name.name === 'depth' &&
+          prop.initializer?.kind === 'Identifier'
+        ) {
+          depth = (prop.initializer as AST.Identifier).name;
+        }
+        if (
+          prop.name.name === 'verbosity' &&
+          prop.initializer?.kind === 'Identifier'
+        ) {
+          verbosity = (prop.initializer as AST.Identifier).name;
+        }
+        if (
+          prop.name.name === 'outputFormat' &&
+          prop.initializer?.kind === 'Identifier'
+        ) {
+          outputFormat = (prop.initializer as AST.Identifier).name;
+        }
+        if (
+          prop.name.name === 'maxTokens' &&
+          prop.initializer?.kind === 'NumberLiteral'
+        ) {
+          maxTokens = (prop.initializer as AST.NumberLiteral).value;
+        }
+        if (
+          prop.name.name === 'temperature' &&
+          prop.initializer?.kind === 'NumberLiteral'
+        ) {
+          temperature = (prop.initializer as AST.NumberLiteral).value;
         }
       }
       if (member.kind === 'SkillBlock') {
@@ -986,6 +1873,9 @@ class TypeScriptGenerator {
           }
         }
       }
+      if (member.kind === 'MethodDeclaration') {
+        methods.push(member as AST.MethodDeclaration);
+      }
     }
 
     // Generate persona configuration
@@ -995,6 +1885,11 @@ class TypeScriptGenerator {
     this.line(`name: '${name}',`);
     this.line(`intent: ${JSON.stringify(intent)},`);
     this.line(`tone: '${tone}' as const,`);
+    this.line(`depth: '${depth}' as const,`);
+    this.line(`verbosity: '${verbosity}' as const,`);
+    this.line(`outputFormat: '${outputFormat}' as const,`);
+    this.line(`maxTokens: ${maxTokens},`);
+    this.line(`temperature: ${temperature},`);
     this.line(`skills: ${JSON.stringify(skills)},`);
     this.line(`constraints: ${JSON.stringify(constraints)},`);
     this.line(`tags: ${JSON.stringify(tags)},`);
@@ -1002,10 +1897,155 @@ class TypeScriptGenerator {
     this.line('} as const;');
     this.blank();
 
-    // Generate persona class/factory
-    this.line(`export function create${name}() {`);
+    // Generate persona class
+    const extendsClause = parentName ? ` extends ${parentName}Persona` : '';
+    this.line(`export class ${name}Persona${extendsClause} {`);
     this.indent();
-    this.line(`return createPersona('${name}', '${name}', ${name}Config);`);
+    this.line(`private instance: ReturnType<typeof createPersona>;`);
+    this.blank();
+
+    // Constructor
+    this.line(`constructor() {`);
+    this.indent();
+    if (parentName) {
+      this.line(`super();`);
+    }
+    this.line(
+      `this.instance = createPersona('${name}', '${name}', ${name}Config);`
+    );
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    // Core methods
+    this.line(`/** Activate this persona */`);
+    this.line(`activate(): void {`);
+    this.indent();
+    this.line(`this.instance.activate();`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Deactivate this persona */`);
+    this.line(`deactivate(): void {`);
+    this.indent();
+    this.line(`this.instance.deactivate();`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Get persona state */`);
+    this.line(`getState() {`);
+    this.indent();
+    this.line(`return this.instance.getState();`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Process a message */`);
+    this.line(`async process(message: string): Promise<string> {`);
+    this.indent();
+    this.line(`const msg = {`);
+    this.indent();
+    this.line(`id: \`msg-\${Date.now()}\`,`);
+    this.line(`from: null,`);
+    this.line(`to: '${name}',`);
+    this.line(`content: message,`);
+    this.line(`metadata: {},`);
+    this.line(`timestamp: new Date(),`);
+    this.dedent();
+    this.line(`};`);
+    this.line(`const response = await this.instance.process(msg);`);
+    this.line(`return response.content;`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Configure this persona */`);
+    this.line(`configure(config: Partial<typeof ${name}Config>): void {`);
+    this.indent();
+    this.line(`this.instance.configure(config as any);`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Set context value */`);
+    this.line(`setContext(key: string, value: unknown): void {`);
+    this.indent();
+    this.line(`this.instance.setContext(key, value);`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Get context value */`);
+    this.line(`getContext<T = unknown>(key: string): T | undefined {`);
+    this.indent();
+    this.line(`return this.instance.getContext(key) as T | undefined;`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Remember a fact */`);
+    this.line(`remember(key: string, value: unknown): void {`);
+    this.indent();
+    this.line(`this.instance.remember(key, value);`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Recall a fact */`);
+    this.line(`recall<T = unknown>(key: string): T | undefined {`);
+    this.indent();
+    this.line(`return this.instance.recall(key) as T | undefined;`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Subscribe to events */`);
+    this.line(`on(handler: (event: any) => void): () => void {`);
+    this.indent();
+    this.line(`return this.instance.on(handler);`);
+    this.dedent();
+    this.line('}');
+
+    // Generate custom methods
+    for (const method of methods) {
+      this.blank();
+      this.line(`/** ${method.name.name} method (custom implementation needed) */`);
+      const params = method.parameters
+        .map((p) => {
+          const pName =
+            p.name.kind === 'Identifier'
+              ? (p.name as AST.Identifier).name
+              : '_';
+          const pType = p.type ? this.typeToString(p.type) : 'any';
+          const opt = p.optional ? '?' : '';
+          return `${pName}${opt}: ${pType}`;
+        })
+        .join(', ');
+
+      const returnType = method.returnType
+        ? this.typeToString(method.returnType)
+        : 'void';
+      const async = method.async ? 'async ' : '';
+
+      this.line(`${async}${method.name.name}(${params}): ${returnType} {`);
+      this.indent();
+      this.line(`// TODO: Implement custom ${method.name.name} logic`);
+      this.line(`throw new Error("Method ${method.name.name} not implemented");`);
+      this.dedent();
+      this.line('}');
+    }
+
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    // Generate factory function
+    this.line(`/** Create a new ${name} persona instance */`);
+    this.line(`export function create${name}(): ${name}Persona {`);
+    this.indent();
+    this.line(`return new ${name}Persona();`);
     this.dedent();
     this.line('}');
   }
@@ -1015,6 +2055,9 @@ class TypeScriptGenerator {
     const members: string[] = [];
     let primary: string | null = null;
     let mergeMode = 'primary';
+    let quorum: { required: number; total: number } | null = null;
+    let topic: string | null = null;
+    let timeout = 30000;
 
     for (const member of decl.body.members) {
       if (member.kind === 'TeamMembersDeclaration') {
@@ -1036,6 +2079,18 @@ class TypeScriptGenerator {
           mergeMode = merge.mode.mode;
         }
       }
+      if (member.kind === 'TeamQuorumDeclaration') {
+        const q = member as AST.TeamQuorumDeclaration;
+        if (
+          q.required.kind === 'NumberLiteral' &&
+          q.total.kind === 'NumberLiteral'
+        ) {
+          quorum = {
+            required: (q.required as AST.NumberLiteral).value,
+            total: (q.total as AST.NumberLiteral).value,
+          };
+        }
+      }
     }
 
     this.line(`export const ${name}Config = {`);
@@ -1047,52 +2102,249 @@ class TypeScriptGenerator {
       this.line(`primary: '${primary}',`);
     }
     this.line(`mergeMode: '${mergeMode}' as const,`);
+    if (quorum) {
+      this.line(
+        `quorum: { required: ${quorum.required}, total: ${quorum.total} },`
+      );
+    } else {
+      this.line(`quorum: null,`);
+    }
+    if (topic) {
+      this.line(`topic: ${JSON.stringify(topic)},`);
+    } else {
+      this.line(`topic: null,`);
+    }
+    this.line(`timeout: ${timeout},`);
     this.dedent();
     this.line('} as const;');
     this.blank();
 
-    this.line(`export function create${name}(personas: Map<string, any>) {`);
+    // Generate team class
+    this.line(`export class ${name}Team {`);
     this.indent();
+    this.line(`private instance: ReturnType<typeof createTeam>;`);
+    this.line(`private memberPersonas: Map<string, any>;`);
+    this.blank();
+
+    // Constructor
+    this.line(`constructor(personas: Map<string, any>) {`);
+    this.indent();
+    this.line(`this.memberPersonas = personas;`);
     this.line(
       `const members = ${name}Config.members.map(m => personas.get(m)).filter(Boolean);`
     );
-    this.line(`return createTeam('${name}', '${name}', members, {`);
+    this.line(`this.instance = createTeam('${name}', '${name}', members, {`);
     this.indent();
     this.line(`mergeMode: ${name}Config.mergeMode,`);
+    if (quorum) {
+      this.line(`quorum: ${name}Config.quorum,`);
+    }
+    if (topic) {
+      this.line(`topic: ${name}Config.topic,`);
+    }
+    this.line(`timeout: ${name}Config.timeout,`);
     this.dedent();
-    this.line('});');
+    this.line(`});`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    // Core methods
+    this.line(`/** Get team state */`);
+    this.line(`getState() {`);
+    this.indent();
+    this.line(`return this.instance.getState();`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Process a message through the team */`);
+    this.line(`async process(message: string): Promise<string> {`);
+    this.indent();
+    this.line(`const msg = {`);
+    this.indent();
+    this.line(`id: \`msg-\${Date.now()}\`,`);
+    this.line(`from: null,`);
+    this.line(`to: '${name}',`);
+    this.line(`content: message,`);
+    this.line(`metadata: {},`);
+    this.line(`timestamp: new Date(),`);
+    this.dedent();
+    this.line(`};`);
+    this.line(
+      `const members = ${name}Config.members.map(m => this.memberPersonas.get(m)).filter(Boolean);`
+    );
+    this.line(`const response = await this.instance.process(msg, members);`);
+    this.line(`return response.content;`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Configure this team */`);
+    this.line(`configure(config: Partial<typeof ${name}Config>): void {`);
+    this.indent();
+    this.line(`this.instance.configure(config as any);`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Get team member states */`);
+    this.line(`getMembers() {`);
+    this.indent();
+    this.line(`return this.instance.getState().members;`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Get primary member (if configured) */`);
+    this.line(`getPrimary() {`);
+    this.indent();
+    this.line(`return this.instance.getState().primary;`);
+    this.dedent();
+    this.line('}');
+
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    // Generate factory function
+    this.line(`/** Create a new ${name} team instance */`);
+    this.line(
+      `export function create${name}(personas: Map<string, any>): ${name}Team {`
+    );
+    this.indent();
+    this.line(`return new ${name}Team(personas);`);
     this.dedent();
     this.line('}');
   }
 
   private generateWorkflow(decl: AST.WorkflowDeclaration): void {
     const name = decl.id.name;
-
-    this.line(`export const ${name}Workflow = {`);
-    this.indent();
-    this.line(`id: '${name}',`);
-    this.line(`name: '${name}',`);
+    let inputType = 'any';
+    let outputType = 'any';
+    let steps: AST.WorkflowExpression | null = null;
 
     for (const member of decl.body.members) {
       if (member.kind === 'WorkflowInputDeclaration') {
-        this.line(
-          `// input: ${this.typeToString((member as AST.WorkflowInputDeclaration).type)}`
+        inputType = this.typeToString(
+          (member as AST.WorkflowInputDeclaration).type
         );
       }
       if (member.kind === 'WorkflowOutputDeclaration') {
-        this.line(
-          `// output: ${this.typeToString((member as AST.WorkflowOutputDeclaration).type)}`
+        outputType = this.typeToString(
+          (member as AST.WorkflowOutputDeclaration).type
         );
       }
       if (member.kind === 'WorkflowStepsDeclaration') {
-        this.line(
-          `steps: ${JSON.stringify(this.workflowExprToArray((member as AST.WorkflowStepsDeclaration).steps))},`
-        );
+        steps = (member as AST.WorkflowStepsDeclaration).steps;
       }
     }
 
+    // Generate workflow configuration
+    this.line(`export const ${name}WorkflowConfig = {`);
+    this.indent();
+    this.line(`id: '${name}',`);
+    this.line(`name: '${name}',`);
+    if (steps) {
+      this.line(`steps: ${JSON.stringify(this.workflowExprToArray(steps))},`);
+    } else {
+      this.line(`steps: [] as string[],`);
+    }
     this.dedent();
     this.line('} as const;');
+    this.blank();
+
+    // Generate workflow class
+    this.line(`export class ${name}Workflow {`);
+    this.indent();
+    this.line(`private status: 'pending' | 'running' | 'completed' | 'failed' = 'pending';`);
+    this.line(`private currentStep = 0;`);
+    this.line(`private result: ${outputType} | null = null;`);
+    this.line(`private error: Error | null = null;`);
+    this.blank();
+
+    // Execute method
+    this.line(`/** Execute the workflow */`);
+    this.line(`async execute(input: ${inputType}): Promise<${outputType}> {`);
+    this.indent();
+    this.line(`this.status = 'running';`);
+    this.line(`this.currentStep = 0;`);
+    this.blank();
+    this.line(`try {`);
+    this.indent();
+    this.line(`// TODO: Implement workflow execution logic`);
+    this.line(`// Process steps: ${name}WorkflowConfig.steps`);
+    this.line(`// Transform input to output through workflow steps`);
+    this.blank();
+    this.line(`// Placeholder implementation`);
+    this.line(`const output = input as any as ${outputType};`);
+    this.blank();
+    this.line(`this.status = 'completed';`);
+    this.line(`this.result = output;`);
+    this.line(`return output;`);
+    this.dedent();
+    this.line(`} catch (err) {`);
+    this.indent();
+    this.line(`this.status = 'failed';`);
+    this.line(`this.error = err as Error;`);
+    this.line(`throw err;`);
+    this.dedent();
+    this.line(`}`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    // Status methods
+    this.line(`/** Get current workflow status */`);
+    this.line(`getStatus() {`);
+    this.indent();
+    this.line(`return {`);
+    this.indent();
+    this.line(`status: this.status,`);
+    this.line(`currentStep: this.currentStep,`);
+    this.line(`totalSteps: ${name}WorkflowConfig.steps.length,`);
+    this.line(`result: this.result,`);
+    this.line(`error: this.error?.message,`);
+    this.dedent();
+    this.line(`};`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Check if workflow is running */`);
+    this.line(`isRunning(): boolean {`);
+    this.indent();
+    this.line(`return this.status === 'running';`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Check if workflow completed successfully */`);
+    this.line(`isCompleted(): boolean {`);
+    this.indent();
+    this.line(`return this.status === 'completed';`);
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    this.line(`/** Check if workflow failed */`);
+    this.line(`isFailed(): boolean {`);
+    this.indent();
+    this.line(`return this.status === 'failed';`);
+    this.dedent();
+    this.line('}');
+
+    this.dedent();
+    this.line('}');
+    this.blank();
+
+    // Generate factory function
+    this.line(`/** Create a new ${name} workflow instance */`);
+    this.line(`export function create${name}Workflow(): ${name}Workflow {`);
+    this.indent();
+    this.line(`return new ${name}Workflow();`);
+    this.dedent();
+    this.line('}');
   }
 
   private generateTypeDeclaration(decl: AST.TypeDeclaration): void {
@@ -1638,52 +2890,277 @@ class MarkdownGenerator {
 
   private generateMermaid(expr: AST.WorkflowExpression, depth = 0): string {
     const lines: string[] = [];
+    const nodes: string[] = [];
+    const edges: string[] = [];
 
     if (depth === 0) {
-      lines.push('graph LR');
+      lines.push('graph TD');
     }
 
-    const id = `n${depth}`;
+    const counter = { value: 0 };
+    this.generateMermaidNodes(expr, nodes, edges, counter, null, null);
+
+    lines.push(...nodes);
+    lines.push(...edges);
+
+    return lines.join('\n');
+  }
+
+  private generateMermaidNodes(
+    expr: AST.WorkflowExpression,
+    nodes: string[],
+    edges: string[],
+    counter: { value: number },
+    prevId: string | null,
+    nextId: string | null
+  ): string {
+    const id = `n${counter.value++}`;
 
     switch (expr.kind) {
       case 'WorkflowSequenceExpr': {
         const seq = expr as AST.WorkflowSequenceExpr;
-        let prevId = '';
+        let currentId = prevId;
+
         for (let i = 0; i < seq.steps.length; i++) {
           const step = seq.steps[i];
-          const stepId = this.getStepId(step, `${id}_${i}`);
-          if (prevId) {
-            lines.push(`    ${prevId} --> ${stepId}`);
-          }
-          prevId = stepId;
+          const isLast = i === seq.steps.length - 1;
+          const stepNextId = isLast ? nextId : null;
+          const stepId = this.generateMermaidNodes(
+            step,
+            nodes,
+            edges,
+            counter,
+            currentId,
+            stepNextId
+          );
+          currentId = stepId;
         }
-        break;
+
+        return currentId || id;
       }
+
       case 'WorkflowParallelExpr': {
         const par = expr as AST.WorkflowParallelExpr;
         const startId = `${id}_start`;
         const endId = `${id}_end`;
-        lines.push(`    ${startId}((start))`);
-        for (let i = 0; i < par.branches.length; i++) {
-          const branchId = this.getStepId(par.branches[i], `${id}_b${i}`);
-          lines.push(`    ${startId} --> ${branchId}`);
-          lines.push(`    ${branchId} --> ${endId}`);
+
+        nodes.push(`    ${startId}((Fork))`);
+        nodes.push(`    ${endId}((Join))`);
+
+        if (prevId) {
+          edges.push(`    ${prevId} --> ${startId}`);
         }
-        lines.push(`    ${endId}((merge))`);
-        break;
+
+        for (let i = 0; i < par.branches.length; i++) {
+          const branch = par.branches[i];
+          this.generateMermaidNodes(
+            branch,
+            nodes,
+            edges,
+            counter,
+            startId,
+            endId
+          );
+        }
+
+        if (nextId) {
+          edges.push(`    ${endId} --> ${nextId}`);
+        }
+
+        return endId;
       }
+
+      case 'WorkflowChoiceExpr': {
+        const choice = expr as AST.WorkflowChoiceExpr;
+        const choiceId = `${id}_choice`;
+        const mergeId = `${id}_merge`;
+
+        nodes.push(`    ${choiceId}{Choice}`);
+        nodes.push(`    ${mergeId}((Merge))`);
+
+        if (prevId) {
+          edges.push(`    ${prevId} --> ${choiceId}`);
+        }
+
+        for (let i = 0; i < choice.branches.length; i++) {
+          const branch = choice.branches[i];
+          const branchLabel = `Option ${i + 1}`;
+          const branchStartId = this.generateMermaidNodes(
+            branch,
+            nodes,
+            edges,
+            counter,
+            null,
+            mergeId
+          );
+          edges.push(`    ${choiceId} -->|${branchLabel}| ${branchStartId}`);
+        }
+
+        if (nextId) {
+          edges.push(`    ${mergeId} --> ${nextId}`);
+        }
+
+        return mergeId;
+      }
+
+      case 'WorkflowConditionalExpr': {
+        const cond = expr as AST.WorkflowConditionalExpr;
+        const condId = `${id}_cond`;
+        const mergeId = `${id}_merge`;
+
+        nodes.push(`    ${condId}{Condition}`);
+        if (cond.else) {
+          nodes.push(`    ${mergeId}((Merge))`);
+        }
+
+        if (prevId) {
+          edges.push(`    ${prevId} --> ${condId}`);
+        }
+
+        // Then branch
+        const thenId = this.generateMermaidNodes(
+          cond.then,
+          nodes,
+          edges,
+          counter,
+          null,
+          cond.else ? mergeId : nextId
+        );
+        edges.push(`    ${condId} -->|Yes| ${thenId}`);
+
+        // Else branch
+        if (cond.else) {
+          const elseId = this.generateMermaidNodes(
+            cond.else,
+            nodes,
+            edges,
+            counter,
+            null,
+            mergeId
+          );
+          edges.push(`    ${condId} -->|No| ${elseId}`);
+
+          if (nextId) {
+            edges.push(`    ${mergeId} --> ${nextId}`);
+          }
+          return mergeId;
+        } else {
+          // No else, direct to next
+          if (nextId) {
+            edges.push(`    ${condId} -->|No| ${nextId}`);
+          }
+          return condId;
+        }
+      }
+
+      case 'WorkflowLoopExpr': {
+        const loop = expr as AST.WorkflowLoopExpr;
+        const loopId = `${id}_loop`;
+        const bodyId = `${id}_body`;
+        const exitId = `${id}_exit`;
+
+        const loopType = loop.loopType === 'while' ? 'While' : 'Until';
+        nodes.push(`    ${loopId}{${loopType}}`);
+        nodes.push(`    ${exitId}((Exit))`);
+
+        if (prevId) {
+          edges.push(`    ${prevId} --> ${loopId}`);
+        }
+
+        // Loop body
+        const bodyEndId = this.generateMermaidNodes(
+          loop.body,
+          nodes,
+          edges,
+          counter,
+          null,
+          loopId
+        );
+
+        edges.push(`    ${loopId} -->|Continue| ${bodyEndId}`);
+        edges.push(`    ${loopId} -->|Exit| ${exitId}`);
+
+        if (nextId) {
+          edges.push(`    ${exitId} --> ${nextId}`);
+        }
+
+        return exitId;
+      }
+
+      case 'WorkflowMergeExpr': {
+        const merge = expr as AST.WorkflowMergeExpr;
+        const mergeId = `${id}_merge`;
+        const mode =
+          merge.mode.kind === 'SimpleMergeMode'
+            ? merge.mode.mode
+            : 'custom';
+
+        nodes.push(`    ${mergeId}[Merge: ${mode}]`);
+
+        if (prevId) {
+          edges.push(`    ${prevId} --> ${mergeId}`);
+        }
+
+        if (nextId) {
+          edges.push(`    ${mergeId} --> ${nextId}`);
+        }
+
+        return mergeId;
+      }
+
       case 'WorkflowPersonaRef': {
         const ref = expr as AST.WorkflowPersonaRef;
         let name = 'unknown';
+
         if (ref.ref.ref.type === 'id') {
           name = ref.ref.ref.id.name;
+        } else if (ref.ref.ref.type === 'qualified') {
+          name = ref.ref.ref.path.parts.map((p) => p.name).join('::');
+        } else if (ref.ref.ref.type === 'spawn') {
+          name = `${ref.ref.ref.count.value}x${ref.ref.ref.persona.name}`;
         }
-        lines.push(`    ${id}[${name}]`);
-        break;
-      }
-    }
 
-    return lines.join('\n');
+        const personaId = `${id}_${name.replace(/[^a-zA-Z0-9]/g, '_')}`;
+        nodes.push(`    ${personaId}[${name}]`);
+
+        if (prevId) {
+          edges.push(`    ${prevId} --> ${personaId}`);
+        }
+
+        if (nextId) {
+          edges.push(`    ${personaId} --> ${nextId}`);
+        }
+
+        return personaId;
+      }
+
+      case 'WorkflowGroupExpr': {
+        // Unwrap group and process inner expression
+        const group = expr as AST.WorkflowGroupExpr;
+        return this.generateMermaidNodes(
+          group.expr,
+          nodes,
+          edges,
+          counter,
+          prevId,
+          nextId
+        );
+      }
+
+      default:
+        // Unknown workflow expression type
+        nodes.push(`    ${id}[Unknown: ${expr.kind}]`);
+
+        if (prevId) {
+          edges.push(`    ${prevId} --> ${id}`);
+        }
+
+        if (nextId) {
+          edges.push(`    ${id} --> ${nextId}`);
+        }
+
+        return id;
+    }
   }
 
   private getStepId(expr: AST.WorkflowExpression, fallback: string): string {
@@ -1765,8 +3242,7 @@ export function generate(
     case 'markdown':
       return generateMarkdown(program, options);
     case 'yaml':
-      // Would need YAML generator
-      return generateJSON(program, options);
+      return generateYAML(program, options);
     default:
       throw new Error(`Unknown target: ${options.target}`);
   }

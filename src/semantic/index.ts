@@ -10,8 +10,8 @@
  */
 
 import * as AST from '../ast';
-import type { PCLError, Result, Span } from '../types';
-import { ErrorCode, Ok, PCLError as createError } from '../types';
+import type { ComparisonOp, PCLError, Result, Span } from '../types';
+import { ErrorCode, Ok, Err, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE SYSTEM
@@ -45,7 +45,8 @@ export type TypeKind =
   | 'unknown'
   | 'never'
   | 'any'
-  | 'void';
+  | 'void'
+  | 'null';
 
 /**
  * Primitive types: String, Int, Float, Bool
@@ -463,6 +464,17 @@ export class GenericType implements Type {
 /**
  * Persona type
  */
+/**
+ * Represents a constraint expression in a persona
+ */
+export interface ConstraintExpression {
+  readonly field: string;
+  readonly operator: ComparisonOp;
+  readonly value: any; // Evaluated value
+  readonly valueExpr: AST.Expression; // Original expression
+  readonly span: Span;
+}
+
 export class PersonaType implements Type {
   readonly kind = 'persona' as const;
 
@@ -471,6 +483,7 @@ export class PersonaType implements Type {
     readonly intent: string,
     readonly skills: readonly string[],
     readonly constraints: readonly string[],
+    readonly exprConstraints: readonly ConstraintExpression[],
     readonly methods: Map<string, FunctionType>,
     readonly parent?: PersonaType
   ) {}
@@ -641,6 +654,19 @@ export class VoidType implements Type {
   }
 }
 
+export class NullType implements Type {
+  readonly kind = 'null' as const;
+  toString(): string {
+    return 'null';
+  }
+  equals(other: Type): boolean {
+    return other instanceof NullType;
+  }
+  isAssignableTo(other: Type): boolean {
+    return other instanceof NullType || other instanceof AnyType;
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              BUILT-IN TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -654,6 +680,7 @@ export const BuiltinTypes = {
   Unknown: new UnknownType(),
   Never: new NeverType(),
   Void: new VoidType(),
+  Null: new NullType(),
 } as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -670,6 +697,7 @@ export const Types = {
   Unknown: BuiltinTypes.Unknown,
   Never: BuiltinTypes.Never,
   Void: BuiltinTypes.Void,
+  Null: BuiltinTypes.Null,
 
   // Factory methods
   array: (elementType: Type) => new ArrayType(elementType),
@@ -700,8 +728,17 @@ export const Types = {
     intent: string,
     skills: string[],
     constraints: string[],
+    exprConstraints: ConstraintExpression[] = [],
     methods: Map<string, FunctionType> = new Map()
-  ) => new PersonaType(name, intent, skills, constraints, methods),
+  ) =>
+    new PersonaType(
+      name,
+      intent,
+      skills,
+      constraints,
+      exprConstraints,
+      methods
+    ),
   team: (name: string, members: PersonaType[]) => new TeamType(name, members),
   workflow: (name: string, input: Type, output: Type) =>
     new WorkflowType(name, input, output),
@@ -816,8 +853,8 @@ export interface Symbol {
   readonly flags?: number;
   readonly exported?: boolean;
   readonly mutable?: boolean;
-  readonly visibility?: 'pub' | 'priv';  // Public or private visibility
-  readonly module?: string;               // Module path where symbol is defined
+  readonly visibility?: 'pub' | 'priv'; // Public or private visibility
+  readonly module?: string; // Module path where symbol is defined
 }
 
 export class Scope {
@@ -869,6 +906,7 @@ export class SymbolTable {
     this.globalScope.types.set('Unknown', BuiltinTypes.Unknown);
     this.globalScope.types.set('Never', BuiltinTypes.Never);
     this.globalScope.types.set('Void', BuiltinTypes.Void);
+    this.globalScope.types.set('null', BuiltinTypes.Null);
 
     // Also add built-in types as symbols for convenience
     const builtInTypes = [
@@ -880,6 +918,7 @@ export class SymbolTable {
       { name: 'Unknown', type: BuiltinTypes.Unknown },
       { name: 'Never', type: BuiltinTypes.Never },
       { name: 'Void', type: BuiltinTypes.Void },
+      { name: 'null', type: BuiltinTypes.Null },
     ];
     for (const { name, type } of builtInTypes) {
       this.globalScope.symbols.set(name, {
@@ -989,7 +1028,7 @@ export class SymbolTable {
 export interface AnalyzerOptions {
   source?: string;
   strict?: boolean;
-  modulePath?: string;  // Path to the module being analyzed
+  modulePath?: string; // Path to the module being analyzed
 }
 
 export interface AnalysisResult {
@@ -1002,10 +1041,20 @@ export interface AnalysisResult {
  * Module information for tracking imports, exports, and dependencies
  */
 export interface ModuleInfo {
-  path: string;                    // Module file path
-  exports: Map<string, Symbol>;    // Exported symbols
-  imports: Map<string, Symbol>;    // Imported symbols
-  dependencies: Set<string>;       // Imported module paths
+  path: string; // Module file path
+  exports: Map<string, Symbol>; // Exported symbols
+  imports: Map<string, Symbol>; // Imported symbols
+  dependencies: Set<string>; // Imported module paths
+}
+
+/**
+ * Type narrowing context for control flow analysis
+ */
+export interface NarrowingContext {
+  // Map of variable names to their narrowed types in current context
+  narrowedTypes: Map<string, Type>;
+  // Parent context for nested scopes
+  parent: NarrowingContext | null;
 }
 
 /**
@@ -1016,6 +1065,7 @@ export interface ModuleInfo {
  * - Type checking
  * - Reference resolution
  * - Scope management
+ * - Type narrowing and control flow analysis
  */
 export class SemanticAnalyzer {
   private symbolTable: SymbolTable;
@@ -1033,6 +1083,9 @@ export class SemanticAnalyzer {
   // Type inference context
   private typeVariables: Map<string, Type> = new Map();
   private returnType: Type | null = null;
+
+  // Type narrowing context for control flow analysis
+  private narrowingContext: NarrowingContext | null = null;
 
   constructor(options: AnalyzerOptions = {}) {
     this.source = options.source ?? '<anonymous>';
@@ -1065,6 +1118,11 @@ export class SemanticAnalyzer {
 
     // Third pass: validate exports
     this.validateExports();
+
+    // Return error result if there are any errors
+    if (this.errors.length > 0) {
+      return Err(this.errors);
+    }
 
     return Ok({
       symbols: this.symbolTable,
@@ -1154,6 +1212,7 @@ export class SemanticAnalyzer {
     // Collect skills and constraints
     const skills: string[] = [];
     const constraints: string[] = [];
+    const exprConstraints: ConstraintExpression[] = [];
     let intent = '';
 
     for (const member of decl.body.members) {
@@ -1167,6 +1226,15 @@ export class SemanticAnalyzer {
         for (const item of (member as AST.ConstraintBlock).items) {
           if (item.kind === 'StringConstraint') {
             constraints.push(item.value);
+          } else if (item.kind === 'ExprConstraint') {
+            // Collect expression constraint metadata
+            exprConstraints.push({
+              field: item.field.name,
+              operator: item.op,
+              value: null, // Will be evaluated during validation
+              valueExpr: item.value,
+              span: item.span,
+            });
           }
         }
       } else if (member.kind === 'PropertyDeclaration') {
@@ -1185,6 +1253,7 @@ export class SemanticAnalyzer {
       intent,
       skills,
       constraints,
+      exprConstraints,
       methods,
       parent
     );
@@ -1196,6 +1265,7 @@ export class SemanticAnalyzer {
       declaration: decl,
       span: decl.span,
       exported: this.hasModifier(decl.modifiers, 'pub'),
+      visibility: this.getVisibility(decl.modifiers),
       mutable: false,
     });
 
@@ -1243,6 +1313,7 @@ export class SemanticAnalyzer {
       declaration: decl,
       span: decl.span,
       exported: this.hasModifier(decl.modifiers, 'pub'),
+      visibility: this.getVisibility(decl.modifiers),
       mutable: false,
     });
 
@@ -1281,6 +1352,7 @@ export class SemanticAnalyzer {
       declaration: decl,
       span: decl.span,
       exported: this.hasModifier(decl.modifiers, 'pub'),
+      visibility: this.getVisibility(decl.modifiers),
       mutable: false,
     });
 
@@ -1304,6 +1376,7 @@ export class SemanticAnalyzer {
       declaration: decl,
       span: decl.span,
       exported: this.hasModifier(decl.modifiers, 'pub'),
+      visibility: this.getVisibility(decl.modifiers),
       mutable: false,
     });
 
@@ -1327,8 +1400,8 @@ export class SemanticAnalyzer {
           typeof prop.name === 'string'
             ? prop.name
             : prop.name.kind === 'Identifier'
-            ? prop.name.name
-            : prop.name.value;
+              ? prop.name.name
+              : prop.name.value;
         members.set(propName, {
           name: propName,
           type: this.resolveTypeNode(prop.type),
@@ -1364,6 +1437,7 @@ export class SemanticAnalyzer {
       declaration: decl,
       span: decl.span,
       exported: this.hasModifier(decl.modifiers, 'pub'),
+      visibility: this.getVisibility(decl.modifiers),
       mutable: false,
     });
 
@@ -1399,6 +1473,7 @@ export class SemanticAnalyzer {
       declaration: decl,
       span: decl.span,
       exported: this.hasModifier(decl.modifiers, 'pub'),
+      visibility: this.getVisibility(decl.modifiers),
       mutable: false,
     });
 
@@ -1601,8 +1676,8 @@ export class SemanticAnalyzer {
 
     // Handle export specifiers (export { foo, bar })
     for (const spec of decl.specifiers) {
-      if (spec.kind === 'ExportNamedSpecifier') {
-        const named = spec as AST.ExportNamedSpecifier;
+      if (spec.kind === 'ExportSpecifier') {
+        const named = spec as AST.ExportSpecifier;
         const localName = named.local.name;
         const exportedName = named.exported ? named.exported.name : localName;
 
@@ -1632,7 +1707,7 @@ export class SemanticAnalyzer {
     const name = decl.id.parts.map((p) => p.name).join('::');
 
     // Create module scope
-    const moduleScope = this.createScope(this.currentScope,name);
+    const moduleScope = this.createScope(this.currentScope, name);
     const savedScope = this.currentScope;
     this.currentScope = moduleScope;
 
@@ -1728,6 +1803,151 @@ export class SemanticAnalyzer {
         this.checkMethod(member as AST.MethodDeclaration);
       }
     }
+
+    // Validate constraints
+    const symbol = this.currentScope.lookup(decl.id.name);
+    if (symbol?.type instanceof PersonaType) {
+      this.validateConstraints(decl, symbol.type);
+    }
+  }
+
+  /**
+   * Validate expression constraints in a persona
+   */
+  private validateConstraints(
+    decl: AST.PersonaDeclaration,
+    personaType: PersonaType
+  ): void {
+    for (const constraint of personaType.exprConstraints) {
+      // 1. Validate field exists and get its type
+      const fieldType = this.getConstraintFieldType(
+        constraint.field,
+        personaType,
+        decl
+      );
+
+      if (!fieldType) {
+        this.error(
+          `Constraint references unknown field: ${constraint.field}`,
+          constraint.span
+        );
+        continue;
+      }
+
+      // 2. Evaluate constraint value expression
+      const valueType = this.checkExpression(constraint.valueExpr);
+
+      // 3. Check operator compatibility with field type
+      this.validateConstraintOperator(
+        constraint.field,
+        constraint.operator,
+        fieldType,
+        valueType,
+        constraint.span
+      );
+    }
+  }
+
+  /**
+   * Get the type of a constraint field from the persona
+   */
+  private getConstraintFieldType(
+    fieldName: string,
+    personaType: PersonaType,
+    decl: AST.PersonaDeclaration
+  ): Type | null {
+    // Check if field exists as a property in the declaration
+    for (const member of decl.body.members) {
+      if (member.kind === 'PropertyDeclaration') {
+        const prop = member as AST.PropertyDeclaration;
+        if (prop.name.name === fieldName) {
+          // Get the type of the property
+          if (prop.type) {
+            return this.resolveTypeNode(prop.type);
+          }
+          // If no type annotation, try to infer from initializer
+          if (prop.initializer) {
+            return this.checkExpression(prop.initializer);
+          }
+          return BuiltinTypes.Any;
+        }
+      }
+    }
+
+    // Check if field exists as a method
+    if (personaType.methods.has(fieldName)) {
+      return personaType.methods.get(fieldName)!;
+    }
+
+    // Check parent persona if exists
+    if (personaType.parent) {
+      if (personaType.parent.methods.has(fieldName)) {
+        return personaType.parent.methods.get(fieldName)!;
+      }
+    }
+
+    // Field not found
+    return null;
+  }
+
+  /**
+   * Validate operator compatibility with types
+   */
+  private validateConstraintOperator(
+    fieldName: string,
+    operator: ComparisonOp,
+    fieldType: Type,
+    valueType: Type,
+    span: Span
+  ): void {
+    const numericOps: ComparisonOp[] = ['<', '>', '<=', '>='];
+
+    // Validate numeric operators require numeric types for the field
+    if (numericOps.includes(operator)) {
+      const isFieldNumeric =
+        (fieldType instanceof PrimitiveType &&
+          (fieldType.name === 'Float' || fieldType.name === 'Int')) ||
+        (fieldType instanceof LiteralType &&
+          typeof fieldType.value === 'number');
+
+      if (!isFieldNumeric) {
+        this.error(
+          `Operator '${operator}' cannot be used with field '${fieldName}' of type ${fieldType.toString()}`,
+          span
+        );
+      }
+
+      // Also validate the value is numeric
+      const isValueNumeric =
+        (valueType instanceof PrimitiveType &&
+          (valueType.name === 'Float' || valueType.name === 'Int')) ||
+        (valueType instanceof LiteralType &&
+          typeof valueType.value === 'number');
+
+      if (!isValueNumeric) {
+        this.error(
+          `Operator '${operator}' requires numeric value, got ${valueType.toString()}`,
+          span
+        );
+      }
+    }
+
+    // Validate 'matches' requires string type
+    if (operator === 'matches') {
+      const isFieldString =
+        (fieldType instanceof PrimitiveType && fieldType.name === 'String') ||
+        (fieldType instanceof LiteralType &&
+          typeof fieldType.value === 'string');
+
+      if (!isFieldString) {
+        this.error(
+          `Operator 'matches' cannot be used with field '${fieldName}' of type ${fieldType.toString()}`,
+          span
+        );
+      }
+    }
+
+    // Note: 'in', '==', '!=' are allowed for all types
   }
 
   private checkTeam(decl: AST.TeamDeclaration): void {
@@ -1866,7 +2086,7 @@ export class SemanticAnalyzer {
     if (!decl.body) return;
 
     // Enter method scope
-    const methodScope = this.createScope(this.currentScope,decl.name.name);
+    const methodScope = this.createScope(this.currentScope, decl.name.name);
     const savedScope = this.currentScope;
     this.currentScope = methodScope;
 
@@ -1931,21 +2151,42 @@ export class SemanticAnalyzer {
       );
     }
 
+    // Create narrowing context for then branch
+    const savedContext = this.narrowingContext;
+    this.narrowingContext = this.createNarrowingContext(savedContext);
+
+    // Apply type narrowing based on test expression
+    this.applyTypeNarrowing(stmt.test, true);
+
+    // Check then branch with narrowed types
     this.checkBlock(stmt.consequent);
 
+    // Restore context
+    this.narrowingContext = savedContext;
+
+    // Handle else branch
     if (stmt.alternate) {
+      // Create narrowing context for else branch
+      this.narrowingContext = this.createNarrowingContext(savedContext);
+
+      // Apply negated narrowing (opposite of test)
+      this.applyTypeNarrowing(stmt.test, false);
+
       if (stmt.alternate.kind === 'IfStatement') {
         this.checkIfStatement(stmt.alternate as AST.IfStatement);
       } else {
         this.checkBlock(stmt.alternate as AST.BlockStatement);
       }
+
+      // Restore context
+      this.narrowingContext = savedContext;
     }
   }
 
   private checkForStatement(
     stmt: AST.ForStatement | AST.ForInStatement | AST.ForOfStatement
   ): void {
-    const loopScope = this.createScope(this.currentScope,'for');
+    const loopScope = this.createScope(this.currentScope, 'for');
     const savedScope = this.currentScope;
     this.currentScope = loopScope;
 
@@ -1998,7 +2239,7 @@ export class SemanticAnalyzer {
     this.checkBlock(stmt.block);
 
     for (const handler of stmt.handlers) {
-      const catchScope = this.createScope(this.currentScope,'catch');
+      const catchScope = this.createScope(this.currentScope, 'catch');
       const savedScope = this.currentScope;
       this.currentScope = catchScope;
 
@@ -2045,7 +2286,7 @@ export class SemanticAnalyzer {
   }
 
   private checkBlock(block: AST.BlockStatement): void {
-    const blockScope = this.createScope(this.currentScope,'block');
+    const blockScope = this.createScope(this.currentScope, 'block');
     const savedScope = this.currentScope;
     this.currentScope = blockScope;
 
@@ -2144,6 +2385,13 @@ export class SemanticAnalyzer {
   }
 
   private inferIdentifier(id: AST.Identifier): Type {
+    // Check for narrowed type first (from control flow analysis)
+    const narrowedType = this.getNarrowedType(id.name);
+    if (narrowedType) {
+      return narrowedType;
+    }
+
+    // Fall back to symbol lookup
     const symbol = this.currentScope.lookup(id.name);
     if (!symbol) {
       this.error(`Unknown identifier: ${id.name}`, id.span);
@@ -2469,7 +2717,10 @@ export class SemanticAnalyzer {
   }
 
   private inferAssignmentExpression(expr: AST.AssignmentExpression): Type {
-    const leftType = this.inferExpressionType(expr.left);
+    const leftType =
+      expr.left.kind === 'Identifier'
+        ? this.inferExpressionType(expr.left as AST.Identifier)
+        : BuiltinTypes.Unknown;
     const rightType = this.inferExpressionType(expr.right);
 
     if (!rightType.isAssignableTo(leftType)) {
@@ -2565,8 +2816,8 @@ export class SemanticAnalyzer {
               typeof prop.name === 'string'
                 ? prop.name
                 : prop.name.kind === 'Identifier'
-                ? prop.name.name
-                : prop.name.value;
+                  ? prop.name.name
+                  : prop.name.value;
             members.set(name, {
               name,
               type: this.resolveTypeNode(prop.type),
@@ -2688,7 +2939,10 @@ export class SemanticAnalyzer {
     return '';
   }
 
-  private hasModifier(modifiers: readonly AST.Modifier[], type: string): boolean {
+  private hasModifier(
+    modifiers: readonly AST.Modifier[],
+    type: string
+  ): boolean {
     return modifiers.some((m) => m.type === type);
   }
 
@@ -2725,7 +2979,9 @@ export class SemanticAnalyzer {
       scope: this.currentScope,
       exported: options.exported ?? false,
       mutable: options.mutable ?? false,
-      visibility: options.modifiers ? this.getVisibility(options.modifiers) : 'priv',
+      visibility: options.modifiers
+        ? this.getVisibility(options.modifiers)
+        : 'priv',
       module: this.currentModule?.path,
     };
   }
@@ -2740,15 +2996,12 @@ export class SemanticAnalyzer {
       // Verify symbol exists in scope
       const found = this.globalScope.lookup(name);
       if (!found) {
-        this.error(
-          `Exported symbol '${name}' is not defined`,
-          symbol.span
-        );
+        this.error(`Exported symbol '${name}' is not defined`, symbol.span);
         continue;
       }
 
       // Warn if exporting a private symbol
-      if (found.visibility === 'priv' && !found.exported) {
+      if (found.visibility === 'priv') {
         this.warning(
           `Exporting private symbol '${name}'. Consider marking it as 'pub'`,
           symbol.span
@@ -2784,6 +3037,187 @@ export class SemanticAnalyzer {
       );
     }
     return false;
+  }
+
+  /**
+   * Convert typeof string to actual type
+   */
+  private typeFromTypeofString(typeString: string): Type | null {
+    switch (typeString) {
+      case 'string':
+        return BuiltinTypes.String;
+      case 'number':
+        return BuiltinTypes.Float;
+      case 'boolean':
+        return BuiltinTypes.Bool;
+      case 'object':
+        return BuiltinTypes.Any; // Could be more specific
+      case 'function':
+        return new FunctionType([], BuiltinTypes.Any);
+      default:
+        return null;
+    }
+  }
+
+  /**
+   * Narrow type based on typeof check
+   * Handles: typeof x === "string", typeof x === "number", etc.
+   */
+  private narrowTypeByTypeofCheck(
+    expr: AST.BinaryExpression,
+    trueBranch: boolean
+  ): void {
+    // Handle: typeof x === "string"
+    if (expr.operator === '===' || expr.operator === '==') {
+      const { left, right } = expr;
+
+      // Check if left is typeof expression and right is string literal
+      if (
+        left.kind === 'UnaryExpression' &&
+        (left as AST.UnaryExpression).operator === 'typeof' &&
+        right.kind === 'StringLiteral'
+      ) {
+        const varExpr = (left as AST.UnaryExpression).argument;
+        if (varExpr.kind === 'Identifier') {
+          const typeString = (right as AST.StringLiteral).value;
+          const narrowedType = this.typeFromTypeofString(typeString);
+
+          if (trueBranch && narrowedType) {
+            this.setNarrowedType(
+              (varExpr as AST.Identifier).name,
+              narrowedType
+            );
+          }
+        }
+      }
+
+      // Also handle reverse: "string" === typeof x
+      if (
+        left.kind === 'StringLiteral' &&
+        right.kind === 'UnaryExpression' &&
+        (right as AST.UnaryExpression).operator === 'typeof'
+      ) {
+        const varExpr = (right as AST.UnaryExpression).argument;
+        if (varExpr.kind === 'Identifier') {
+          const typeString = (left as AST.StringLiteral).value;
+          const narrowedType = this.typeFromTypeofString(typeString);
+
+          if (trueBranch && narrowedType) {
+            this.setNarrowedType(
+              (varExpr as AST.Identifier).name,
+              narrowedType
+            );
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Narrow type based on null/undefined check
+   * Handles: x !== null, x != null, x === null, etc.
+   */
+  private narrowTypeByNullCheck(
+    expr: AST.BinaryExpression,
+    trueBranch: boolean
+  ): void {
+    const { left, right, operator } = expr;
+
+    // Check for x !== null or x != null
+    if (
+      (operator === '!==' || operator === '!=') &&
+      left.kind === 'Identifier' &&
+      right.kind === 'NullLiteral'
+    ) {
+      if (trueBranch) {
+        // In true branch, remove null from union type
+        const symbol = this.currentScope.lookup((left as AST.Identifier).name);
+        if (symbol && symbol.type instanceof UnionType) {
+          const nonNullTypes = symbol.type.members.filter(
+            (t: Type) => t !== BuiltinTypes.Null && t.toString() !== 'null'
+          );
+          if (nonNullTypes.length > 0) {
+            const narrowed =
+              nonNullTypes.length === 1
+                ? nonNullTypes[0]
+                : new UnionType(nonNullTypes);
+            this.setNarrowedType((left as AST.Identifier).name, narrowed);
+          }
+        }
+      }
+    }
+
+    // Check for x === null
+    if (
+      (operator === '===' || operator === '==') &&
+      left.kind === 'Identifier' &&
+      right.kind === 'NullLiteral'
+    ) {
+      if (trueBranch) {
+        // In true branch, narrow to null type
+        this.setNarrowedType((left as AST.Identifier).name, BuiltinTypes.Null);
+      }
+    }
+  }
+
+  /**
+   * Apply type narrowing based on an expression
+   */
+  private applyTypeNarrowing(expr: AST.Expression, truthy: boolean): void {
+    switch (expr.kind) {
+      case 'BinaryExpression':
+        const binExpr = expr as AST.BinaryExpression;
+        this.narrowTypeByTypeofCheck(binExpr, truthy);
+        this.narrowTypeByNullCheck(binExpr, truthy);
+        break;
+
+      case 'UnaryExpression':
+        // Handle negation - flip truthiness
+        const unExpr = expr as AST.UnaryExpression;
+        if (unExpr.operator === '!') {
+          this.applyTypeNarrowing(unExpr.argument, !truthy);
+        }
+        break;
+
+      // Could add more narrowing patterns here:
+      // - Identifier (truthiness narrowing)
+      // - Member expressions
+      // - Call expressions (custom type guards)
+    }
+  }
+
+  /**
+   * Create a new narrowing context for control flow analysis
+   */
+  private createNarrowingContext(
+    parent: NarrowingContext | null
+  ): NarrowingContext {
+    return {
+      narrowedTypes: new Map(),
+      parent,
+    };
+  }
+
+  /**
+   * Get narrowed type for a variable in current context
+   */
+  private getNarrowedType(name: string): Type | undefined {
+    let ctx = this.narrowingContext;
+    while (ctx) {
+      const narrowed = ctx.narrowedTypes.get(name);
+      if (narrowed) return narrowed;
+      ctx = ctx.parent;
+    }
+    return undefined;
+  }
+
+  /**
+   * Set narrowed type for a variable in current context
+   */
+  private setNarrowedType(name: string, type: Type): void {
+    if (this.narrowingContext) {
+      this.narrowingContext.narrowedTypes.set(name, type);
+    }
   }
 
   private createScope(parent: Scope | null, kind: string): Scope {

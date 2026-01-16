@@ -404,7 +404,7 @@ describe('SemanticAnalyzer', () => {
   describe('function analysis', () => {
     it('should analyze function declarations', () => {
       const source = `
-        fn add(a: Int, b: Int): Int {
+        fn add(a: Int, b: Int) -> Int {
           return a + b
         }
       `;
@@ -425,7 +425,7 @@ describe('SemanticAnalyzer', () => {
 
     it('should analyze async functions', () => {
       const source = `
-        async fn fetch(url: String): String {
+        async fn fetch(url: String) -> String {
           return "data"
         }
       `;

@@ -28,12 +28,18 @@ describe('PCL Integration', () => {
   describe('Full Compilation Pipeline', () => {
     // Simple persona declarations that the parser can handle
     const source = `
-      persona SEC {}
+      persona SEC {
+        intent: "Security analysis and risk assessment"
+        skills {
+          "Security analysis"
+          "OWASP Top 10"
+        }
+      }
 
       persona DEV {}
 
       team REVIEW_TEAM {
-        members { SEC, DEV }
+        members: [SEC, DEV]
       }
     `;
 
@@ -269,7 +275,7 @@ describe('End-to-End Scenarios', () => {
 
       /// Security review team
       team SECURITY_REVIEW {
-        members { SECURITY, CODE_REVIEWER }
+        members: [SECURITY, CODE_REVIEWER]
         primary: SECURITY
         merge: chain
       }
@@ -348,15 +354,13 @@ describe('End-to-End Scenarios', () => {
       }
 
       team CONTENT_TEAM {
-        members { WRITER, EDITOR }
+        members: [WRITER, EDITOR]
         primary: WRITER
         merge: chain
       }
 
       workflow ContentPipeline {
-        input: ContentBrief
-        output: FinalContent
-        steps { WRITER -> EDITOR }
+        steps: WRITER -> EDITOR
       }
     `;
 
@@ -419,7 +423,7 @@ describe('End-to-End Scenarios', () => {
       }
 
       team ANALYSIS_TEAM {
-        members { ANALYST, SUMMARIZER }
+        members: [ANALYST, SUMMARIZER]
         merge: chain
       }
     `;

@@ -33,6 +33,8 @@ export { Lexer, tokenize, TokenType } from './lexer';
 //                              PARSER
 // ═══════════════════════════════════════════════════════════════════════════════
 
+import * as ParserModule from './parser';
+
 export {
   parse,
   parseExpression,
@@ -45,23 +47,9 @@ export {
 //                              SEMANTIC ANALYSIS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Temporarily disabled due to compilation issues
-// export {
-//   analyze,
-//   createSymbolTable,
-//   createTypeChecker,
-//   SemanticAnalyzer,
-//   SymbolTable,
-//   TypeChecker,
-//   Types,
-// } from './semantic';
+export { analyze, SemanticAnalyzer } from './semantic';
 
-// export type {
-//   ScopeKind,
-//   SymbolFlags,
-//   SymbolKind,
-//   TypeKind,
-// } from './semantic';
+export type { ConstraintExpression, PersonaType, Type } from './semantic';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              RUNTIME
@@ -84,6 +72,7 @@ export {
 export {
   generate,
   generateJSON,
+  generateYAML,
   generateMarkdown,
   generatePrompt,
   generateTeamPrompt,
@@ -99,8 +88,8 @@ import type { GeneratorOptions } from './codegen';
 import { generate as generateCode } from './codegen';
 import { parseProgram } from './parser';
 import { createRuntime, Runtime } from './runtime';
-// import type { AnalysisResult } from './semantic';
-// import { analyze as analyzeProgram } from './semantic';
+import type { AnalysisResult } from './semantic';
+import { analyze as analyzeProgram } from './semantic';
 import type { PCLError, Result } from './types';
 import { Err, Ok } from './types';
 
@@ -113,21 +102,30 @@ export function compile(
     source?: string;
     strict?: boolean;
   }
-): Result<{ program: Program }, PCLError[]> {
-  const parseResult = parseProgram(source, { source: options?.source });
+): Result<{ program: Program; analysis: AnalysisResult }, PCLError[]> {
+  const parseResult = ParserModule.parse(source, { source: options?.source });
   if (!parseResult.ok) {
     return parseResult;
   }
 
-  // Semantic analysis temporarily disabled
-  // const analysisResult = analyzeProgram(parseResult.value);
-  // if (!analysisResult.ok) {
-  //   return analysisResult;
-  // }
+  // Check for parse errors
+  if (parseResult.value.errors.length > 0) {
+    return Err(parseResult.value.errors);
+  }
+
+  const analysisResult = analyzeProgram(parseResult.value.program);
+  if (!analysisResult.ok) {
+    return analysisResult;
+  }
+
+  // Check for analysis errors
+  if (analysisResult.value.errors.length > 0) {
+    return Err(analysisResult.value.errors);
+  }
 
   return Ok({
-    program: parseResult.value,
-    // analysis: analysisResult.value,
+    program: parseResult.value.program,
+    analysis: analysisResult.value,
   });
 }
 

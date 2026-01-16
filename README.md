@@ -325,9 +325,31 @@ pnpm test
 pnpm build
 ```
 
+## Documentation
+
+### 📚 Complete Documentation
+
+- **[Documentation Index](./docs/README.md)** - Start here for all documentation
+
+### 🚀 Quick Start
+
+- **[Getting Started Guide](./docs/guides/GETTING-STARTED.md)** - Your first PCL persona in 5 minutes
+- **[Multi-Language Integration](./docs/guides/MULTI-LANGUAGE.md)** - Use PCL with Python, Go, Rust, Shell
+
+### 📖 API Reference
+
+- **[Parser API](./docs/api/PARSER.md)** - Parse PCL source code
+- **[Semantic Analyzer API](./docs/api/SEMANTIC.md)** - Type checking and validation
+- **[Code Generator API](./docs/api/CODEGEN.md)** - Generate TypeScript, YAML, JSON, Prompts
+
+### 📘 Language Reference
+
+- **[Language Reference](./docs/reference/LANGUAGE.md)** - Complete PCL syntax and semantics
+- **[Roadmap](./.roadmap/ROADMAP.md)** - Project roadmap and status
+
 ## Community
 
-- 📖 [Documentation](https://docs.pcl.dev)
+- 📖 [Documentation](./docs/README.md)
 - 💬 [Discord](https://discord.gg/pcl-lang)
 - 🐦 [Twitter](https://twitter.com/pcl_lang)
 - 📧 [Mailing List](https://groups.google.com/g/pcl-lang)

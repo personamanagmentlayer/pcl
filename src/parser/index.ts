@@ -119,10 +119,10 @@ export class Parser {
       kind: 'Program',
       statements,
       comments: this.comments,
-      span: this.makeSpan(
-        statements[0]?.span.start ?? this.position(),
-        this.previous().span.end
-      ),
+      span:
+        statements.length > 0
+          ? this.makeSpan(statements[0].span.start, this.previous().span.end)
+          : this.makeSpan(this.position(), this.position()),
     };
 
     return Ok({
@@ -1987,7 +1987,7 @@ export class Parser {
 
   private parseIdentifier(): AST.Identifier {
     const token = this.expect(
-      [TokenType.IDENTIFIER, TokenType.PERSONA_ID],
+      [TokenType.IDENTIFIER, TokenType.PERSONA_ID, TokenType.KEYWORD],
       'Expected identifier'
     );
 

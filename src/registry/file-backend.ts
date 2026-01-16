@@ -16,18 +16,14 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import type {
   PersonaEntry,
-  PersonaId,
   QueryOptions,
   RegistryBackend,
   RegistryEntry,
   RegistryStats,
-  Result,
-  SemVer,
   TeamEntry,
-  TeamId,
   WorkflowEntry,
-  WorkflowId,
 } from './types';
+import type { PersonaId, Result, SemVer, TeamId, WorkflowId } from '../types';
 import { Err, Ok } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -81,15 +77,21 @@ export class FileBackend implements RegistryBackend {
       const entry = JSON.parse(data) as PersonaEntry;
 
       // Convert date strings back to Date objects
-      entry.created = new Date(entry.created);
-      entry.updated = new Date(entry.updated);
+      const convertedEntry: PersonaEntry = {
+        ...entry,
+        created: new Date(entry.created),
+        updated: new Date(entry.updated),
+      };
 
-      return Ok(entry);
+      return Ok(convertedEntry);
     } catch (error) {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to get persona ${id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -108,12 +110,15 @@ export class FileBackend implements RegistryBackend {
         const entry = JSON.parse(data) as PersonaEntry;
 
         // Convert date strings back to Date objects
-        entry.created = new Date(entry.created);
-        entry.updated = new Date(entry.updated);
+        const convertedEntry: PersonaEntry = {
+          ...entry,
+          created: new Date(entry.created),
+          updated: new Date(entry.updated),
+        };
 
         // Apply filters
-        if (this.matchesQuery(entry, options)) {
-          entries.push(entry);
+        if (this.matchesQuery(convertedEntry, options)) {
+          entries.push(convertedEntry);
         }
       }
 
@@ -130,7 +135,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to list personas: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -140,17 +148,17 @@ export class FileBackend implements RegistryBackend {
   ): Promise<Result<PersonaId>> {
     try {
       const now = new Date();
-      const fullEntry: PersonaEntry = {
-        ...entry,
-        created: now,
-        updated: now,
-      };
 
       // Check if updating existing entry
       const existing = await this.getPersona(entry.id);
-      if (existing.ok && existing.value) {
-        fullEntry.created = existing.value.created;
-      }
+      const created =
+        existing.ok && existing.value ? existing.value.created : now;
+
+      const fullEntry: PersonaEntry = {
+        ...entry,
+        created,
+        updated: now,
+      };
 
       const filePath = join(this.personasPath, `${entry.id}.json`);
       writeFileSync(filePath, JSON.stringify(fullEntry, null, 2));
@@ -160,7 +168,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to save persona ${entry.id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -180,7 +191,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to delete persona ${id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -200,15 +214,21 @@ export class FileBackend implements RegistryBackend {
       const entry = JSON.parse(data) as TeamEntry;
 
       // Convert date strings back to Date objects
-      entry.created = new Date(entry.created);
-      entry.updated = new Date(entry.updated);
+      const convertedEntry: TeamEntry = {
+        ...entry,
+        created: new Date(entry.created),
+        updated: new Date(entry.updated),
+      };
 
-      return Ok(entry);
+      return Ok(convertedEntry);
     } catch (error) {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to get team ${id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -225,12 +245,15 @@ export class FileBackend implements RegistryBackend {
         const entry = JSON.parse(data) as TeamEntry;
 
         // Convert date strings back to Date objects
-        entry.created = new Date(entry.created);
-        entry.updated = new Date(entry.updated);
+        const convertedEntry: TeamEntry = {
+          ...entry,
+          created: new Date(entry.created),
+          updated: new Date(entry.updated),
+        };
 
         // Apply filters
-        if (this.matchesQuery(entry, options)) {
-          entries.push(entry);
+        if (this.matchesQuery(convertedEntry, options)) {
+          entries.push(convertedEntry);
         }
       }
 
@@ -247,7 +270,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to list teams: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -257,17 +283,17 @@ export class FileBackend implements RegistryBackend {
   ): Promise<Result<TeamId>> {
     try {
       const now = new Date();
-      const fullEntry: TeamEntry = {
-        ...entry,
-        created: now,
-        updated: now,
-      };
 
       // Check if updating existing entry
       const existing = await this.getTeam(entry.id);
-      if (existing.ok && existing.value) {
-        fullEntry.created = existing.value.created;
-      }
+      const created =
+        existing.ok && existing.value ? existing.value.created : now;
+
+      const fullEntry: TeamEntry = {
+        ...entry,
+        created,
+        updated: now,
+      };
 
       const filePath = join(this.teamsPath, `${entry.id}.json`);
       writeFileSync(filePath, JSON.stringify(fullEntry, null, 2));
@@ -277,7 +303,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to save team ${entry.id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -295,7 +324,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to delete team ${id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -315,15 +347,21 @@ export class FileBackend implements RegistryBackend {
       const entry = JSON.parse(data) as WorkflowEntry;
 
       // Convert date strings back to Date objects
-      entry.created = new Date(entry.created);
-      entry.updated = new Date(entry.updated);
+      const convertedEntry: WorkflowEntry = {
+        ...entry,
+        created: new Date(entry.created),
+        updated: new Date(entry.updated),
+      };
 
-      return Ok(entry);
+      return Ok(convertedEntry);
     } catch (error) {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to get workflow ${id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -342,12 +380,15 @@ export class FileBackend implements RegistryBackend {
         const entry = JSON.parse(data) as WorkflowEntry;
 
         // Convert date strings back to Date objects
-        entry.created = new Date(entry.created);
-        entry.updated = new Date(entry.updated);
+        const convertedEntry: WorkflowEntry = {
+          ...entry,
+          created: new Date(entry.created),
+          updated: new Date(entry.updated),
+        };
 
         // Apply filters
-        if (this.matchesQuery(entry, options)) {
-          entries.push(entry);
+        if (this.matchesQuery(convertedEntry, options)) {
+          entries.push(convertedEntry);
         }
       }
 
@@ -364,7 +405,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to list workflows: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -374,17 +418,17 @@ export class FileBackend implements RegistryBackend {
   ): Promise<Result<WorkflowId>> {
     try {
       const now = new Date();
-      const fullEntry: WorkflowEntry = {
-        ...entry,
-        created: now,
-        updated: now,
-      };
 
       // Check if updating existing entry
       const existing = await this.getWorkflow(entry.id);
-      if (existing.ok && existing.value) {
-        fullEntry.created = existing.value.created;
-      }
+      const created =
+        existing.ok && existing.value ? existing.value.created : now;
+
+      const fullEntry: WorkflowEntry = {
+        ...entry,
+        created,
+        updated: now,
+      };
 
       const filePath = join(this.workflowsPath, `${entry.id}.json`);
       writeFileSync(filePath, JSON.stringify(fullEntry, null, 2));
@@ -394,7 +438,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to save workflow ${entry.id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -412,7 +459,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to delete workflow ${id}: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -474,22 +524,24 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to search registry: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
 
   async getStats(): Promise<Result<RegistryStats>> {
     try {
-      const personas = (await this.listPersonas()).ok
-        ? (await this.listPersonas()).value.length
-        : 0;
-      const teams = (await this.listTeams()).ok
-        ? (await this.listTeams()).value.length
-        : 0;
-      const workflows = (await this.listWorkflows()).ok
-        ? (await this.listWorkflows()).value.length
-        : 0;
+      const personasResult = await this.listPersonas();
+      const personas = personasResult.ok ? personasResult.value.length : 0;
+
+      const teamsResult = await this.listTeams();
+      const teams = teamsResult.ok ? teamsResult.value.length : 0;
+
+      const workflowsResult = await this.listWorkflows();
+      const workflows = workflowsResult.ok ? workflowsResult.value.length : 0;
 
       const totalEntries = personas + teams + workflows;
       const lastUpdated = new Date(); // TODO: Track actual last updated time
@@ -505,7 +557,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to get registry stats: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -518,7 +573,10 @@ export class FileBackend implements RegistryBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to clear registry: ${error}`,
-        span: { start: { line: 0, column: 0 }, end: { line: 0, column: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
