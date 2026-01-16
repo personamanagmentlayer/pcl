@@ -279,7 +279,7 @@ describe('TypeChecker', () => {
 
     it('should create union for different types', () => {
       const common = typeChecker.getCommonType([Types.String, Types.Int]);
-      expect(common.kind).toBe(TypeKind.Union);
+      expect(common.kind).toBe('union');
     });
 
     it('should widen literal types', () => {
@@ -414,6 +414,12 @@ describe('SemanticAnalyzer', () => {
       if (!parseResult.ok) return;
 
       const analysisResult = analyze(parseResult.value.program);
+      if (!analysisResult.ok) {
+        console.log(
+          'Semantic errors:',
+          JSON.stringify(analysisResult.error, null, 2)
+        );
+      }
       expect(analysisResult.ok).toBe(true);
     });
 

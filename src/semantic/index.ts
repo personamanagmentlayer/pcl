@@ -11,7 +11,7 @@
 
 import * as AST from '../ast';
 import type { PCLError, Result, Span } from '../types';
-import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
+import { ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE SYSTEM
@@ -1009,10 +1009,6 @@ export class SemanticAnalyzer {
     // Second pass: resolve types and check
     this.checkProgram(program);
 
-    if (this.errors.length > 0) {
-      return Err(this.errors);
-    }
-
     return Ok({
       symbols: this.globalScope,
       errors: this.errors,
@@ -1712,19 +1708,17 @@ export class SemanticAnalyzer {
   private checkFunction(decl: AST.FunctionDeclaration): void {
     if (!decl.body) return;
 
-    // Enter function scope
-    const functionScope = new SymbolTable(this.currentScope, decl.id.name);
-    const savedScope = this.currentScope;
-    this.currentScope = functionScope;
+    // Enter function scope using globalScope's scope management
+    this.globalScope.enterScope('Function', decl);
 
-    // Add parameters
+    // Add parameters to function scope
     for (const param of decl.parameters) {
       if (param.name.kind === 'Identifier') {
         const paramType = param.type
           ? this.resolveTypeNode(param.type)
           : BuiltinTypes.Any;
 
-        this.currentScope.define({
+        this.globalScope.define({
           name: param.name.name,
           kind: 'parameter',
           type: paramType,
@@ -1746,7 +1740,7 @@ export class SemanticAnalyzer {
     this.checkBlock(decl.body);
 
     this.returnType = savedReturnType;
-    this.currentScope = savedScope;
+    this.globalScope.exitScope();
   }
 
   private checkMethod(decl: AST.MethodDeclaration): void {

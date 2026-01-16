@@ -13,6 +13,26 @@
 
 **Tech Stack**: TypeScript 5.3+, Node.js, ESM modules, Vitest for testing
 
+### PCL Bootstrap System
+
+**Important**: This project includes a **PCL-Lite Bootstrap** system that enables AI assistants to interpret `/persona` commands for multi-persona collaboration.
+
+- **Bootstrap File**: `../.roadmap/bootstrap/BOOTSTRAP_EN.md`
+- **Purpose**: Embedded runtime v1.0 for AI chat interfaces (ChatGPT, Claude, Gemini, etc.)
+- **Personas**: 25+ built-in personas (ARCHI, SEC, DEV, DEVOPS, CRITIC, etc.) with specialized skills
+- **Commands**: 120+ `/persona` commands for activation, composition, teams, workflows, and more
+- **Domain Focus**: Standardization personas (STANDARD_ARCHITECT, SPEC_EDITOR, COMPLIANCE_ENGINEER, etc.)
+
+When working on PCL code generation, reference the bootstrap specification to understand the target runtime behavior and persona system that PCL compiles to.
+
+**Key Bootstrap Concepts**:
+
+- **Persona Activation**: `/persona [id]` - Activate a persona with specialized capabilities
+- **Team Composition**: `/team [id]` - Load pre-configured teams (e.g., security-review, dream-team, standardization)
+- **Shared Skills**: Personas inherit foundation, technical, security, architecture, standards, and tools skills
+- **Merge Modes**: `primary`, `consensus`, `weighted`, `sequential`, `parallel` for multi-persona responses
+- **Workflow Orchestration**: Define and execute multi-step workflows with persona handoffs
+
 ---
 
 ## Core Architecture Principles
