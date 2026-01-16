@@ -19,29 +19,29 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              VALIDATE RELEASE
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   validate:
     name: Validate Release
     runs-on: ubuntu-latest
-    
+
     outputs:
       version: ${{ steps.version.outputs.version }}
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: 📦 Install dependencies
         run: npm ci
-      
+
       - name: 🔍 Extract version
         id: version
         run: |
@@ -52,7 +52,7 @@ jobs:
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "📌 Release version: $VERSION"
-      
+
       - name: ✅ Verify package.json version
         run: |
           PKG_VERSION=$(node -p "require('./package.json').version")
@@ -62,47 +62,47 @@ jobs:
             exit 1
           fi
           echo "✅ Version matches: $PKG_VERSION"
-      
+
       - name: 🧪 Run full test suite
         run: npm test
-      
+
       - name: 🏗️ Build for release
         run: npm run build
 
   # ═══════════════════════════════════════════════════════════════════════════
   #                              BUILD RELEASE
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   build:
     name: Build Release Assets
     runs-on: ubuntu-latest
     needs: [validate]
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
-      
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: 📦 Install dependencies
         run: npm ci
-      
+
       - name: 🏗️ Build project
         run: npm run build:all
-      
+
       - name: 📦 Create tarball
         run: npm pack
-      
+
       - name: 📤 Upload package artifact
         uses: actions/upload-artifact@v4
         with:
           name: npm-package
           path: '*.tgz'
-      
+
       - name: 📤 Upload dist artifact
         uses: actions/upload-artifact@v4
         with:
@@ -112,35 +112,35 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              PUBLISH TO NPM
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   publish-npm:
     name: Publish to npm
     runs-on: ubuntu-latest
     needs: [validate, build]
     if: startsWith(github.ref, 'refs/tags/v')
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
-      
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
-      
+
       - name: 📦 Install dependencies
         run: npm ci
-      
+
       - name: 🏗️ Build project
         run: npm run build:all
-      
+
       - name: 📤 Publish to npm (public)
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: ✅ Verify npm publication
         run: |
           VERSION="${{ needs.validate.outputs.version }}"
@@ -151,30 +151,30 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              PUBLISH TO GITHUB PACKAGES
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   publish-github:
     name: Publish to GitHub Packages
     runs-on: ubuntu-latest
     needs: [validate, build]
     if: startsWith(github.ref, 'refs/tags/v')
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
-      
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
           cache: 'npm'
-      
+
       - name: 📦 Install dependencies
         run: npm ci
-      
+
       - name: 🏗️ Build project
         run: npm run build:all
-      
+
       - name: 📤 Publish to GitHub Packages
         run: npm publish
         env:
@@ -183,63 +183,63 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              CREATE GITHUB RELEASE
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   github-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: [validate, build, publish-npm]
     if: startsWith(github.ref, 'refs/tags/v')
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: 📥 Download package artifact
         uses: actions/download-artifact@v4
         with:
           name: npm-package
-      
+
       - name: 📝 Generate release notes
         id: release_notes
         run: |
           VERSION="${{ needs.validate.outputs.version }}"
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          
+
           if [ -z "$PREV_TAG" ]; then
             CHANGELOG=$(git log --pretty=format:"- %s" --no-merges)
           else
             CHANGELOG=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --no-merges)
           fi
-          
+
           cat > release_notes.md << EOF
           # PCL v$VERSION
-          
+
           ## 🚀 What's New
-          
+
           $CHANGELOG
-          
+
           ## 📦 Installation
-          
+
           \`\`\`bash
           npm install @pcl/sdk@$VERSION
           \`\`\`
-          
+
           ## 📚 Documentation
-          
+
           - [GitHub Repository](https://github.com/personamanagmentlayer/pcl-lite)
           - [Package on npm](https://www.npmjs.com/package/@pcl/sdk)
-          
+
           ## 🐛 Bug Reports
-          
+
           Please report issues at: https://github.com/personamanagmentlayer/pcl-lite/issues
           EOF
-          
+
           echo "release_notes<<EOF" >> $GITHUB_OUTPUT
           cat release_notes.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-      
+
       - name: 🎉 Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -254,13 +254,13 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              NOTIFY
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   notify:
     name: 📢 Notify Release
     runs-on: ubuntu-latest
     needs: [validate, github-release]
     if: startsWith(github.ref, 'refs/tags/v')
-    
+
     steps:
       - name: 🎉 Release notification
         run: |

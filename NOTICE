@@ -23,35 +23,35 @@ Third-Party Dependencies
 This project includes or depends on the following third-party software:
 
 TypeScript (Apache-2.0)
-  Copyright Microsoft Corporation
-  https://github.com/microsoft/TypeScript
+Copyright Microsoft Corporation
+https://github.com/microsoft/TypeScript
 
 Vitest (MIT)
-  Copyright (c) 2021-Present Anthony Fu and Vitest Contributors
-  https://github.com/vitest-dev/vitest
+Copyright (c) 2021-Present Anthony Fu and Vitest Contributors
+https://github.com/vitest-dev/vitest
 
 tsup (MIT)
-  Copyright (c) EGOIST <0x142857@gmail.com>
-  https://github.com/egoist/tsup
+Copyright (c) EGOIST <0x142857@gmail.com>
+https://github.com/egoist/tsup
 
 prettier (MIT)
-  Copyright James Long and contributors
-  https://github.com/prettier/prettier
+Copyright James Long and contributors
+https://github.com/prettier/prettier
 
 eslint (MIT)
-  Copyright OpenJS Foundation and other contributors, www.openjsf.org
-  https://github.com/eslint/eslint
+Copyright OpenJS Foundation and other contributors, www.openjsf.org
+https://github.com/eslint/eslint
 
 ================================================================================
 Additional Notices
 ================================================================================
 
 PCL Bootstrap System (Embedded Runtime v1.0)
-  Location: .roadmap/bootstrap/BOOTSTRAP_EN.md
-  Purpose: AI assistant persona management specification
-  License: Apache-2.0 (part of PCL tooling)
-  
-  The PCL Bootstrap specification defines the runtime behavior for 25+ 
-  built-in personas and 120+ /persona commands. This specification is 
-  designed to be embedded in AI chat interfaces (ChatGPT, Claude, Gemini, etc.)
-  to enable multi-persona collaboration.
+Location: .roadmap/bootstrap/BOOTSTRAP_EN.md
+Purpose: AI assistant persona management specification
+License: Apache-2.0 (part of PCL tooling)
+
+The PCL Bootstrap specification defines the runtime behavior for 25+
+built-in personas and 120+ /persona commands. This specification is
+designed to be embedded in AI chat interfaces (ChatGPT, Claude, Gemini, etc.)
+to enable multi-persona collaboration.

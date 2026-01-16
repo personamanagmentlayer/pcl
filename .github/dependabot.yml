@@ -7,75 +7,75 @@ updates:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              NPM DEPENDENCIES
   # ═══════════════════════════════════════════════════════════════════════════
-  
-  - package-ecosystem: "npm"
-    directory: "/"
+
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "UTC"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'UTC'
     open-pull-requests-limit: 10
     reviewers:
-      - "personamanagmentlayer"
+      - 'personamanagmentlayer'
     labels:
-      - "dependencies"
-      - "automated"
+      - 'dependencies'
+      - 'automated'
     commit-message:
-      prefix: "chore(deps)"
-      include: "scope"
+      prefix: 'chore(deps)'
+      include: 'scope'
     # Group minor and patch updates together
     groups:
       dev-dependencies:
         patterns:
-          - "@types/*"
-          - "eslint*"
-          - "prettier"
-          - "typescript"
-          - "vitest"
-          - "tsup"
-          - "tsx"
+          - '@types/*'
+          - 'eslint*'
+          - 'prettier'
+          - 'typescript'
+          - 'vitest'
+          - 'tsup'
+          - 'tsx'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       production-dependencies:
         patterns:
-          - "*"
+          - '*'
         exclude-patterns:
-          - "@types/*"
-          - "eslint*"
-          - "prettier"
-          - "typescript"
-          - "vitest"
-          - "tsup"
-          - "tsx"
+          - '@types/*'
+          - 'eslint*'
+          - 'prettier'
+          - 'typescript'
+          - 'vitest'
+          - 'tsup'
+          - 'tsx'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
     # Security updates always get their own PR
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     versioning-strategy: increase
 
   # ═══════════════════════════════════════════════════════════════════════════
   #                              GITHUB ACTIONS
   # ═══════════════════════════════════════════════════════════════════════════
-  
-  - package-ecosystem: "github-actions"
-    directory: "/"
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "10:00"
-      timezone: "UTC"
+      interval: 'weekly'
+      day: 'monday'
+      time: '10:00'
+      timezone: 'UTC'
     open-pull-requests-limit: 5
     reviewers:
-      - "personamanagmentlayer"
+      - 'personamanagmentlayer'
     labels:
-      - "dependencies"
-      - "type:ci"
-      - "automated"
+      - 'dependencies'
+      - 'type:ci'
+      - 'automated'
     commit-message:
-      prefix: "ci(deps)"
-      include: "scope"
+      prefix: 'ci(deps)'
+      include: 'scope'

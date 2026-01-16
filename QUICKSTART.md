@@ -9,11 +9,13 @@ This guide will walk you through installing PCL, writing your first persona, and
 ## Prerequisites
 
 Make sure you have:
+
 - **Node.js 20.0.0 or higher** ([download here](https://nodejs.org/))
 - **npm** (comes with Node.js)
 - **A code editor** (VS Code recommended)
 
 Check your versions:
+
 ```bash
 node --version  # Should be v20.0.0 or higher
 npm --version   # Should be 10.0.0 or higher
@@ -37,6 +39,7 @@ npm install
 ```
 
 This installs:
+
 - TypeScript compiler
 - Vitest test runner
 - ESLint and Prettier for code quality
@@ -53,6 +56,7 @@ npm run build
 This compiles the TypeScript source code to JavaScript in the `dist/` folder.
 
 **Verify the build**:
+
 ```bash
 node dist/cli/index.js --version
 ```
@@ -69,15 +73,15 @@ Create a new file called `hello-persona.pcl`:
 // Define a helpful assistant persona
 persona HELPER {
   intent: "Provide helpful and friendly assistance"
-  
+
   tone: friendly
-  
+
   skills {
     "Active listening"
     "Clear communication"
     "Problem solving"
   }
-  
+
   constraints {
     "Be concise and respectful"
     "Ask clarifying questions"
@@ -105,6 +109,7 @@ node dist/cli/index.js parse hello-persona.pcl
 ```
 
 **Expected output**:
+
 - Pretty-printed AST showing PersonaDeclaration, skills, constraints, etc.
 - No parse errors ✅
 
@@ -125,6 +130,7 @@ node dist/cli/index.js check hello-persona.pcl
 ```
 
 **Expected output**:
+
 - "✅ No semantic errors" (if everything is correct)
 - Error messages with line/column numbers (if there are issues)
 
@@ -145,6 +151,7 @@ node dist/cli/index.js repl
 ```
 
 **Try these commands**:
+
 ```
 pcl> let name = "Alice"
 pcl> let age = 30
@@ -167,6 +174,7 @@ npm test
 ```
 
 You should see:
+
 - ✅ SymbolTable tests (8 passing)
 - ✅ TypeChecker tests (13 passing)
 - ✅ SemanticAnalyzer tests (33/35 passing - expected)
@@ -215,15 +223,18 @@ npm run parse examples/showcase.pcl
 ### VS Code Users
 
 **Install recommended extensions**:
+
 1. Open VS Code in the `pcl-lite` folder
 2. Look for the "Install Workspace Recommended Extensions" notification
 3. Click "Install All" (30+ extensions including Copilot, ESLint, Prettier)
 
 **Configure GitHub Copilot**:
+
 - Copilot will automatically read [.github/copilot-instructions.md](.github/copilot-instructions.md)
 - This provides 500+ lines of PCL-specific guidance for AI pair programming
 
 **Debugging**:
+
 - Press `F5` to launch the debugger
 - Choose from 6 preconfigured debug profiles:
   - Debug PCL CLI
@@ -236,22 +247,22 @@ npm run parse examples/showcase.pcl
 
 ## Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run build` | Compile TypeScript to JavaScript |
-| `npm run build:watch` | Compile in watch mode (auto-rebuild) |
-| `npm test` | Run all tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Generate coverage report |
-| `npm run typecheck` | Check types without emitting files |
-| `npm run lint` | Lint source code with ESLint |
-| `npm run lint:fix` | Auto-fix linting issues |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check if code is formatted |
-| `npm run clean` | Remove build artifacts |
-| `npm run parse <file>` | Parse a PCL file |
-| `npm run check <file>` | Type-check a PCL file |
-| `npm run repl` | Launch interactive REPL |
+| Command                 | Description                          |
+| ----------------------- | ------------------------------------ |
+| `npm run build`         | Compile TypeScript to JavaScript     |
+| `npm run build:watch`   | Compile in watch mode (auto-rebuild) |
+| `npm test`              | Run all tests                        |
+| `npm run test:watch`    | Run tests in watch mode              |
+| `npm run test:coverage` | Generate coverage report             |
+| `npm run typecheck`     | Check types without emitting files   |
+| `npm run lint`          | Lint source code with ESLint         |
+| `npm run lint:fix`      | Auto-fix linting issues              |
+| `npm run format`        | Format code with Prettier            |
+| `npm run format:check`  | Check if code is formatted           |
+| `npm run clean`         | Remove build artifacts               |
+| `npm run parse <file>`  | Parse a PCL file                     |
+| `npm run check <file>`  | Type-check a PCL file                |
+| `npm run repl`          | Launch interactive REPL              |
 
 ---
 
@@ -289,18 +300,21 @@ pcl-lite/
 ## Learning Resources
 
 ### 📚 Documentation
+
 - [README.md](README.md) - Project overview and features
 - [CHANGELOG.md](CHANGELOG.md) - Version history and release notes
 - [GitHub Copilot Instructions](.github/copilot-instructions.md) - Coding standards and patterns
 - [PCL Bootstrap Specification](.roadmap/bootstrap/BOOTSTRAP_EN.md) - Persona system deep dive
 
 ### 🔧 Language Reference
+
 - **Grammar**: `grammar/pcl.ebnf` - EBNF grammar specification
 - **AST**: `src/ast/index.ts` - AST node definitions
 - **Type System**: `src/types/index.ts` - Type definitions
 - **Semantic Rules**: `src/semantic/index.ts` - Type checking logic
 
 ### 🧪 Testing
+
 - **Test Examples**: Browse `tests/*.test.ts` for usage examples
 - **Coverage**: Run `npm run test:coverage` and open `coverage/index.html`
 
@@ -319,11 +333,13 @@ Check the error messages for type issues.
 ### Tests Fail
 
 **Known issues** (expected failures):
+
 - 2/35 semantic tests: Duplicate declaration detection
 - 3/33 runtime tests: Team messaging edge cases
 - 12/17 integration tests: Under development
 
 If you see additional failures, try:
+
 ```bash
 npm run clean
 npm install
@@ -334,6 +350,7 @@ npm test
 ### CLI Not Working
 
 Make sure you've built the project:
+
 ```bash
 npm run build
 node dist/cli/index.js --version
@@ -342,6 +359,7 @@ node dist/cli/index.js --version
 ### Import Errors in VS Code
 
 Reload the TypeScript server:
+
 1. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac)
 2. Type "TypeScript: Restart TS Server"
 3. Press Enter
@@ -364,18 +382,18 @@ team SECURITY_REVIEW {
 workflow SECURE_CODE_REVIEW {
   input: code: String
   output: report: String
-  
+
   steps {
     step analyze {
       persona: SEC
       action: "Analyze code for vulnerabilities"
     }
-    
+
     step audit {
       persona: AUDIT
       action: "Check compliance"
     }
-    
+
     step recommend {
       persona: ARCHI
       action: "Suggest improvements"
@@ -403,6 +421,7 @@ Found a bug? Have a feature request?
 **Open an issue**: https://github.com/personamanagmentlayer/pcl-lite/issues
 
 Please include:
+
 - PCL version (`npm list @pcl/sdk`)
 - Node.js version (`node --version`)
 - Operating system

@@ -15,18 +15,18 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              PR VALIDATION
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   validate:
     name: Validate PR
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: ✅ Check PR title format
         uses: amannn/action-semantic-pull-request@v5
         env:
@@ -45,20 +45,20 @@ jobs:
             chore
             revert
           requireScope: false
-      
+
       - name: 📊 PR size check
         run: |
           FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | wc -l)
           LINES_CHANGED=$(git diff --stat origin/${{ github.base_ref }}...HEAD | tail -1 | awk '{print $4+$6}')
-          
+
           echo "📁 Files changed: $FILES_CHANGED"
           echo "📝 Lines changed: $LINES_CHANGED"
-          
+
           if [ "$FILES_CHANGED" -gt 100 ]; then
             echo "⚠️ Warning: Large PR with $FILES_CHANGED files changed"
             echo "::warning::Consider breaking this PR into smaller chunks"
           fi
-          
+
           if [ "$LINES_CHANGED" -gt 1000 ]; then
             echo "⚠️ Warning: Large PR with $LINES_CHANGED lines changed"
             echo "::warning::Consider breaking this PR into smaller chunks"
@@ -67,21 +67,21 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              CHANGED FILES ANALYSIS
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   analyze-changes:
     name: Analyze Changes
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
-    
+
     outputs:
       has_src_changes: ${{ steps.filter.outputs.src }}
       has_test_changes: ${{ steps.filter.outputs.tests }}
       has_docs_changes: ${{ steps.filter.outputs.docs }}
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
-      
+
       - name: 🔍 Check changed files
         uses: dorny/paths-filter@v2
         id: filter
@@ -94,7 +94,7 @@ jobs:
             docs:
               - '**.md'
               - 'docs/**'
-      
+
       - name: 📝 Comment on missing tests
         if: steps.filter.outputs.src == 'true' && steps.filter.outputs.tests == 'false'
         uses: actions/github-script@v7
@@ -110,29 +110,29 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              TEST COVERAGE DIFF
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   coverage-diff:
     name: Coverage Comparison
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
-    
+
     steps:
       - name: 📥 Checkout PR code
         uses: actions/checkout@v4
-      
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: 📦 Install dependencies
         run: npm ci
-      
+
       - name: 📊 Run coverage (PR)
         run: npm run test:coverage
         continue-on-error: true
-      
+
       - name: 💬 Comment coverage summary
         uses: romeovs/lcov-reporter-action@v0.3.1
         with:
@@ -143,41 +143,41 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              COMPATIBILITY CHECK
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   compatibility:
     name: API Compatibility Check
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
-    
+
     steps:
       - name: 📥 Checkout base branch
         uses: actions/checkout@v4
         with:
           ref: ${{ github.base_ref }}
           path: base
-      
+
       - name: 📥 Checkout PR branch
         uses: actions/checkout@v4
         with:
           path: pr
-      
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
+
       - name: 📦 Build base version
         working-directory: base
         run: |
           npm ci
           npm run build
-      
+
       - name: 📦 Build PR version
         working-directory: pr
         run: |
           npm ci
           npm run build
-      
+
       - name: 🔍 Check for breaking changes
         run: |
           echo "🔍 Checking for API breaking changes..."
@@ -188,12 +188,12 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   #                              PR LABELS
   # ═══════════════════════════════════════════════════════════════════════════
-  
+
   label:
     name: Auto-label PR
     runs-on: ubuntu-latest
     needs: [analyze-changes]
-    
+
     steps:
       - name: 🏷️ Add labels based on files changed
         uses: actions/labeler@v5
@@ -201,7 +201,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/labeler.yml
           sync-labels: true
-      
+
       - name: 🏷️ Add size label
         uses: codelytv/pr-size-labeler@v1
         with:
