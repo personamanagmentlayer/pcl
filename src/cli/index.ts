@@ -6,17 +6,22 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { resolve, basename, extname } from 'path';
-import { Lexer, tokenize } from '../lexer';
-import { Parser, parse } from '../parser';
-import { analyze } from '../semantic';
-import { createRuntime } from '../runtime';
-import { generate, generatePrompt, generateJSON, generateTypeScript, generateMarkdown } from '../codegen';
-import type { Program, PersonaDeclaration } from '../ast';
-import type { PCLError } from '../types';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { resolve } from 'path';
+import type { PersonaDeclaration, Program } from '../ast';
 import type { GeneratorTarget } from '../codegen';
-
+import {
+  generate,
+  generateJSON,
+  generateMarkdown,
+  generatePrompt,
+  generateTypeScript,
+} from '../codegen';
+import { tokenize } from '../lexer';
+import { parse } from '../parser';
+import { createRuntime } from '../runtime';
+import { analyze } from '../semantic';
+import type { PCLError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CLI CONFIGURATION
@@ -70,7 +75,6 @@ Examples:
   pcl repl
 `;
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              COLOR UTILITIES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -94,51 +98,60 @@ function color(c: keyof typeof colors, text: string): string {
   return useColors ? `${colors[c]}${text}${colors.reset}` : text;
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              ERROR FORMATTING
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function formatError(error: PCLError, source: string, filename: string): string {
+function formatError(
+  error: PCLError,
+  source: string,
+  filename: string
+): string {
   const lines = source.split('\n');
   const line = error.span?.start.line ?? 0;
   const column = error.span?.start.column ?? 0;
-  
+
   let output = '';
-  
+
   // Error header
   output += color('red', `error[${error.code}]`) + `: ${error.message}\n`;
-  
+
   // Location
   if (line > 0) {
     output += color('cyan', ` --> `) + `${filename}:${line}:${column}\n`;
     output += color('cyan', '  |') + '\n';
-    
+
     // Context lines
     const startLine = Math.max(1, line - 2);
     const endLine = Math.min(lines.length, line + 2);
-    
+
     for (let i = startLine; i <= endLine; i++) {
       const lineNum = i.toString().padStart(4);
       const lineContent = lines[i - 1] ?? '';
-      
+
       if (i === line) {
         output += color('cyan', `${lineNum} |`) + ' ' + lineContent + '\n';
         // Error indicator
         const padding = ' '.repeat(column);
-        const indicator = '^'.repeat(Math.max(1, error.span?.end.column ?? 1 - column));
-        output += color('cyan', '     |') + ' ' + padding + color('red', indicator) + '\n';
+        const indicator = '^'.repeat(
+          Math.max(1, error.span?.end.column ?? 1 - column)
+        );
+        output +=
+          color('cyan', '     |') +
+          ' ' +
+          padding +
+          color('red', indicator) +
+          '\n';
       } else {
         output += color('dim', `${lineNum} |`) + ' ' + lineContent + '\n';
       }
     }
-    
+
     output += color('cyan', '  |') + '\n';
   }
-  
+
   return output;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              COMMANDS
@@ -161,20 +174,20 @@ function commandParse(file: string, options: CommandOptions): number {
     console.error(color('red', `Error: File not found: ${file}`));
     return 1;
   }
-  
+
   const source = readFileSync(file, 'utf-8');
   const result = parse(source, { source: file });
-  
+
   if (!result.ok) {
     for (const error of result.error) {
       console.error(formatError(error, source, file));
     }
     return 1;
   }
-  
+
   if (!options.quiet) {
-    const output = formatAST(result.value, options.format ?? 'pretty');
-    
+    const output = formatAST(result.value.program, options.format ?? 'pretty');
+
     if (options.output) {
       writeFileSync(options.output, output);
       console.log(color('green', `✓ AST written to ${options.output}`));
@@ -182,8 +195,13 @@ function commandParse(file: string, options: CommandOptions): number {
       console.log(output);
     }
   }
-  
-  console.log(color('green', `✓ Parsed successfully: ${result.value.statements.length} statements`));
+
+  console.log(
+    color(
+      'green',
+      `✓ Parsed successfully: ${result.value.program.statements.length} statements`
+    )
+  );
   return 0;
 }
 
@@ -195,36 +213,39 @@ function commandLex(file: string, options: CommandOptions): number {
     console.error(color('red', `Error: File not found: ${file}`));
     return 1;
   }
-  
+
   const source = readFileSync(file, 'utf-8');
   const result = tokenize(source, { source: file });
-  
+
   if (!result.ok) {
     for (const error of result.error) {
       console.error(formatError(error, source, file));
     }
     return 1;
   }
-  
+
   if (!options.quiet) {
     const tokens = result.value;
-    
+
     if (options.format === 'json') {
       console.log(JSON.stringify(tokens, null, 2));
     } else {
       console.log(color('bold', `Tokens (${tokens.length}):\n`));
-      
+
       for (const token of tokens) {
         const loc = `${token.span.start.line}:${token.span.start.column}`;
         const type = color('cyan', token.type.padEnd(20));
-        const value = token.value.length > 40 
-          ? token.value.substring(0, 37) + '...' 
-          : token.value;
-        console.log(`  ${loc.padEnd(10)} ${type} ${color('yellow', JSON.stringify(value))}`);
+        const value =
+          token.value.length > 40
+            ? token.value.substring(0, 37) + '...'
+            : token.value;
+        console.log(
+          `  ${loc.padEnd(10)} ${type} ${color('yellow', JSON.stringify(value))}`
+        );
       }
     }
   }
-  
+
   console.log(color('green', `✓ Tokenized: ${result.value.length} tokens`));
   return 0;
 }
@@ -237,41 +258,48 @@ function commandCheck(file: string, options: CommandOptions): number {
     console.error(color('red', `Error: File not found: ${file}`));
     return 1;
   }
-  
+
   const source = readFileSync(file, 'utf-8');
   const parseResult = parse(source, { source: file });
-  
+
   if (!parseResult.ok) {
     for (const error of parseResult.error) {
       console.error(formatError(error, source, file));
     }
     return 1;
   }
-  
+
   // Perform semantic analysis
-  const analysisResult = analyze(parseResult.value);
-  
+  const analysisResult = analyze(parseResult.value.program);
+
   if (!analysisResult.ok) {
     for (const error of analysisResult.error) {
       console.error(formatError(error, source, file));
     }
     return 1;
   }
-  
+
   // Show warnings if verbose
   if (options.verbose && analysisResult.value.warnings.length > 0) {
-    console.log(color('yellow', `\n⚠ ${analysisResult.value.warnings.length} warning(s):`));
+    console.log(
+      color('yellow', `\n⚠ ${analysisResult.value.warnings.length} warning(s):`)
+    );
     for (const warning of analysisResult.value.warnings) {
       console.log(color('yellow', `  - ${warning.message}`));
     }
   }
-  
+
   // Show symbol table summary if verbose
   if (options.verbose) {
-    const symbols = analysisResult.value.symbolTable.getCurrentScope().symbols;
-    console.log(color('dim', `\nSymbols defined: ${symbols.size}`));
+    const symbols = analysisResult.value.symbols;
+    console.log(
+      color(
+        'dim',
+        `\nSymbols defined: ${symbols.getCurrentScope().symbols.size}`
+      )
+    );
   }
-  
+
   console.log(color('green', `✓ Type check passed: ${file}`));
   return 0;
 }
@@ -284,26 +312,28 @@ function commandGen(file: string, options: CommandOptions): number {
     console.error(color('red', `Error: File not found: ${file}`));
     return 1;
   }
-  
+
   const source = readFileSync(file, 'utf-8');
   const parseResult = parse(source, { source: file });
-  
+
   if (!parseResult.ok) {
     for (const error of parseResult.error) {
       console.error(formatError(error, source, file));
     }
     return 1;
   }
-  
+
   const target = options.target || 'prompt';
-  
+
   try {
     let output: string;
-    
+
     switch (target) {
       case 'prompt': {
         // Find first persona and generate prompt
-        const persona = parseResult.value.statements.find(s => s.kind === 'PersonaDeclaration');
+        const persona = parseResult.value.program.statements.find(
+          (s: any) => s.kind === 'PersonaDeclaration'
+        );
         if (persona) {
           output = generatePrompt(persona as PersonaDeclaration);
         } else {
@@ -313,29 +343,36 @@ function commandGen(file: string, options: CommandOptions): number {
         break;
       }
       case 'json':
-        output = generateJSON(parseResult.value);
+        output = generateJSON(parseResult.value.program);
         break;
       case 'typescript':
       case 'javascript':
-        output = generateTypeScript(parseResult.value);
+        output = generateTypeScript(parseResult.value.program);
         break;
       case 'markdown':
-        output = generateMarkdown(parseResult.value);
+        output = generateMarkdown(parseResult.value.program);
         break;
       default:
-        output = generate(parseResult.value, { target });
+        output = generate(parseResult.value.program, { target });
     }
-    
+
     if (options.output) {
       writeFileSync(options.output, output);
-      console.log(color('green', `✓ Generated ${target} output to ${options.output}`));
+      console.log(
+        color('green', `✓ Generated ${target} output to ${options.output}`)
+      );
     } else {
       console.log(output);
     }
-    
+
     return 0;
   } catch (error) {
-    console.error(color('red', `Generation error: ${error instanceof Error ? error.message : String(error)}`));
+    console.error(
+      color(
+        'red',
+        `Generation error: ${error instanceof Error ? error.message : String(error)}`
+      )
+    );
     return 1;
   }
 }
@@ -348,46 +385,58 @@ function commandRun(file: string, options: CommandOptions): number {
     console.error(color('red', `Error: File not found: ${file}`));
     return 1;
   }
-  
+
   const source = readFileSync(file, 'utf-8');
   const parseResult = parse(source, { source: file });
-  
+
   if (!parseResult.ok) {
     for (const error of parseResult.error) {
       console.error(formatError(error, source, file));
     }
     return 1;
   }
-  
+
   // Create runtime and load program
   const runtime = createRuntime({
     enableTracing: options.verbose ?? false,
   });
-  
+
   try {
-    runtime.load(parseResult.value);
-    
+    runtime.load(parseResult.value.program);
+
     // Show loaded entities
     const personas = runtime.getAllPersonas();
     const teams = runtime.getAllTeams();
-    
+
     console.log(color('green', `✓ Loaded ${file}`));
     console.log(color('dim', `  Personas: ${personas.length}`));
     console.log(color('dim', `  Teams: ${teams.length}`));
-    
+
     // List personas
     if (options.verbose) {
       for (const persona of personas) {
         const state = persona.getState();
-        console.log(color('cyan', `  - ${state.name}: ${state.config.intent || '(no intent)'}`));
+        console.log(
+          color(
+            'cyan',
+            `  - ${state.name}: ${state.config.intent || '(no intent)'}`
+          )
+        );
       }
     }
-    
-    console.log(color('dim', '\nUse the REPL to interact with loaded personas.'));
-    
+
+    console.log(
+      color('dim', '\nUse the REPL to interact with loaded personas.')
+    );
+
     return 0;
   } catch (error) {
-    console.error(color('red', `Runtime error: ${error instanceof Error ? error.message : String(error)}`));
+    console.error(
+      color(
+        'red',
+        `Runtime error: ${error instanceof Error ? error.message : String(error)}`
+      )
+    );
     return 1;
   }
 }
@@ -400,17 +449,17 @@ function commandFmt(file: string, options: CommandOptions): number {
     console.error(color('red', `Error: File not found: ${file}`));
     return 1;
   }
-  
+
   const source = readFileSync(file, 'utf-8');
   const result = parse(source, { source: file });
-  
+
   if (!result.ok) {
     for (const error of result.error) {
       console.error(formatError(error, source, file));
     }
     return 1;
   }
-  
+
   // TODO: Implement pretty printer
   console.log(color('yellow', '⚠ Formatter not yet implemented'));
   return 0;
@@ -422,27 +471,27 @@ function commandFmt(file: string, options: CommandOptions): number {
 async function commandRepl(): Promise<number> {
   console.log(BANNER);
   console.log('Type ".help" for available commands, ".exit" to quit.\n');
-  
+
   const readline = await import('readline');
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
     prompt: color('cyan', 'pcl> '),
   });
-  
+
   const history: string[] = [];
-  
+
   rl.prompt();
-  
+
   rl.on('line', (line: string) => {
     const input = line.trim();
-    
+
     if (input === '.exit' || input === '.quit' || input === '.q') {
       console.log(color('dim', 'Goodbye!'));
       rl.close();
       return;
     }
-    
+
     if (input === '.help' || input === '.h') {
       console.log(`
 REPL Commands:
@@ -452,67 +501,74 @@ REPL Commands:
   .history      Show command history
   .ast          Show AST for last input
   .tokens       Show tokens for last input
-  
+
 Enter PCL code to parse and evaluate.
       `);
       rl.prompt();
       return;
     }
-    
+
     if (input === '.clear' || input === '.c') {
       console.clear();
       console.log(BANNER);
       rl.prompt();
       return;
     }
-    
+
     if (input === '.history') {
       history.forEach((h, i) => console.log(`${i + 1}: ${h}`));
       rl.prompt();
       return;
     }
-    
+
     if (input === '') {
       rl.prompt();
       return;
     }
-    
+
     history.push(input);
-    
+
     // Try to parse
     const result = parse(input, { source: '<repl>' });
-    
+
     if (!result.ok) {
       for (const error of result.error) {
         console.error(color('red', `Error: ${error.message}`));
       }
     } else {
-      console.log(color('green', `✓ Parsed ${result.value.statements.length} statement(s)`));
-      
+      console.log(
+        color(
+          'green',
+          `✓ Parsed ${result.value.program.statements.length} statement(s)`
+        )
+      );
+
       // Show brief summary
-      for (const stmt of result.value.statements) {
+      for (const stmt of result.value.program.statements) {
         console.log(color('dim', `  ${stmt.kind}`));
       }
     }
-    
+
     rl.prompt();
   });
-  
+
   return new Promise((resolve) => {
     rl.on('close', () => resolve(0));
   });
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function formatAST(program: Program, format: 'json' | 'yaml' | 'pretty'): string {
+function formatAST(
+  program: Program,
+  format: 'json' | 'yaml' | 'pretty'
+): string {
   if (format === 'json') {
     return JSON.stringify(program, replacer, 2);
   }
-  
+
   // Pretty format
   return prettyPrintAST(program);
 }
@@ -525,43 +581,47 @@ function replacer(key: string, value: unknown): unknown {
 
 function prettyPrintAST(node: unknown, indent: number = 0): string {
   const pad = '  '.repeat(indent);
-  
+
   if (node === null || node === undefined) {
     return `${pad}${color('dim', 'null')}`;
   }
-  
+
   if (typeof node === 'string') {
     return `${pad}${color('green', JSON.stringify(node))}`;
   }
-  
+
   if (typeof node === 'number' || typeof node === 'boolean') {
     return `${pad}${color('yellow', String(node))}`;
   }
-  
+
   if (Array.isArray(node)) {
     if (node.length === 0) return `${pad}[]`;
-    const items = node.map(item => prettyPrintAST(item, indent + 1)).join(',\n');
+    const items = node
+      .map((item) => prettyPrintAST(item, indent + 1))
+      .join(',\n');
     return `${pad}[\n${items}\n${pad}]`;
   }
-  
+
   if (typeof node === 'object') {
     const obj = node as Record<string, unknown>;
     const kind = obj['kind'];
     const entries = Object.entries(obj)
       .filter(([k]) => k !== 'span' && k !== 'kind')
-      .map(([k, v]) => `${pad}  ${color('cyan', k)}: ${prettyPrintAST(v, indent + 1).trim()}`)
+      .map(
+        ([k, v]) =>
+          `${pad}  ${color('cyan', k)}: ${prettyPrintAST(v, indent + 1).trim()}`
+      )
       .join(',\n');
-    
+
     if (kind) {
       return `${pad}${color('magenta', String(kind))} {\n${entries}\n${pad}}`;
     }
-    
+
     return `${pad}{\n${entries}\n${pad}}`;
   }
-  
+
   return `${pad}${String(node)}`;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              MAIN
@@ -569,14 +629,14 @@ function prettyPrintAST(node: unknown, indent: number = 0): string {
 
 async function main(): Promise<number> {
   const args = process.argv.slice(2);
-  
+
   // Parse options
   const options: CommandOptions = {};
   const positional: string[] = [];
-  
+
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    
+
     if (arg === '--no-color') {
       useColors = false;
     } else if (arg === '-o' || arg === '--output') {
@@ -595,10 +655,10 @@ async function main(): Promise<number> {
       positional.push(arg);
     }
   }
-  
+
   const command = positional[0];
   const file = positional[1];
-  
+
   switch (command) {
     case 'parse':
       if (!file) {
@@ -606,7 +666,7 @@ async function main(): Promise<number> {
         return 1;
       }
       return commandParse(resolve(file), options);
-    
+
     case 'lex':
     case 'tokenize':
       if (!file) {
@@ -614,14 +674,14 @@ async function main(): Promise<number> {
         return 1;
       }
       return commandLex(resolve(file), options);
-    
+
     case 'check':
       if (!file) {
         console.error(color('red', 'Error: No file specified'));
         return 1;
       }
       return commandCheck(resolve(file), options);
-    
+
     case 'gen':
     case 'generate':
       if (!file) {
@@ -629,14 +689,14 @@ async function main(): Promise<number> {
         return 1;
       }
       return commandGen(resolve(file), options);
-    
+
     case 'run':
       if (!file) {
         console.error(color('red', 'Error: No file specified'));
         return 1;
       }
       return commandRun(resolve(file), options);
-    
+
     case 'fmt':
     case 'format':
       if (!file) {
@@ -644,23 +704,23 @@ async function main(): Promise<number> {
         return 1;
       }
       return commandFmt(resolve(file), options);
-    
+
     case 'repl':
       return commandRepl();
-    
+
     case 'version':
     case '-v':
     case '--version':
       console.log(`PCL ${VERSION}`);
       return 0;
-    
+
     case 'help':
     case '-h':
     case '--help':
       console.log(BANNER);
       console.log(HELP);
       return 0;
-    
+
     default:
       if (!command) {
         console.log(BANNER);
@@ -674,8 +734,8 @@ async function main(): Promise<number> {
 }
 
 main()
-  .then(code => process.exit(code))
-  .catch(error => {
+  .then((code) => process.exit(code))
+  .catch((error) => {
     console.error(color('red', `Fatal error: ${error.message}`));
     process.exit(1);
   });

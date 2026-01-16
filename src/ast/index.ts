@@ -3,31 +3,19 @@
  * PCL — PERSONA CONTROL LANGUAGE
  * Abstract Syntax Tree Node Definitions
  * ═══════════════════════════════════════════════════════════════════════════════
- * 
+ *
  * @packageDocumentation
  * @module @pcl/ast
  * @version 1.0.0
  */
 
 import type {
-  Span,
-  PersonaId,
-  TeamId,
-  WorkflowId,
-  SkillId,
-  ModuleId,
-  Tone,
-  MergeMode,
-  OutputFormat,
-  ContextSize,
-  TraceLevel,
-  AuditMode,
-  HookType,
-  Visibility,
   BackoffStrategy,
   ComparisonOp,
-} from './index';
-
+  HookType,
+  MergeMode,
+  Span,
+} from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              BASE NODE
@@ -52,7 +40,6 @@ export type Node =
   | TypeNode
   | Pattern;
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              PROGRAM
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -74,7 +61,6 @@ export interface Comment extends ASTNode {
   readonly type: 'line' | 'block' | 'doc';
   readonly value: string;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              STATEMENTS
@@ -102,7 +88,6 @@ export interface BlockStatement extends ASTNode {
   readonly statements: readonly Statement[];
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              DECLARATIONS
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -120,7 +105,6 @@ export type Declaration =
   | ImportDeclaration
   | ExportDeclaration
   | ModuleDeclaration;
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Persona Declaration
@@ -150,7 +134,7 @@ export type PersonaMember =
   | ConstraintBlock
   | TagBlock
   | HookDeclaration
-  | PersonaDeclaration;  // Nested persona
+  | PersonaDeclaration; // Nested persona
 
 export interface PropertyDeclaration extends ASTNode {
   readonly kind: 'PropertyDeclaration';
@@ -190,9 +174,21 @@ export interface SkillBlock extends ASTNode {
 }
 
 export type SkillItem =
-  | { readonly kind: 'StringSkill'; readonly value: string; readonly span: Span }
-  | { readonly kind: 'IdentifierSkill'; readonly name: Identifier; readonly span: Span }
-  | { readonly kind: 'RefSkill'; readonly ref: QualifiedIdentifier; readonly span: Span };
+  | {
+      readonly kind: 'StringSkill';
+      readonly value: string;
+      readonly span: Span;
+    }
+  | {
+      readonly kind: 'IdentifierSkill';
+      readonly name: Identifier;
+      readonly span: Span;
+    }
+  | {
+      readonly kind: 'RefSkill';
+      readonly ref: QualifiedIdentifier;
+      readonly span: Span;
+    };
 
 export interface ConstraintBlock extends ASTNode {
   readonly kind: 'ConstraintBlock';
@@ -200,8 +196,18 @@ export interface ConstraintBlock extends ASTNode {
 }
 
 export type ConstraintItem =
-  | { readonly kind: 'StringConstraint'; readonly value: string; readonly span: Span }
-  | { readonly kind: 'ExprConstraint'; readonly field: Identifier; readonly op: ComparisonOp; readonly value: Expression; readonly span: Span };
+  | {
+      readonly kind: 'StringConstraint';
+      readonly value: string;
+      readonly span: Span;
+    }
+  | {
+      readonly kind: 'ExprConstraint';
+      readonly field: Identifier;
+      readonly op: ComparisonOp;
+      readonly value: Expression;
+      readonly span: Span;
+    };
 
 export interface TagBlock extends ASTNode {
   readonly kind: 'TagBlock';
@@ -210,7 +216,11 @@ export interface TagBlock extends ASTNode {
 
 export type TagItem =
   | { readonly kind: 'StringTag'; readonly value: string; readonly span: Span }
-  | { readonly kind: 'IdentifierTag'; readonly name: Identifier; readonly span: Span };
+  | {
+      readonly kind: 'IdentifierTag';
+      readonly name: Identifier;
+      readonly span: Span;
+    };
 
 export interface HookDeclaration extends ASTNode {
   readonly kind: 'HookDeclaration';
@@ -218,7 +228,6 @@ export interface HookDeclaration extends ASTNode {
   readonly parameters: readonly Parameter[];
   readonly body: BlockStatement;
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Team Declaration
@@ -278,9 +287,12 @@ export interface PersonaReference extends ASTNode {
   readonly ref:
     | { readonly type: 'id'; readonly id: Identifier }
     | { readonly type: 'qualified'; readonly path: QualifiedIdentifier }
-    | { readonly type: 'spawn'; readonly count: NumberLiteral; readonly persona: Identifier };
+    | {
+        readonly type: 'spawn';
+        readonly count: NumberLiteral;
+        readonly persona: Identifier;
+      };
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Workflow Declaration
@@ -352,7 +364,6 @@ export interface WorkflowConditionDeclaration extends ASTNode {
   readonly kind: 'WorkflowConditionDeclaration';
   readonly condition: Expression;
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Workflow Expressions
@@ -431,7 +442,11 @@ export interface WorkflowMergeExpr extends ASTNode {
 }
 
 export type MergeModeNode =
-  | { readonly kind: 'SimpleMergeMode'; readonly mode: MergeMode; readonly span: Span }
+  | {
+      readonly kind: 'SimpleMergeMode';
+      readonly mode: MergeMode;
+      readonly span: Span;
+    }
   | MergeConfigNode;
 
 export interface MergeConfigNode extends ASTNode {
@@ -448,7 +463,6 @@ export interface WeightEntry extends ASTNode {
   readonly weight: NumberLiteral;
 }
 
-
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Type Declaration
 // ─────────────────────────────────────────────────────────────────────────────
@@ -461,7 +475,6 @@ export interface TypeDeclaration extends ASTNode {
   readonly typeParameters: readonly TypeParameter[];
   readonly type: TypeNode;
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Interface Declaration
@@ -522,7 +535,6 @@ export interface ConstructSignature extends ASTNode {
   readonly returnType: TypeNode;
 }
 
-
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Enum Declaration
 // ─────────────────────────────────────────────────────────────────────────────
@@ -541,7 +553,6 @@ export interface EnumMember extends ASTNode {
   readonly initializer: Expression | null;
 }
 
-
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Function Declaration
 // ─────────────────────────────────────────────────────────────────────────────
@@ -557,7 +568,6 @@ export interface FunctionDeclaration extends ASTNode {
   readonly returnType: TypeNode | null;
   readonly body: BlockStatement | null;
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Variable Declaration
@@ -575,7 +585,6 @@ export interface VariableDeclarator extends ASTNode {
   readonly type: TypeNode | null;
   readonly init: Expression | null;
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Import/Export Declarations
@@ -623,7 +632,6 @@ export interface ExportSpecifier extends ASTNode {
   readonly exported: Identifier;
 }
 
-
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Module Declaration
 // ─────────────────────────────────────────────────────────────────────────────
@@ -633,7 +641,6 @@ export interface ModuleDeclaration extends ASTNode {
   readonly id: QualifiedIdentifier;
   readonly body: readonly Statement[];
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 //                           Skill Declaration
@@ -667,7 +674,6 @@ export interface SkillCategoryDeclaration extends ASTNode {
   readonly kind: 'SkillCategoryDeclaration';
   readonly category: StringLiteral;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE NODES
@@ -792,7 +798,6 @@ export interface TypeParameter extends ASTNode {
   readonly constraint: TypeNode | null;
   readonly default: TypeNode | null;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              EXPRESSIONS
@@ -971,7 +976,15 @@ export interface IndexExpression extends ASTNode {
 }
 
 export type UnaryOperator =
-  | '++' | '--' | '+' | '-' | '!' | '~' | 'typeof' | 'await' | 'yield';
+  | '++'
+  | '--'
+  | '+'
+  | '-'
+  | '!'
+  | '~'
+  | 'typeof'
+  | 'await'
+  | 'yield';
 
 export interface UnaryExpression extends ASTNode {
   readonly kind: 'UnaryExpression';
@@ -981,12 +994,32 @@ export interface UnaryExpression extends ASTNode {
 }
 
 export type BinaryOperator =
-  | '+' | '-' | '*' | '/' | '%' | '**'
-  | '==' | '!=' | '===' | '!=='
-  | '<' | '>' | '<=' | '>=' | '<=>'
-  | '&&' | '||' | '??'
-  | '&' | '|' | '^' | '<<' | '>>' | '>>>'
-  | 'in' | 'instanceof';
+  | '+'
+  | '-'
+  | '*'
+  | '/'
+  | '%'
+  | '**'
+  | '=='
+  | '!='
+  | '==='
+  | '!=='
+  | '<'
+  | '>'
+  | '<='
+  | '>='
+  | '<=>'
+  | '&&'
+  | '||'
+  | '??'
+  | '&'
+  | '|'
+  | '^'
+  | '<<'
+  | '>>'
+  | '>>>'
+  | 'in'
+  | 'instanceof';
 
 export interface BinaryExpression extends ASTNode {
   readonly kind: 'BinaryExpression';
@@ -1003,9 +1036,21 @@ export interface ConditionalExpression extends ASTNode {
 }
 
 export type AssignmentOperator =
-  | '=' | '+=' | '-=' | '*=' | '/=' | '%=' | '**='
-  | '&=' | '|=' | '^=' | '<<=' | '>>='
-  | '&&=' | '||=' | '??=';
+  | '='
+  | '+='
+  | '-='
+  | '*='
+  | '/='
+  | '%='
+  | '**='
+  | '&='
+  | '|='
+  | '^='
+  | '<<='
+  | '>>='
+  | '&&='
+  | '||='
+  | '??=';
 
 export interface AssignmentExpression extends ASTNode {
   readonly kind: 'AssignmentExpression';
@@ -1079,7 +1124,6 @@ export interface SpreadElement extends ASTNode {
   readonly kind: 'SpreadElement';
   readonly argument: Expression;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CONTROL STATEMENTS
@@ -1194,7 +1238,6 @@ export interface WithStatement extends ASTNode {
   readonly body: BlockStatement;
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              PATTERNS
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1258,7 +1301,6 @@ export interface OrPattern extends ASTNode {
   readonly patterns: readonly Pattern[];
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              COMMAND STATEMENTS
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1288,7 +1330,13 @@ export type CommandBody =
 
 export interface ActivationCommand extends ASTNode {
   readonly kind: 'ActivationCommand';
-  readonly subKind: 'activate' | 'deactivate' | 'clear' | 'reset' | 'spawn' | 'isolate';
+  readonly subKind:
+    | 'activate'
+    | 'deactivate'
+    | 'clear'
+    | 'reset'
+    | 'spawn'
+    | 'isolate';
   readonly targets: readonly PersonaReference[];
   readonly options: readonly CommandOption[];
   readonly count: NumberLiteral | null;
@@ -1296,14 +1344,32 @@ export interface ActivationCommand extends ASTNode {
 
 export interface ConfigurationCommand extends ASTNode {
   readonly kind: 'ConfigurationCommand';
-  readonly subKind: 'primary' | 'merge' | 'weights' | 'quorum' | 'conflict' | 'topic' | 'delegate' | 'compose' | 'chain' | 'parallel' | 'context';
+  readonly subKind:
+    | 'primary'
+    | 'merge'
+    | 'weights'
+    | 'quorum'
+    | 'conflict'
+    | 'topic'
+    | 'delegate'
+    | 'compose'
+    | 'chain'
+    | 'parallel'
+    | 'context';
   readonly value: Expression | PersonaReference | MergeModeNode | null;
   readonly options: readonly CommandOption[];
 }
 
 export interface TeamCommand extends ASTNode {
   readonly kind: 'TeamCommand';
-  readonly subKind: 'load' | 'unload' | 'list' | 'show' | 'create' | 'edit' | 'delete';
+  readonly subKind:
+    | 'load'
+    | 'unload'
+    | 'list'
+    | 'show'
+    | 'create'
+    | 'edit'
+    | 'delete';
   readonly target: Identifier | null;
   readonly options: readonly CommandOption[];
   readonly body: TeamBody | null;
@@ -1311,7 +1377,19 @@ export interface TeamCommand extends ASTNode {
 
 export interface WorkflowCommand extends ASTNode {
   readonly kind: 'WorkflowCommand';
-  readonly subKind: 'inline' | 'run' | 'save' | 'delete' | 'list' | 'graph' | 'export' | 'import' | 'pause' | 'resume' | 'cancel' | 'status';
+  readonly subKind:
+    | 'inline'
+    | 'run'
+    | 'save'
+    | 'delete'
+    | 'list'
+    | 'graph'
+    | 'export'
+    | 'import'
+    | 'pause'
+    | 'resume'
+    | 'cancel'
+    | 'status';
   readonly target: Identifier | StringLiteral | WorkflowExpression | null;
   readonly options: readonly CommandOption[];
   readonly saveAs: Identifier | null;
@@ -1319,14 +1397,33 @@ export interface WorkflowCommand extends ASTNode {
 
 export interface RegistryCommand extends ASTNode {
   readonly kind: 'RegistryCommand';
-  readonly subKind: 'list' | 'show' | 'search' | 'add' | 'remove' | 'sync' | 'auth' | 'publish' | 'install' | 'update' | 'remote';
+  readonly subKind:
+    | 'list'
+    | 'show'
+    | 'search'
+    | 'add'
+    | 'remove'
+    | 'sync'
+    | 'auth'
+    | 'publish'
+    | 'install'
+    | 'update'
+    | 'remote';
   readonly target: PersonaReference | StringLiteral | null;
   readonly filters: readonly CommandOption[];
 }
 
 export interface StateCommand extends ASTNode {
   readonly kind: 'StateCommand';
-  readonly subKind: 'status' | 'export' | 'import' | 'convert' | 'snapshot' | 'session' | 'pack' | 'template';
+  readonly subKind:
+    | 'status'
+    | 'export'
+    | 'import'
+    | 'convert'
+    | 'snapshot'
+    | 'session'
+    | 'pack'
+    | 'template';
   readonly action: string | null;
   readonly target: Identifier | StringLiteral | null;
   readonly options: readonly CommandOption[];
@@ -1334,13 +1431,26 @@ export interface StateCommand extends ASTNode {
 
 export interface CognitiveCommand extends ASTNode {
   readonly kind: 'CognitiveCommand';
-  readonly subKind: 'depth' | 'verbosity' | 'tone' | 'output' | 'context' | 'lang';
+  readonly subKind:
+    | 'depth'
+    | 'verbosity'
+    | 'tone'
+    | 'output'
+    | 'context'
+    | 'lang';
   readonly value: NumberLiteral | Identifier | StringLiteral;
 }
 
 export interface ObservabilityCommand extends ASTNode {
   readonly kind: 'ObservabilityCommand';
-  readonly subKind: 'trace' | 'audit' | 'diff' | 'explain' | 'history' | 'metrics' | 'profile';
+  readonly subKind:
+    | 'trace'
+    | 'audit'
+    | 'diff'
+    | 'explain'
+    | 'history'
+    | 'metrics'
+    | 'profile';
   readonly value: BooleanLiteral | Identifier | NumberLiteral | null;
   readonly targets: readonly PersonaReference[];
   readonly options: readonly CommandOption[];
@@ -1348,20 +1458,43 @@ export interface ObservabilityCommand extends ASTNode {
 
 export interface DebugCommand extends ASTNode {
   readonly kind: 'DebugCommand';
-  readonly subKind: 'enable' | 'disable' | 'breakpoint' | 'step' | 'inspect' | 'stack' | 'watch' | 'unwatch' | 'eval';
+  readonly subKind:
+    | 'enable'
+    | 'disable'
+    | 'breakpoint'
+    | 'step'
+    | 'inspect'
+    | 'stack'
+    | 'watch'
+    | 'unwatch'
+    | 'eval';
   readonly target: PersonaReference | Identifier | Expression | null;
 }
 
 export interface SecurityCommand extends ASTNode {
   readonly kind: 'SecurityCommand';
-  readonly subKind: 'audit' | 'scan' | 'allowlist' | 'sign' | 'verify' | 'encrypt' | 'decrypt';
+  readonly subKind:
+    | 'audit'
+    | 'scan'
+    | 'allowlist'
+    | 'sign'
+    | 'verify'
+    | 'encrypt'
+    | 'decrypt';
   readonly action: 'add' | 'remove' | 'list' | null;
   readonly target: PersonaReference | StringLiteral | null;
 }
 
 export interface ModuleCommand extends ASTNode {
   readonly kind: 'ModuleCommand';
-  readonly subKind: 'create' | 'import' | 'export' | 'list' | 'deps' | 'namespace' | 'alias';
+  readonly subKind:
+    | 'create'
+    | 'import'
+    | 'export'
+    | 'list'
+    | 'deps'
+    | 'namespace'
+    | 'alias';
   readonly target: Identifier | PersonaReference | null;
   readonly action: string | null;
   readonly alias: Identifier | null;
@@ -1407,7 +1540,15 @@ export interface PQLOrderBy extends ASTNode {
 
 export interface TestCommand extends ASTNode {
   readonly kind: 'TestCommand';
-  readonly subKind: 'create' | 'run' | 'assert' | 'mock' | 'coverage' | 'benchmark' | 'report' | 'watch';
+  readonly subKind:
+    | 'create'
+    | 'run'
+    | 'assert'
+    | 'mock'
+    | 'coverage'
+    | 'benchmark'
+    | 'report'
+    | 'watch';
   readonly target: Identifier | PersonaReference | Expression | null;
 }
 
@@ -1422,7 +1563,6 @@ export interface CommandOption extends ASTNode {
   readonly value: Expression | null;
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              DECORATORS & MODIFIERS
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1435,9 +1575,15 @@ export interface Decorator extends ASTNode {
 
 export interface Modifier extends ASTNode {
   readonly kind: 'Modifier';
-  readonly type: 'pub' | 'priv' | 'mut' | 'async' | 'static' | 'abstract' | 'final';
+  readonly type:
+    | 'pub'
+    | 'priv'
+    | 'mut'
+    | 'async'
+    | 'static'
+    | 'abstract'
+    | 'final';
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              AST UTILITIES
@@ -1473,19 +1619,39 @@ export interface ASTVisitor<T = void> {
 export function walk<T>(node: ASTNode, visitor: ASTVisitor<T>): T | undefined {
   switch (node.kind) {
     case 'Program':
-      return visitor.visitProgram?.(node as Program) ?? visitor.visitDefault?.(node);
+      return (
+        visitor.visitProgram?.(node as Program) ?? visitor.visitDefault?.(node)
+      );
     case 'PersonaDeclaration':
-      return visitor.visitPersonaDeclaration?.(node as PersonaDeclaration) ?? visitor.visitDefault?.(node);
+      return (
+        visitor.visitPersonaDeclaration?.(node as PersonaDeclaration) ??
+        visitor.visitDefault?.(node)
+      );
     case 'TeamDeclaration':
-      return visitor.visitTeamDeclaration?.(node as TeamDeclaration) ?? visitor.visitDefault?.(node);
+      return (
+        visitor.visitTeamDeclaration?.(node as TeamDeclaration) ??
+        visitor.visitDefault?.(node)
+      );
     case 'WorkflowDeclaration':
-      return visitor.visitWorkflowDeclaration?.(node as WorkflowDeclaration) ?? visitor.visitDefault?.(node);
+      return (
+        visitor.visitWorkflowDeclaration?.(node as WorkflowDeclaration) ??
+        visitor.visitDefault?.(node)
+      );
     case 'FunctionDeclaration':
-      return visitor.visitFunctionDeclaration?.(node as FunctionDeclaration) ?? visitor.visitDefault?.(node);
+      return (
+        visitor.visitFunctionDeclaration?.(node as FunctionDeclaration) ??
+        visitor.visitDefault?.(node)
+      );
     case 'VariableDeclaration':
-      return visitor.visitVariableDeclaration?.(node as VariableDeclaration) ?? visitor.visitDefault?.(node);
+      return (
+        visitor.visitVariableDeclaration?.(node as VariableDeclaration) ??
+        visitor.visitDefault?.(node)
+      );
     case 'CommandStatement':
-      return visitor.visitCommandStatement?.(node as CommandStatement) ?? visitor.visitDefault?.(node);
+      return (
+        visitor.visitCommandStatement?.(node as CommandStatement) ??
+        visitor.visitDefault?.(node)
+      );
     default:
       return visitor.visitDefault?.(node);
   }
@@ -1495,43 +1661,47 @@ export function walk<T>(node: ASTNode, visitor: ASTVisitor<T>): T | undefined {
  * Create AST node factories
  */
 export const AST = {
-  program: (statements: readonly Statement[], comments: readonly Comment[], span: Span): Program => ({
+  program: (
+    statements: readonly Statement[],
+    comments: readonly Comment[],
+    span: Span
+  ): Program => ({
     kind: 'Program',
     statements,
     comments,
     span,
   }),
-  
+
   identifier: (name: string, span: Span): Identifier => ({
     kind: 'Identifier',
     name,
     span,
   }),
-  
+
   stringLiteral: (value: string, raw: string, span: Span): StringLiteral => ({
     kind: 'StringLiteral',
     value,
     raw,
     span,
   }),
-  
+
   numberLiteral: (value: number, raw: string, span: Span): NumberLiteral => ({
     kind: 'NumberLiteral',
     value,
     raw,
     span,
   }),
-  
+
   booleanLiteral: (value: boolean, span: Span): BooleanLiteral => ({
     kind: 'BooleanLiteral',
     value,
     span,
   }),
-  
+
   nullLiteral: (span: Span): NullLiteral => ({
     kind: 'NullLiteral',
     span,
   }),
-  
+
   // Add more factories as needed...
 };

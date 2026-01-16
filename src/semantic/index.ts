@@ -3,16 +3,15 @@
  * PCL — PERSONA CONTROL LANGUAGE
  * Semantic Analyzer (Type Checker, Symbol Table, Scope Management)
  * ═══════════════════════════════════════════════════════════════════════════════
- * 
+ *
  * @packageDocumentation
  * @module @pcl/semantic
  * @version 1.0.0
  */
 
-import type { Span, Result, PCLError } from '../types';
-import { Ok, Err, ErrorCode, PCLError as createError } from '../types';
 import * as AST from '../ast';
-
+import type { PCLError, Result, Span } from '../types';
+import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE SYSTEM
@@ -53,17 +52,17 @@ export type TypeKind =
  */
 export class PrimitiveType implements Type {
   readonly kind = 'primitive' as const;
-  
+
   constructor(readonly name: 'String' | 'Int' | 'Float' | 'Bool') {}
-  
+
   toString(): string {
     return this.name;
   }
-  
+
   equals(other: Type): boolean {
     return other instanceof PrimitiveType && other.name === this.name;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof UnknownType) return true;
@@ -76,21 +75,21 @@ export class PrimitiveType implements Type {
  */
 export class LiteralType implements Type {
   readonly kind = 'literal' as const;
-  
+
   constructor(
     readonly value: string | number | boolean,
     readonly baseType: PrimitiveType
   ) {}
-  
+
   toString(): string {
     if (typeof this.value === 'string') return `"${this.value}"`;
     return String(this.value);
   }
-  
+
   equals(other: Type): boolean {
     return other instanceof LiteralType && other.value === this.value;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (this.equals(other)) return true;
@@ -103,17 +102,19 @@ export class LiteralType implements Type {
  */
 export class ArrayType implements Type {
   readonly kind = 'array' as const;
-  
+
   constructor(readonly elementType: Type) {}
-  
+
   toString(): string {
     return `Array<${this.elementType.toString()}>`;
   }
-  
+
   equals(other: Type): boolean {
-    return other instanceof ArrayType && this.elementType.equals(other.elementType);
+    return (
+      other instanceof ArrayType && this.elementType.equals(other.elementType)
+    );
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof ArrayType) {
@@ -128,19 +129,19 @@ export class ArrayType implements Type {
  */
 export class TupleType implements Type {
   readonly kind = 'tuple' as const;
-  
+
   constructor(readonly elements: readonly Type[]) {}
-  
+
   toString(): string {
-    return `[${this.elements.map(e => e.toString()).join(', ')}]`;
+    return `[${this.elements.map((e) => e.toString()).join(', ')}]`;
   }
-  
+
   equals(other: Type): boolean {
     if (!(other instanceof TupleType)) return false;
     if (this.elements.length !== other.elements.length) return false;
     return this.elements.every((e, i) => e.equals(other.elements[i]));
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof TupleType) {
@@ -148,7 +149,7 @@ export class TupleType implements Type {
       return this.elements.every((e, i) => e.isAssignableTo(other.elements[i]));
     }
     if (other instanceof ArrayType) {
-      return this.elements.every(e => e.isAssignableTo(other.elementType));
+      return this.elements.every((e) => e.isAssignableTo(other.elementType));
     }
     return false;
   }
@@ -166,37 +167,40 @@ export interface ObjectTypeMember {
 
 export class ObjectType implements Type {
   readonly kind = 'object' as const;
-  
+
   constructor(
     readonly members: Map<string, ObjectTypeMember>,
     readonly indexSignature?: { key: Type; value: Type }
   ) {}
-  
+
   toString(): string {
     const props = Array.from(this.members.values())
-      .map(m => `${m.readonly ? 'readonly ' : ''}${m.name}${m.optional ? '?' : ''}: ${m.type.toString()}`)
+      .map(
+        (m) =>
+          `${m.readonly ? 'readonly ' : ''}${m.name}${m.optional ? '?' : ''}: ${m.type.toString()}`
+      )
       .join(', ');
     return `{ ${props} }`;
   }
-  
+
   equals(other: Type): boolean {
     if (!(other instanceof ObjectType)) return false;
     if (this.members.size !== other.members.size) return false;
-    
+
     for (const [name, member] of this.members) {
       const otherMember = other.members.get(name);
       if (!otherMember) return false;
       if (!member.type.equals(otherMember.type)) return false;
       if (member.optional !== otherMember.optional) return false;
     }
-    
+
     return true;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (!(other instanceof ObjectType)) return false;
-    
+
     // Check that all required members in other exist in this
     for (const [name, otherMember] of other.members) {
       const thisMember = this.members.get(name);
@@ -206,10 +210,10 @@ export class ObjectType implements Type {
       }
       if (!thisMember.type.isAssignableTo(otherMember.type)) return false;
     }
-    
+
     return true;
   }
-  
+
   getMember(name: string): ObjectTypeMember | undefined {
     return this.members.get(name);
   }
@@ -227,34 +231,40 @@ export interface FunctionParameter {
 
 export class FunctionType implements Type {
   readonly kind = 'function' as const;
-  
+
   constructor(
     readonly parameters: readonly FunctionParameter[],
     readonly returnType: Type,
     readonly typeParameters: readonly TypeVariable[] = []
   ) {}
-  
+
   toString(): string {
     const params = this.parameters
-      .map(p => `${p.rest ? '...' : ''}${p.name}${p.optional ? '?' : ''}: ${p.type.toString()}`)
+      .map(
+        (p) =>
+          `${p.rest ? '...' : ''}${p.name}${p.optional ? '?' : ''}: ${p.type.toString()}`
+      )
       .join(', ');
-    const typeParams = this.typeParameters.length > 0
-      ? `<${this.typeParameters.map(t => t.toString()).join(', ')}>`
-      : '';
+    const typeParams =
+      this.typeParameters.length > 0
+        ? `<${this.typeParameters.map((t) => t.toString()).join(', ')}>`
+        : '';
     return `${typeParams}(${params}) -> ${this.returnType.toString()}`;
   }
-  
+
   equals(other: Type): boolean {
     if (!(other instanceof FunctionType)) return false;
     if (this.parameters.length !== other.parameters.length) return false;
     if (!this.returnType.equals(other.returnType)) return false;
-    return this.parameters.every((p, i) => p.type.equals(other.parameters[i].type));
+    return this.parameters.every((p, i) =>
+      p.type.equals(other.parameters[i].type)
+    );
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (!(other instanceof FunctionType)) return false;
-    
+
     // Contravariant parameters
     if (this.parameters.length < other.parameters.length) return false;
     for (let i = 0; i < other.parameters.length; i++) {
@@ -262,7 +272,7 @@ export class FunctionType implements Type {
         return false;
       }
     }
-    
+
     // Covariant return
     return this.returnType.isAssignableTo(other.returnType);
   }
@@ -273,29 +283,29 @@ export class FunctionType implements Type {
  */
 export class UnionType implements Type {
   readonly kind = 'union' as const;
-  
+
   constructor(readonly members: readonly Type[]) {}
-  
+
   toString(): string {
-    return this.members.map(m => m.toString()).join(' | ');
+    return this.members.map((m) => m.toString()).join(' | ');
   }
-  
+
   equals(other: Type): boolean {
     if (!(other instanceof UnionType)) return false;
     if (this.members.length !== other.members.length) return false;
-    return this.members.every(m => other.members.some(o => m.equals(o)));
+    return this.members.every((m) => other.members.some((o) => m.equals(o)));
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof UnionType) {
-      return this.members.every(m => 
-        other.members.some(o => m.isAssignableTo(o))
+      return this.members.every((m) =>
+        other.members.some((o) => m.isAssignableTo(o))
       );
     }
-    return this.members.every(m => m.isAssignableTo(other));
+    return this.members.every((m) => m.isAssignableTo(other));
   }
-  
+
   static create(types: Type[]): Type {
     // Flatten nested unions
     const flattened: Type[] = [];
@@ -306,12 +316,12 @@ export class UnionType implements Type {
         flattened.push(t);
       }
     }
-    
+
     // Remove duplicates
-    const unique = flattened.filter((t, i) => 
-      !flattened.slice(0, i).some(prev => prev.equals(t))
+    const unique = flattened.filter(
+      (t, i) => !flattened.slice(0, i).some((prev) => prev.equals(t))
     );
-    
+
     if (unique.length === 0) return new NeverType();
     if (unique.length === 1) return unique[0];
     return new UnionType(unique);
@@ -323,29 +333,29 @@ export class UnionType implements Type {
  */
 export class IntersectionType implements Type {
   readonly kind = 'intersection' as const;
-  
+
   constructor(readonly members: readonly Type[]) {}
-  
+
   toString(): string {
-    return this.members.map(m => m.toString()).join(' & ');
+    return this.members.map((m) => m.toString()).join(' & ');
   }
-  
+
   equals(other: Type): boolean {
     if (!(other instanceof IntersectionType)) return false;
     if (this.members.length !== other.members.length) return false;
-    return this.members.every(m => other.members.some(o => m.equals(o)));
+    return this.members.every((m) => other.members.some((o) => m.equals(o)));
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof IntersectionType) {
-      return other.members.every(o => 
-        this.members.some(m => m.isAssignableTo(o))
+      return other.members.every((o) =>
+        this.members.some((m) => m.isAssignableTo(o))
       );
     }
-    return this.members.some(m => m.isAssignableTo(other));
+    return this.members.some((m) => m.isAssignableTo(other));
   }
-  
+
   static create(types: Type[]): Type {
     // Flatten nested intersections
     const flattened: Type[] = [];
@@ -356,12 +366,12 @@ export class IntersectionType implements Type {
         flattened.push(t);
       }
     }
-    
+
     // Remove duplicates
-    const unique = flattened.filter((t, i) => 
-      !flattened.slice(0, i).some(prev => prev.equals(t))
+    const unique = flattened.filter(
+      (t, i) => !flattened.slice(0, i).some((prev) => prev.equals(t))
     );
-    
+
     if (unique.length === 0) return new UnknownType();
     if (unique.length === 1) return unique[0];
     return new IntersectionType(unique);
@@ -373,13 +383,13 @@ export class IntersectionType implements Type {
  */
 export class TypeVariable implements Type {
   readonly kind = 'typevar' as const;
-  
+
   constructor(
     readonly name: string,
     readonly constraint?: Type,
     readonly defaultType?: Type
   ) {}
-  
+
   toString(): string {
     let result = this.name;
     if (this.constraint) {
@@ -390,11 +400,11 @@ export class TypeVariable implements Type {
     }
     return result;
   }
-  
+
   equals(other: Type): boolean {
     return other instanceof TypeVariable && other.name === this.name;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (this.equals(other)) return true;
@@ -408,29 +418,31 @@ export class TypeVariable implements Type {
  */
 export class GenericType implements Type {
   readonly kind = 'generic' as const;
-  
+
   constructor(
     readonly base: Type,
     readonly typeArguments: readonly Type[]
   ) {}
-  
+
   toString(): string {
-    return `${this.base.toString()}<${this.typeArguments.map(a => a.toString()).join(', ')}>`;
+    return `${this.base.toString()}<${this.typeArguments.map((a) => a.toString()).join(', ')}>`;
   }
-  
+
   equals(other: Type): boolean {
     if (!(other instanceof GenericType)) return false;
     if (!this.base.equals(other.base)) return false;
     if (this.typeArguments.length !== other.typeArguments.length) return false;
     return this.typeArguments.every((a, i) => a.equals(other.typeArguments[i]));
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof GenericType) {
       if (!this.base.equals(other.base)) return false;
       // Invariant type arguments for now
-      return this.typeArguments.every((a, i) => a.equals(other.typeArguments[i]));
+      return this.typeArguments.every((a, i) =>
+        a.equals(other.typeArguments[i])
+      );
     }
     return false;
   }
@@ -441,7 +453,7 @@ export class GenericType implements Type {
  */
 export class PersonaType implements Type {
   readonly kind = 'persona' as const;
-  
+
   constructor(
     readonly name: string,
     readonly intent: string,
@@ -450,15 +462,15 @@ export class PersonaType implements Type {
     readonly methods: Map<string, FunctionType>,
     readonly parent?: PersonaType
   ) {}
-  
+
   toString(): string {
     return `persona ${this.name}`;
   }
-  
+
   equals(other: Type): boolean {
     return other instanceof PersonaType && other.name === this.name;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof PersonaType) {
@@ -471,7 +483,7 @@ export class PersonaType implements Type {
     }
     return false;
   }
-  
+
   getMethod(name: string): FunctionType | undefined {
     const method = this.methods.get(name);
     if (method) return method;
@@ -484,21 +496,21 @@ export class PersonaType implements Type {
  */
 export class TeamType implements Type {
   readonly kind = 'team' as const;
-  
+
   constructor(
     readonly name: string,
     readonly members: readonly PersonaType[],
     readonly primary?: PersonaType
   ) {}
-  
+
   toString(): string {
     return `team ${this.name}`;
   }
-  
+
   equals(other: Type): boolean {
     return other instanceof TeamType && other.name === this.name;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     return this.equals(other);
@@ -510,26 +522,28 @@ export class TeamType implements Type {
  */
 export class WorkflowType implements Type {
   readonly kind = 'workflow' as const;
-  
+
   constructor(
     readonly name: string,
     readonly inputType: Type,
     readonly outputType: Type
   ) {}
-  
+
   toString(): string {
     return `workflow ${this.name}<${this.inputType.toString()}, ${this.outputType.toString()}>`;
   }
-  
+
   equals(other: Type): boolean {
     return other instanceof WorkflowType && other.name === this.name;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     if (other instanceof WorkflowType) {
-      return this.inputType.isAssignableTo(other.inputType) &&
-             this.outputType.isAssignableTo(other.outputType);
+      return (
+        this.inputType.isAssignableTo(other.inputType) &&
+        this.outputType.isAssignableTo(other.outputType)
+      );
     }
     return false;
   }
@@ -540,20 +554,20 @@ export class WorkflowType implements Type {
  */
 export class SkillType implements Type {
   readonly kind = 'skill' as const;
-  
+
   constructor(
     readonly name: string,
     readonly items: readonly string[]
   ) {}
-  
+
   toString(): string {
     return `skill ${this.name}`;
   }
-  
+
   equals(other: Type): boolean {
     return other instanceof SkillType && other.name === this.name;
   }
-  
+
   isAssignableTo(other: Type): boolean {
     if (other instanceof AnyType) return true;
     return this.equals(other);
@@ -565,15 +579,25 @@ export class SkillType implements Type {
  */
 export class AnyType implements Type {
   readonly kind = 'any' as const;
-  toString(): string { return 'Any'; }
-  equals(other: Type): boolean { return other instanceof AnyType; }
-  isAssignableTo(_other: Type): boolean { return true; }
+  toString(): string {
+    return 'Any';
+  }
+  equals(other: Type): boolean {
+    return other instanceof AnyType;
+  }
+  isAssignableTo(_other: Type): boolean {
+    return true;
+  }
 }
 
 export class UnknownType implements Type {
   readonly kind = 'unknown' as const;
-  toString(): string { return 'Unknown'; }
-  equals(other: Type): boolean { return other instanceof UnknownType; }
+  toString(): string {
+    return 'Unknown';
+  }
+  equals(other: Type): boolean {
+    return other instanceof UnknownType;
+  }
   isAssignableTo(other: Type): boolean {
     return other instanceof AnyType || other instanceof UnknownType;
   }
@@ -581,20 +605,29 @@ export class UnknownType implements Type {
 
 export class NeverType implements Type {
   readonly kind = 'never' as const;
-  toString(): string { return 'Never'; }
-  equals(other: Type): boolean { return other instanceof NeverType; }
-  isAssignableTo(_other: Type): boolean { return true; }
+  toString(): string {
+    return 'Never';
+  }
+  equals(other: Type): boolean {
+    return other instanceof NeverType;
+  }
+  isAssignableTo(_other: Type): boolean {
+    return true;
+  }
 }
 
 export class VoidType implements Type {
   readonly kind = 'void' as const;
-  toString(): string { return 'Void'; }
-  equals(other: Type): boolean { return other instanceof VoidType; }
+  toString(): string {
+    return 'Void';
+  }
+  equals(other: Type): boolean {
+    return other instanceof VoidType;
+  }
   isAssignableTo(other: Type): boolean {
     return other instanceof VoidType || other instanceof AnyType;
   }
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              BUILT-IN TYPES
@@ -611,33 +644,9 @@ export const BuiltinTypes = {
   Void: new VoidType(),
 } as const;
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPES NAMESPACE
 // ═══════════════════════════════════════════════════════════════════════════════
-
-export const TypeKind = {
-  Primitive: 'primitive',
-  Literal: 'literal',
-  Array: 'array',
-  Tuple: 'tuple',
-  Object: 'object',
-  Function: 'function',
-  Union: 'union',
-  Intersection: 'intersection',
-  TypeVariable: 'typeVariable',
-  Generic: 'generic',
-  Persona: 'persona',
-  Team: 'team',
-  Workflow: 'workflow',
-  Skill: 'skill',
-  Any: 'any',
-  Unknown: 'unknown',
-  Never: 'never',
-  Void: 'void',
-} as const;
-
-export type TypeKind = typeof TypeKind[keyof typeof TypeKind];
 
 export const Types = {
   // Primitive types
@@ -657,15 +666,18 @@ export const Types = {
   intersection: (members: Type[]) => new IntersectionType(members),
   literal: (value: string | number | boolean) => new LiteralType(value),
   object: (properties: ObjectType['properties']) => new ObjectType(properties),
-  function: (params: FunctionType['parameters'], returnType: Type) => new FunctionType(params, returnType),
-  typeVariable: (name: string, constraint?: Type) => new TypeVariable(name, constraint),
+  function: (params: FunctionType['parameters'], returnType: Type) =>
+    new FunctionType(params, returnType),
+  typeVariable: (name: string, constraint?: Type) =>
+    new TypeVariable(name, constraint),
   generic: (base: Type, args: Type[]) => new GenericType(base, args),
-  persona: (name: string, skills: string[], constraints: string[]) => new PersonaType(name, skills, constraints),
+  persona: (name: string, skills: string[], constraints: string[]) =>
+    new PersonaType(name, skills, constraints),
   team: (name: string, members: PersonaType[]) => new TeamType(name, members),
-  workflow: (name: string, input: Type, output: Type) => new WorkflowType(name, input, output),
+  workflow: (name: string, input: Type, output: Type) =>
+    new WorkflowType(name, input, output),
   skill: (name: string, items: string[]) => new SkillType(name, items),
 } as const;
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE CHECKER
@@ -698,10 +710,13 @@ export class TypeChecker {
     if (b.isAssignableTo(a)) return a;
 
     // For numeric types, prefer Float
-    if ((a.kind === 'primitive' && b.kind === 'primitive')) {
+    if (a.kind === 'primitive' && b.kind === 'primitive') {
       const aName = (a as PrimitiveType).name;
       const bName = (b as PrimitiveType).name;
-      if ((aName === 'Int' && bName === 'Float') || (aName === 'Float' && bName === 'Int')) {
+      if (
+        (aName === 'Int' && bName === 'Float') ||
+        (aName === 'Float' && bName === 'Int')
+      ) {
         return Types.Float;
       }
     }
@@ -721,14 +736,14 @@ export class TypeChecker {
       return new ArrayType(this.widenType(type.elementType));
     }
     if (type instanceof TupleType) {
-      return new TupleType(type.elements.map(e => this.widenType(e)));
+      return new TupleType(type.elements.map((e) => this.widenType(e)));
     }
     if (type instanceof UnionType) {
-      const widened = type.members.map(m => this.widenType(m));
+      const widened = type.members.map((m) => this.widenType(m));
       // Deduplicate
       const unique: Type[] = [];
       for (const t of widened) {
-        if (!unique.some(u => u.equals(t))) {
+        if (!unique.some((u) => u.equals(t))) {
           unique.push(t);
         }
       }
@@ -737,7 +752,6 @@ export class TypeChecker {
     return type;
   }
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              SYMBOL TABLE
@@ -757,7 +771,7 @@ export const SymbolKind = {
   Module: 'module',
 } as const;
 
-export type SymbolKind = typeof SymbolKind[keyof typeof SymbolKind];
+export type SymbolKind = (typeof SymbolKind)[keyof typeof SymbolKind];
 
 export interface Symbol {
   readonly name: string;
@@ -882,10 +896,11 @@ export class SymbolTable {
   }
 
   getExportedSymbols(): Symbol[] {
-    return Array.from(this.globalScope.symbols.values()).filter(s => s.exported);
+    return Array.from(this.globalScope.symbols.values()).filter(
+      (s) => s.exported
+    );
   }
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              SEMANTIC ANALYZER
@@ -904,7 +919,7 @@ export interface AnalysisResult {
 
 /**
  * Semantic Analyzer
- * 
+ *
  * Performs:
  * - Symbol table building
  * - Type checking
@@ -918,49 +933,49 @@ export class SemanticAnalyzer {
   private warnings: PCLError[] = [];
   private readonly source: string;
   private readonly strict: boolean;
-  
+
   // Type inference context
   private typeVariables: Map<string, Type> = new Map();
   private returnType: Type | null = null;
-  
+
   constructor(options: AnalyzerOptions = {}) {
     this.source = options.source ?? '<anonymous>';
     this.strict = options.strict ?? false;
     this.globalScope = new SymbolTable(undefined, 'global');
     this.currentScope = this.globalScope;
   }
-  
+
   /**
    * Analyze a program
    */
   analyze(program: AST.Program): Result<AnalysisResult, PCLError[]> {
     // First pass: collect declarations
     this.collectDeclarations(program);
-    
+
     // Second pass: resolve types and check
     this.checkProgram(program);
-    
+
     if (this.errors.length > 0) {
       return Err(this.errors);
     }
-    
+
     return Ok({
       symbols: this.globalScope,
       errors: this.errors,
       warnings: this.warnings,
     });
   }
-  
+
   // ─────────────────────────────────────────────────────────────────────────────
   //                           Declaration Collection
   // ─────────────────────────────────────────────────────────────────────────────
-  
+
   private collectDeclarations(program: AST.Program): void {
     for (const stmt of program.statements) {
       this.collectStatement(stmt);
     }
   }
-  
+
   private collectStatement(stmt: AST.Statement): void {
     switch (stmt.kind) {
       case 'PersonaDeclaration':
@@ -1001,15 +1016,15 @@ export class SemanticAnalyzer {
         break;
     }
   }
-  
+
   private collectPersona(decl: AST.PersonaDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate declaration: ${name}`, decl.span);
       return;
     }
-    
+
     // Collect methods
     const methods = new Map<string, FunctionType>();
     for (const member of decl.body.members) {
@@ -1018,7 +1033,7 @@ export class SemanticAnalyzer {
         methods.set(method.name.name, this.methodToFunctionType(method));
       }
     }
-    
+
     // Find parent persona
     let parent: PersonaType | undefined;
     if (decl.extends && decl.extends.length > 0) {
@@ -1028,12 +1043,12 @@ export class SemanticAnalyzer {
         parent = parentSymbol.type;
       }
     }
-    
+
     // Collect skills and constraints
     const skills: string[] = [];
     const constraints: string[] = [];
     let intent = '';
-    
+
     for (const member of decl.body.members) {
       if (member.kind === 'SkillBlock') {
         for (const item of (member as AST.SkillBlock).items) {
@@ -1049,14 +1064,24 @@ export class SemanticAnalyzer {
         }
       } else if (member.kind === 'PropertyDeclaration') {
         const prop = member as AST.PropertyDeclaration;
-        if (prop.name.name === 'intent' && prop.initializer?.kind === 'StringLiteral') {
+        if (
+          prop.name.name === 'intent' &&
+          prop.initializer?.kind === 'StringLiteral'
+        ) {
           intent = (prop.initializer as AST.StringLiteral).value;
         }
       }
     }
-    
-    const type = new PersonaType(name, intent, skills, constraints, methods, parent);
-    
+
+    const type = new PersonaType(
+      name,
+      intent,
+      skills,
+      constraints,
+      methods,
+      parent
+    );
+
     this.currentScope.define({
       name,
       kind: 'persona',
@@ -1066,22 +1091,22 @@ export class SemanticAnalyzer {
       exported: this.hasModifier(decl.modifiers, 'pub'),
       mutable: false,
     });
-    
+
     this.currentScope.defineType(name, type);
   }
-  
+
   private collectTeam(decl: AST.TeamDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate declaration: ${name}`, decl.span);
       return;
     }
-    
+
     // Collect members
     const members: PersonaType[] = [];
     let primary: PersonaType | undefined;
-    
+
     for (const member of decl.body.members) {
       if (member.kind === 'TeamMembersDeclaration') {
         const membersDecl = member as AST.TeamMembersDeclaration;
@@ -1101,9 +1126,9 @@ export class SemanticAnalyzer {
         }
       }
     }
-    
+
     const type = new TeamType(name, members, primary);
-    
+
     this.currentScope.define({
       name,
       kind: 'team',
@@ -1113,31 +1138,35 @@ export class SemanticAnalyzer {
       exported: this.hasModifier(decl.modifiers, 'pub'),
       mutable: false,
     });
-    
+
     this.currentScope.defineType(name, type);
   }
-  
+
   private collectWorkflow(decl: AST.WorkflowDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate declaration: ${name}`, decl.span);
       return;
     }
-    
+
     let inputType: Type = BuiltinTypes.Any;
     let outputType: Type = BuiltinTypes.Any;
-    
+
     for (const member of decl.body.members) {
       if (member.kind === 'WorkflowInputDeclaration') {
-        inputType = this.resolveTypeNode((member as AST.WorkflowInputDeclaration).type);
+        inputType = this.resolveTypeNode(
+          (member as AST.WorkflowInputDeclaration).type
+        );
       } else if (member.kind === 'WorkflowOutputDeclaration') {
-        outputType = this.resolveTypeNode((member as AST.WorkflowOutputDeclaration).type);
+        outputType = this.resolveTypeNode(
+          (member as AST.WorkflowOutputDeclaration).type
+        );
       }
     }
-    
+
     const type = new WorkflowType(name, inputType, outputType);
-    
+
     this.currentScope.define({
       name,
       kind: 'workflow',
@@ -1147,20 +1176,20 @@ export class SemanticAnalyzer {
       exported: this.hasModifier(decl.modifiers, 'pub'),
       mutable: false,
     });
-    
+
     this.currentScope.defineType(name, type);
   }
-  
+
   private collectTypeAlias(decl: AST.TypeDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate type declaration: ${name}`, decl.span);
       return;
     }
-    
+
     const type = this.resolveTypeNode(decl.type);
-    
+
     this.currentScope.define({
       name,
       kind: 'type',
@@ -1170,24 +1199,25 @@ export class SemanticAnalyzer {
       exported: this.hasModifier(decl.modifiers, 'pub'),
       mutable: false,
     });
-    
+
     this.currentScope.defineType(name, type);
   }
-  
+
   private collectInterface(decl: AST.InterfaceDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate interface declaration: ${name}`, decl.span);
       return;
     }
-    
+
     const members = new Map<string, ObjectTypeMember>();
-    
+
     for (const member of decl.members) {
       if (member.kind === 'PropertySignature') {
         const prop = member as AST.PropertySignature;
-        const propName = typeof prop.name === 'string' ? prop.name : prop.name.name;
+        const propName =
+          typeof prop.name === 'string' ? prop.name : prop.name.name;
         members.set(propName, {
           name: propName,
           type: this.resolveTypeNode(prop.type),
@@ -1196,7 +1226,7 @@ export class SemanticAnalyzer {
         });
       } else if (member.kind === 'MethodSignature') {
         const method = member as AST.MethodSignature;
-        const params: FunctionParameter[] = method.parameters.map(p => ({
+        const params: FunctionParameter[] = method.parameters.map((p) => ({
           name: p.name.kind === 'Identifier' ? p.name.name : '',
           type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
           optional: p.optional,
@@ -1204,15 +1234,18 @@ export class SemanticAnalyzer {
         }));
         members.set(method.name.name, {
           name: method.name.name,
-          type: new FunctionType(params, this.resolveTypeNode(method.returnType)),
+          type: new FunctionType(
+            params,
+            this.resolveTypeNode(method.returnType)
+          ),
           optional: method.optional,
           readonly: false,
         });
       }
     }
-    
+
     const type = new ObjectType(members);
-    
+
     this.currentScope.define({
       name,
       kind: 'interface',
@@ -1222,20 +1255,20 @@ export class SemanticAnalyzer {
       exported: this.hasModifier(decl.modifiers, 'pub'),
       mutable: false,
     });
-    
+
     this.currentScope.defineType(name, type);
   }
-  
+
   private collectEnum(decl: AST.EnumDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate enum declaration: ${name}`, decl.span);
       return;
     }
-    
+
     // Create a union of literal types for the enum
-    const memberTypes: Type[] = decl.members.map(member => {
+    const memberTypes: Type[] = decl.members.map((member) => {
       if (member.initializer) {
         const initType = this.inferExpressionType(member.initializer);
         if (initType instanceof LiteralType) {
@@ -1245,9 +1278,9 @@ export class SemanticAnalyzer {
       }
       return new LiteralType(member.name.name, BuiltinTypes.String);
     });
-    
+
     const type = UnionType.create(memberTypes);
-    
+
     this.currentScope.define({
       name,
       kind: 'enum',
@@ -1257,20 +1290,20 @@ export class SemanticAnalyzer {
       exported: this.hasModifier(decl.modifiers, 'pub'),
       mutable: false,
     });
-    
+
     this.currentScope.defineType(name, type);
-    
+
     // Also add each enum member
     for (const member of decl.members) {
       const memberName = `${name}.${member.name.name}`;
       let memberType: Type;
-      
+
       if (member.initializer) {
         memberType = this.inferExpressionType(member.initializer);
       } else {
         memberType = new LiteralType(member.name.name, BuiltinTypes.String);
       }
-      
+
       this.currentScope.define({
         name: memberName,
         kind: 'variable',
@@ -1282,17 +1315,17 @@ export class SemanticAnalyzer {
       });
     }
   }
-  
+
   private collectFunction(decl: AST.FunctionDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate function declaration: ${name}`, decl.span);
       return;
     }
-    
+
     const type = this.functionToType(decl);
-    
+
     this.currentScope.define({
       name,
       kind: 'function',
@@ -1303,17 +1336,20 @@ export class SemanticAnalyzer {
       mutable: false,
     });
   }
-  
+
   private collectVariables(decl: AST.VariableDeclaration): void {
     for (const declarator of decl.declarations) {
       if (declarator.id.kind === 'Identifier') {
         const name = declarator.id.name;
-        
+
         if (this.currentScope.hasLocal(name)) {
-          this.error(`Duplicate variable declaration: ${name}`, declarator.span);
+          this.error(
+            `Duplicate variable declaration: ${name}`,
+            declarator.span
+          );
           continue;
         }
-        
+
         let type: Type;
         if (declarator.type) {
           type = this.resolveTypeNode(declarator.type);
@@ -1322,7 +1358,7 @@ export class SemanticAnalyzer {
         } else {
           type = BuiltinTypes.Any;
         }
-        
+
         this.currentScope.define({
           name,
           kind: 'variable',
@@ -1335,15 +1371,15 @@ export class SemanticAnalyzer {
       }
     }
   }
-  
+
   private collectSkill(decl: AST.SkillDeclaration): void {
     const name = decl.id.name;
-    
+
     if (this.currentScope.hasLocal(name)) {
       this.error(`Duplicate skill declaration: ${name}`, decl.span);
       return;
     }
-    
+
     const items: string[] = [];
     for (const member of decl.body.members) {
       if (member.kind === 'SkillItemsDeclaration') {
@@ -1352,9 +1388,9 @@ export class SemanticAnalyzer {
         }
       }
     }
-    
+
     const type = new SkillType(name, items);
-    
+
     this.currentScope.define({
       name,
       kind: 'skill',
@@ -1364,10 +1400,10 @@ export class SemanticAnalyzer {
       exported: this.hasModifier(decl.modifiers, 'pub'),
       mutable: false,
     });
-    
+
     this.currentScope.defineType(name, type);
   }
-  
+
   private collectImport(decl: AST.ImportDeclaration): void {
     // For now, just create placeholder symbols
     // Full implementation would resolve the module
@@ -1408,7 +1444,7 @@ export class SemanticAnalyzer {
       }
     }
   }
-  
+
   private collectExport(decl: AST.ExportDeclaration): void {
     if (decl.declaration) {
       this.collectStatement(decl.declaration);
@@ -1425,22 +1461,22 @@ export class SemanticAnalyzer {
       }
     }
   }
-  
+
   private collectModule(decl: AST.ModuleDeclaration): void {
-    const name = decl.id.parts.map(p => p.name).join('::');
-    
+    const name = decl.id.parts.map((p) => p.name).join('::');
+
     // Create module scope
     const moduleScope = new SymbolTable(this.currentScope, name);
     const savedScope = this.currentScope;
     this.currentScope = moduleScope;
-    
+
     // Collect module contents
     for (const stmt of decl.body) {
       this.collectStatement(stmt);
     }
-    
+
     this.currentScope = savedScope;
-    
+
     // Add module symbol
     this.currentScope.define({
       name,
@@ -1452,17 +1488,17 @@ export class SemanticAnalyzer {
       mutable: false,
     });
   }
-  
+
   // ─────────────────────────────────────────────────────────────────────────────
   //                           Type Checking
   // ─────────────────────────────────────────────────────────────────────────────
-  
+
   private checkProgram(program: AST.Program): void {
     for (const stmt of program.statements) {
       this.checkStatement(stmt);
     }
   }
-  
+
   private checkStatement(stmt: AST.Statement): void {
     switch (stmt.kind) {
       case 'PersonaDeclaration':
@@ -1505,7 +1541,7 @@ export class SemanticAnalyzer {
         break;
     }
   }
-  
+
   private checkPersona(decl: AST.PersonaDeclaration): void {
     // Check that parent persona exists
     if (decl.extends) {
@@ -1519,7 +1555,7 @@ export class SemanticAnalyzer {
         }
       }
     }
-    
+
     // Check methods
     for (const member of decl.body.members) {
       if (member.kind === 'MethodDeclaration') {
@@ -1527,11 +1563,11 @@ export class SemanticAnalyzer {
       }
     }
   }
-  
+
   private checkTeam(decl: AST.TeamDeclaration): void {
     const teamSymbol = this.currentScope.lookup(decl.id.name);
     if (!teamSymbol || !(teamSymbol.type instanceof TeamType)) return;
-    
+
     for (const member of decl.body.members) {
       if (member.kind === 'TeamMembersDeclaration') {
         for (const ref of (member as AST.TeamMembersDeclaration).members) {
@@ -1549,21 +1585,28 @@ export class SemanticAnalyzer {
         const persona = this.currentScope.lookup(personaName);
         if (!persona) {
           this.error(`Unknown persona: ${personaName}`, primaryRef.span);
-        } else if (!teamSymbol.type.members.some(m => m.name === personaName)) {
-          this.error(`Primary persona ${personaName} is not a team member`, primaryRef.span);
+        } else if (
+          !teamSymbol.type.members.some((m) => m.name === personaName)
+        ) {
+          this.error(
+            `Primary persona ${personaName} is not a team member`,
+            primaryRef.span
+          );
         }
       }
     }
   }
-  
+
   private checkWorkflow(decl: AST.WorkflowDeclaration): void {
     for (const member of decl.body.members) {
       if (member.kind === 'WorkflowStepsDeclaration') {
-        this.checkWorkflowExpression((member as AST.WorkflowStepsDeclaration).steps);
+        this.checkWorkflowExpression(
+          (member as AST.WorkflowStepsDeclaration).steps
+        );
       }
     }
   }
-  
+
   private checkWorkflowExpression(expr: AST.WorkflowExpression): void {
     switch (expr.kind) {
       case 'WorkflowSequenceExpr':
@@ -1596,32 +1639,37 @@ export class SemanticAnalyzer {
         if (loop.condition) this.checkExpression(loop.condition);
         break;
       case 'WorkflowPersonaRef':
-        const personaName = this.getPersonaRefName((expr as AST.WorkflowPersonaRef).ref);
+        const personaName = this.getPersonaRefName(
+          (expr as AST.WorkflowPersonaRef).ref
+        );
         const persona = this.currentScope.lookup(personaName);
         if (!persona) {
           this.error(`Unknown persona: ${personaName}`, expr.span);
-        } else if (!(persona.type instanceof PersonaType) && !(persona.type instanceof TeamType)) {
+        } else if (
+          !(persona.type instanceof PersonaType) &&
+          !(persona.type instanceof TeamType)
+        ) {
           this.error(`${personaName} is not a persona or team`, expr.span);
         }
         break;
     }
   }
-  
+
   private checkFunction(decl: AST.FunctionDeclaration): void {
     if (!decl.body) return;
-    
+
     // Enter function scope
     const functionScope = new SymbolTable(this.currentScope, decl.id.name);
     const savedScope = this.currentScope;
     this.currentScope = functionScope;
-    
+
     // Add parameters
     for (const param of decl.parameters) {
       if (param.name.kind === 'Identifier') {
-        const paramType = param.type 
-          ? this.resolveTypeNode(param.type) 
+        const paramType = param.type
+          ? this.resolveTypeNode(param.type)
           : BuiltinTypes.Any;
-        
+
         this.currentScope.define({
           name: param.name.name,
           kind: 'parameter',
@@ -1633,35 +1681,35 @@ export class SemanticAnalyzer {
         });
       }
     }
-    
+
     // Set return type for checking return statements
     const savedReturnType = this.returnType;
-    this.returnType = decl.returnType 
-      ? this.resolveTypeNode(decl.returnType) 
+    this.returnType = decl.returnType
+      ? this.resolveTypeNode(decl.returnType)
       : BuiltinTypes.Void;
-    
+
     // Check body
     this.checkBlock(decl.body);
-    
+
     this.returnType = savedReturnType;
     this.currentScope = savedScope;
   }
-  
+
   private checkMethod(decl: AST.MethodDeclaration): void {
     if (!decl.body) return;
-    
+
     // Enter method scope
     const methodScope = new SymbolTable(this.currentScope, decl.name.name);
     const savedScope = this.currentScope;
     this.currentScope = methodScope;
-    
+
     // Add parameters
     for (const param of decl.parameters) {
       if (param.name.kind === 'Identifier') {
-        const paramType = param.type 
-          ? this.resolveTypeNode(param.type) 
+        const paramType = param.type
+          ? this.resolveTypeNode(param.type)
           : BuiltinTypes.Any;
-        
+
         this.currentScope.define({
           name: param.name.name,
           kind: 'parameter',
@@ -1673,25 +1721,25 @@ export class SemanticAnalyzer {
         });
       }
     }
-    
+
     // Set return type
     const savedReturnType = this.returnType;
-    this.returnType = decl.returnType 
-      ? this.resolveTypeNode(decl.returnType) 
+    this.returnType = decl.returnType
+      ? this.resolveTypeNode(decl.returnType)
       : BuiltinTypes.Void;
-    
+
     // Check body
     this.checkBlock(decl.body);
-    
+
     this.returnType = savedReturnType;
     this.currentScope = savedScope;
   }
-  
+
   private checkVariableDeclaration(decl: AST.VariableDeclaration): void {
     for (const declarator of decl.declarations) {
       if (declarator.init) {
         const initType = this.checkExpression(declarator.init);
-        
+
         if (declarator.type) {
           const declaredType = this.resolveTypeNode(declarator.type);
           if (!initType.isAssignableTo(declaredType)) {
@@ -1706,15 +1754,18 @@ export class SemanticAnalyzer {
       }
     }
   }
-  
+
   private checkIfStatement(stmt: AST.IfStatement): void {
     const testType = this.checkExpression(stmt.test);
     if (!testType.isAssignableTo(BuiltinTypes.Bool) && this.strict) {
-      this.warning(`Condition should be a boolean, got '${testType.toString()}'`, stmt.test.span);
+      this.warning(
+        `Condition should be a boolean, got '${testType.toString()}'`,
+        stmt.test.span
+      );
     }
-    
+
     this.checkBlock(stmt.consequent);
-    
+
     if (stmt.alternate) {
       if (stmt.alternate.kind === 'IfStatement') {
         this.checkIfStatement(stmt.alternate as AST.IfStatement);
@@ -1723,12 +1774,14 @@ export class SemanticAnalyzer {
       }
     }
   }
-  
-  private checkForStatement(stmt: AST.ForStatement | AST.ForInStatement | AST.ForOfStatement): void {
+
+  private checkForStatement(
+    stmt: AST.ForStatement | AST.ForInStatement | AST.ForOfStatement
+  ): void {
     const loopScope = new SymbolTable(this.currentScope, 'for');
     const savedScope = this.currentScope;
     this.currentScope = loopScope;
-    
+
     if (stmt.kind === 'ForInStatement' || stmt.kind === 'ForOfStatement') {
       const leftNode = stmt.left;
       if (leftNode.kind === 'Identifier') {
@@ -1760,33 +1813,33 @@ export class SemanticAnalyzer {
         this.checkExpression(stmt.update);
       }
     }
-    
+
     this.checkBlock(stmt.body);
     this.currentScope = savedScope;
   }
-  
+
   private checkWhileStatement(stmt: AST.WhileStatement): void {
     const testType = this.checkExpression(stmt.test);
     if (!testType.isAssignableTo(BuiltinTypes.Bool) && this.strict) {
       this.warning(`While condition should be boolean`, stmt.test.span);
     }
-    
+
     this.checkBlock(stmt.body);
   }
-  
+
   private checkTryStatement(stmt: AST.TryStatement): void {
     this.checkBlock(stmt.block);
-    
+
     for (const handler of stmt.handlers) {
       const catchScope = new SymbolTable(this.currentScope, 'catch');
       const savedScope = this.currentScope;
       this.currentScope = catchScope;
-      
+
       if (handler.param && handler.param.kind === 'Identifier') {
-        const paramType = handler.type 
-          ? this.resolveTypeNode(handler.type) 
+        const paramType = handler.type
+          ? this.resolveTypeNode(handler.type)
           : BuiltinTypes.Any;
-        
+
         this.currentScope.define({
           name: handler.param.name,
           kind: 'variable',
@@ -1796,117 +1849,133 @@ export class SemanticAnalyzer {
           mutable: false,
         });
       }
-      
+
       this.checkBlock(handler.body);
       this.currentScope = savedScope;
     }
-    
+
     if (stmt.finalizer) {
       this.checkBlock(stmt.finalizer);
     }
   }
-  
+
   private checkReturnStatement(stmt: AST.ReturnStatement): void {
     if (stmt.argument) {
       const returnedType = this.checkExpression(stmt.argument);
-      
+
       if (this.returnType && !returnedType.isAssignableTo(this.returnType)) {
         this.error(
           `Type '${returnedType.toString()}' is not assignable to return type '${this.returnType.toString()}'`,
           stmt.span
         );
       }
-    } else if (this.returnType && !BuiltinTypes.Void.isAssignableTo(this.returnType)) {
+    } else if (
+      this.returnType &&
+      !BuiltinTypes.Void.isAssignableTo(this.returnType)
+    ) {
       this.error('Missing return value', stmt.span);
     }
   }
-  
+
   private checkBlock(block: AST.BlockStatement): void {
     const blockScope = new SymbolTable(this.currentScope, 'block');
     const savedScope = this.currentScope;
     this.currentScope = blockScope;
-    
+
     for (const stmt of block.statements) {
       this.checkStatement(stmt);
     }
-    
+
     this.currentScope = savedScope;
   }
-  
+
   private checkExpression(expr: AST.Expression): Type {
     return this.inferExpressionType(expr);
   }
-  
+
   // ─────────────────────────────────────────────────────────────────────────────
   //                           Type Inference
   // ─────────────────────────────────────────────────────────────────────────────
-  
+
   private inferExpressionType(expr: AST.Expression): Type {
     switch (expr.kind) {
       case 'StringLiteral':
-        return new LiteralType((expr as AST.StringLiteral).value, BuiltinTypes.String);
-      
+        return new LiteralType(
+          (expr as AST.StringLiteral).value,
+          BuiltinTypes.String
+        );
+
       case 'NumberLiteral':
         const num = expr as AST.NumberLiteral;
         const isInt = Number.isInteger(num.value);
-        return new LiteralType(num.value, isInt ? BuiltinTypes.Int : BuiltinTypes.Float);
-      
+        return new LiteralType(
+          num.value,
+          isInt ? BuiltinTypes.Int : BuiltinTypes.Float
+        );
+
       case 'BooleanLiteral':
-        return new LiteralType((expr as AST.BooleanLiteral).value, BuiltinTypes.Bool);
-      
+        return new LiteralType(
+          (expr as AST.BooleanLiteral).value,
+          BuiltinTypes.Bool
+        );
+
       case 'NullLiteral':
         return BuiltinTypes.Any;
-      
+
       case 'Identifier':
         return this.inferIdentifier(expr as AST.Identifier);
-      
+
       case 'BinaryExpression':
         return this.inferBinaryExpression(expr as AST.BinaryExpression);
-      
+
       case 'UnaryExpression':
         return this.inferUnaryExpression(expr as AST.UnaryExpression);
-      
+
       case 'CallExpression':
         return this.inferCallExpression(expr as AST.CallExpression);
-      
+
       case 'MemberExpression':
         return this.inferMemberExpression(expr as AST.MemberExpression);
-      
+
       case 'IndexExpression':
         return this.inferIndexExpression(expr as AST.IndexExpression);
-      
+
       case 'ArrayExpression':
         return this.inferArrayExpression(expr as AST.ArrayExpression);
-      
+
       case 'ObjectExpression':
         return this.inferObjectExpression(expr as AST.ObjectExpression);
-      
+
       case 'ArrowFunctionExpression':
         return this.inferArrowFunction(expr as AST.ArrowFunctionExpression);
-      
+
       case 'FunctionExpression':
         return this.inferFunctionExpression(expr as AST.FunctionExpression);
-      
+
       case 'ConditionalExpression':
-        return this.inferConditionalExpression(expr as AST.ConditionalExpression);
-      
+        return this.inferConditionalExpression(
+          expr as AST.ConditionalExpression
+        );
+
       case 'AssignmentExpression':
         return this.inferAssignmentExpression(expr as AST.AssignmentExpression);
-      
+
       case 'MatchExpression':
         return this.inferMatchExpression(expr as AST.MatchExpression);
-      
+
       case 'AwaitExpression':
         return this.inferExpressionType((expr as AST.AwaitExpression).argument);
-      
+
       case 'ParenthesizedExpression':
-        return this.inferExpressionType((expr as AST.ParenthesizedExpression).expression);
-      
+        return this.inferExpressionType(
+          (expr as AST.ParenthesizedExpression).expression
+        );
+
       default:
         return BuiltinTypes.Any;
     }
   }
-  
+
   private inferIdentifier(id: AST.Identifier): Type {
     const symbol = this.currentScope.lookup(id.name);
     if (!symbol) {
@@ -1915,15 +1984,18 @@ export class SemanticAnalyzer {
     }
     return symbol.type;
   }
-  
+
   private inferBinaryExpression(expr: AST.BinaryExpression): Type {
     const leftType = this.inferExpressionType(expr.left);
     const rightType = this.inferExpressionType(expr.right);
-    
+
     switch (expr.operator) {
       // Arithmetic
       case '+':
-        if (leftType.isAssignableTo(BuiltinTypes.String) || rightType.isAssignableTo(BuiltinTypes.String)) {
+        if (
+          leftType.isAssignableTo(BuiltinTypes.String) ||
+          rightType.isAssignableTo(BuiltinTypes.String)
+        ) {
           return BuiltinTypes.String;
         }
         return BuiltinTypes.Float;
@@ -1933,7 +2005,7 @@ export class SemanticAnalyzer {
       case '%':
       case '**':
         return BuiltinTypes.Float;
-      
+
       // Comparison
       case '==':
       case '!=':
@@ -1944,15 +2016,15 @@ export class SemanticAnalyzer {
       case '<=':
       case '>=':
         return BuiltinTypes.Bool;
-      
+
       // Logical
       case '&&':
       case '||':
         return UnionType.create([leftType, rightType]);
-      
+
       case '??':
         return UnionType.create([leftType, rightType]);
-      
+
       // Bitwise
       case '&':
       case '|':
@@ -1961,15 +2033,15 @@ export class SemanticAnalyzer {
       case '>>':
       case '>>>':
         return BuiltinTypes.Int;
-      
+
       default:
         return BuiltinTypes.Any;
     }
   }
-  
+
   private inferUnaryExpression(expr: AST.UnaryExpression): Type {
     const argType = this.inferExpressionType(expr.argument);
-    
+
     switch (expr.operator) {
       case '!':
         return BuiltinTypes.Bool;
@@ -1987,25 +2059,31 @@ export class SemanticAnalyzer {
         return BuiltinTypes.Any;
     }
   }
-  
+
   private inferCallExpression(expr: AST.CallExpression): Type {
     const calleeType = this.inferExpressionType(expr.callee);
-    
+
     if (calleeType instanceof FunctionType) {
       // Check argument count
-      const requiredParams = calleeType.parameters.filter(p => !p.optional && !p.rest).length;
+      const requiredParams = calleeType.parameters.filter(
+        (p) => !p.optional && !p.rest
+      ).length;
       if (expr.arguments.length < requiredParams) {
         this.error(
           `Expected ${requiredParams} arguments, got ${expr.arguments.length}`,
           expr.span
         );
       }
-      
+
       // Check argument types
-      for (let i = 0; i < expr.arguments.length && i < calleeType.parameters.length; i++) {
+      for (
+        let i = 0;
+        i < expr.arguments.length && i < calleeType.parameters.length;
+        i++
+      ) {
         const argType = this.inferExpressionType(expr.arguments[i]);
         const paramType = calleeType.parameters[i].type;
-        
+
         if (!argType.isAssignableTo(paramType)) {
           this.error(
             `Argument type '${argType.toString()}' is not assignable to parameter type '${paramType.toString()}'`,
@@ -2013,55 +2091,64 @@ export class SemanticAnalyzer {
           );
         }
       }
-      
+
       return calleeType.returnType;
     }
-    
+
     if (calleeType instanceof PersonaType) {
       // Calling a persona as a function - probably a method call
       return BuiltinTypes.Any;
     }
-    
+
     return BuiltinTypes.Any;
   }
-  
+
   private inferMemberExpression(expr: AST.MemberExpression): Type {
     const objectType = this.inferExpressionType(expr.object);
     const propertyName = expr.property.name;
-    
+
     if (objectType instanceof ObjectType) {
       const member = objectType.getMember(propertyName);
       if (member) return member.type;
-      
+
       if (objectType.indexSignature) {
         return objectType.indexSignature.value;
       }
-      
-      this.error(`Property '${propertyName}' does not exist on type`, expr.span);
+
+      this.error(
+        `Property '${propertyName}' does not exist on type`,
+        expr.span
+      );
       return BuiltinTypes.Any;
     }
-    
+
     if (objectType instanceof PersonaType) {
       const method = objectType.getMethod(propertyName);
       if (method) return method;
-      
-      this.error(`Method '${propertyName}' does not exist on persona '${objectType.name}'`, expr.span);
+
+      this.error(
+        `Method '${propertyName}' does not exist on persona '${objectType.name}'`,
+        expr.span
+      );
       return BuiltinTypes.Any;
     }
-    
+
     return BuiltinTypes.Any;
   }
-  
+
   private inferIndexExpression(expr: AST.IndexExpression): Type {
     const objectType = this.inferExpressionType(expr.object);
     const indexType = this.inferExpressionType(expr.index);
-    
+
     if (objectType instanceof ArrayType) {
       return objectType.elementType;
     }
-    
+
     if (objectType instanceof TupleType) {
-      if (indexType instanceof LiteralType && typeof indexType.value === 'number') {
+      if (
+        indexType instanceof LiteralType &&
+        typeof indexType.value === 'number'
+      ) {
         const idx = indexType.value;
         if (idx >= 0 && idx < objectType.elements.length) {
           return objectType.elements[idx];
@@ -2069,24 +2156,26 @@ export class SemanticAnalyzer {
       }
       return UnionType.create([...objectType.elements]);
     }
-    
+
     if (objectType instanceof ObjectType && objectType.indexSignature) {
       return objectType.indexSignature.value;
     }
-    
+
     return BuiltinTypes.Any;
   }
-  
+
   private inferArrayExpression(expr: AST.ArrayExpression): Type {
     if (expr.elements.length === 0) {
       return new ArrayType(BuiltinTypes.Any);
     }
-    
+
     const elementTypes: Type[] = [];
     for (const element of expr.elements) {
       if (element === null) continue;
       if (element.kind === 'SpreadElement') {
-        const spreadType = this.inferExpressionType((element as AST.SpreadElement).argument);
+        const spreadType = this.inferExpressionType(
+          (element as AST.SpreadElement).argument
+        );
         if (spreadType instanceof ArrayType) {
           elementTypes.push(spreadType.elementType);
         }
@@ -2094,21 +2183,26 @@ export class SemanticAnalyzer {
         elementTypes.push(this.inferExpressionType(element));
       }
     }
-    
+
     const unionType = UnionType.create(elementTypes);
     return new ArrayType(unionType);
   }
-  
+
   private inferObjectExpression(expr: AST.ObjectExpression): Type {
     const members = new Map<string, ObjectTypeMember>();
-    
+
     for (const prop of expr.properties) {
       if (prop.kind === 'ObjectKeyValueProperty') {
         const kvProp = prop as AST.ObjectKeyValueProperty;
-        const name = kvProp.key.kind === 'Identifier' 
-          ? kvProp.key.name 
-          : String(kvProp.key.kind === 'StringLiteral' ? kvProp.key.value : kvProp.key.value);
-        
+        const name =
+          kvProp.key.kind === 'Identifier'
+            ? kvProp.key.name
+            : String(
+                kvProp.key.kind === 'StringLiteral'
+                  ? kvProp.key.value
+                  : kvProp.key.value
+              );
+
         members.set(name, {
           name,
           type: this.inferExpressionType(kvProp.value),
@@ -2118,7 +2212,7 @@ export class SemanticAnalyzer {
       } else if (prop.kind === 'ObjectShorthandProperty') {
         const shortProp = prop as AST.ObjectShorthandProperty;
         const name = shortProp.key.name;
-        
+
         members.set(name, {
           name,
           type: this.inferIdentifier(shortProp.key),
@@ -2128,13 +2222,13 @@ export class SemanticAnalyzer {
       } else if (prop.kind === 'ObjectMethodProperty') {
         const methodProp = prop as AST.ObjectMethodProperty;
         const name = methodProp.key.name;
-        const params: FunctionParameter[] = methodProp.parameters.map(p => ({
+        const params: FunctionParameter[] = methodProp.parameters.map((p) => ({
           name: p.name.kind === 'Identifier' ? p.name.name : '',
           type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
           optional: p.optional,
           rest: p.rest,
         }));
-        
+
         members.set(name, {
           name,
           type: new FunctionType(params, BuiltinTypes.Any),
@@ -2143,18 +2237,18 @@ export class SemanticAnalyzer {
         });
       }
     }
-    
+
     return new ObjectType(members);
   }
-  
+
   private inferArrowFunction(expr: AST.ArrowFunctionExpression): Type {
-    const params: FunctionParameter[] = expr.parameters.map(p => ({
+    const params: FunctionParameter[] = expr.parameters.map((p) => ({
       name: p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
     }));
-    
+
     let returnType: Type;
     if (expr.returnType) {
       returnType = this.resolveTypeNode(expr.returnType);
@@ -2164,117 +2258,137 @@ export class SemanticAnalyzer {
     } else {
       returnType = BuiltinTypes.Void;
     }
-    
+
     return new FunctionType(params, returnType);
   }
-  
+
   private inferFunctionExpression(expr: AST.FunctionExpression): Type {
-    const params: FunctionParameter[] = expr.parameters.map(p => ({
+    const params: FunctionParameter[] = expr.parameters.map((p) => ({
       name: p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
     }));
-    
-    const returnType = expr.returnType 
-      ? this.resolveTypeNode(expr.returnType) 
+
+    const returnType = expr.returnType
+      ? this.resolveTypeNode(expr.returnType)
       : BuiltinTypes.Void;
-    
-    const typeVars = expr.typeParameters.map(tp => 
-      new TypeVariable(
-        tp.name.name,
-        tp.constraint ? this.resolveTypeNode(tp.constraint) : undefined,
-        tp.default ? this.resolveTypeNode(tp.default) : undefined
-      )
+
+    const typeVars = expr.typeParameters.map(
+      (tp) =>
+        new TypeVariable(
+          tp.name.name,
+          tp.constraint ? this.resolveTypeNode(tp.constraint) : undefined,
+          tp.default ? this.resolveTypeNode(tp.default) : undefined
+        )
     );
-    
+
     return new FunctionType(params, returnType, typeVars);
   }
-  
+
   private inferConditionalExpression(expr: AST.ConditionalExpression): Type {
     this.checkExpression(expr.test);
     const consequentType = this.inferExpressionType(expr.consequent);
     const alternateType = this.inferExpressionType(expr.alternate);
-    
+
     return UnionType.create([consequentType, alternateType]);
   }
-  
+
   private inferAssignmentExpression(expr: AST.AssignmentExpression): Type {
     const leftType = this.inferExpressionType(expr.left);
     const rightType = this.inferExpressionType(expr.right);
-    
+
     if (!rightType.isAssignableTo(leftType)) {
       this.error(
         `Type '${rightType.toString()}' is not assignable to type '${leftType.toString()}'`,
         expr.span
       );
     }
-    
+
     // Check mutability
     if (expr.left.kind === 'Identifier') {
-      const symbol = this.currentScope.lookup((expr.left as AST.Identifier).name);
+      const symbol = this.currentScope.lookup(
+        (expr.left as AST.Identifier).name
+      );
       if (symbol && !symbol.mutable) {
-        this.error(`Cannot assign to immutable variable '${symbol.name}'`, expr.span);
+        this.error(
+          `Cannot assign to immutable variable '${symbol.name}'`,
+          expr.span
+        );
       }
     }
-    
+
     return rightType;
   }
-  
+
   private inferMatchExpression(expr: AST.MatchExpression): Type {
     this.checkExpression(expr.discriminant);
-    
+
     const caseTypes: Type[] = [];
     for (const c of expr.cases) {
       if (c.consequent.kind === 'BlockStatement') {
         caseTypes.push(BuiltinTypes.Void);
       } else {
-        caseTypes.push(this.inferExpressionType(c.consequent as AST.Expression));
+        caseTypes.push(
+          this.inferExpressionType(c.consequent as AST.Expression)
+        );
       }
     }
-    
+
     return UnionType.create(caseTypes);
   }
-  
+
   // ─────────────────────────────────────────────────────────────────────────────
   //                           Type Resolution
   // ─────────────────────────────────────────────────────────────────────────────
-  
+
   private resolveTypeNode(node: AST.TypeNode): Type {
     switch (node.kind) {
       case 'TypeReference':
         return this.resolveTypeReference(node as AST.TypeReference);
-      
+
       case 'UnionType':
-        const unionTypes = (node as AST.UnionType).types.map(t => this.resolveTypeNode(t));
+        const unionTypes = (node as AST.UnionType).types.map((t) =>
+          this.resolveTypeNode(t)
+        );
         return UnionType.create(unionTypes);
-      
+
       case 'IntersectionType':
-        const intersectionTypes = (node as AST.IntersectionType).types.map(t => this.resolveTypeNode(t));
+        const intersectionTypes = (node as AST.IntersectionType).types.map(
+          (t) => this.resolveTypeNode(t)
+        );
         return IntersectionType.create(intersectionTypes);
-      
+
       case 'ArrayType':
-        return new ArrayType(this.resolveTypeNode((node as AST.ArrayType).elementType));
-      
+        return new ArrayType(
+          this.resolveTypeNode((node as AST.ArrayType).elementType)
+        );
+
       case 'TupleType':
-        return new TupleType((node as AST.TupleType).elements.map(e => this.resolveTypeNode(e)));
-      
+        return new TupleType(
+          (node as AST.TupleType).elements.map((e) => this.resolveTypeNode(e))
+        );
+
       case 'FunctionType':
         const funcNode = node as AST.FunctionType;
-        const params: FunctionParameter[] = funcNode.parameters.map(p => ({
+        const params: FunctionParameter[] = funcNode.parameters.map((p) => ({
           name: p.name.kind === 'Identifier' ? p.name.name : '',
           type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
           optional: p.optional,
           rest: p.rest,
         }));
-        return new FunctionType(params, this.resolveTypeNode(funcNode.returnType));
-      
+        return new FunctionType(
+          params,
+          this.resolveTypeNode(funcNode.returnType)
+        );
+
       case 'ObjectType':
         const members = new Map<string, ObjectTypeMember>();
         for (const member of (node as AST.ObjectType).members) {
           if (member.kind === 'PropertySignature') {
             const prop = member as AST.PropertySignature;
-            const name = typeof prop.name === 'string' ? prop.name : prop.name.name;
+            const name =
+              typeof prop.name === 'string' ? prop.name : prop.name.name;
             members.set(name, {
               name,
               type: this.resolveTypeNode(prop.type),
@@ -2284,7 +2398,7 @@ export class SemanticAnalyzer {
           }
         }
         return new ObjectType(members);
-      
+
       case 'LiteralType':
         const lit = node as AST.LiteralType;
         if (lit.literal.kind === 'StringLiteral') {
@@ -2295,126 +2409,165 @@ export class SemanticAnalyzer {
           return new LiteralType(lit.literal.value, BuiltinTypes.Bool);
         }
         return BuiltinTypes.Any;
-      
+
       case 'ParenthesizedType':
         return this.resolveTypeNode((node as AST.ParenthesizedType).type);
-      
+
       default:
         return BuiltinTypes.Any;
     }
   }
-  
+
   private resolveTypeReference(ref: AST.TypeReference): Type {
-    const name = ref.typeName.parts.map(p => p.name).join('::');
-    
+    const name = ref.typeName.parts.map((p) => p.name).join('::');
+
     // Check built-in types
     const builtin = this.currentScope.lookupType(name);
     if (builtin) {
       if (ref.typeArguments.length > 0) {
-        const args = ref.typeArguments.map(a => this.resolveTypeNode(a));
+        const args = ref.typeArguments.map((a) => this.resolveTypeNode(a));
         return new GenericType(builtin, args);
       }
       return builtin;
     }
-    
+
     // Check declared types
     const symbol = this.currentScope.lookup(name);
     if (symbol) {
       if (ref.typeArguments.length > 0) {
-        const args = ref.typeArguments.map(a => this.resolveTypeNode(a));
+        const args = ref.typeArguments.map((a) => this.resolveTypeNode(a));
         return new GenericType(symbol.type, args);
       }
       return symbol.type;
     }
-    
+
     this.error(`Unknown type: ${name}`, ref.span);
     return BuiltinTypes.Any;
   }
-  
+
   // ─────────────────────────────────────────────────────────────────────────────
   //                           Helper Methods
   // ─────────────────────────────────────────────────────────────────────────────
-  
+
   private functionToType(decl: AST.FunctionDeclaration): FunctionType {
-    const params: FunctionParameter[] = decl.parameters.map(p => ({
+    const params: FunctionParameter[] = decl.parameters.map((p) => ({
       name: p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
     }));
-    
-    const returnType = decl.returnType 
-      ? this.resolveTypeNode(decl.returnType) 
+
+    const returnType = decl.returnType
+      ? this.resolveTypeNode(decl.returnType)
       : BuiltinTypes.Void;
-    
-    const typeVars = decl.typeParameters.map(tp => 
-      new TypeVariable(
-        tp.name.name,
-        tp.constraint ? this.resolveTypeNode(tp.constraint) : undefined,
-        tp.default ? this.resolveTypeNode(tp.default) : undefined
-      )
+
+    const typeVars = decl.typeParameters.map(
+      (tp) =>
+        new TypeVariable(
+          tp.name.name,
+          tp.constraint ? this.resolveTypeNode(tp.constraint) : undefined,
+          tp.default ? this.resolveTypeNode(tp.default) : undefined
+        )
     );
-    
+
     return new FunctionType(params, returnType, typeVars);
   }
-  
+
   private methodToFunctionType(decl: AST.MethodDeclaration): FunctionType {
-    const params: FunctionParameter[] = decl.parameters.map(p => ({
+    const params: FunctionParameter[] = decl.parameters.map((p) => ({
       name: p.name.kind === 'Identifier' ? p.name.name : '',
       type: p.type ? this.resolveTypeNode(p.type) : BuiltinTypes.Any,
       optional: p.optional,
       rest: p.rest,
     }));
-    
-    const returnType = decl.returnType 
-      ? this.resolveTypeNode(decl.returnType) 
+
+    const returnType = decl.returnType
+      ? this.resolveTypeNode(decl.returnType)
       : BuiltinTypes.Void;
-    
-    const typeVars = decl.typeParameters.map(tp => 
-      new TypeVariable(
-        tp.name.name,
-        tp.constraint ? this.resolveTypeNode(tp.constraint) : undefined,
-        tp.default ? this.resolveTypeNode(tp.default) : undefined
-      )
+
+    const typeVars = decl.typeParameters.map(
+      (tp) =>
+        new TypeVariable(
+          tp.name.name,
+          tp.constraint ? this.resolveTypeNode(tp.constraint) : undefined,
+          tp.default ? this.resolveTypeNode(tp.default) : undefined
+        )
     );
-    
+
     return new FunctionType(params, returnType, typeVars);
   }
-  
+
   private getPersonaRefName(ref: AST.PersonaReference): string {
     if (ref.ref.type === 'id') {
       return ref.ref.id.name;
     }
     if (ref.ref.type === 'qualified') {
-      return ref.ref.path.parts.map(p => p.name).join('::');
+      return ref.ref.path.parts.map((p) => p.name).join('::');
     }
     if (ref.ref.type === 'spawn') {
       return ref.ref.persona.name;
     }
     return '';
   }
-  
+
   private hasModifier(modifiers: AST.Modifier[], type: string): boolean {
-    return modifiers.some(m => m.type === type);
+    return modifiers.some((m) => m.type === type);
   }
-  
+
   private error(message: string, span?: Span): void {
-    this.errors.push(createError(
-      ErrorCode.TYPE_MISMATCH,
-      message,
-      { span }
-    ));
+    this.errors.push(createError(ErrorCode.TYPE_MISMATCH, message, { span }));
   }
-  
+
   private warning(message: string, span?: Span): void {
-    this.warnings.push(createError(
-      ErrorCode.TYPE_MISMATCH,
-      message,
-      { span }
-    ));
+    this.warnings.push(createError(ErrorCode.TYPE_MISMATCH, message, { span }));
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+//                              HELPER FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Create a new symbol table
+ */
+export function createSymbolTable(): SymbolTable {
+  return new SymbolTable();
+}
+
+/**
+ * Create a new type checker
+ */
+export function createTypeChecker(): TypeChecker {
+  return new TypeChecker();
+}
+
+/**
+ * Symbol flags for additional metadata
+ */
+export const SymbolFlags = {
+  None: 0,
+  Exported: 1 << 0,
+  Mutable: 1 << 1,
+  Readonly: 1 << 2,
+  Optional: 1 << 3,
+  Deprecated: 1 << 4,
+} as const;
+
+export type SymbolFlags = (typeof SymbolFlags)[keyof typeof SymbolFlags];
+
+/**
+ * Scope kinds for symbol table scopes
+ */
+export const ScopeKind = {
+  Global: 'global',
+  Module: 'module',
+  Function: 'function',
+  Block: 'block',
+  Loop: 'loop',
+  Catch: 'catch',
+} as const;
+
+export type ScopeKind = (typeof ScopeKind)[keyof typeof ScopeKind];
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              EXPORTS
