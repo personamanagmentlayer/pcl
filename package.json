@@ -1,0 +1,116 @@
+{
+  "name": "@pcl/sdk",
+  "version": "1.0.0",
+  "description": "PCL (Persona Control Language) - The world's first programming language for AI persona management",
+  "author": "PCL Team",
+  "license": "Apache-2.0",
+  "keywords": [
+    "pcl",
+    "persona",
+    "ai",
+    "llm",
+    "language",
+    "compiler",
+    "orchestration",
+    "cognitive",
+    "workflow",
+    "agent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcl-lang/pcl.git"
+  },
+  "homepage": "https://pcl-lang.org",
+  "bugs": {
+    "url": "https://github.com/pcl-lang/pcl/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "pcl": "./dist/cli/index.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./ast": {
+      "import": "./dist/ast/index.js",
+      "types": "./dist/ast/index.d.ts"
+    },
+    "./lexer": {
+      "import": "./dist/lexer/index.js",
+      "types": "./dist/lexer/index.d.ts"
+    },
+    "./parser": {
+      "import": "./dist/parser/index.js",
+      "types": "./dist/parser/index.d.ts"
+    },
+    "./semantic": {
+      "import": "./dist/semantic/index.js",
+      "types": "./dist/semantic/index.d.ts"
+    },
+    "./runtime": {
+      "import": "./dist/runtime/index.js",
+      "types": "./dist/runtime/index.d.ts"
+    },
+    "./codegen": {
+      "import": "./dist/codegen/index.js",
+      "types": "./dist/codegen/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "grammar",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/cli/index.ts --format esm --dts --clean --splitting",
+    "build:all": "tsup src/index.ts src/types/index.ts src/ast/index.ts src/lexer/index.ts src/parser/index.ts src/semantic/index.ts src/runtime/index.ts src/codegen/index.ts src/cli/index.ts --format esm --dts --clean",
+    "build:watch": "tsup src/index.ts src/cli/index.ts --format esm --dts --watch",
+    "dev": "tsx watch src/cli/index.ts",
+    "start": "node dist/cli/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "clean": "rm -rf dist coverage .turbo",
+    "prepublishOnly": "npm run build && npm run test",
+    "repl": "tsx src/cli/index.ts repl",
+    "parse": "tsx src/cli/index.ts parse",
+    "check": "tsx src/cli/index.ts check",
+    "gen": "tsx src/cli/index.ts gen"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "tsup": "^8.0.1",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
+}

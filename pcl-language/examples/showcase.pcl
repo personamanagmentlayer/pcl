@@ -1,0 +1,520 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// PCL — Example Programs
+// Demonstrating the world's first programming language for AI persona management
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 1: Basic Persona Definition
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// A security analyst persona that identifies and mitigates risks
+pub persona SEC {
+  id: "SEC"
+  name: "Security Analyst"
+  intent: "Identify and mitigate security vulnerabilities"
+  tone: vigilant
+  
+  skills {
+    "OWASP Top 10"
+    "STRIDE threat modeling"
+    "Penetration testing"
+    "Zero Trust architecture"
+    "Security code review"
+  }
+  
+  constraints {
+    "Always assume breach"
+    "Apply least privilege principle"
+    maxResponseTime <= 5s
+  }
+  
+  tags {
+    security
+    compliance
+    audit
+  }
+  
+  @onActivate {
+    log.info("Security analysis mode engaged")
+  }
+  
+  pub fn analyze(target: String) -> SecurityReport {
+    // Perform security analysis
+    let threats = identifyThreats(target)
+    let vulnerabilities = scanVulnerabilities(target)
+    
+    return SecurityReport {
+      threats,
+      vulnerabilities,
+      recommendations: generateRecommendations(threats, vulnerabilities),
+      riskScore: calculateRiskScore(threats, vulnerabilities)
+    }
+  }
+  
+  pub async fn scan(url: String) -> Result<ScanResult, Error> {
+    try {
+      let result = await performScan(url)
+      return Ok(result)
+    } catch (e) {
+      return Err(e)
+    }
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 2: Team Definition with Composition
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// A security review team combining multiple perspectives
+pub team SecurityReview {
+  members: [SEC, AUDIT, ARCHI, CRITIC]
+  primary: SEC
+  merge: Debate
+  quorum: 3/4
+  conflict: SEC > AUDIT > ARCHI > CRITIC
+  
+  domain: "security"
+  escalation: "security-team@company.com"
+  
+  @onComplete(result) {
+    if result.riskScore > 7 {
+      notify("security-alerts", result)
+    }
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 3: Workflow Definition
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Code review workflow with parallel security and architecture analysis
+pub workflow CodeReview<T: Reviewable> {
+  input: T
+  output: ReviewResult
+  
+  // Sequential with parallel branches
+  steps: DEV -> (ARCHI || SEC) -> CRITIC -> merge(Consensus)
+  
+  timeout: 60s
+  retry: {
+    count: 3,
+    delay: 5s,
+    backoff: exponential
+  }
+  fallback: SIMPLIFY
+  
+  when: input.linesChanged > 10
+  
+  @onStep(step) {
+    log.debug(`Processing step: ${step.name}`)
+    metrics.increment("workflow.steps")
+  }
+  
+  @onComplete(result) {
+    if result.approved {
+      notifyAuthor("Review approved!")
+    } else {
+      notifyAuthor("Changes requested", result.comments)
+    }
+  }
+  
+  @onError(error) {
+    log.error(`Workflow failed: ${error.message}`)
+    alert("review-failures", error)
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 4: Type Definitions
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Discriminated union for command results
+type CommandResult = 
+  | { status: "success", data: Any }
+  | { status: "error", error: Error }
+  | { status: "pending", progress: Float };
+
+/// Security persona subset
+type SecurityPersona = SEC | AUDIT | COMPLIANCE;
+
+/// Full stack developer intersection
+type FullStackDev = DEV & ARCHI & UX;
+
+/// Generic container with constraints
+type Container<T: Serializable> = {
+  items: Array<T>,
+  count: Int,
+  metadata: Map<String, Any>
+};
+
+/// Interface for reviewable items
+interface Reviewable {
+  id: String
+  content: String
+  author: String
+  linesChanged: Int
+  
+  fn getChanges() -> Array<Change>
+  fn getMetadata() -> Map<String, Any>
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 5: Skill Definition
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Shared security skill set
+pub skill SecurityFoundation {
+  category: "Security"
+  
+  items: [
+    "Input validation",
+    "Output encoding",
+    "Parameterized queries",
+    "Secure defaults",
+    "Error handling",
+    "Secrets management",
+    "Dependency scanning",
+    "Security headers",
+    "CORS configuration",
+    "CSP implementation"
+  ]
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 6: Advanced Persona with Generics
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Generic data processor persona
+pub persona DataProcessor<T: Processable, R: Reportable> {
+  intent: "Process and transform data"
+  tone: analytical
+  
+  skills {
+    @Foundation.DataProcessing
+    "ETL pipelines"
+    "Data validation"
+    "Schema mapping"
+  }
+  
+  pub fn process(input: T) -> Result<R, ProcessingError> {
+    let validated = validate(input)
+    if !validated.ok {
+      return Err(validated.error)
+    }
+    
+    let transformed = transform(validated.value)
+    let output = format<R>(transformed)
+    
+    return Ok(output)
+  }
+  
+  pub async fn processStream(
+    input: Stream<T>
+  ) -> AsyncIterator<Result<R, ProcessingError>> {
+    for await item in input {
+      yield process(item)
+    }
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 7: Module and Imports
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { SEC, AUDIT } from "@pcl/security"
+import { DEV, ARCHI } from "@pcl/engineering"
+import * as Workflows from "@pcl/workflow"
+import type { Config, Options } from "./config"
+
+export { SecurityReview, CodeReview }
+export default persona SEC
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 8: Control Flow and Pattern Matching
+// ─────────────────────────────────────────────────────────────────────────────
+
+fn processCommand(cmd: Command) -> CommandResult {
+  match cmd {
+    Command::Activate(personas) => {
+      for persona in personas {
+        activate(persona)
+      }
+      CommandResult::Success({ activated: personas.length })
+    },
+    Command::Deactivate(personas) => {
+      for persona in personas {
+        deactivate(persona)
+      }
+      CommandResult::Success({ deactivated: personas.length })
+    },
+    Command::Workflow(expr) if expr.isValid() => {
+      let result = executeWorkflow(expr)
+      CommandResult::Success({ workflow: result })
+    },
+    Command::Query(pql) => {
+      let results = executeQuery(pql)
+      CommandResult::Success({ results })
+    },
+    _ => CommandResult::Error(UnknownCommand(cmd))
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 9: Complex Workflow Expressions
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Simple sequential workflow
+let simple = ARCHI -> DEV -> SEC
+
+// Parallel analysis with merge
+let parallel = (ARCHI || SEC || AUDIT) -> merge(Consensus)
+
+// Conditional branching
+let conditional = if securityRequired then SEC -> AUDIT else DEV
+
+// Loop with condition
+let iterative = loop (CRITIC -> DEV) until approved
+
+// Complex composition
+let complex = 
+  ARCHI 
+  -> (SEC || AUDIT || LTC) 
+  -> merge(Debate) 
+  -> CRITIC 
+  -> if criticalIssues 
+     then (SEC -> ARCHI -> merge(Consensus))
+     else DEV
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 10: Commands (PCL/Lite Compatible)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Activation commands
+@activate SEC ARCHI CRITIC
+@deactivate AUDIT
+@clear
+@spawn 3xSEC
+
+// Configuration commands
+@primary SEC
+@merge Debate
+@weights SEC=0.4, ARCHI=0.3, CRITIC=0.3
+@quorum 2/3
+@topic "Security review for PR #123"
+
+// Cognitive parameters
+@depth 4
+@verbosity 2
+@tone formal
+@output markdown
+@lang en
+
+// Workflow commands
+@workflow ARCHI -> SEC -> CRITIC
+@workflow save review = ARCHI -> (SEC || AUDIT) -> CRITIC
+@workflow run review
+
+// Team commands
+@team load SecurityReview
+@team list
+@team show SecurityReview
+
+// State commands
+@status
+@export JSON
+@snapshot save checkpoint1
+@snapshot restore checkpoint1
+
+// Observability
+@trace on
+@audit strict
+@metrics
+@profile start
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 11: Error Handling
+// ─────────────────────────────────────────────────────────────────────────────
+
+fn safeOperation() -> Result<Data, PCLError> {
+  try {
+    @activate ARCHI SEC
+    
+    let analysis = await SEC.analyze(target)
+    
+    if analysis.riskScore > 8 {
+      throw SecurityError("Risk score too high")
+    }
+    
+    @workflow run CodeReview
+    
+    return Ok(analysis.data)
+  } catch SecurityError(e) {
+    log.error("Security issue detected", e)
+    @fallback SIMPLIFY
+    return Err(e)
+  } catch WorkflowTimeout(e) {
+    @workflow cancel e.workflowId
+    return Err(TimeoutError("Operation timed out"))
+  } finally {
+    @cleanup
+    @trace off
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 12: Async/Await and Concurrency
+// ─────────────────────────────────────────────────────────────────────────────
+
+async fn parallelAnalysis(targets: Array<String>) -> Array<AnalysisResult> {
+  // Parallel execution with Promise.all equivalent
+  let results = await Promise.all(
+    targets.map(async (target) => {
+      @isolate SEC
+      return await SEC.analyze(target)
+    })
+  )
+  
+  // Merge results
+  return results.filter(r => r.ok).map(r => r.value)
+}
+
+async fn streamingAnalysis(
+  targets: AsyncIterator<String>
+) -> AsyncIterator<AnalysisResult> {
+  for await target in targets {
+    yield await SEC.analyze(target)
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Example 13: Decorators and Metadata
+// ─────────────────────────────────────────────────────────────────────────────
+
+@deprecated("Use SEC_V2 instead")
+@since("1.0.0")
+@author("security-team")
+pub persona SEC_LEGACY {
+  // Legacy implementation
+}
+
+@test
+@timeout(30s)
+fn testSecurityAnalysis() {
+  @activate SEC
+  let result = SEC.analyze("test-target")
+  assert(result.riskScore >= 0)
+  assert(result.riskScore <= 10)
+}
+
+@benchmark
+@iterations(1000)
+fn benchmarkWorkflow() {
+  @workflow run CodeReview
+}
+
+
+// ─────────────────────────────────────────════════════════════════════════════
+// Example 14: PQL (Persona Query Language)
+// ─────────────────────────────────────────────════════════════════════════════
+
+// Query personas by domain
+@query SELECT * FROM personas WHERE domain == "security"
+
+// Find personas with specific skills
+@query SELECT id, name FROM personas WHERE skills contains "OWASP"
+
+// Join with teams
+@query SELECT p.id, t.name 
+       FROM personas p 
+       JOIN teams t ON p.id IN t.members 
+       WHERE t.merge == "Debate"
+
+// Aggregate by tone
+@query SELECT tone, COUNT(*) as count 
+       FROM personas 
+       GROUP BY tone 
+       ORDER BY count DESC
+
+
+// ─────────────────────────────────────────────────────────────────────════════
+// Example 15: Complete Application
+// ─────────────────────────────────────────────────────────────────────════════
+
+/// Main entry point for a PCL-based code review system
+module CodeReviewSystem {
+  
+  // Import personas
+  import { SEC, AUDIT, COMPLIANCE } from "@pcl/security"
+  import { DEV, ARCHI, CRITIC } from "@pcl/engineering"
+  
+  // Define custom personas
+  pub persona REVIEWER extends DEV implements Reviewable {
+    intent: "Review code changes with expertise"
+    tone: analytical
+    
+    skills {
+      @Foundation.CodeReview
+      "Language-specific patterns"
+      "Performance optimization"
+      "Code smell detection"
+    }
+    
+    pub async fn review(pr: PullRequest) -> ReviewResult {
+      // Analyze the PR
+      let analysis = await analyze(pr)
+      
+      // Check security if needed
+      if pr.touchesSensitiveFiles {
+        let secAnalysis = await SEC.analyze(pr)
+        analysis = merge(analysis, secAnalysis)
+      }
+      
+      return ReviewResult {
+        approved: analysis.issues.length == 0,
+        comments: analysis.suggestions,
+        score: calculateScore(analysis)
+      }
+    }
+  }
+  
+  // Define the main workflow
+  pub workflow MainReview {
+    input: PullRequest
+    output: ReviewResult
+    
+    steps: REVIEWER -> (SEC || ARCHI) -> CRITIC -> merge(Consensus)
+    
+    timeout: 5m
+    retry: 2
+    fallback: SIMPLIFY
+  }
+  
+  // Entry function
+  pub async fn main(pr: PullRequest) -> Result<ReviewResult, Error> {
+    // Initialize
+    @activate REVIEWER
+    @depth 4
+    @trace on
+    
+    // Run the workflow
+    let result = await @workflow run MainReview with pr
+    
+    // Cleanup
+    @clear
+    @trace off
+    
+    return Ok(result)
+  }
+}
