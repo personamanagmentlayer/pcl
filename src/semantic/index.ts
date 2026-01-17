@@ -2318,6 +2318,12 @@ export class SemanticAnalyzer {
       case 'NullLiteral':
         return false;
 
+      case 'ParenthesizedExpression':
+        // Unwrap parenthesized expressions
+        return this.evaluateConstantCondition(
+          (expr as AST.ParenthesizedExpression).expression
+        );
+
       case 'UnaryExpression': {
         const unary = expr as AST.UnaryExpression;
         if (unary.operator === '!') {
