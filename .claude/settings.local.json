@@ -22,7 +22,8 @@
       "Bash(grep:*)",
       "Bash(git stash:*)",
       "Bash(npm ls:*)",
-      "Bash(git rev-list:*)"
+      "Bash(git rev-list:*)",
+      "Bash(find:*)"
     ]
   }
 }
