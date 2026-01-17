@@ -24,7 +24,8 @@
       "Bash(npm ls:*)",
       "Bash(git rev-list:*)",
       "Bash(find:*)",
-      "Bash(npm --version:*)"
+      "Bash(npm --version:*)",
+      "Bash(git push:*)"
     ]
   }
 }
