@@ -1954,15 +1954,29 @@ export class SemanticAnalyzer {
     const teamSymbol = this.currentScope.lookup(decl.id.name);
     if (!teamSymbol || !(teamSymbol.type instanceof TeamType)) return;
 
+    // Collect all member names for duplicate detection
+    const memberNames = new Set<string>();
+    const memberList: string[] = [];
+    let quorumDecl: AST.TeamQuorumDeclaration | null = null;
+    let conflictDecl: AST.TeamConflictDeclaration | null = null;
+
     for (const member of decl.body.members) {
       if (member.kind === 'TeamMembersDeclaration') {
         for (const ref of (member as AST.TeamMembersDeclaration).members) {
           const personaName = this.getPersonaRefName(ref);
+
+          // Phase 1.0A: Duplicate member detection
+          if (memberNames.has(personaName)) {
+            this.error(`Duplicate team member '${personaName}'`, ref.span);
+          }
+          memberNames.add(personaName);
+          memberList.push(personaName);
+
           const persona = this.currentScope.lookup(personaName);
           if (!persona) {
             this.error(`Unknown persona: ${personaName}`, ref.span);
-          } else if (!(persona.type instanceof PersonaType)) {
-            this.error(`${personaName} is not a persona`, ref.span);
+          } else if (!(persona.type instanceof PersonaType) && !(persona.type instanceof TeamType)) {
+            this.error(`${personaName} is not a persona or team`, ref.span);
           }
         }
       } else if (member.kind === 'TeamPrimaryDeclaration') {
@@ -1979,8 +1993,127 @@ export class SemanticAnalyzer {
             primaryRef.span
           );
         }
+      } else if (member.kind === 'TeamQuorumDeclaration') {
+        quorumDecl = member as AST.TeamQuorumDeclaration;
+      } else if (member.kind === 'TeamConflictDeclaration') {
+        conflictDecl = member as AST.TeamConflictDeclaration;
       }
     }
+
+    // Phase 1.0A: Quorum consistency check
+    if (quorumDecl) {
+      this.validateTeamQuorum(quorumDecl, memberList.length, decl.span);
+    }
+
+    // Phase 1.0A: Conflict order completeness check
+    if (conflictDecl) {
+      this.validateTeamConflict(conflictDecl, memberList, decl.span);
+    }
+
+    // Phase 1.0A: Circular reference detection
+    this.detectCircularTeamReferences(decl.id.name, new Set(), decl.span);
+  }
+
+  /**
+   * Phase 1.0A: Validate quorum does not exceed member count
+   */
+  private validateTeamQuorum(
+    quorumDecl: AST.TeamQuorumDeclaration,
+    memberCount: number,
+    span: Span
+  ): void {
+    const required = quorumDecl.required.value;
+    const total = quorumDecl.total.value;
+
+    if (required > memberCount) {
+      this.error(
+        `Quorum ${required}/${total} exceeds member count ${memberCount}`,
+        span
+      );
+    }
+
+    if (total > memberCount) {
+      this.warning(
+        `Quorum total ${total} exceeds member count ${memberCount}`,
+        span
+      );
+    }
+
+    if (required > total) {
+      this.error(
+        `Quorum required ${required} cannot exceed total ${total}`,
+        span
+      );
+    }
+  }
+
+  /**
+   * Phase 1.0A: Validate all members are in conflict resolution order
+   */
+  private validateTeamConflict(
+    conflictDecl: AST.TeamConflictDeclaration,
+    memberList: string[],
+    span: Span
+  ): void {
+    const conflictOrder = conflictDecl.order.map((ref) =>
+      this.getPersonaRefName(ref)
+    );
+
+    const missingFromConflict = memberList.filter(
+      (m) => !conflictOrder.includes(m)
+    );
+
+    if (missingFromConflict.length > 0) {
+      this.warning(
+        `Members not in conflict resolution order: ${missingFromConflict.join(', ')}`,
+        span
+      );
+    }
+
+    // Also check for personas in conflict order that aren't members
+    const notInMembers = conflictOrder.filter((c) => !memberList.includes(c));
+    if (notInMembers.length > 0) {
+      this.error(
+        `Conflict resolution order includes non-members: ${notInMembers.join(', ')}`,
+        span
+      );
+    }
+  }
+
+  /**
+   * Phase 1.0A: Detect circular team references (team-in-team cycles)
+   */
+  private detectCircularTeamReferences(
+    teamName: string,
+    visited: Set<string>,
+    span: Span
+  ): boolean {
+    if (visited.has(teamName)) {
+      this.error(
+        `Circular team reference detected: ${Array.from(visited).join(' -> ')} -> ${teamName}`,
+        span
+      );
+      return true;
+    }
+
+    visited.add(teamName);
+    const teamSymbol = this.currentScope.lookup(teamName);
+
+    if (!teamSymbol || !(teamSymbol.type instanceof TeamType)) {
+      return false;
+    }
+
+    // Check if any team members are themselves teams
+    for (const member of teamSymbol.type.members) {
+      const memberSymbol = this.currentScope.lookup(member.name);
+      if (memberSymbol?.type instanceof TeamType) {
+        if (this.detectCircularTeamReferences(member.name, new Set(visited), span)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   private checkWorkflow(decl: AST.WorkflowDeclaration): void {
@@ -2000,11 +2133,22 @@ export class SemanticAnalyzer {
           this.checkWorkflowExpression(step);
         }
         break;
-      case 'WorkflowParallelExpr':
-        for (const branch of (expr as AST.WorkflowParallelExpr).branches) {
+      case 'WorkflowParallelExpr': {
+        const parallelExpr = expr as AST.WorkflowParallelExpr;
+
+        // Phase 1.0B: Warn if too many parallel branches
+        if (parallelExpr.branches.length > 10) {
+          this.warning(
+            `Too many parallel branches (${parallelExpr.branches.length}). Consider refactoring for maintainability.`,
+            expr.span
+          );
+        }
+
+        for (const branch of parallelExpr.branches) {
           this.checkWorkflowExpression(branch);
         }
         break;
+      }
       case 'WorkflowChoiceExpr':
         for (const branch of (expr as AST.WorkflowChoiceExpr).branches) {
           this.checkWorkflowExpression(branch);
@@ -2013,17 +2157,79 @@ export class SemanticAnalyzer {
       case 'WorkflowGroupExpr':
         this.checkWorkflowExpression((expr as AST.WorkflowGroupExpr).expr);
         break;
-      case 'WorkflowConditionalExpr':
+      case 'WorkflowConditionalExpr': {
         const cond = expr as AST.WorkflowConditionalExpr;
         this.checkExpression(cond.condition);
+
+        // Phase 1.0B: Detect unreachable branches
+        const conditionValue = this.evaluateConstantCondition(cond.condition);
+        if (conditionValue === true && cond.else) {
+          this.warning(
+            'Unreachable code: else branch will never execute because condition is always true',
+            cond.else.span
+          );
+        } else if (conditionValue === false) {
+          this.warning(
+            'Unreachable code: then branch will never execute because condition is always false',
+            cond.then.span
+          );
+        }
+
         this.checkWorkflowExpression(cond.then);
         if (cond.else) this.checkWorkflowExpression(cond.else);
         break;
-      case 'WorkflowLoopExpr':
+      }
+      case 'WorkflowLoopExpr': {
         const loop = expr as AST.WorkflowLoopExpr;
+
+        // Phase 1.0B: Detect infinite loops
+        if (loop.loopType === 'while' && loop.condition) {
+          const conditionValue = this.evaluateConstantCondition(loop.condition);
+          if (conditionValue === true) {
+            this.warning(
+              'Potential infinite loop: while condition is always true',
+              expr.span
+            );
+          } else if (conditionValue === false) {
+            this.warning(
+              'Unreachable code: loop body will never execute because while condition is always false',
+              loop.body.span
+            );
+          }
+        }
+
+        if (loop.loopType === 'until' && loop.condition) {
+          const conditionValue = this.evaluateConstantCondition(loop.condition);
+          if (conditionValue === false) {
+            this.warning(
+              'Potential infinite loop: until condition is always false',
+              expr.span
+            );
+          } else if (conditionValue === true) {
+            this.warning(
+              'Unreachable code: loop body will never execute because until condition is already true',
+              loop.body.span
+            );
+          }
+        }
+
+        if (loop.loopType === 'times' && loop.count) {
+          // Check if count is a literal 0
+          if (
+            loop.count.kind === 'NumberLiteral' &&
+            (loop.count as AST.NumberLiteral).value === 0
+          ) {
+            this.warning(
+              'Unreachable code: loop will never execute (count is 0)',
+              loop.body.span
+            );
+          }
+        }
+
         this.checkWorkflowExpression(loop.body);
         if (loop.condition) this.checkExpression(loop.condition);
         break;
+      }
       case 'WorkflowPersonaRef':
         const personaName = this.getPersonaRefName(
           (expr as AST.WorkflowPersonaRef).ref
@@ -2039,6 +2245,58 @@ export class SemanticAnalyzer {
         }
         break;
     }
+  }
+
+  /**
+   * Phase 1.0B: Evaluate constant conditions for unreachable code detection
+   * Returns true/false if the condition is a constant, or null if it's dynamic
+   */
+  private evaluateConstantCondition(expr: AST.Expression): boolean | null {
+    switch (expr.kind) {
+      case 'BooleanLiteral':
+        return (expr as AST.BooleanLiteral).value;
+
+      case 'NumberLiteral':
+        return (expr as AST.NumberLiteral).value !== 0;
+
+      case 'StringLiteral':
+        return (expr as AST.StringLiteral).value.length > 0;
+
+      case 'NullLiteral':
+        return false;
+
+      case 'UnaryExpression': {
+        const unary = expr as AST.UnaryExpression;
+        if (unary.operator === '!') {
+          const argumentValue = this.evaluateConstantCondition(unary.argument);
+          return argumentValue !== null ? !argumentValue : null;
+        }
+        break;
+      }
+
+      case 'BinaryExpression': {
+        const binary = expr as AST.BinaryExpression;
+        const left = this.evaluateConstantCondition(binary.left);
+        const right = this.evaluateConstantCondition(binary.right);
+
+        if (left !== null && right !== null) {
+          switch (binary.operator) {
+            case '&&':
+              return left && right;
+            case '||':
+              return left || right;
+            case '==':
+              return left === right;
+            case '!=':
+              return left !== right;
+          }
+        }
+        break;
+      }
+    }
+
+    // Not a constant condition
+    return null;
   }
 
   private checkFunction(decl: AST.FunctionDeclaration): void {
