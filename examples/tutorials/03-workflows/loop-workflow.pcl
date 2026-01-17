@@ -1,0 +1,59 @@
+persona Refiner {
+  intent: "Incrementally improve code quality"
+  tone: constructive
+  verbosity: normal
+
+  skills {
+    "Code improvement"
+    "Refactoring"
+    "Optimization"
+  }
+
+  constraints {
+    "Make one improvement at a time"
+    "Maintain functionality"
+  }
+}
+
+persona QualityScorer {
+  intent: "Score code quality from 0.0 to 1.0"
+  tone: objective
+  verbosity: concise
+
+  skills {
+    "Quality assessment"
+    "Metrics analysis"
+  }
+}
+
+// Workflow with fixed iteration loop
+workflow IterativeRefine {
+  input -> result
+
+  // Refine exactly 3 times
+  loop 3 times {
+    result -> Refiner -> result
+  }
+}
+
+// Workflow with while loop (continue while condition is true)
+workflow RefineUntilGood {
+  input -> QualityScorer -> result
+
+  // Keep refining while quality is below 0.8
+  loop while (result.quality < 0.8) {
+    result -> Refiner -> result
+    result -> QualityScorer -> result
+  }
+}
+
+// Workflow with until loop (continue until condition becomes true)
+workflow RefineUntilPerfect {
+  input -> QualityScorer -> result
+
+  // Keep refining until score reaches 9.0 or higher
+  loop until (result.score >= 9.0) {
+    result -> Refiner -> result
+    result -> QualityScorer -> result
+  }
+}

@@ -1,0 +1,31 @@
+persona Analyzer {
+  intent: "Analyze code and identify issues"
+  tone: technical
+  verbosity: concise
+
+  skills {
+    "Code analysis"
+    "Issue detection"
+    "Pattern recognition"
+  }
+}
+
+persona Fixer {
+  intent: "Suggest fixes for identified issues"
+  tone: helpful
+  verbosity: detailed
+
+  skills {
+    "Problem solving"
+    "Code refactoring"
+    "Best practices"
+  }
+}
+
+workflow CodeReview {
+  input: String
+  output: String
+
+  // Sequential steps: Analyze then Fix
+  steps: Analyzer -> Fixer
+}
