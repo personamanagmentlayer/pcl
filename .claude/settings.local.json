@@ -19,7 +19,9 @@
       "Bash(npm run test:quick:*)",
       "Bash(VERBOSE=1 node:*)",
       "Bash(wc:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git stash:*)",
+      "Bash(npm ls:*)"
     ]
   }
 }

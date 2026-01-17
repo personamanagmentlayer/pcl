@@ -14,9 +14,10 @@
 3. [Type System](#type-system)
 4. [Declarations](#declarations)
 5. [Expressions](#expressions)
-6. [Keywords](#keywords)
-7. [Operators](#operators)
-8. [Comments](#comments)
+6. [Lifecycle Hooks](#lifecycle-hooks)
+7. [Keywords](#keywords)
+8. [Operators](#operators)
+9. [Comments](#comments)
 
 ---
 
@@ -42,6 +43,7 @@ Identifier ::= [a-zA-Z_][a-zA-Z0-9_]*
 ```
 
 **Examples:**
+
 ```pcl
 Assistant
 SecurityExpert
@@ -51,6 +53,7 @@ _internal
 ```
 
 **Restrictions:**
+
 - Cannot start with a digit
 - Cannot be a keyword
 - Case-sensitive
@@ -64,6 +67,7 @@ StringLiteral ::= '"' StringChar* '"'
 ```
 
 **Examples:**
+
 ```pcl
 "Hello, world!"
 "Multi-line strings\nare supported"
@@ -71,6 +75,7 @@ StringLiteral ::= '"' StringChar* '"'
 ```
 
 **Escape sequences:**
+
 - `\"` - Double quote
 - `\\` - Backslash
 - `\n` - Newline
@@ -85,6 +90,7 @@ FloatLiteral ::= [0-9]+ '.' [0-9]+
 ```
 
 **Examples:**
+
 ```pcl
 42          // Integer
 3.14        // Float
@@ -177,6 +183,7 @@ PersonaMember ::=
 #### Examples
 
 **Basic persona:**
+
 ```pcl
 persona Assistant {
   intent = "Help users with their tasks"
@@ -184,6 +191,7 @@ persona Assistant {
 ```
 
 **With inheritance:**
+
 ```pcl
 persona SecurityExpert extends Expert {
   intent = "Provide security analysis"
@@ -191,6 +199,7 @@ persona SecurityExpert extends Expert {
 ```
 
 **Full example:**
+
 ```pcl
 persona SecurityExpert extends Expert {
   // Assignments
@@ -222,6 +231,7 @@ SkillBlock ::= 'skills' '{' StringLiteral* '}'
 ```
 
 **Example:**
+
 ```pcl
 skills {
   "Threat modeling"
@@ -246,6 +256,7 @@ ExprConstraint ::= Identifier ComparisonOp Expression
 ```
 
 **Examples:**
+
 ```pcl
 constraints {
   // String constraints
@@ -276,6 +287,7 @@ TeamMember ::=
 ```
 
 **Example:**
+
 ```pcl
 team SecurityReview {
   members {
@@ -307,6 +319,7 @@ WorkflowExpression ::=
 ```
 
 **Examples:**
+
 ```pcl
 workflow CodeReview {
   // Sequential
@@ -328,6 +341,7 @@ TypeDeclaration ::=
 ```
 
 **Examples:**
+
 ```pcl
 type UserId = String
 type Result = Success | Error
@@ -342,6 +356,7 @@ VariableDeclaration ::=
 ```
 
 **Examples:**
+
 ```pcl
 let count = 10
 const maxRetries = 3
@@ -372,6 +387,7 @@ ArrayType ::= 'Array' '<' Type '>'
 ```
 
 **Examples:**
+
 ```pcl
 Array<String>
 Array<Int>
@@ -385,6 +401,7 @@ MapType ::= 'Map' '<' Type ',' Type '>'
 ```
 
 **Examples:**
+
 ```pcl
 Map<String, Int>
 Map<String, PersonaType>
@@ -397,6 +414,7 @@ UnionType ::= Type ('|' Type)+
 ```
 
 **Examples:**
+
 ```pcl
 String | Int
 Success | Error | Pending
@@ -412,6 +430,7 @@ Parameter ::= Identifier ':' Type
 ```
 
 **Examples:**
+
 ```pcl
 (input: String) => String
 (x: Int, y: Int) => Float
@@ -462,9 +481,11 @@ persona PersonaName [extends ParentName] {
 ```
 
 **Required elements:**
+
 - Persona name
 
 **Optional elements:**
+
 - Extends clause (inheritance)
 - Property assignments
 - Skills block
@@ -566,6 +587,7 @@ From highest to lowest:
 9. Assignment (`=`)
 
 **Example:**
+
 ```pcl
 a + b * c       // Evaluated as: a + (b * c)
 a && b || c     // Evaluated as: (a && b) || c
@@ -640,40 +662,40 @@ when
 
 ### Comparison Operators
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `==` | Equal | `a == b` |
-| `!=` | Not equal | `a != b` |
-| `<` | Less than | `a < b` |
-| `>` | Greater than | `a > b` |
-| `<=` | Less or equal | `a <= b` |
-| `>=` | Greater or equal | `a >= b` |
-| `matches` | Pattern match | `str matches "\\d+"` |
-| `in` | Membership | `item in array` |
+| Operator  | Description      | Example              |
+| --------- | ---------------- | -------------------- |
+| `==`      | Equal            | `a == b`             |
+| `!=`      | Not equal        | `a != b`             |
+| `<`       | Less than        | `a < b`              |
+| `>`       | Greater than     | `a > b`              |
+| `<=`      | Less or equal    | `a <= b`             |
+| `>=`      | Greater or equal | `a >= b`             |
+| `matches` | Pattern match    | `str matches "\\d+"` |
+| `in`      | Membership       | `item in array`      |
 
 ### Arithmetic Operators
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `+` | Addition | `a + b` |
-| `-` | Subtraction | `a - b` |
-| `*` | Multiplication | `a * b` |
-| `/` | Division | `a / b` |
-| `%` | Modulo | `a % b` |
+| Operator | Description    | Example |
+| -------- | -------------- | ------- |
+| `+`      | Addition       | `a + b` |
+| `-`      | Subtraction    | `a - b` |
+| `*`      | Multiplication | `a * b` |
+| `/`      | Division       | `a / b` |
+| `%`      | Modulo         | `a % b` |
 
 ### Logical Operators
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `&&` | Logical AND | `a && b` |
-| `\|\|` | Logical OR | `a \|\| b` |
-| `!` | Logical NOT | `!a` |
+| Operator | Description | Example    |
+| -------- | ----------- | ---------- |
+| `&&`     | Logical AND | `a && b`   |
+| `\|\|`   | Logical OR  | `a \|\| b` |
+| `!`      | Logical NOT | `!a`       |
 
 ### Assignment Operator
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `=` | Assignment | `x = 10` |
+| Operator | Description | Example  |
+| -------- | ----------- | -------- |
+| `=`      | Assignment  | `x = 10` |
 
 ---
 
@@ -890,6 +912,474 @@ ComparisonOp       ::= '==' | '!=' | '<' | '>' | '<=' | '>=' | 'matches' | 'in'
 
 ---
 
+## Lifecycle Hooks
+
+Lifecycle hooks let you execute code at specific points in a persona's, team's, or workflow's lifecycle. Hooks are defined using the `@hookName` decorator syntax.
+
+### Hook Types
+
+PCL provides 12 built-in lifecycle hooks:
+
+| Hook            | Trigger                          | Use Case                             |
+| --------------- | -------------------------------- | ------------------------------------ |
+| `@onActivate`   | Persona/team becomes active      | Initialize resources, log activation |
+| `@onDeactivate` | Persona/team becomes inactive    | Cleanup, save state                  |
+| `@onError`      | Error occurs during execution    | Error handling, logging, alerts      |
+| `@onMessage`    | New message received             | Message preprocessing, validation    |
+| `@onStep`       | Workflow advances to next step   | Progress tracking, logging           |
+| `@onComplete`   | Execution completes successfully | Finalization, notifications          |
+| `@beforeMerge`  | Before merging multiple personas | Prepare state for merging            |
+| `@afterMerge`   | After merging multiple personas  | Validate merged result               |
+| `@onSpawn`      | New persona instance spawned     | Initialize child persona             |
+| `@onDespawn`    | Persona instance terminated      | Cleanup child resources              |
+| `@onTimeout`    | Operation times out              | Handle timeout gracefully            |
+| `@onRetry`      | Retry attempt begins             | Log retry, adjust parameters         |
+
+### Syntax
+
+```ebnf
+HookDeclaration ::= '@' HookName [ '(' Parameters ')' ] Block
+
+HookName ::=
+  | 'onActivate' | 'onDeactivate'
+  | 'onError' | 'onMessage'
+  | 'onStep' | 'onComplete'
+  | 'beforeMerge' | 'afterMerge'
+  | 'onSpawn' | 'onDespawn'
+  | 'onTimeout' | 'onRetry'
+
+Parameters ::= Parameter (',' Parameter)*
+Parameter  ::= Identifier [ ':' Type ]
+```
+
+### Basic Examples
+
+**Persona hooks:**
+
+```pcl
+persona SEC {
+  intent: "Security analysis"
+
+  @onActivate {
+    log.info("Security analyst activated")
+    metrics.increment("security.activations")
+  }
+
+  @onError(error) {
+    log.error(`Security analysis failed: ${error.message}`)
+    notify("security-team", error)
+  }
+
+  @onComplete(result) {
+    log.info(`Analysis complete. Risk score: ${result.riskScore}`)
+  }
+}
+```
+
+**Team hooks:**
+
+```pcl
+team SecurityReview {
+  members: [SEC, AUDIT, ARCHI]
+
+  @onActivate {
+    // Initialize shared resources
+    createSharedWorkspace()
+  }
+
+  @beforeMerge(responses) {
+    // Validate all responses before merging
+    validateResponses(responses)
+  }
+
+  @onComplete(result) {
+    if result.riskScore > 7 {
+      alert("high-risk", result)
+    }
+  }
+}
+```
+
+**Workflow hooks:**
+
+```pcl
+workflow CodeReview {
+  steps: DEV -> (ARCHI || SEC) -> CRITIC
+
+  @onStep(step) {
+    log.debug(`Processing step: ${step.name}`)
+    metrics.recordStep(step.name, step.duration)
+  }
+
+  @onTimeout {
+    log.warn("Code review timed out")
+    notifyReviewers("timeout")
+  }
+
+  @onError(error) {
+    log.error(`Workflow failed: ${error}`)
+    rollbackChanges()
+  }
+
+  @onComplete(result) {
+    publishReviewResults(result)
+    notifyAuthor(result)
+  }
+}
+```
+
+### Hook Parameters
+
+Hooks can access context through parameters:
+
+**Error context:**
+
+```pcl
+@onError(error) {
+  log.error(error.message)
+  log.error(error.stack)
+  log.error(error.code)
+}
+```
+
+**Message context:**
+
+```pcl
+@onMessage(message) {
+  if message.priority == "urgent" {
+    escalate(message)
+  }
+}
+```
+
+**Step context:**
+
+```pcl
+@onStep(step) {
+  console.log(step.name)      // Step identifier
+  console.log(step.status)    // "running", "complete", "failed"
+  console.log(step.duration)  // Execution time
+  console.log(step.result)    // Step output
+}
+```
+
+**Result context:**
+
+```pcl
+@onComplete(result) {
+  console.log(result.status)   // "success", "failed"
+  console.log(result.output)   // Final output
+  console.log(result.metadata) // Additional data
+}
+```
+
+### Execution Order
+
+Hooks execute in a predictable order:
+
+**Persona lifecycle:**
+
+```
+1. @onActivate        ← Persona starts
+2. @onMessage         ← Each message received
+3. @onError           ← If error occurs (optional)
+4. @onComplete        ← Execution finishes
+5. @onDeactivate      ← Persona stops
+```
+
+**Team lifecycle:**
+
+```
+1. @onActivate        ← Team starts
+2. @beforeMerge       ← Before combining responses
+3. @afterMerge        ← After combining responses
+4. @onComplete        ← Team finishes
+5. @onDeactivate      ← Team stops
+```
+
+**Workflow lifecycle:**
+
+```
+1. @onActivate        ← Workflow starts
+2. @onStep            ← Each step execution
+3. @onTimeout         ← If timeout occurs (optional)
+4. @onRetry           ← If retry needed (optional)
+5. @onError           ← If error occurs (optional)
+6. @onComplete        ← Workflow finishes
+7. @onDeactivate      ← Workflow stops
+```
+
+**Nested execution:**
+
+```
+Team @onActivate
+  ├─> Persona A @onActivate
+  ├─> Persona B @onActivate
+  ├─> Persona A @onMessage
+  ├─> Persona B @onMessage
+  ├─> Team @beforeMerge
+  ├─> Team @afterMerge
+  ├─> Persona A @onDeactivate
+  ├─> Persona B @onDeactivate
+  └─> Team @onDeactivate
+```
+
+### Best Practices
+
+**1. Keep hooks focused and fast**
+
+```pcl
+// ✅ GOOD: Quick operation
+@onActivate {
+  log.info("Activated")
+  metrics.increment("activations")
+}
+
+// ❌ BAD: Slow operation blocks activation
+@onActivate {
+  loadLargeDatabase()  // Too slow!
+  trainModel()         // Too slow!
+}
+```
+
+**2. Handle errors in hooks**
+
+```pcl
+// ✅ GOOD: Graceful error handling
+@onComplete(result) {
+  try {
+    saveToDatabase(result)
+  } catch (error) {
+    log.error("Failed to save:", error)
+    // Don't fail the entire operation
+  }
+}
+
+// ❌ BAD: Unhandled errors
+@onComplete(result) {
+  saveToDatabase(result)  // Throws on failure!
+}
+```
+
+**3. Use appropriate hooks**
+
+```pcl
+// ✅ GOOD: Right hook for the job
+@onActivate {
+  initializeResources()
+}
+
+@onDeactivate {
+  cleanupResources()
+}
+
+// ❌ BAD: Wrong hook
+@onComplete {
+  initializeResources()  // Too late!
+}
+```
+
+**4. Don't modify state unexpectedly**
+
+```pcl
+// ✅ GOOD: Read-only observation
+@onStep(step) {
+  log.info(step.name)
+  metrics.record(step)
+}
+
+// ❌ BAD: Modifying workflow state
+@onStep(step) {
+  step.status = "skipped"  // Don't do this!
+}
+```
+
+**5. Use hooks for cross-cutting concerns**
+
+```pcl
+persona DataAnalyst {
+  // Logging
+  @onActivate { log.info("Started") }
+  @onComplete { log.info("Finished") }
+
+  // Metrics
+  @onStep(step) { metrics.record(step) }
+
+  // Error tracking
+  @onError(error) { errorTracker.report(error) }
+
+  // Business logic stays in methods
+  pub fn analyze(data: Data) -> Report {
+    // Core logic here
+  }
+}
+```
+
+### Advanced Examples
+
+**Rate limiting:**
+
+```pcl
+persona APIConsumer {
+  @onMessage(message) {
+    if rateLimiter.isExceeded() {
+      throw RateLimitError("Too many requests")
+    }
+    rateLimiter.increment()
+  }
+
+  @onComplete {
+    rateLimiter.reset()
+  }
+}
+```
+
+**Distributed tracing:**
+
+```pcl
+workflow DataPipeline {
+  @onActivate {
+    span = tracer.startSpan("data-pipeline")
+  }
+
+  @onStep(step) {
+    span.addEvent(step.name)
+  }
+
+  @onError(error) {
+    span.recordError(error)
+  }
+
+  @onComplete(result) {
+    span.setStatus("success")
+    span.end()
+  }
+}
+```
+
+**Resource pooling:**
+
+```pcl
+team DatabaseTeam {
+  @onActivate {
+    pool = createConnectionPool({
+      min: 2,
+      max: 10,
+      timeout: 30s
+    })
+  }
+
+  @beforeMerge {
+    // Ensure all connections are returned
+    pool.waitForConnections()
+  }
+
+  @onDeactivate {
+    pool.drain()
+    pool.close()
+  }
+}
+```
+
+**Circuit breaker:**
+
+```pcl
+persona ExternalService {
+  @onError(error) {
+    circuitBreaker.recordFailure()
+
+    if circuitBreaker.isOpen() {
+      throw CircuitOpenError("Service unavailable")
+    }
+  }
+
+  @onComplete {
+    circuitBreaker.recordSuccess()
+  }
+
+  @onTimeout {
+    circuitBreaker.recordTimeout()
+  }
+}
+```
+
+**Audit logging:**
+
+```pcl
+persona SecureOperator {
+  @onActivate {
+    audit.log({
+      event: "activation",
+      user: currentUser,
+      timestamp: now()
+    })
+  }
+
+  @onMessage(message) {
+    audit.log({
+      event: "message",
+      content: sanitize(message),
+      timestamp: now()
+    })
+  }
+
+  @onComplete(result) {
+    audit.log({
+      event: "completion",
+      result: sanitize(result),
+      timestamp: now()
+    })
+  }
+}
+```
+
+### Testing Hooks
+
+Hooks can be tested by triggering lifecycle events:
+
+```typescript
+import { test, expect } from 'vitest';
+import { createPersona } from '@pcl/runtime';
+
+test('onActivate hook executes', async () => {
+  let activated = false;
+
+  const persona = createPersona({
+    name: 'TEST',
+    hooks: {
+      onActivate: () => {
+        activated = true;
+      },
+    },
+  });
+
+  await persona.activate();
+  expect(activated).toBe(true);
+});
+
+test('onError hook handles failures', async () => {
+  let errorCaught = null;
+
+  const persona = createPersona({
+    name: 'TEST',
+    hooks: {
+      onError: (error) => {
+        errorCaught = error;
+      },
+    },
+  });
+
+  await persona.execute(() => {
+    throw new Error('Test error');
+  });
+
+  expect(errorCaught).toBeTruthy();
+  expect(errorCaught.message).toBe('Test error');
+});
+```
+
+---
+
 ## See Also
 
 - [Parser API](../api/PARSER.md)
@@ -899,6 +1389,6 @@ ComparisonOp       ::= '==' | '!=' | '<' | '>' | '<=' | '>=' | 'matches' | 'in'
 
 ---
 
-**Last Updated:** 2026-01-16
+**Last Updated:** 2026-01-17
 **Version:** 1.0.0
 **Status:** Production-ready with documented limitations
