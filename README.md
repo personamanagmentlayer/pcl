@@ -19,18 +19,43 @@
 [![Version](https://img.shields.io/badge/version-1.0.0--alpha-orange.svg)](CHANGELOG.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3+-blue.svg)](https://www.typescriptlang.org/)
 
+**Standards Compliance**:
+[![ISO 27001](https://img.shields.io/badge/ISO_27001-Aligned-green.svg)](GOVERNANCE/PCL_SECURITY_MODEL.md)
+[![ISO 42001](https://img.shields.io/badge/ISO_42001-Aligned-green.svg)](GOVERNANCE/PCL_GOVERNANCE.md)
+[![OWASP LLM](https://img.shields.io/badge/OWASP_LLM-Top_10_Mitigated-green.svg)](GOVERNANCE/PCL_SECURITY_MODEL.md)
+[![EU AI Act](https://img.shields.io/badge/EU_AI_Act-Ready-green.svg)](SPEC/PCL_SPEC_v1.md)
+[![Zero Trust](https://img.shields.io/badge/Zero_Trust-NIST_SP_800--207-green.svg)](GOVERNANCE/PCL_SECURITY_MODEL.md)
+
 </div>
 
 ---
 
 ## What is PCL?
 
-**PCL (Persona Control Language)** is a domain-specific programming language designed for defining, composing, and orchestrating AI personas across any language model. It enables developers to:
+**PCL (Persona Control Language)** is a **governance-first programming language** for AI persona management and multi-agent orchestration. Unlike traditional application languages, PCL is designed for **accountability, security, and compliance** in AI systems.
 
-- **Define** personas with rich type systems, skills, and constraints
-- **Compose** multiple personas using declarative operators
-- **Orchestrate** complex multi-agent workflows
-- **Deploy** consistently across Claude, GPT, Gemini, and other LLMs
+### PCL = Terraform + OpenPolicyAgent + AI Personas
+
+PCL enables enterprises and developers to:
+
+- **Define** personas with explicit capabilities, constraints, and risk classifications (ISO 42001)
+- **Govern** AI behavior through auditable policies and access controls (ISO 27001)
+- **Orchestrate** complex multi-agent workflows with human oversight
+- **Deploy** consistently across Claude, GPT, Gemini, Azure, and open-source LLMs
+- **Audit** every action with immutable logs aligned to compliance frameworks
+- **Comply** with EU AI Act, GDPR, OWASP LLM Top 10, and Zero Trust principles
+
+### Why PCL Exists
+
+Traditional AI development lacks:
+
+✗ **Accountability** – Who made what decision?
+✗ **Portability** – Vendor lock-in
+✗ **Security** – No defense against prompt injection, excessive agency
+✗ **Compliance** – ISO, EU AI Act, OWASP alignment
+✗ **Governance** – No clear policy enforcement
+
+**PCL solves this** by treating AI personas as **governed entities**, not just code.
 
 ## Quick Start
 
@@ -71,6 +96,43 @@ pub workflow CodeReview {
   fallback: SIMPLIFY
 }
 ```
+
+## 🏛️ Standards & Compliance
+
+PCL is built on international standards for enterprise-grade security and AI governance:
+
+### Security & Information Management
+
+| Standard             | Description                     | PCL Implementation                                      |
+| -------------------- | ------------------------------- | ------------------------------------------------------- |
+| **ISO/IEC 27001**    | Information Security Management | Access control, audit logging, risk management          |
+| **ISO/IEC 27002**    | Security Controls               | A.9 (Access), A.10 (Crypto), A.12 (Logging), A.14 (Dev) |
+| **OWASP LLM Top 10** | LLM Security Best Practices     | All 10 threats mitigated (prompt injection, DoS, etc.)  |
+| **NIST SP 800-207**  | Zero Trust Architecture         | Never trust, least privilege, continuous verification   |
+
+### AI Governance & Ethics
+
+| Standard             | Description             | PCL Implementation                                   |
+| -------------------- | ----------------------- | ---------------------------------------------------- |
+| **ISO/IEC 42001**    | AI Management System    | Risk classification, competence tracking, monitoring |
+| **ISO/IEC 23894**    | AI Risk Management      | Persona risk levels, constraint validation           |
+| **EU AI Act**        | High-Risk AI Regulation | Risk classification, transparency, human oversight   |
+| **IEEE 7000 series** | Ethical AI              | Transparency, privacy, fail-safe design              |
+
+### Interoperability & Quality
+
+| Standard        | Description        | PCL Implementation                       |
+| --------------- | ------------------ | ---------------------------------------- |
+| **RFC 2119**    | Requirement Levels | MUST/SHOULD/MAY in specifications        |
+| **JSON Schema** | Data Validation    | Import/export format validation          |
+| **ISO 38500**   | IT Governance      | Evaluate-Direct-Monitor governance cycle |
+
+**📋 Full Compliance Documentation**:
+
+- [PCL_SPEC_v1.md](PCL_SPEC_v1.md) – RFC-style language specification
+- [PCL_SECURITY_MODEL.md](PCL_SECURITY_MODEL.md) – ISO 27001/42001 security architecture
+- [PCL_GOVERNANCE.md](PCL_GOVERNANCE.md) – ISO 38500 governance framework
+- [ROADMAP.md](ROADMAP.md) – Standards compliance roadmap
 
 ## Installation
 
@@ -415,7 +477,38 @@ pnpm build
 
 ### 📚 Complete Documentation
 
-- **[Documentation Index](./docs/README.md)** - Start here for all documentation
+## 📚 Documentation Structure
+
+📘 **[/SPEC](./SPEC/)** — Formal specifications & technical documentation
+🧱 **[/CORE](./CORE/)** — Core concepts, invariants & design principles
+🔬 **[/REF](./REF/)** — Reference implementations & integration examples
+🧭 **[/GOVERNANCE](./GOVERNANCE/)** — Governance framework, compliance & licensing
+📖 **[/docs](./docs/)** — User guides, API docs & tutorials
+
+### 🧭 Governance & Compliance
+
+- **[Governance Framework](./GOVERNANCE/PCL_GOVERNANCE.md)** - ISO 38500-aligned governance
+- **[Security Model](./GOVERNANCE/PCL_SECURITY_MODEL.md)** - ISO 27001/42001 security architecture
+- **[Compliance Quick Reference](./GOVERNANCE/COMPLIANCE_QUICK_REFERENCE.md)** - Auditor's guide
+- **[Roadmap](./GOVERNANCE/ROADMAP.md)** - Strategic roadmap & compliance timeline
+- **[Standards Overview](./GOVERNANCE/STANDARDS_OVERVIEW.md)** - Complete standards alignment
+
+### 📘 Specifications
+
+- **[PCL Specification v1.0](./SPEC/PCL_SPEC_v1.md)** - RFC-style formal specification
+- **[EBNF Grammar](./src/grammar/pcl.ebnf)** - Formal grammar definition
+
+### 🧱 Core Concepts
+
+- **[Core Principles](./CORE/README.md)** - Language philosophy & invariants
+- **[Language Reference](./docs/reference/LANGUAGE.md)** - Complete syntax & semantics
+- **[Syntax Reference](./docs/reference/SYNTAX.md)** - Human-readable guide
+
+### 🔬 Reference Implementations
+
+- **[Integration Examples](./REF/)** - OpenAI, Anthropic, Azure integrations
+- **[Security Examples](./REF/)** - OWASP LLM-aligned patterns
+- **[Compliance Examples](./REF/)** - ISO 42001, EU AI Act implementations
 
 ### 🚀 Quick Start
 
@@ -428,23 +521,29 @@ pnpm build
 - **[Semantic Analyzer API](./docs/api/SEMANTIC.md)** - Type checking and validation
 - **[Code Generator API](./docs/api/CODEGEN.md)** - Generate TypeScript, YAML, JSON, Prompts
 
-### 📘 Language Reference
+## Contributing
 
-- **[Syntax Reference](./docs/reference/SYNTAX.md)** - Human-readable syntax guide with examples
-- **[Language Reference](./docs/reference/LANGUAGE.md)** - Complete PCL syntax and semantics
-- **[Formal Grammar](./src/grammar/pcl.ebnf)** - EBNF grammar specification
-- **[Roadmap](./.roadmap/ROADMAP.md)** - Project roadmap and status
+See **[Contributing Guide](./CONTRIBUTING.md)** for getting started, or review the full [standards-aligned compliance guide](./GOVERNANCE/CONTRIBUTING_COMPLIANCE.md).
 
 ## Community
 
 - 📖 [Documentation](./docs/README.md)
+- 🧭 [Governance](./GOVERNANCE/)
 - 💬 [Discord](https://discord.gg/pcl-lang)
 - 🐦 [Twitter](https://twitter.com/pcl_lang)
 - 📧 [Mailing List](https://groups.google.com/g/pcl-lang)
 
 ## License
 
-Apache 2.0 — See [LICENSE](LICENSE) for details.
+PCL uses dual licensing to support both software development and documentation sharing:
+
+- **Code** (src/, tests/, scripts/): [Apache 2.0](LICENSE) - Permissive software license with patent grant
+- **Documentation** (docs/, SPEC/, GOVERNANCE/): [CC BY 4.0](LICENSE-DOCS) - Creative Commons for specs and guides
+- **Trademarks**: IbIFACE - See [Trademark Policy](./GOVERNANCE/TRADEMARK_POLICY.md)
+
+This dual licensing approach follows industry best practices (Rust, Kubernetes, OpenAPI) and supports PCL's mission as a governance-first standard for enterprise AI.
+
+For contribution licensing, see [NOTICE](NOTICE).
 
 ---
 
