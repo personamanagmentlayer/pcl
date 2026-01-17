@@ -3,7 +3,7 @@
  * PCL — PERSONA CONTROL LANGUAGE
  * Core Type Definitions
  * ═══════════════════════════════════════════════════════════════════════════════
- * 
+ *
  * @packageDocumentation
  * @module @pcl/types
  * @version 1.0.0
@@ -57,7 +57,8 @@ export type URLString = Brand<string, 'URLString'>;
 export type UUID = Brand<string, 'UUID'>;
 
 // Brand constructors
-export const PersonaId = (id: string): PersonaId => id.toUpperCase() as PersonaId;
+export const PersonaId = (id: string): PersonaId =>
+  id.toUpperCase() as PersonaId;
 export const TeamId = (id: string): TeamId => id as TeamId;
 export const WorkflowId = (id: string): WorkflowId => id as WorkflowId;
 export const SkillId = (id: string): SkillId => id as SkillId;
@@ -65,7 +66,6 @@ export const SnapshotId = (id: string): SnapshotId => id as SnapshotId;
 export const SessionId = (id: string): SessionId => id as SessionId;
 export const ModuleId = (id: string): ModuleId => id as ModuleId;
 export const RegistryId = (id: string): RegistryId => id as RegistryId;
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              RESULT TYPES
@@ -84,12 +84,14 @@ export const Ok = <T>(value: T): Result<T, never> => ({ ok: true, value });
 export const Err = <E>(error: E): Result<never, E> => ({ ok: false, error });
 
 /** Type guard for Ok result */
-export const isOk = <T, E>(result: Result<T, E>): result is { ok: true; value: T } =>
-  result.ok === true;
+export const isOk = <T, E>(
+  result: Result<T, E>
+): result is { ok: true; value: T } => result.ok === true;
 
 /** Type guard for Err result */
-export const isErr = <T, E>(result: Result<T, E>): result is { ok: false; error: E } =>
-  result.ok === false;
+export const isErr = <T, E>(
+  result: Result<T, E>
+): result is { ok: false; error: E } => result.ok === false;
 
 /**
  * Option type for nullable values
@@ -111,9 +113,9 @@ export const Some = <T>(value: T): Option<T> => ({ _tag: 'Some', value });
 export const None: Option<never> = { _tag: 'None' };
 
 /** Type guards for Option */
-export const isSome = <T>(opt: Option<T>): opt is Some<T> => opt._tag === 'Some';
+export const isSome = <T>(opt: Option<T>): opt is Some<T> =>
+  opt._tag === 'Some';
 export const isNone = <T>(opt: Option<T>): opt is None => opt._tag === 'None';
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              SOURCE LOCATION
@@ -138,19 +140,26 @@ export interface Span {
 }
 
 /** Creates a position */
-export const Position = (line: number, column: number, offset: number): Position => ({
+export const Position = (
+  line: number,
+  column: number,
+  offset: number
+): Position => ({
   line,
   column,
   offset,
 });
 
 /** Creates a span */
-export const Span = (start: Position, end: Position, source?: string): Span => ({
+export const Span = (
+  start: Position,
+  end: Position,
+  source?: string
+): Span => ({
   start,
   end,
   source,
 });
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              ENUMERATIONS
@@ -180,10 +189,24 @@ export type Tone =
   | 'cautious';
 
 export const TONES: readonly Tone[] = [
-  'formal', 'direct', 'casual', 'socratic', 'academic',
-  'analytical', 'pragmatic', 'vigilant', 'strategic',
-  'empathetic', 'challenging', 'accessible', 'precise',
-  'rigorous', 'nuanced', 'technical', 'factual', 'cautious'
+  'formal',
+  'direct',
+  'casual',
+  'socratic',
+  'academic',
+  'analytical',
+  'pragmatic',
+  'vigilant',
+  'strategic',
+  'empathetic',
+  'challenging',
+  'accessible',
+  'precise',
+  'rigorous',
+  'nuanced',
+  'technical',
+  'factual',
+  'cautious',
 ] as const;
 
 /**
@@ -207,31 +230,53 @@ export type OutputFormat =
   | 'minimal';
 
 export const OUTPUT_FORMATS: readonly OutputFormat[] = [
-  'prose', 'markdown', 'json', 'yaml', 'code', 'table',
-  'RFC', 'PRD', 'ADR', 'C4', 'mermaid', 'plantuml',
-  'openapi', 'executive', 'minimal'
+  'prose',
+  'markdown',
+  'json',
+  'yaml',
+  'code',
+  'table',
+  'RFC',
+  'PRD',
+  'ADR',
+  'C4',
+  'mermaid',
+  'plantuml',
+  'openapi',
+  'executive',
+  'minimal',
 ] as const;
 
 /**
  * Merge modes for persona composition
  */
 export type MergeMode =
-  | 'primary'      // Lead persona decides, others advise
-  | 'consensus'    // Synthesize all perspectives
-  | 'majority'     // Weighted voting
-  | 'dissent'      // Highlight disagreements
-  | 'compare'      // Side-by-side comparison
-  | 'append'       // Concatenate outputs
-  | 'debate'       // Visible deliberation
-  | 'chain'        // Sequential transformation
-  | 'vote'         // Democratic decision
-  | 'weighted'     // Weighted combination
-  | 'roundrobin'   // Rotating leadership
-  | 'random';      // Random selection
+  | 'primary' // Lead persona decides, others advise
+  | 'consensus' // Synthesize all perspectives
+  | 'majority' // Weighted voting
+  | 'dissent' // Highlight disagreements
+  | 'compare' // Side-by-side comparison
+  | 'append' // Concatenate outputs
+  | 'debate' // Visible deliberation
+  | 'chain' // Sequential transformation
+  | 'vote' // Democratic decision
+  | 'weighted' // Weighted combination
+  | 'roundrobin' // Rotating leadership
+  | 'random'; // Random selection
 
 export const MERGE_MODES: readonly MergeMode[] = [
-  'primary', 'consensus', 'majority', 'dissent', 'compare',
-  'append', 'debate', 'chain', 'vote', 'weighted', 'roundrobin', 'random'
+  'primary',
+  'consensus',
+  'majority',
+  'dissent',
+  'compare',
+  'append',
+  'debate',
+  'chain',
+  'vote',
+  'weighted',
+  'roundrobin',
+  'random',
 ] as const;
 
 /**
@@ -240,16 +285,68 @@ export const MERGE_MODES: readonly MergeMode[] = [
 export type ContextSize = 'minimal' | 'compact' | 'standard' | 'full';
 
 export const CONTEXT_SIZES: readonly ContextSize[] = [
-  'minimal', 'compact', 'standard', 'full'
+  'minimal',
+  'compact',
+  'standard',
+  'full',
+] as const;
+
+/**
+ * Depth levels for response detail
+ */
+export type Depth =
+  | 'shallow'
+  | 'standard'
+  | 'detailed'
+  | 'thorough'
+  | 'exhaustive';
+
+export const DEPTH_LEVELS: readonly Depth[] = [
+  'shallow',
+  'standard',
+  'detailed',
+  'thorough',
+  'exhaustive',
+] as const;
+
+/**
+ * Verbosity levels for response length
+ */
+export type Verbosity =
+  | 'minimal'
+  | 'concise'
+  | 'normal'
+  | 'detailed'
+  | 'verbose';
+
+export const VERBOSITY_LEVELS: readonly Verbosity[] = [
+  'minimal',
+  'concise',
+  'normal',
+  'detailed',
+  'verbose',
 ] as const;
 
 /**
  * Trace levels
  */
-export type TraceLevel = 'debug' | 'info' | 'warn' | 'error' | 'events' | 'reasoning' | 'full';
+export type TraceLevel =
+  | 'debug'
+  | 'info'
+  | 'warn'
+  | 'error'
+  | 'events'
+  | 'reasoning'
+  | 'full';
 
 export const TRACE_LEVELS: readonly TraceLevel[] = [
-  'debug', 'info', 'warn', 'error', 'events', 'reasoning', 'full'
+  'debug',
+  'info',
+  'warn',
+  'error',
+  'events',
+  'reasoning',
+  'full',
 ] as const;
 
 /**
@@ -257,7 +354,11 @@ export const TRACE_LEVELS: readonly TraceLevel[] = [
  */
 export type AuditMode = 'off' | 'on' | 'strict';
 
-export const AUDIT_MODES: readonly AuditMode[] = ['off', 'on', 'strict'] as const;
+export const AUDIT_MODES: readonly AuditMode[] = [
+  'off',
+  'on',
+  'strict',
+] as const;
 
 /**
  * Runtime status
@@ -265,16 +366,31 @@ export const AUDIT_MODES: readonly AuditMode[] = ['off', 'on', 'strict'] as cons
 export type RuntimeStatus = 'idle' | 'active' | 'workflow' | 'paused' | 'error';
 
 export const RUNTIME_STATUSES: readonly RuntimeStatus[] = [
-  'idle', 'active', 'workflow', 'paused', 'error'
+  'idle',
+  'active',
+  'workflow',
+  'paused',
+  'error',
 ] as const;
 
 /**
  * Workflow step status
  */
-export type StepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped' | 'cancelled';
+export type StepStatus =
+  | 'pending'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'skipped'
+  | 'cancelled';
 
 export const STEP_STATUSES: readonly StepStatus[] = [
-  'pending', 'running', 'completed', 'failed', 'skipped', 'cancelled'
+  'pending',
+  'running',
+  'completed',
+  'failed',
+  'skipped',
+  'cancelled',
 ] as const;
 
 /**
@@ -295,9 +411,18 @@ export type HookType =
   | 'onRetry';
 
 export const HOOK_TYPES: readonly HookType[] = [
-  'onActivate', 'onDeactivate', 'onError', 'onMessage',
-  'onStep', 'onComplete', 'beforeMerge', 'afterMerge',
-  'onSpawn', 'onDespawn', 'onTimeout', 'onRetry'
+  'onActivate',
+  'onDeactivate',
+  'onError',
+  'onMessage',
+  'onStep',
+  'onComplete',
+  'beforeMerge',
+  'afterMerge',
+  'onSpawn',
+  'onDespawn',
+  'onTimeout',
+  'onRetry',
 ] as const;
 
 /**
@@ -309,7 +434,6 @@ export type Visibility = 'pub' | 'priv';
  * Backoff strategies for retries
  */
 export type BackoffStrategy = 'linear' | 'exponential' | 'constant';
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              SKILL DEFINITIONS
@@ -331,7 +455,11 @@ export interface SharedSkillCategory {
 export type SkillRef =
   | { readonly kind: 'inline'; readonly value: string }
   | { readonly kind: 'shared'; readonly id: SkillId }
-  | { readonly kind: 'qualified'; readonly module: ModuleId; readonly id: SkillId };
+  | {
+      readonly kind: 'qualified';
+      readonly module: ModuleId;
+      readonly id: SkillId;
+    };
 
 /**
  * Skill definition for personas
@@ -344,7 +472,6 @@ export interface SkillDefinition {
   readonly metadata?: Record<string, unknown>;
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CONSTRAINT DEFINITIONS
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -353,27 +480,48 @@ export interface SkillDefinition {
  * Constraint types
  */
 export type ConstraintType =
-  | 'text'        // Simple text constraint
-  | 'comparison'  // value op expression
-  | 'assertion'   // boolean expression
-  | 'limit'       // resource limit
-  | 'pattern';    // regex pattern
+  | 'text' // Simple text constraint
+  | 'comparison' // value op expression
+  | 'assertion' // boolean expression
+  | 'limit' // resource limit
+  | 'pattern'; // regex pattern
 
 /**
  * Comparison operators for constraints
  */
-export type ComparisonOp = '==' | '!=' | '<' | '>' | '<=' | '>=' | 'in' | 'matches';
+export type ComparisonOp =
+  | '=='
+  | '!='
+  | '<'
+  | '>'
+  | '<='
+  | '>='
+  | 'in'
+  | 'matches';
 
 /**
  * Constraint definition
  */
 export type Constraint =
   | { readonly kind: 'text'; readonly value: string }
-  | { readonly kind: 'comparison'; readonly field: string; readonly op: ComparisonOp; readonly value: unknown }
+  | {
+      readonly kind: 'comparison';
+      readonly field: string;
+      readonly op: ComparisonOp;
+      readonly value: unknown;
+    }
   | { readonly kind: 'assertion'; readonly expression: string }
-  | { readonly kind: 'limit'; readonly resource: string; readonly max: number; readonly unit?: string }
-  | { readonly kind: 'pattern'; readonly field: string; readonly pattern: string };
-
+  | {
+      readonly kind: 'limit';
+      readonly resource: string;
+      readonly max: number;
+      readonly unit?: string;
+    }
+  | {
+      readonly kind: 'pattern';
+      readonly field: string;
+      readonly pattern: string;
+    };
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              PERSONA DEFINITIONS
@@ -387,26 +535,26 @@ export interface Persona {
   readonly id: PersonaId;
   readonly name: string;
   readonly version?: SemVer;
-  
+
   // Core
   readonly intent: string;
   readonly capabilities?: readonly string[];
   readonly tone: Tone;
-  
+
   // Skills
   readonly sharedSkills?: readonly SkillId[];
   readonly specializedSkills?: readonly string[];
   readonly skills?: readonly SkillRef[];
-  
+
   // Constraints
   readonly constraints?: readonly Constraint[];
-  
+
   // Tags for semantic routing
   readonly tags?: readonly string[];
-  
+
   // Metadata
   readonly metadata?: PersonaMetadata;
-  
+
   // Source location (for error reporting)
   readonly span?: Span;
 }
@@ -436,7 +584,7 @@ export interface PersonaInstance {
   readonly persona: Persona;
   readonly activatedAt: Date;
   readonly weight: number;
-  readonly spawnIndex?: number;  // For spawned instances
+  readonly spawnIndex?: number; // For spawned instances
   readonly context?: Record<string, unknown>;
 }
 
@@ -449,7 +597,7 @@ export interface PersonaRef {
   readonly tag?: string;
   readonly skill?: string;
   readonly module?: ModuleId;
-  readonly count?: number;  // For spawn
+  readonly count?: number; // For spawn
 }
 
 /** Create persona reference helpers */
@@ -457,10 +605,17 @@ export const PersonaRef = {
   id: (id: PersonaId): PersonaRef => ({ kind: 'id', id }),
   tag: (tag: string): PersonaRef => ({ kind: 'tag', tag }),
   skill: (skill: string): PersonaRef => ({ kind: 'skill', skill }),
-  qualified: (module: ModuleId, id: PersonaId): PersonaRef => ({ kind: 'qualified', module, id }),
-  spawn: (id: PersonaId, count: number): PersonaRef => ({ kind: 'spawn', id, count }),
+  qualified: (module: ModuleId, id: PersonaId): PersonaRef => ({
+    kind: 'qualified',
+    module,
+    id,
+  }),
+  spawn: (id: PersonaId, count: number): PersonaRef => ({
+    kind: 'spawn',
+    id,
+    count,
+  }),
 };
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TEAM DEFINITIONS
@@ -474,22 +629,22 @@ export interface Team {
   readonly id: TeamId;
   readonly name: string;
   readonly version?: SemVer;
-  
+
   // Composition
   readonly members: readonly PersonaRef[];
   readonly defaultPrimary?: PersonaRef;
   readonly defaultMerge?: MergeMode;
-  
+
   // Configuration
   readonly quorum?: Quorum;
   readonly conflictOrder?: readonly PersonaRef[];
   readonly weights?: Record<string, number>;
-  
+
   // Metadata
   readonly description?: string;
   readonly tags?: readonly string[];
   readonly metadata?: TeamMetadata;
-  
+
   // Source location
   readonly span?: Span;
 }
@@ -512,7 +667,6 @@ export interface Quorum {
   readonly total: number;
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              WORKFLOW DEFINITIONS
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -521,13 +675,13 @@ export interface Quorum {
  * Workflow operators
  */
 export type WorkflowOp =
-  | '->'     // Sequential
-  | '||'     // Parallel
-  | '|'      // Choice
-  | '=>'     // Transform
-  | '~>'     // Async pipe
-  | '<->'    // Bidirectional
-  | '>>>';   // Accumulate
+  | '->' // Sequential
+  | '||' // Parallel
+  | '|' // Choice
+  | '=>' // Transform
+  | '~>' // Async pipe
+  | '<->' // Bidirectional
+  | '>>>'; // Accumulate
 
 /**
  * Workflow expression types
@@ -613,7 +767,7 @@ export interface RetryConfig {
   readonly count: number;
   readonly delay?: Duration;
   readonly backoff?: BackoffStrategy;
-  readonly retryOn?: readonly string[];  // Error codes
+  readonly retryOn?: readonly string[]; // Error codes
 }
 
 /**
@@ -632,25 +786,25 @@ export interface Workflow {
   readonly id: WorkflowId;
   readonly name?: string;
   readonly version?: SemVer;
-  
+
   // Type parameters
   readonly inputType?: string;
   readonly outputType?: string;
-  
+
   // Steps
   readonly steps: WorkflowExpr;
-  
+
   // Configuration
   readonly timeout?: Duration;
   readonly retry?: RetryConfig | number;
   readonly fallback?: PersonaRef;
-  readonly when?: string;  // Condition expression
-  
+  readonly when?: string; // Condition expression
+
   // Metadata
   readonly description?: string;
   readonly tags?: readonly string[];
   readonly metadata?: Record<string, unknown>;
-  
+
   // Source location
   readonly span?: Span;
 }
@@ -661,7 +815,13 @@ export interface Workflow {
 export interface WorkflowExecution {
   readonly id: UUID;
   readonly workflow: WorkflowId;
-  readonly status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled' | 'paused';
+  readonly status:
+    | 'pending'
+    | 'running'
+    | 'completed'
+    | 'failed'
+    | 'cancelled'
+    | 'paused';
   readonly startedAt: Date;
   readonly completedAt?: Date;
   readonly currentStep?: number;
@@ -682,7 +842,6 @@ export interface WorkflowStepExecution {
   readonly error?: PCLError;
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              RUNTIME STATE
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -693,28 +852,28 @@ export interface WorkflowStepExecution {
 export interface PCLState {
   // System
   readonly system: SystemState;
-  
+
   // Personas
   readonly personas: PersonaState;
-  
+
   // Composition
   readonly composition: CompositionState;
-  
+
   // Teams
   readonly teamsLoaded: readonly TeamId[];
-  
+
   // Workflows
   readonly workflows: WorkflowState;
-  
+
   // Cognitive parameters
   readonly cognitive: CognitiveState;
-  
+
   // Observability
   readonly observability: ObservabilityState;
-  
+
   // Snapshots
   readonly snapshots: Record<string, Snapshot>;
-  
+
   // Context variables
   readonly context: Record<string, unknown>;
 }
@@ -755,8 +914,8 @@ export interface WorkflowState {
 }
 
 export interface CognitiveState {
-  readonly depth: number;        // 1-5
-  readonly verbosity: number;    // 0-3
+  readonly depth: number; // 1-5
+  readonly verbosity: number; // 0-3
   readonly tone: Tone;
   readonly output: OutputFormat;
   readonly context: ContextSize;
@@ -795,7 +954,6 @@ export interface Snapshot {
   readonly state: PCLState;
   readonly description?: string;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              DEFAULT STATE
@@ -857,7 +1015,6 @@ export const DEFAULT_STATE: PCLState = {
   context: {},
 };
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              ERROR TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -883,14 +1040,14 @@ export const ErrorCode = {
   PARSE_INVALID_SYNTAX: 'E_PARSE_003',
   PARSE_INVALID_ESCAPE: 'E_PARSE_004',
   PARSE_UNTERMINATED_STRING: 'E_PARSE_005',
-  
+
   // Type errors (E_TYPE_*)
   TYPE_MISMATCH: 'E_TYPE_001',
   TYPE_UNKNOWN: 'E_TYPE_002',
   TYPE_NOT_ASSIGNABLE: 'E_TYPE_003',
   TYPE_MISSING_PROPERTY: 'E_TYPE_004',
   TYPE_CIRCULAR: 'E_TYPE_005',
-  
+
   // Runtime errors (E_RUNTIME_*)
   PERSONA_NOT_FOUND: 'E_RUNTIME_001',
   TEAM_NOT_FOUND: 'E_RUNTIME_002',
@@ -899,39 +1056,54 @@ export const ErrorCode = {
   NOT_ACTIVE: 'E_RUNTIME_005',
   INVALID_STATE: 'E_RUNTIME_006',
   MAX_PERSONAS_EXCEEDED: 'E_RUNTIME_007',
-  
+
   // Registry errors (E_REGISTRY_*)
   REGISTRY_NOT_FOUND: 'E_REGISTRY_001',
   REGISTRY_NETWORK: 'E_REGISTRY_002',
   REGISTRY_SCHEMA: 'E_REGISTRY_003',
   REGISTRY_AUTH: 'E_REGISTRY_004',
   REGISTRY_CONFLICT: 'E_REGISTRY_005',
-  
+
   // Workflow errors (E_WORKFLOW_*)
   WORKFLOW_TIMEOUT: 'E_WORKFLOW_001',
   WORKFLOW_CANCELLED: 'E_WORKFLOW_002',
   WORKFLOW_FAILED: 'E_WORKFLOW_003',
   WORKFLOW_INVALID: 'E_WORKFLOW_004',
-  
+
   // Validation errors (E_VALIDATION_*)
   VALIDATION_REQUIRED: 'E_VALIDATION_001',
   VALIDATION_FORMAT: 'E_VALIDATION_002',
   VALIDATION_RANGE: 'E_VALIDATION_003',
   VALIDATION_CONSTRAINT: 'E_VALIDATION_004',
-  
+
   // Security errors (E_SECURITY_*)
   SECURITY_FORBIDDEN: 'E_SECURITY_001',
   SECURITY_SIGNATURE: 'E_SECURITY_002',
   SECURITY_SANDBOX: 'E_SECURITY_003',
+
+  // Phase 1.0: Semantic errors (E_SEMANTIC_*)
+  SEMANTIC_DUPLICATE_MEMBER: 'E_SEMANTIC_001',
+  SEMANTIC_INVALID_PRIMARY: 'E_SEMANTIC_002',
+  SEMANTIC_INVALID_QUORUM: 'E_SEMANTIC_003',
+  SEMANTIC_CIRCULAR_REFERENCE: 'E_SEMANTIC_004',
+  SEMANTIC_UNREACHABLE_CODE: 'E_SEMANTIC_005',
+  SEMANTIC_INFINITE_LOOP: 'E_SEMANTIC_006',
+  SEMANTIC_TYPE_MISMATCH: 'E_SEMANTIC_007',
+  SEMANTIC_TOO_MANY_BRANCHES: 'E_SEMANTIC_008',
+  SEMANTIC_CONFLICT_ORDER: 'E_SEMANTIC_009',
 } as const;
 
-export type ErrorCodeType = typeof ErrorCode[keyof typeof ErrorCode];
+export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode];
 
 /** Create PCL error */
 export const PCLError = (
   code: string,
   message: string,
-  options?: { span?: Span; cause?: PCLError | Error; details?: Record<string, unknown> }
+  options?: {
+    span?: Span;
+    cause?: PCLError | Error;
+    details?: Record<string, unknown>;
+  }
 ): PCLError => ({
   code,
   message,
@@ -939,7 +1111,6 @@ export const PCLError = (
   cause: options?.cause,
   details: options?.details,
 });
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              EVENTS
@@ -997,7 +1168,10 @@ export interface PCLEventMap {
   'team:loaded': { team: TeamId };
   'team:unloaded': { team: TeamId };
   'workflow:started': { execution: WorkflowExecution };
-  'workflow:step': { execution: WorkflowExecution; step: WorkflowStepExecution };
+  'workflow:step': {
+    execution: WorkflowExecution;
+    step: WorkflowStepExecution;
+  };
   'workflow:completed': { execution: WorkflowExecution };
   'workflow:failed': { execution: WorkflowExecution; error: PCLError };
   'workflow:cancelled': { execution: WorkflowExecution };
@@ -1008,7 +1182,7 @@ export interface PCLEventMap {
   'snapshot:saved': { snapshot: Snapshot };
   'snapshot:restored': { snapshot: Snapshot };
   'cognitive:changed': { changes: Partial<CognitiveState> };
-  'error': { error: PCLError };
+  error: { error: PCLError };
   [key: `custom:${string}`]: unknown;
 }
 
@@ -1018,7 +1192,6 @@ export interface PCLEventMap {
 export type PCLEventHandler<T extends PCLEventType> = (
   event: T extends keyof PCLEventMap ? PCLEventMap[T] : unknown
 ) => void | Promise<void>;
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              REGISTRY TYPES
@@ -1056,7 +1229,7 @@ export interface RegistryAuth {
 
 export interface CacheConfig {
   readonly enabled: boolean;
-  readonly ttl: number;  // seconds
+  readonly ttl: number; // seconds
   readonly maxSize: number;
 }
 
@@ -1090,7 +1263,6 @@ export interface SyncConflict {
   readonly remote: unknown;
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              PCLPACK FORMAT
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1103,19 +1275,19 @@ export interface PCLPack {
   readonly kind: 'PCLPack';
   readonly version: SemVer;
   readonly specVersion: SemVer;
-  
+
   // Metadata
   readonly metadata: PCLPackMetadata;
-  
+
   // Content
   readonly sharedSkills?: readonly SharedSkillCategory[];
   readonly personas?: readonly Persona[];
   readonly teams?: readonly Team[];
   readonly workflows?: readonly Workflow[];
-  
+
   // Registry configuration
   readonly registry?: RegistryConfig;
-  
+
   // Initial state (optional)
   readonly initialState?: Partial<PCLState>;
 }
@@ -1132,7 +1304,6 @@ export interface PCLPackMetadata {
   readonly dependencies?: Record<string, string>;
   readonly peerDependencies?: Record<string, string>;
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              PROVIDER TYPES
@@ -1198,7 +1369,6 @@ export interface ProviderChunk {
   readonly finishReason?: 'stop' | 'length' | 'tool_use';
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              UTILITY TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1216,8 +1386,8 @@ export type DeepPartial<T> = T extends object
 export type DeepReadonly<T> = T extends (infer U)[]
   ? ReadonlyArray<DeepReadonly<U>>
   : T extends object
-  ? { readonly [P in keyof T]: DeepReadonly<T[P]> }
-  : T;
+    ? { readonly [P in keyof T]: DeepReadonly<T[P]> }
+    : T;
 
 /**
  * Make specific properties optional
@@ -1227,7 +1397,8 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 /**
  * Make specific properties required
  */
-export type RequiredBy<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+export type RequiredBy<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;
 
 /**
  * Extract keys of a certain type
@@ -1240,7 +1411,6 @@ export type KeysOfType<T, U> = {
  * Value of a record
  */
 export type ValueOf<T> = T[keyof T];
-
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              EXPORTS

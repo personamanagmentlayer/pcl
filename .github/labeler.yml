@@ -1,0 +1,78 @@
+# PR Auto-labeler Configuration
+# Automatically labels PRs based on changed files
+
+'area:lexer':
+  - changed-files:
+      - any-glob-to-any-file: 'src/lexer/**/*'
+
+'area:parser':
+  - changed-files:
+      - any-glob-to-any-file: 'src/parser/**/*'
+
+'area:semantic':
+  - changed-files:
+      - any-glob-to-any-file: 'src/semantic/**/*'
+
+'area:runtime':
+  - changed-files:
+      - any-glob-to-any-file: 'src/runtime/**/*'
+
+'area:codegen':
+  - changed-files:
+      - any-glob-to-any-file: 'src/codegen/**/*'
+
+'area:cli':
+  - changed-files:
+      - any-glob-to-any-file: 'src/cli/**/*'
+
+'area:stdlib':
+  - changed-files:
+      - any-glob-to-any-file: 'src/stdlib/**/*'
+
+'area:types':
+  - changed-files:
+      - any-glob-to-any-file: 'src/types/**/*'
+
+'area:ast':
+  - changed-files:
+      - any-glob-to-any-file: 'src/ast/**/*'
+
+'type:tests':
+  - changed-files:
+      - any-glob-to-any-file: 'tests/**/*'
+
+'type:docs':
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'docs/**/*'
+
+'type:ci':
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/workflows/**/*'
+          - '.github/actions/**/*'
+
+'type:config':
+  - changed-files:
+      - any-glob-to-any-file:
+          - '*.json'
+          - '*.yml'
+          - '*.yaml'
+          - '.vscode/**/*'
+          - '.editorconfig'
+          - '.prettierrc'
+          - '.eslintrc*'
+
+'priority:high':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/lexer/**/*'
+          - 'src/parser/**/*'
+          - 'src/semantic/**/*'
+
+'dependencies':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'package.json'
+          - 'package-lock.json'

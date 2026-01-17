@@ -67,8 +67,8 @@
   },
   "files": [
     "dist",
-    "grammar",
-    "examples",
+    "src/grammar",
+    "docs/examples",
     "README.md",
     "LICENSE"
   ],
@@ -76,12 +76,17 @@
     "node": ">=20.0.0"
   },
   "scripts": {
+    "prepare": "husky",
     "build": "tsup src/index.ts src/cli/index.ts --format esm --dts --clean --splitting",
     "build:all": "tsup src/index.ts src/types/index.ts src/ast/index.ts src/lexer/index.ts src/parser/index.ts src/semantic/index.ts src/runtime/index.ts src/codegen/index.ts src/cli/index.ts --format esm --dts --clean",
     "build:watch": "tsup src/index.ts src/cli/index.ts --format esm --dts --watch",
     "dev": "tsx watch src/cli/index.ts",
     "start": "node dist/cli/index.js",
     "test": "vitest run",
+    "test:standalone": "node scripts/run-all-tests.mjs",
+    "test:full": "node scripts/test-full-features.mjs",
+    "test:parser": "node scripts/test-parser-capabilities.mjs",
+    "test:quick": "node tests/test-working.mjs",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
@@ -99,11 +104,17 @@
   "devDependencies": {
     "@types/node": "^20.10.0",
     "eslint": "^8.55.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.1.0",
     "tsup": "^8.0.1",
     "tsx": "^4.6.2",
     "typescript": "^5.3.3",
     "vitest": "^1.0.4"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "openai": "^4.68.0"
   },
   "peerDependencies": {
     "typescript": ">=5.0.0"
@@ -112,5 +123,14 @@
     "typescript": {
       "optional": true
     }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }
