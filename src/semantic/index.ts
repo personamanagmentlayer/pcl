@@ -1026,7 +1026,8 @@ export class SymbolTable {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export interface AnalyzerOptions {
-  source?: string;
+  source?: string; // Source file path or identifier
+  sourceCode?: string; // Actual source code for error messages
   strict?: boolean;
   modulePath?: string; // Path to the module being analyzed
 }
@@ -1073,7 +1074,8 @@ export class SemanticAnalyzer {
   private currentScope: Scope;
   private errors: PCLError[] = [];
   private warnings: PCLError[] = [];
-  private readonly source: string;
+  private readonly source: string; // Source file path
+  private readonly sourceCode: string | undefined; // Actual source code
   private readonly strict: boolean;
 
   // Module visibility tracking
@@ -1089,6 +1091,7 @@ export class SemanticAnalyzer {
 
   constructor(options: AnalyzerOptions = {}) {
     this.source = options.source ?? '<anonymous>';
+    this.sourceCode = options.sourceCode;
     this.strict = options.strict ?? false;
     this.symbolTable = new SymbolTable();
     this.globalScope = this.symbolTable.getGlobalScope();
@@ -1967,16 +1970,31 @@ export class SemanticAnalyzer {
 
           // Phase 1.0A: Duplicate member detection
           if (memberNames.has(personaName)) {
-            this.error(`Duplicate team member '${personaName}'`, ref.span);
+            this.error(
+              `Duplicate team member '${personaName}'`,
+              ref.span,
+              ErrorCode.SEMANTIC_DUPLICATE_MEMBER,
+              `Remove the duplicate occurrence of '${personaName}' from the members list`
+            );
           }
           memberNames.add(personaName);
           memberList.push(personaName);
 
           const persona = this.currentScope.lookup(personaName);
           if (!persona) {
-            this.error(`Unknown persona: ${personaName}`, ref.span);
+            this.error(
+              `Unknown persona: ${personaName}`,
+              ref.span,
+              ErrorCode.TYPE_UNKNOWN,
+              `Define the persona '${personaName}' before using it in the team, or check for typos`
+            );
           } else if (!(persona.type instanceof PersonaType) && !(persona.type instanceof TeamType)) {
-            this.error(`${personaName} is not a persona or team`, ref.span);
+            this.error(
+              `${personaName} is not a persona or team`,
+              ref.span,
+              ErrorCode.TYPE_MISMATCH,
+              `Only personas and teams can be team members`
+            );
           }
         }
       } else if (member.kind === 'TeamPrimaryDeclaration') {
@@ -1984,13 +2002,21 @@ export class SemanticAnalyzer {
         const personaName = this.getPersonaRefName(primaryRef);
         const persona = this.currentScope.lookup(personaName);
         if (!persona) {
-          this.error(`Unknown persona: ${personaName}`, primaryRef.span);
+          this.error(
+            `Unknown persona: ${personaName}`,
+            primaryRef.span,
+            ErrorCode.TYPE_UNKNOWN,
+            `Define the persona '${personaName}' before setting it as primary`
+          );
         } else if (
           !teamSymbol.type.members.some((m) => m.name === personaName)
         ) {
+          const availableMembers = memberList.join(', ');
           this.error(
             `Primary persona ${personaName} is not a team member`,
-            primaryRef.span
+            primaryRef.span,
+            ErrorCode.SEMANTIC_INVALID_PRIMARY,
+            `Add '${personaName}' to the members list, or choose from available members: ${availableMembers}`
           );
         }
       } else if (member.kind === 'TeamQuorumDeclaration') {
@@ -2028,21 +2054,27 @@ export class SemanticAnalyzer {
     if (required > memberCount) {
       this.error(
         `Quorum ${required}/${total} exceeds member count ${memberCount}`,
-        span
+        span,
+        ErrorCode.SEMANTIC_INVALID_QUORUM,
+        `Change quorum to at most ${memberCount}/${total}, or add more team members`
       );
     }
 
     if (total > memberCount) {
       this.warning(
         `Quorum total ${total} exceeds member count ${memberCount}`,
-        span
+        span,
+        ErrorCode.SEMANTIC_INVALID_QUORUM,
+        `Consider changing quorum total to ${memberCount} to match actual team size`
       );
     }
 
     if (required > total) {
       this.error(
         `Quorum required ${required} cannot exceed total ${total}`,
-        span
+        span,
+        ErrorCode.SEMANTIC_INVALID_QUORUM,
+        `Change quorum to ${total}/${total} for unanimity, or reduce the required count`
       );
     }
   }
@@ -2064,9 +2096,12 @@ export class SemanticAnalyzer {
     );
 
     if (missingFromConflict.length > 0) {
+      const fullOrder = [...conflictOrder, ...missingFromConflict].join(' > ');
       this.warning(
         `Members not in conflict resolution order: ${missingFromConflict.join(', ')}`,
-        span
+        span,
+        ErrorCode.SEMANTIC_CONFLICT_ORDER,
+        `Add all members to conflict order, e.g.: conflict: ${fullOrder}`
       );
     }
 
@@ -2075,7 +2110,9 @@ export class SemanticAnalyzer {
     if (notInMembers.length > 0) {
       this.error(
         `Conflict resolution order includes non-members: ${notInMembers.join(', ')}`,
-        span
+        span,
+        ErrorCode.SEMANTIC_CONFLICT_ORDER,
+        `Remove ${notInMembers.join(', ')} from conflict order, or add them to the members list`
       );
     }
   }
@@ -2140,7 +2177,9 @@ export class SemanticAnalyzer {
         if (parallelExpr.branches.length > 10) {
           this.warning(
             `Too many parallel branches (${parallelExpr.branches.length}). Consider refactoring for maintainability.`,
-            expr.span
+            expr.span,
+            ErrorCode.SEMANTIC_TOO_MANY_BRANCHES,
+            `Split into smaller sub-workflows or use sequential processing with -> operator`
           );
         }
 
@@ -2166,12 +2205,16 @@ export class SemanticAnalyzer {
         if (conditionValue === true && cond.else) {
           this.warning(
             'Unreachable code: else branch will never execute because condition is always true',
-            cond.else.span
+            cond.else.span,
+            ErrorCode.SEMANTIC_UNREACHABLE_CODE,
+            `Remove the else branch or change the condition to a dynamic expression`
           );
         } else if (conditionValue === false) {
           this.warning(
             'Unreachable code: then branch will never execute because condition is always false',
-            cond.then.span
+            cond.then.span,
+            ErrorCode.SEMANTIC_UNREACHABLE_CODE,
+            `Remove the then branch or change the condition to a dynamic expression`
           );
         }
 
@@ -2188,12 +2231,16 @@ export class SemanticAnalyzer {
           if (conditionValue === true) {
             this.warning(
               'Potential infinite loop: while condition is always true',
-              expr.span
+              expr.span,
+              ErrorCode.SEMANTIC_INFINITE_LOOP,
+              `Use a dynamic condition that can become false, or use 'loop N times' for bounded iteration`
             );
           } else if (conditionValue === false) {
             this.warning(
               'Unreachable code: loop body will never execute because while condition is always false',
-              loop.body.span
+              loop.body.span,
+              ErrorCode.SEMANTIC_UNREACHABLE_CODE,
+              `Remove the loop or use a condition that can be true`
             );
           }
         }
@@ -2203,12 +2250,16 @@ export class SemanticAnalyzer {
           if (conditionValue === false) {
             this.warning(
               'Potential infinite loop: until condition is always false',
-              expr.span
+              expr.span,
+              ErrorCode.SEMANTIC_INFINITE_LOOP,
+              `Use a dynamic condition that can become true, or use 'loop N times' for bounded iteration`
             );
           } else if (conditionValue === true) {
             this.warning(
               'Unreachable code: loop body will never execute because until condition is already true',
-              loop.body.span
+              loop.body.span,
+              ErrorCode.SEMANTIC_UNREACHABLE_CODE,
+              `Remove the loop or use a condition that starts false`
             );
           }
         }
@@ -2221,7 +2272,9 @@ export class SemanticAnalyzer {
           ) {
             this.warning(
               'Unreachable code: loop will never execute (count is 0)',
-              loop.body.span
+              loop.body.span,
+              ErrorCode.SEMANTIC_UNREACHABLE_CODE,
+              `Remove the loop or change count to a positive number`
             );
           }
         }
@@ -3482,12 +3535,74 @@ export class SemanticAnalyzer {
     return new Scope(kind, parent);
   }
 
-  private error(message: string, span?: Span): void {
-    this.errors.push(createError(ErrorCode.TYPE_MISMATCH, message, { span }));
+  /**
+   * Generate rich error message with code snippet
+   */
+  private formatErrorWithContext(
+    message: string,
+    span?: Span,
+    suggestion?: string
+  ): string {
+    if (!span || !this.sourceCode) {
+      // No span or source code - return simple message
+      if (suggestion) {
+        return `${message}\n\nSuggestion: ${suggestion}`;
+      }
+      return message;
+    }
+
+    const lines = this.sourceCode.split('\n');
+    const errorLine = span.start.line;
+    const errorCol = span.start.column;
+
+    // Validate line number
+    if (errorLine < 1 || errorLine > lines.length) {
+      return message;
+    }
+
+    const lineContent = lines[errorLine - 1];
+
+    // Build rich error message
+    let richMessage = message + '\n\n';
+
+    // Source location
+    richMessage += `  ${this.source}:${errorLine}:${errorCol}\n\n`;
+
+    // Show the error line with line number
+    const lineNumStr = String(errorLine);
+    const lineNumWidth = lineNumStr.length;
+    const padding = ' '.repeat(lineNumWidth + 1);
+
+    richMessage += `${padding}|\n`;
+    richMessage += `${lineNumStr} | ${lineContent}\n`;
+    richMessage += `${padding}| ${' '.repeat(errorCol - 1)}^\n`;
+
+    // Add suggestion if provided
+    if (suggestion) {
+      richMessage += `\nSuggestion: ${suggestion}`;
+    }
+
+    return richMessage;
   }
 
-  private warning(message: string, span?: Span): void {
-    this.warnings.push(createError(ErrorCode.TYPE_MISMATCH, message, { span }));
+  private error(
+    message: string,
+    span?: Span,
+    code: string = ErrorCode.TYPE_MISMATCH,
+    suggestion?: string
+  ): void {
+    const richMessage = this.formatErrorWithContext(message, span, suggestion);
+    this.errors.push(createError(code, richMessage, { span }));
+  }
+
+  private warning(
+    message: string,
+    span?: Span,
+    code: string = ErrorCode.TYPE_MISMATCH,
+    suggestion?: string
+  ): void {
+    const richMessage = this.formatErrorWithContext(message, span, suggestion);
+    this.warnings.push(createError(code, richMessage, { span }));
   }
 }
 

@@ -137,7 +137,11 @@ export function compile(
     return Err(parseResult.value.errors);
   }
 
-  const analysisResult = analyzeProgram(parseResult.value.program);
+  const analysisResult = analyzeProgram(parseResult.value.program, {
+    source: options?.source,
+    sourceCode: source,
+    strict: options?.strict,
+  });
   if (!analysisResult.ok) {
     return analysisResult;
   }

@@ -76,6 +76,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
+    "prepare": "husky",
     "build": "tsup src/index.ts src/cli/index.ts --format esm --dts --clean --splitting",
     "build:all": "tsup src/index.ts src/types/index.ts src/ast/index.ts src/lexer/index.ts src/parser/index.ts src/semantic/index.ts src/runtime/index.ts src/codegen/index.ts src/cli/index.ts --format esm --dts --clean",
     "build:watch": "tsup src/index.ts src/cli/index.ts --format esm --dts --watch",
@@ -103,6 +104,8 @@
   "devDependencies": {
     "@types/node": "^20.10.0",
     "eslint": "^8.55.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.1.0",
     "tsup": "^8.0.1",
     "tsx": "^4.6.2",
@@ -120,5 +123,14 @@
     "typescript": {
       "optional": true
     }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }
