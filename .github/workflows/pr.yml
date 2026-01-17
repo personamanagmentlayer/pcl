@@ -134,7 +134,7 @@ jobs:
         continue-on-error: true
 
       - name: 💬 Comment coverage summary
-        uses: romeovs/lcov-reporter-action@v0.3.1
+        uses: romeovs/lcov-reporter-action@v0.4.0
         with:
           lcov-file: ./coverage/lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
