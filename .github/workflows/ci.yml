@@ -119,12 +119,12 @@ jobs:
         continue-on-error: true
 
       - name: 🛡️ Run CodeQL analysis
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: javascript
 
       - name: 🔍 Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
 
   # ═══════════════════════════════════════════════════════════════════════════
   #                              PACKAGE VALIDATION
