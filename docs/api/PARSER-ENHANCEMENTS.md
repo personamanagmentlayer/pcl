@@ -100,7 +100,7 @@ private parseTeamMember(): AST.TeamMember | null {
 }
 ```
 
-**Grammar Reference** ([grammar/pcl.ebnf](../grammar/pcl.ebnf#L113-L133)):
+**Grammar Reference** ([src/grammar/pcl.ebnf](../src/grammar/pcl.ebnf#L113-L133)):
 
 ```ebnf
 team_decl = { decorator } , { modifier } , "team" , identifier ,
@@ -543,7 +543,7 @@ workflow DataPipeline {
 }
 ```
 
-**Grammar Addition** ([grammar/pcl.ebnf](../grammar/pcl.ebnf#L205-L215)):
+**Grammar Addition** ([src/grammar/pcl.ebnf](../src/grammar/pcl.ebnf#L205-L215)):
 
 ```ebnf
 workflow_op = "->"      (* Sequential *)

@@ -308,7 +308,7 @@ pcl-lite/
 
 ### 🔧 Language Reference
 
-- **Grammar**: `grammar/pcl.ebnf` - EBNF grammar specification
+- **Grammar**: `src/grammar/pcl.ebnf` - EBNF grammar specification
 - **AST**: `src/ast/index.ts` - AST node definitions
 - **Type System**: `src/types/index.ts` - Type definitions
 - **Semantic Rules**: `src/semantic/index.ts` - Type checking logic
@@ -367,6 +367,13 @@ Reload the TypeScript server:
 ---
 
 ## Next Steps
+
+### Learn More
+
+- **[Syntax Reference](./docs/reference/SYNTAX.md)** - Complete syntax guide with examples
+- **[Getting Started Guide](./docs/guides/GETTING-STARTED.md)** - Detailed tutorials
+- **[Examples](./docs/examples/)** - Real-world PCL examples
+- **[Formal Grammar](./src/grammar/pcl.ebnf)** - EBNF specification
 
 ### Write More Complex Personas
 

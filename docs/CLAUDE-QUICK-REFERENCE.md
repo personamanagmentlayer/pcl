@@ -105,6 +105,7 @@
 /persona DEV
 
 Context:
+
 - Project: PCL compiler (see .github/copilot-instructions.md)
 - Phase: [phase from .roadmap/ROADMAP.md]
 - Files: [relevant source files]
@@ -112,10 +113,11 @@ Context:
 
 Task: Implement [feature]
 Requirements:
+
 - [requirement 1]
 - [requirement 2]
-Tests: Include comprehensive tests (≥80% coverage)
-Quality: Run build + test after implementation
+  Tests: Include comprehensive tests (≥80% coverage)
+  Quality: Run build + test after implementation
 ```
 
 ### Architecture Design
@@ -124,6 +126,7 @@ Quality: Run build + test after implementation
 /persona ARCHI
 
 Context:
+
 - Current: [describe current state]
 - Goal: [objectives]
 - Constraints: [limitations]
@@ -131,6 +134,7 @@ Context:
 
 Task: Design [component] architecture
 Output:
+
 1. Architecture diagram (Mermaid)
 2. Component interfaces
 3. Data flow description
@@ -145,6 +149,7 @@ Output:
 Review: [file paths or git diff]
 Standards: .github/copilot-instructions.md
 Focus:
+
 - Immutability (no mutations)
 - Error handling (Result pattern)
 - Type safety (no `any`)
@@ -161,6 +166,7 @@ Output: Prioritized improvement list
 
 Audit: [component/file]
 Threats:
+
 - Code injection (eval, Function)
 - Input validation
 - Resource exhaustion
@@ -168,6 +174,7 @@ Threats:
 - Data sanitization
 
 Output:
+
 1. Vulnerability report (severity ratings)
 2. Proof-of-concept (if applicable)
 3. Remediation steps
@@ -184,6 +191,7 @@ Output:
 Session context:
 
 Files: Read in parallel:
+
 - src/parser/index.ts
 - src/semantic/index.ts
 - src/codegen/index.ts
@@ -199,17 +207,21 @@ Now [action].
 
 ```markdown
 Step 1: Design [component]
+
 - Output: Interface definitions + diagram
 - Wait for review
 
 Step 2: Implement core logic
+
 - Based on approved design
 - Wait for review
 
 Step 3: Add error handling
+
 - Wait for review
 
 Step 4: Write tests
+
 - ≥80% coverage
 ```
 
@@ -235,7 +247,7 @@ Provide unified assessment.
 ```markdown
 Load context for [feature]:
 
-Grammar: grammar/pcl.ebnf ([lines])
+Grammar: src/grammar/pcl.ebnf ([lines])
 Pattern: src/[module]/index.ts ([method])
 Tests: tests/[file].test.ts
 Docs: docs/api/[FILE].md
@@ -309,9 +321,10 @@ npx tsc --noEmit
 Create todo for [feature]:
 
 Use manage_todo_list tool:
+
 1. [Task 1] - not-started
 2. [Task 2] - not-started
-...
+   ...
 
 Mark task 1 as in-progress.
 ```
@@ -320,6 +333,7 @@ Mark task 1 as in-progress.
 
 ```markdown
 Update todo:
+
 - Mark task [N] completed
 - Mark task [N+1] in-progress
 - Add subtask to task [N+2]: [description]
@@ -329,6 +343,7 @@ Update todo:
 
 ```markdown
 Todo status:
+
 - Completed: [count]
 - In progress: [current task]
 - Remaining: [count]
@@ -343,6 +358,7 @@ Todo status:
 
 ```markdown
 Read src/parser/index.ts:
+
 - Lines 1-50 (imports + types)
 - Lines 200-250 (parsePersona method)
 - Lines 500-550 (helper functions)
@@ -352,19 +368,23 @@ Read src/parser/index.ts:
 
 ```markdown
 # Exact match
+
 grep 'PersonaDeclaration' in src/
 
 # Semantic
+
 Find concepts related to: [concept]
 
 # Pattern
-Find all: *.test.ts with "workflow"
+
+Find all: \*.test.ts with "workflow"
 ```
 
 ### Batch Edits
 
 ```markdown
 Update [pattern] across:
+
 - src/parser/index.ts
 - src/semantic/index.ts
 - tests/integration.test.ts
@@ -408,6 +428,7 @@ npm run build
 
 ```markdown
 Check .roadmap/QUICK-STATUS.md:
+
 - What's complete
 - What's in progress
 - What's next
@@ -417,6 +438,7 @@ Check .roadmap/QUICK-STATUS.md:
 
 ```markdown
 Compare current vs .roadmap/ROADMAP.md Phase [X]:
+
 - Completed items
 - Remaining tasks
 - Blockers
@@ -429,6 +451,7 @@ Compare current vs .roadmap/ROADMAP.md Phase [X]:
 Run npm run test:coverage
 
 Report:
+
 - Tests: [passing]/[total]
 - Coverage: [X%]
 - Failed: [list]
@@ -503,14 +526,14 @@ interface ASTVisitor<T> {
 
 ## 📚 Quick Links
 
-| Document                      | Purpose                   |
-| ----------------------------- | ------------------------- |
-| .claude/CLAUDE-INSTRUCTIONS.md | Complete Claude guide     |
-| .github/copilot-instructions.md | Coding standards          |
-| .roadmap/ROADMAP.md           | Project phases            |
-| .roadmap/QUICK-STATUS.md      | Current capabilities      |
-| .roadmap/pcl_todo.md          | Active tasks              |
-| grammar/pcl.ebnf              | Language syntax           |
+| Document                        | Purpose               |
+| ------------------------------- | --------------------- |
+| .claude/CLAUDE-INSTRUCTIONS.md  | Complete Claude guide |
+| .github/copilot-instructions.md | Coding standards      |
+| .roadmap/ROADMAP.md             | Project phases        |
+| .roadmap/QUICK-STATUS.md        | Current capabilities  |
+| .roadmap/pcl_todo.md            | Active tasks          |
+| src/grammar/pcl.ebnf            | Language syntax       |
 
 ---
 

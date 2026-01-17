@@ -67,8 +67,8 @@
   },
   "files": [
     "dist",
-    "grammar",
-    "examples",
+    "src/grammar",
+    "docs/examples",
     "README.md",
     "LICENSE"
   ],

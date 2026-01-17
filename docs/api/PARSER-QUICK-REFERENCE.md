@@ -198,7 +198,7 @@ case '~':
   return this.makeToken(TokenType.TILDE, '~');
 ```
 
-**Step 2: Update Grammar** (`grammar/pcl.ebnf`)
+**Step 2: Update Grammar** (`src/grammar/pcl.ebnf`)
 
 ```ebnf
 workflow_op = "->"      (* Sequential *)
@@ -635,7 +635,7 @@ npm run test:coverage -- parser
 ## 📞 Getting Help
 
 - **Architecture questions**: See [PARSER-ENHANCEMENTS.md](./PARSER-ENHANCEMENTS.md)
-- **Grammar reference**: See [grammar/pcl.ebnf](../../grammar/pcl.ebnf)
+- **Grammar reference**: See [src/grammar/pcl.ebnf](../../src/grammar/pcl.ebnf)
 - **Examples**: See [examples/](../../examples/)
 - **Issues**: GitHub Issues with `parser` label
 

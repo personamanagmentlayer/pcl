@@ -219,9 +219,9 @@ PCL supports a command syntax compatible with chat interfaces:
 
 ```
 pcl-language/
-├── grammar/
-│   └── pcl.ebnf              # Formal EBNF grammar
 ├── src/
+│   ├── grammar/              # Formal EBNF grammar
+│   │   └── pcl.ebnf
 │   ├── types/                # Core type definitions
 │   ├── ast/                  # AST node types
 │   ├── lexer/                # Tokenizer
@@ -430,7 +430,9 @@ pnpm build
 
 ### 📘 Language Reference
 
+- **[Syntax Reference](./docs/reference/SYNTAX.md)** - Human-readable syntax guide with examples
 - **[Language Reference](./docs/reference/LANGUAGE.md)** - Complete PCL syntax and semantics
+- **[Formal Grammar](./src/grammar/pcl.ebnf)** - EBNF grammar specification
 - **[Roadmap](./.roadmap/ROADMAP.md)** - Project roadmap and status
 
 ## Community

@@ -1,6 +1,6 @@
 # Grammar Update Guide for PCL Contributors
 
-> **Last Updated**: 2026-01-17  
+> **Last Updated**: 2026-01-17
 > **Target Audience**: PCL Contributors, Language Designers, Compiler Developers
 
 This guide explains when and how to update the PCL grammar when adding new language features.
@@ -26,6 +26,7 @@ This guide explains when and how to update the PCL grammar when adding new langu
 Update the grammar when adding **syntax** that appears in `.pcl` source files:
 
 **1. New Keywords**
+
 ```pcl
 // Adding 'async' keyword
 async persona ASYNC_ARCHI {
@@ -34,6 +35,7 @@ async persona ASYNC_ARCHI {
 ```
 
 **2. New Declaration Types**
+
 ```pcl
 // Adding 'module' declarations
 module myapp.auth {
@@ -42,6 +44,7 @@ module myapp.auth {
 ```
 
 **3. New Operators**
+
 ```pcl
 // Adding new workflow operators
 ARCHI ~> SEC    // Async pipe operator
@@ -49,12 +52,14 @@ ARCHI ?? DEV    // Null-coalescing operator
 ```
 
 **4. New Expressions**
+
 ```pcl
 // Adding ternary expressions
 result = condition ? ARCHI : SEC
 ```
 
 **5. New Decorators/Annotations**
+
 ```pcl
 // Adding metadata decorators
 @deprecated("Use ARCHI_V2 instead")
@@ -62,6 +67,7 @@ persona ARCHI_V1 { }
 ```
 
 **6. Syntax Modifications**
+
 ```pcl
 // Adding optional parameters to existing constructs
 team SECURITY_TEAM(priority: High) {
@@ -76,6 +82,7 @@ team SECURITY_TEAM(priority: High) {
 Do **NOT** update grammar for runtime-only features:
 
 **1. Event System (Runtime API)**
+
 ```typescript
 // This is JavaScript/TypeScript, not PCL syntax
 runtime.on('persona:before', (persona) => {
@@ -84,20 +91,23 @@ runtime.on('persona:before', (persona) => {
 ```
 
 **2. Built-in Functions (Standard Library)**
+
 ```typescript
 // Standard library functions (no new syntax)
-const length = len(myArray);    // Uses existing function call syntax
-const mapped = map(fn, list);   // Uses existing function call syntax
+const length = len(myArray); // Uses existing function call syntax
+const mapped = map(fn, list); // Uses existing function call syntax
 ```
 
 **3. Semantic Analysis (Validation)**
+
 ```typescript
 // Type checking doesn't change syntax
-validatePersona(node);  // Analyzes existing AST
+validatePersona(node); // Analyzes existing AST
 checkCircularDependencies(team);
 ```
 
 **4. Code Generation (Compilation Targets)**
+
 ```typescript
 // Output format doesn't affect input syntax
 generateTypeScript(ast);
@@ -106,6 +116,7 @@ generatePython(ast);
 ```
 
 **5. CLI Commands (Tooling)**
+
 ```bash
 # Command-line tools, not language syntax
 pcl run my-app.pcl
@@ -113,6 +124,7 @@ pcl build --target typescript
 ```
 
 **6. IDE Features (LSP)**
+
 ```typescript
 // Language server features
 provideCompletions();
@@ -126,7 +138,7 @@ provideDiagnostics();
 
 ### Step 1: Update EBNF Grammar
 
-**File**: [`grammar/pcl.ebnf`](../../grammar/pcl.ebnf)
+**File**: [`src/grammar/pcl.ebnf`](../../src/grammar/pcl.ebnf)
 
 **Purpose**: Define the formal syntax specification
 
@@ -134,18 +146,19 @@ provideDiagnostics();
 
 ```ebnf
 (* Before *)
-persona_decl = { decorator } , { modifier } , 
-               "persona" , identifier , 
+persona_decl = { decorator } , { modifier } ,
+               "persona" , identifier ,
                [ inheritance_clause ] , persona_body ;
 
 (* After *)
-persona_decl = { decorator } , { modifier } , 
+persona_decl = { decorator } , { modifier } ,
                [ "async" ] ,              (* ← Add optional async keyword *)
-               "persona" , identifier , 
+               "persona" , identifier ,
                [ inheritance_clause ] , persona_body ;
 ```
 
 **Best Practices**:
+
 - Use descriptive rule names (`async_modifier` not `am`)
 - Add comments explaining complex rules
 - Follow existing indentation style
@@ -174,9 +187,15 @@ pipeline_operator = "->" | "||" | "|" | "~>" ;  (* ← Add async pipe *)
 ```typescript
 // Add to keyword set
 const KEYWORDS = new Set([
-  'persona', 'team', 'workflow', 'skill',
-  'extends', 'implements', 'if', 'else',
-  'async',  // ← Add new keyword
+  'persona',
+  'team',
+  'workflow',
+  'skill',
+  'extends',
+  'implements',
+  'if',
+  'else',
+  'async', // ← Add new keyword
   // ...
 ]);
 ```
@@ -196,6 +215,7 @@ case '~':
 ```
 
 **Best Practices**:
+
 - Add to `TokenType` enum: `TokenType.ASYNC_PIPE = 'ASYNC_PIPE'`
 - Handle multi-character operators (lookahead)
 - Preserve position information for error messages
@@ -214,34 +234,34 @@ case '~':
 ```typescript
 function parsePersonaDeclaration(): PersonaDeclaration {
   const startPos = current().position;
-  
+
   // Parse decorators
   const decorators = parseDecorators();
-  
+
   // Parse optional 'async' modifier
-  const isAsync = match(TokenType.ASYNC);  // ← Add async parsing
-  
+  const isAsync = match(TokenType.ASYNC); // ← Add async parsing
+
   // Parse 'persona' keyword
   expect(TokenType.PERSONA);
-  
+
   // Parse persona name
   const name = expect(TokenType.IDENTIFIER).value;
-  
+
   // Parse inheritance
-  const inheritance = match(TokenType.EXTENDS) 
-    ? parseInheritanceClause() 
+  const inheritance = match(TokenType.EXTENDS)
+    ? parseInheritanceClause()
     : undefined;
-  
+
   // Parse body
   const body = parsePersonaBody();
-  
+
   return {
     type: 'PersonaDeclaration',
     name,
-    isAsync,           // ← Include in AST
+    isAsync, // ← Include in AST
     inheritance,
     body,
-    position: { start: startPos, end: previous().position }
+    position: { start: startPos, end: previous().position },
   };
 }
 ```
@@ -251,25 +271,28 @@ function parsePersonaDeclaration(): PersonaDeclaration {
 ```typescript
 function parseWorkflow(): WorkflowExpression {
   let left = parsePrimary();
-  
-  while (matchAny([TokenType.ARROW, TokenType.PARALLEL, TokenType.ASYNC_PIPE])) {
+
+  while (
+    matchAny([TokenType.ARROW, TokenType.PARALLEL, TokenType.ASYNC_PIPE])
+  ) {
     const operator = previous();
     const right = parsePrimary();
-    
+
     left = {
       type: 'BinaryExpression',
-      operator: operator.value,  // '->', '||', or '~>'
+      operator: operator.value, // '->', '||', or '~>'
       left,
       right,
-      position: { start: left.position.start, end: right.position.end }
+      position: { start: left.position.start, end: right.position.end },
     };
   }
-  
+
   return left;
 }
 ```
 
 **Best Practices**:
+
 - Use `expect()` for required tokens, `match()` for optional
 - Maintain position tracking for error messages
 - Implement error recovery (synchronization points)
@@ -290,7 +313,7 @@ function parseWorkflow(): WorkflowExpression {
 export interface PersonaDeclaration extends ASTNode {
   type: 'PersonaDeclaration';
   name: string;
-  isAsync?: boolean;        // ← Add optional field
+  isAsync?: boolean; // ← Add optional field
   intent?: string;
   skills: Skill[];
   inheritance?: InheritanceClause;
@@ -311,14 +334,15 @@ export interface AsyncPipeExpression extends ASTNode {
 }
 
 // Update union type
-export type WorkflowExpression = 
+export type WorkflowExpression =
   | SequentialExpression
   | ParallelExpression
-  | AsyncPipeExpression      // ← Add to union
+  | AsyncPipeExpression // ← Add to union
   | ConditionalExpression;
 ```
 
 **Best Practices**:
+
 - Use `readonly` for immutable fields where appropriate
 - Include JSDoc comments with examples
 - Follow existing naming conventions
@@ -338,26 +362,26 @@ export type WorkflowExpression =
 ```typescript
 function validatePersona(node: PersonaDeclaration): ValidationResult {
   const errors: SemanticError[] = [];
-  
+
   // Validate async personas have required capabilities
   if (node.isAsync) {
     const hasAsyncSkill = node.skills.some(
-      skill => skill.id === 'async_capable' || skill.id === 'streaming'
+      (skill) => skill.id === 'async_capable' || skill.id === 'streaming'
     );
-    
+
     if (!hasAsyncSkill) {
       errors.push({
         message: 'Async personas must have async_capable or streaming skill',
         code: 'E0042',
         severity: 'error',
         location: node.position,
-        suggestion: 'Add skill: async_capable to the persona'
+        suggestion: 'Add skill: async_capable to the persona',
       });
     }
   }
-  
+
   // ... other validations
-  
+
   return { ok: errors.length === 0, errors };
 }
 ```
@@ -367,31 +391,32 @@ function validatePersona(node: PersonaDeclaration): ValidationResult {
 ```typescript
 function validateAsyncPipe(node: AsyncPipeExpression): ValidationResult {
   const errors: SemanticError[] = [];
-  
+
   // Both sides must be async-compatible
   if (!isAsyncCompatible(node.left)) {
     errors.push({
       message: 'Left side of ~> must be async-compatible',
       code: 'E0043',
       severity: 'error',
-      location: node.left.position
+      location: node.left.position,
     });
   }
-  
+
   if (!isAsyncCompatible(node.right)) {
     errors.push({
       message: 'Right side of ~> must be async-compatible',
       code: 'E0044',
       severity: 'error',
-      location: node.right.position
+      location: node.right.position,
     });
   }
-  
+
   return { ok: errors.length === 0, errors };
 }
 ```
 
 **Validation Checklist**:
+
 - ✅ Type compatibility
 - ✅ Constraint satisfaction
 - ✅ Scope resolution
@@ -414,14 +439,15 @@ function validateAsyncPipe(node: AsyncPipeExpression): ValidationResult {
 function generateTypeScriptPersona(node: PersonaDeclaration): string {
   const asyncKeyword = node.isAsync ? 'async ' : '';
   const name = node.name;
-  
+
   return `
 ${asyncKeyword}function ${name}(query: string): Promise<string> {
-  const skills = [${node.skills.map(s => `'${s.id}'`).join(', ')}];
-  
-  ${node.isAsync ? 
-    'return await llm.streamingCall({ query, skills });' : 
-    'return await llm.call({ query, skills });'
+  const skills = [${node.skills.map((s) => `'${s.id}'`).join(', ')}];
+
+  ${
+    node.isAsync
+      ? 'return await llm.streamingCall({ query, skills });'
+      : 'return await llm.call({ query, skills });'
   }
 }`;
 }
@@ -433,7 +459,7 @@ ${asyncKeyword}function ${name}(query: string): Promise<string> {
 function generateAsyncPipe(node: AsyncPipeExpression): string {
   const left = generate(node.left);
   const right = generate(node.right);
-  
+
   return `
 (async function() {
   const leftResult = await ${left};
@@ -443,6 +469,7 @@ function generateAsyncPipe(node: AsyncPipeExpression): string {
 ```
 
 **Target Formats**:
+
 - TypeScript (`typescript.ts`)
 - JavaScript (`javascript.ts`)
 - Python (`python.ts` - if applicable)
@@ -458,24 +485,29 @@ function generateAsyncPipe(node: AsyncPipeExpression): string {
 **Files to Update**:
 
 1. **[`docs/reference/LANGUAGE.md`](../reference/LANGUAGE.md)**
-   ```markdown
+
+   ````markdown
    ### Async Personas
-   
+
    Personas can be declared as `async` to enable streaming responses:
-   
+
    ```pcl
    async persona STREAMING_ARCHI {
      intent: "Real-time architecture design"
      skills: [async_capable, streaming]
    }
    ```
-   
+   ````
+
    **Requirements**:
    - Must have `async_capable` or `streaming` skill
    - Cannot be used in synchronous workflows
+
    ```
 
-2. **[`grammar/pcl.ebnf`](../../grammar/pcl.ebnf)** (already done in Step 1)
+   ```
+
+2. **[`src/grammar/pcl.ebnf`](../../src/grammar/pcl.ebnf)** (already done in Step 1)
 
 3. **[`README.md`](../../README.md)** - Add to features list if significant
 
@@ -495,32 +527,32 @@ describe('Parser - Async Personas', () => {
         skills: [async_capable, architecture]
       }
     `;
-    
+
     const result = parse(source);
-    
+
     expect(result.ok).toBe(true);
     expect(result.declarations).toHaveLength(1);
-    
+
     const persona = result.declarations[0];
     expect(persona.type).toBe('PersonaDeclaration');
     expect(persona.isAsync).toBe(true);
     expect(persona.name).toBe('ASYNC_ARCHI');
   });
-  
+
   it('should reject async personas without async skills', () => {
     const source = `
       async persona BAD_ASYNC {
         skills: [architecture]  // Missing async_capable
       }
     `;
-    
+
     const result = parse(source);
-    
+
     expect(result.ok).toBe(false);
     expect(result.errors).toContainEqual(
       expect.objectContaining({
         code: 'E0042',
-        message: expect.stringContaining('async_capable')
+        message: expect.stringContaining('async_capable'),
       })
     );
   });
@@ -536,7 +568,7 @@ describe('Semantic Analysis - Async Validation', () => {
   it('should validate async skill requirements', () => {
     const ast = parse('async persona X { skills: [architecture] }');
     const result = analyze(ast);
-    
+
     expect(result.errors).toHaveLength(1);
     expect(result.errors[0].code).toBe('E0042');
   });
@@ -556,10 +588,10 @@ describe('Integration - Async Personas', () => {
         skills: [async_capable, architecture]
       }
     `;
-    
+
     const compiled = compile(source);
     const result = await runtime.execute('STREAMING_ARCHI', 'Design a system');
-    
+
     expect(result.streaming).toBe(true);
     expect(result.response).toBeDefined();
   });
@@ -567,6 +599,7 @@ describe('Integration - Async Personas', () => {
 ```
 
 **Test Coverage Requirements**:
+
 - ✅ **Parsing**: Valid syntax accepted
 - ✅ **Error Handling**: Invalid syntax rejected with helpful messages
 - ✅ **Semantic Validation**: Type errors caught
@@ -586,7 +619,7 @@ describe('Integration - Async Personas', () => {
 #### Step 1: Grammar
 
 ```ebnf
-(* grammar/pcl.ebnf lines 244-248 *)
+(* src/grammar/pcl.ebnf lines 244-248 *)
 hook_decl  = "@" , hook_name , [ "(" , [ parameters ] , ")" ] , block ;
 hook_name  = "onActivate" | "onDeactivate" | "onError" | "onMessage"
            | "onStep" | "onComplete" | "beforeMerge" | "afterMerge"
@@ -605,27 +638,27 @@ hook_name  = "onActivate" | "onDeactivate" | "onError" | "onMessage"
 function parseHook(): HookDeclaration {
   expect(TokenType.AT);
   const hookName = expect(TokenType.IDENTIFIER).value;
-  
+
   // Validate hook name
-  const validHooks = ['onActivate', 'onDeactivate', 'onError', /* ... */];
+  const validHooks = ['onActivate', 'onDeactivate', 'onError' /* ... */];
   if (!validHooks.includes(hookName)) {
     throw error(`Unknown hook: @${hookName}`);
   }
-  
+
   // Parse optional parameters
-  const params = match(TokenType.LPAREN) 
-    ? parseParameters() 
-    : [];
-  
+  const params = match(TokenType.LPAREN) ? parseParameters() : [];
+
   // Parse block
   const block = parseBlock();
-  
+
   return {
     type: 'HookDeclaration',
     hookName,
     parameters: params,
     block,
-    position: { /* ... */ }
+    position: {
+      /* ... */
+    },
   };
 }
 ```
@@ -650,7 +683,7 @@ function validateHook(node: HookDeclaration): ValidationResult {
   if (node.hookName === 'onError' && node.parameters.length !== 1) {
     return error('onError hook requires exactly 1 parameter (error)');
   }
-  
+
   // Validate block doesn't violate constraints
   // ...
 }
@@ -687,7 +720,7 @@ runtime.on('persona:${camelToSnake(node.hookName)}', (${node.parameters.join(', 
 team_decl = { decorator } , { modifier } , "team" , identifier ,
             [ type_parameters ] , team_body ;
 
-team_body = "{" , 
+team_body = "{" ,
             [ members_clause ] ,
             [ primary_clause ] ,
             [ merge_clause ] ,
@@ -701,6 +734,7 @@ members_clause = "members" , ":" , "[" , persona_list , "]" ;
 #### Remaining Steps
 
 Follow same pattern as lifecycle hooks example:
+
 - Lexer: Add `team` keyword
 - Parser: Implement `parseTeamDeclaration()`
 - AST: Define `TeamDeclaration` interface
@@ -715,21 +749,21 @@ Follow same pattern as lifecycle hooks example:
 
 ## Decision Matrix
 
-| Feature | Grammar Update? | Why |
-|---------|----------------|-----|
-| **Lifecycle Hooks** (`@onActivate`) | ✅ Yes | PCL decorator syntax in `.pcl` files |
-| **Event System** (`runtime.on()`) | ❌ No | JavaScript API, not PCL syntax |
-| **Team Declarations** | ✅ Yes | New `team` keyword and syntax |
-| **Workflow Operators** (`->`, `\|\|`) | ✅ Yes | New operators in expressions |
-| **Built-in Functions** (`len()`, `map()`) | ❌ No | Standard library (uses existing function syntax) |
-| **Type Checking** | ❌ No | Semantic analysis of existing syntax |
-| **Code Generation** | ❌ No | Output format, not input syntax |
-| **CLI Commands** | ❌ No | Tooling, not language |
-| **LSP Features** | ❌ No | IDE support, not language |
-| **New Keywords** (`async`, `await`) | ✅ Yes | Language-level syntax change |
-| **Template Strings** | ✅ Yes | New literal syntax |
-| **Pattern Matching** | ✅ Yes | New expression syntax |
-| **Macros** | ✅ Yes | New preprocessing syntax |
+| Feature                                   | Grammar Update? | Why                                              |
+| ----------------------------------------- | --------------- | ------------------------------------------------ |
+| **Lifecycle Hooks** (`@onActivate`)       | ✅ Yes          | PCL decorator syntax in `.pcl` files             |
+| **Event System** (`runtime.on()`)         | ❌ No           | JavaScript API, not PCL syntax                   |
+| **Team Declarations**                     | ✅ Yes          | New `team` keyword and syntax                    |
+| **Workflow Operators** (`->`, `\|\|`)     | ✅ Yes          | New operators in expressions                     |
+| **Built-in Functions** (`len()`, `map()`) | ❌ No           | Standard library (uses existing function syntax) |
+| **Type Checking**                         | ❌ No           | Semantic analysis of existing syntax             |
+| **Code Generation**                       | ❌ No           | Output format, not input syntax                  |
+| **CLI Commands**                          | ❌ No           | Tooling, not language                            |
+| **LSP Features**                          | ❌ No           | IDE support, not language                        |
+| **New Keywords** (`async`, `await`)       | ✅ Yes          | Language-level syntax change                     |
+| **Template Strings**                      | ✅ Yes          | New literal syntax                               |
+| **Pattern Matching**                      | ✅ Yes          | New expression syntax                            |
+| **Macros**                                | ✅ Yes          | New preprocessing syntax                         |
 
 **Golden Rule**: If it's written in a `.pcl` file, it needs grammar updates. If it's only in JavaScript/TypeScript runtime, it doesn't.
 
@@ -743,7 +777,7 @@ Follow same pattern as lifecycle hooks example:
 // BAD - No position information
 return {
   type: 'PersonaDeclaration',
-  name: name
+  name: name,
 };
 
 // GOOD - Include position for error messages
@@ -752,8 +786,8 @@ return {
   name: name,
   position: {
     start: startToken.position,
-    end: currentToken.position
-  }
+    end: currentToken.position,
+  },
 };
 ```
 
@@ -787,10 +821,18 @@ function generateTypeScript(node: AsyncPersona) {
 }
 
 // GOOD - Update ALL generators
-function generateTypeScript(node: AsyncPersona) { /* ... */ }
-function generateJavaScript(node: AsyncPersona) { /* ... */ }
-function generatePython(node: AsyncPersona) { /* ... */ }
-function generateJSON(node: AsyncPersona) { /* ... */ }
+function generateTypeScript(node: AsyncPersona) {
+  /* ... */
+}
+function generateJavaScript(node: AsyncPersona) {
+  /* ... */
+}
+function generatePython(node: AsyncPersona) {
+  /* ... */
+}
+function generateJSON(node: AsyncPersona) {
+  /* ... */
+}
 ```
 
 ### ❌ Pitfall 4: Weak Semantic Validation
@@ -808,14 +850,14 @@ function validate(node: Persona) {
   if (!/^[A-Z][A-Z0-9_]*$/.test(node.name)) {
     throw error('Invalid name format');
   }
-  
+
   // Skill validation
   for (const skill of node.skills) {
     if (!isValidSkill(skill)) {
       throw error(`Unknown skill: ${skill}`);
     }
   }
-  
+
   // Circular dependency check
   if (hasCircularDependency(node)) {
     throw error('Circular dependency detected');
@@ -834,11 +876,21 @@ it('should parse async personas', () => {
 
 // GOOD - Test edge cases and errors
 describe('Async Personas', () => {
-  it('should parse valid async personas', () => { /* ... */ });
-  it('should reject async without skills', () => { /* ... */ });
-  it('should reject async in sync workflows', () => { /* ... */ });
-  it('should handle missing braces', () => { /* ... */ });
-  it('should provide helpful error messages', () => { /* ... */ });
+  it('should parse valid async personas', () => {
+    /* ... */
+  });
+  it('should reject async without skills', () => {
+    /* ... */
+  });
+  it('should reject async in sync workflows', () => {
+    /* ... */
+  });
+  it('should handle missing braces', () => {
+    /* ... */
+  });
+  it('should provide helpful error messages', () => {
+    /* ... */
+  });
 });
 ```
 
@@ -848,17 +900,18 @@ describe('Async Personas', () => {
 
 ### Minimum Coverage
 
-| Component | Coverage Target | Test Types |
-|-----------|----------------|------------|
-| **Lexer** | 100% | Token recognition, error cases |
-| **Parser** | 100% | Valid syntax, invalid syntax, error recovery |
-| **Semantic Analyzer** | 95% | Validation rules, edge cases |
-| **Code Generators** | 90% | Output correctness for each target |
-| **Integration** | 80% | End-to-end scenarios |
+| Component             | Coverage Target | Test Types                                   |
+| --------------------- | --------------- | -------------------------------------------- |
+| **Lexer**             | 100%            | Token recognition, error cases               |
+| **Parser**            | 100%            | Valid syntax, invalid syntax, error recovery |
+| **Semantic Analyzer** | 95%             | Validation rules, edge cases                 |
+| **Code Generators**   | 90%             | Output correctness for each target           |
+| **Integration**       | 80%             | End-to-end scenarios                         |
 
 ### Test Checklist
 
 **Parser Tests**:
+
 - ✅ Valid syntax accepted
 - ✅ Invalid syntax rejected
 - ✅ Error messages helpful and accurate
@@ -866,6 +919,7 @@ describe('Async Personas', () => {
 - ✅ Edge cases handled (empty, whitespace, comments)
 
 **Semantic Tests**:
+
 - ✅ Type errors caught
 - ✅ Constraint violations detected
 - ✅ Scope resolution correct
@@ -873,12 +927,14 @@ describe('Async Personas', () => {
 - ✅ Duplicate definitions rejected
 
 **Codegen Tests**:
+
 - ✅ Generated code syntactically valid
 - ✅ Generated code semantically equivalent
 - ✅ All targets updated
 - ✅ Edge cases produce correct output
 
 **Integration Tests**:
+
 - ✅ Parse → Analyze → Generate → Execute
 - ✅ Real-world examples work
 - ✅ Performance acceptable
@@ -890,21 +946,24 @@ describe('Async Personas', () => {
 ### ✅ DO
 
 **1. Start with the Grammar**
-- Update `grammar/pcl.ebnf` first
+
+- Update `src/grammar/pcl.ebnf` first
 - Write clear, unambiguous rules
 - Add comments explaining complex cases
 
 **2. Follow Existing Patterns**
+
 - Study similar features (e.g., lifecycle hooks for decorators)
 - Use consistent naming (declarations, expressions, statements)
 - Match existing code style
 
 **3. Provide Excellent Error Messages**
+
 ```typescript
 // GOOD
 throw error(
   `Async personas must have 'async_capable' skill.\n` +
-  `Add: skills: [async_capable, ...] to ${node.name}`,
+    `Add: skills: [async_capable, ...] to ${node.name}`,
   node.position
 );
 
@@ -913,21 +972,25 @@ throw error('Invalid persona');
 ```
 
 **4. Write Comprehensive Tests**
+
 - Test happy path AND edge cases
 - Test error messages are helpful
 - Test all code generation targets
 
 **5. Document Everything**
+
 - Update LANGUAGE.md with syntax and examples
 - Add JSDoc to AST interfaces
 - Write migration guides for breaking changes
 
 **6. Consider Backward Compatibility**
+
 - Make new syntax optional when possible
 - Provide deprecation warnings
 - Document breaking changes clearly
 
 **7. Validate Early and Often**
+
 - Validate in parser (syntax errors)
 - Validate in semantic analyzer (type errors)
 - Validate in codegen (unsupported features)
@@ -937,26 +1000,31 @@ throw error('Invalid persona');
 ### ❌ DON'T
 
 **1. Skip Steps**
+
 - Don't skip semantic validation
 - Don't forget to update ALL code generators
 - Don't skip documentation
 
 **2. Break Existing Code**
+
 - Don't change existing syntax without migration path
 - Don't remove features without deprecation
 - Don't break backward compatibility in minor versions
 
 **3. Ignore Error Cases**
+
 - Don't assume input is valid
 - Don't let parser crash on bad input
 - Don't provide cryptic error messages
 
 **4. Forget Position Information**
+
 - Don't create AST nodes without position
 - Don't lose line/column info in transformations
 - Don't make errors untraceable
 
 **5. Add Ambiguous Syntax**
+
 - Don't create parsing conflicts
 - Don't use same syntax for different features
 - Don't make precedence unclear
@@ -991,16 +1059,16 @@ graph TD
 
 ### Files to Modify
 
-| Step | File(s) | Purpose |
-|------|---------|---------|
-| 1 | `grammar/pcl.ebnf` | Formal grammar specification |
-| 2 | `src/lexer/index.ts` | Token recognition |
-| 3 | `src/parser/index.ts` | AST generation |
-| 4 | `src/ast/index.ts` | AST type definitions |
-| 5 | `src/semantic/index.ts` | Validation rules |
-| 6 | `src/codegen/*.ts` | Code generation (all targets) |
-| 7a | `docs/reference/LANGUAGE.md` | Language reference |
-| 7b | `tests/*.test.ts` | Tests (parser, semantic, integration) |
+| Step | File(s)                      | Purpose                               |
+| ---- | ---------------------------- | ------------------------------------- |
+| 1    | `src/grammar/pcl.ebnf`       | Formal grammar specification          |
+| 2    | `src/lexer/index.ts`         | Token recognition                     |
+| 3    | `src/parser/index.ts`        | AST generation                        |
+| 4    | `src/ast/index.ts`           | AST type definitions                  |
+| 5    | `src/semantic/index.ts`      | Validation rules                      |
+| 6    | `src/codegen/*.ts`           | Code generation (all targets)         |
+| 7a   | `docs/reference/LANGUAGE.md` | Language reference                    |
+| 7b   | `tests/*.test.ts`            | Tests (parser, semantic, integration) |
 
 ### Commands
 
@@ -1038,7 +1106,7 @@ npm run format
 - [Parser API Documentation](../api/PARSER.md)
 - [Code Generation Guide](../api/CODEGEN.md)
 - [Semantic Analysis Guide](../api/SEMANTIC.md)
-- [EBNF Grammar Specification](../../grammar/pcl.ebnf)
+- [EBNF Grammar Specification](../../src/grammar/pcl.ebnf)
 
 ---
 

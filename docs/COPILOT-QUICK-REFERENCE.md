@@ -200,7 +200,7 @@ Use multi_replace for efficiency
 
 ```
 Context for [feature]:
-1. Grammar: grammar/pcl.ebnf (syntax)
+1. Grammar: src/grammar/pcl.ebnf (syntax)
 2. Current: src/[module]/index.ts (patterns)
 3. Tests: tests/[module].test.ts (test style)
 4. Docs: docs/api/[MODULE].md (spec)
@@ -463,7 +463,7 @@ interface ASTVisitor<T> {
 | [ROADMAP.md](../.roadmap/ROADMAP.md)                          | Project phases & timeline   |
 | [QUICK-STATUS.md](../.roadmap/QUICK-STATUS.md)                | Current capabilities        |
 | [pcl_todo.md](../.roadmap/pcl_todo.md)                        | Active task list            |
-| [grammar/pcl.ebnf](../grammar/pcl.ebnf)                       | Language syntax             |
+| [src/grammar/pcl.ebnf](../src/grammar/pcl.ebnf)               | Language syntax             |
 
 ---
 
