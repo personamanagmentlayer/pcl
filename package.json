@@ -107,6 +107,10 @@
     "typescript": "^5.3.3",
     "vitest": "^1.0.4"
   },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "openai": "^4.68.0"
+  },
   "peerDependencies": {
     "typescript": ">=5.0.0"
   },

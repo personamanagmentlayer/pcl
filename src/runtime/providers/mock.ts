@@ -108,7 +108,7 @@ export class MockProvider implements AIProvider {
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterator<GenerationChunk> {
+  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
     if (!this.config.enableStreaming) {
       const response = await this.generateResponse(request);
       yield {

@@ -736,3 +736,632 @@ type Result<T, E> = { ok: true; value: T } | { ok: false; errors: E };
 ---
 
 **Remember**: When in doubt, prioritize **type safety**, **immutability**, and **clear error messages**. PCL is a compiler project—correctness and maintainability are paramount!
+
+---
+
+## 🚀 High-Performance Copilot Usage
+
+### Maximize AI Assistant Efficiency
+
+To get the best performance from GitHub Copilot and other AI assistants, follow these optimization strategies:
+
+### 1. **Token Efficiency Strategies**
+
+**✅ DO: Batch Operations**
+
+```markdown
+Read src/parser/index.ts, src/semantic/index.ts, and src/codegen/index.ts
+in parallel to understand the compiler pipeline.
+```
+
+**❌ DON'T: Sequential Requests**
+
+```markdown
+Read src/parser/index.ts
+[wait for response]
+Now read src/semantic/index.ts
+[wait for response]
+Now read src/codegen/index.ts
+```
+
+**✅ DO: Precise Context Loading**
+
+```markdown
+Load context for parser enhancement:
+
+- grammar/pcl.ebnf (team syntax)
+- src/parser/index.ts (current implementation)
+- tests/integration.test.ts (test patterns)
+  Then implement team declaration parsing.
+```
+
+**❌ DON'T: Vague Requests**
+
+```markdown
+Fix the parser
+```
+
+### 2. **Parallel Tool Invocation**
+
+When you have **independent operations**, request them together:
+
+```markdown
+✅ "Read these files in parallel:
+
+- src/ast/index.ts
+- src/types/index.ts
+- src/stdlib/index.ts
+  Then explain the type hierarchy."
+
+✅ "Update in parallel:
+
+- QUICK-STATUS.md (mark Phase 1.1 complete)
+- pcl_todo.md (check off runtime tasks)
+- ROADMAP.md (update progress)"
+
+✅ "Run these checks simultaneously:
+
+- npm run lint
+- npm run test
+- tsc --noEmit"
+```
+
+### 3. **Context Window Optimization**
+
+**Provide Upfront Context:**
+
+```markdown
+Context: Working on Phase 1.1 runtime engine (see ROADMAP.md).
+Current status: Parser works for persona declarations only.
+Goal: Add team declaration support.
+Reference: grammar/pcl.ebnf lines 45-60 for syntax.
+
+Implement team parsing following the persona parser pattern.
+```
+
+**Use Reference Paths:**
+
+```markdown
+✅ "Follow the pattern in src/parser/index.ts parsePersona() method"
+❌ "Do it like we did before"
+```
+
+### 4. **Persona-Driven Development**
+
+Leverage the PCL Bootstrap system for specialized assistance:
+
+**For Architecture Work:**
+
+```markdown
+/persona ARCHI
+
+Design the LSP server architecture. Reference:
+
+- src/parser/index.ts (current architecture)
+- src/semantic/index.ts (analysis patterns)
+  Output: Architecture diagram + implementation plan
+```
+
+**For Security Reviews:**
+
+```markdown
+/persona SEC
+
+Review src/runtime/index.ts for:
+
+- Code injection vulnerabilities
+- Untrusted input handling
+- Sandbox escape vectors
+  Output: Security audit report + fixes
+```
+
+**For Code Quality:**
+
+```markdown
+/persona CRITIC
+
+Review PR changes against:
+
+- copilot-instructions.md standards
+- 80% test coverage requirement
+- Immutability patterns
+  Output: Actionable improvement list
+```
+
+**For Documentation:**
+
+```markdown
+/persona TECH_WRITER
+
+Document the new workflow execution feature:
+
+- User guide in docs/guides/
+- API reference in docs/api/
+- Code examples in examples/
+  Style: Follow existing docs/ structure
+```
+
+**For Team Reviews:**
+
+```markdown
+/team dream-team
+
+Review the new type system implementation:
+
+- ARCHI: Architectural soundness
+- SEC: Security implications
+- DEV: Code quality
+- CRITIC: Overall assessment
+  Output: Consensus report with action items
+```
+
+### 5. **Incremental Task Management**
+
+Use the `manage_todo_list` tool for complex work:
+
+```markdown
+✅ "Create a todo list for implementing LSP support:
+
+1.  Design server architecture
+2.  Implement text synchronization
+3.  Add completion provider
+4.  Add diagnostics
+5.  Add hover support
+6.  Write integration tests
+
+Start with task 1."
+
+Then as you work:
+✅ "Mark task 1 complete, start task 2"
+✅ "Update todo - add subtask to task 3: handle edge cases"
+```
+
+### 6. **Efficient Error Resolution**
+
+**Compile-Time Errors:**
+
+```markdown
+✅ "Run npm run build, analyze errors, and fix them"
+❌ "There are some errors"
+
+✅ "Run tsc --noEmit, show me the first 5 errors with file paths"
+✅ "Fix TypeScript errors in src/parser/ using multi_replace"
+```
+
+**Runtime Errors:**
+
+```markdown
+✅ "Run npm test, identify failures, fix them in order of priority"
+✅ "Debug test failure in lexer.test.ts line 45 - show context"
+```
+
+**Linting Issues:**
+
+```markdown
+✅ "Run npm run lint:fix, then report remaining issues"
+✅ "Fix all linting errors in src/ using batch edits"
+```
+
+### 7. **Code Generation Optimization**
+
+**For Large Implementations:**
+
+```markdown
+✅ "Phase 1: Design the WorkflowExecutor interface
+Phase 2: Implement core execution logic
+Phase 3: Add error handling
+Phase 4: Write comprehensive tests
+
+Execute each phase sequentially, confirming after each."
+
+✅ "Generate parser for skill declarations:
+
+- Follow grammar/pcl.ebnf syntax
+- Match src/parser/index.ts patterns
+- Include error recovery
+- Add position tracking
+- Generate tests
+  Use multi_replace for efficiency."
+```
+
+### 8. **Smart File Operations**
+
+**Reading Files:**
+
+```markdown
+✅ "Read lines 1-50, 200-250, 500-550 from src/parser/index.ts"
+(Target specific sections)
+
+❌ "Read the whole file" (when you only need specific parts)
+```
+
+**Editing Files:**
+
+```markdown
+✅ Use multi_replace_string_in_file for multiple changes
+✅ Provide 3-5 lines of context before/after changes
+✅ Make changes atomic and testable
+```
+
+**Searching:**
+
+```markdown
+✅ "Search for 'PersonaDeclaration' using grep (exact match)"
+✅ "Semantic search: concepts related to type checking"
+✅ "Find all \*.test.ts files"
+```
+
+### 9. **Status and Progress Tracking**
+
+**Regular Status Checks:**
+
+```markdown
+✅ "Quick status: What's complete, what's in progress, what's next?"
+✅ "Compare current state vs ROADMAP.md Phase 1.1 goals"
+✅ "Test coverage report: npm run test:coverage summary"
+```
+
+**Progress Documentation:**
+
+```markdown
+✅ "Update QUICK-STATUS.md metrics after completing feature"
+✅ "Add session summary to .roadmap/status/SESSION-SUMMARY.md"
+✅ "Mark completed tasks in pcl_todo.md"
+```
+
+### 10. **Quality Gates**
+
+Always include quality checks:
+
+```markdown
+✅ "After implementation:
+
+1.  Run npm run build (must pass)
+2.  Run npm run test (must pass)
+3.  Run npm run lint (must pass)
+4.  Check test coverage ≥80%
+5.  Verify 0 TypeScript errors
+    Report: Pass/Fail for each gate"
+```
+
+---
+
+## ⚙️ VS Code High-Performance Configuration
+
+### Recommended Settings
+
+Add these to [.vscode/settings.json](.vscode/settings.json):
+
+```jsonc
+{
+  // ========================================
+  // COPILOT OPTIMIZATION
+  // ========================================
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": true,
+  },
+  "github.copilot.advanced": {
+    "debug.overrideEngine": "claude-sonnet-4.5",
+    "debug.testOverrideProxyUrl": "",
+    "debug.overrideProxyUrl": "",
+  },
+
+  // ========================================
+  // TYPESCRIPT PERFORMANCE
+  // ========================================
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.preferences.importModuleSpecifier": "relative",
+
+  // ========================================
+  // EDITOR PRODUCTIVITY
+  // ========================================
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true,
+  },
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true,
+  },
+
+  // ========================================
+  // FILE WATCHER OPTIMIZATION
+  // ========================================
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/coverage/**": true,
+    "**/.vscode-test/**": true,
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "**/.vscode-test": true,
+  },
+
+  // ========================================
+  // TESTING INTEGRATION
+  // ========================================
+  "vitest.enable": true,
+  "vitest.commandLine": "npm run test",
+
+  // ========================================
+  // PCL LANGUAGE SUPPORT
+  // ========================================
+  "files.associations": {
+    "*.pcl": "pcl",
+    "*.ebnf": "plaintext",
+  },
+
+  // ========================================
+  // TASK AUTOMATION
+  // ========================================
+  "task.autoDetect": "on",
+  "task.saveBeforeRun": "always",
+}
+```
+
+### Essential Extensions
+
+Add these to [.vscode/extensions.json](.vscode/extensions.json):
+
+```json
+{
+  "recommendations": [
+    // ===== CORE DEVELOPMENT =====
+    "github.copilot",
+    "github.copilot-chat",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
+    // ===== TYPESCRIPT ENHANCEMENT =====
+    "ms-vscode.vscode-typescript-next",
+    "usernamehw.errorlens",
+    "streetsidesoftware.code-spell-checker",
+
+    // ===== TESTING =====
+    "vitest.explorer",
+    "hbenl.vscode-test-explorer",
+
+    // ===== GIT WORKFLOW =====
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+
+    // ===== DOCUMENTATION =====
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-mermaid",
+    "shd101wyy.markdown-preview-enhanced",
+
+    // ===== PRODUCTIVITY =====
+    "gruntfuggly.todo-tree",
+    "wayou.vscode-todo-highlight",
+    "aaron-bond.better-comments",
+
+    // ===== CODE QUALITY =====
+    "mkaufman.count-lines-of-code",
+    "ryanluker.vscode-coverage-gutters",
+    "pflannery.vscode-versionlens"
+  ]
+}
+```
+
+### Task Automation Setup
+
+Enhance [.vscode/tasks.json](.vscode/tasks.json) with shortcuts:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Quick Start",
+      "type": "shell",
+      "command": "npm install && npm run build",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "✅ Quality Gate",
+      "dependsOn": ["npm: lint", "tsc: check", "npm: test"],
+      "dependsOrder": "sequence",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔍 Pre-Commit Check",
+      "type": "shell",
+      "command": "npm run lint:fix && npm run format && npm run test",
+      "group": "none",
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "📊 Coverage Report",
+      "type": "shell",
+      "command": "npm run test:coverage && start coverage/index.html",
+      "group": "test",
+      "windows": {
+        "command": "npm run test:coverage ; start coverage/index.html"
+      }
+    }
+  ]
+}
+```
+
+### Debugging Configuration
+
+Enhance [.vscode/launch.json](.vscode/launch.json):
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🐛 Debug Current Test",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/vitest",
+      "args": ["${file}"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🧪 Debug All Tests",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🎯 Debug Parser",
+      "program": "${workspaceFolder}/src/parser/index.ts",
+      "preLaunchTask": "npm: build",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+    }
+  ]
+}
+```
+
+### Keyboard Shortcuts
+
+Add to [.vscode/keybindings.json](.vscode/keybindings.json):
+
+```json
+[
+  {
+    "key": "ctrl+shift+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "npm: test"
+  },
+  {
+    "key": "ctrl+shift+b",
+    "command": "workbench.action.tasks.build"
+  },
+  {
+    "key": "ctrl+shift+q",
+    "command": "workbench.action.tasks.runTask",
+    "args": "✅ Quality Gate"
+  },
+  {
+    "key": "ctrl+k ctrl+d",
+    "command": "github.copilot.generate"
+  },
+  {
+    "key": "ctrl+k ctrl+i",
+    "command": "github.copilot.interactiveEditor.explain"
+  }
+]
+```
+
+---
+
+## 📊 Performance Metrics
+
+Track these metrics for optimal workflow:
+
+| Metric        | Target | Command                 |
+| ------------- | ------ | ----------------------- |
+| Build Time    | < 10s  | `npm run build`         |
+| Test Time     | < 30s  | `npm run test`          |
+| Type Check    | < 5s   | `tsc --noEmit`          |
+| Lint Check    | < 3s   | `npm run lint`          |
+| Test Coverage | ≥ 80%  | `npm run test:coverage` |
+| Bundle Size   | < 1MB  | `du -sh dist/`          |
+
+---
+
+## 🎯 Quick Command Reference
+
+### High-Performance Workflows
+
+```bash
+# Full quality check (run before commits)
+npm run lint:fix && npm run format && npm run test && npm run build
+
+# Watch mode for development
+npm run dev          # Build + watch
+npm run test:watch   # Test + watch
+
+# Coverage with HTML report
+npm run test:coverage && open coverage/index.html
+
+# Type check only (fast feedback)
+npx tsc --noEmit
+
+# Clean rebuild
+npm run clean && npm run build
+```
+
+### Copilot Power Commands
+
+```markdown
+# Architecture planning
+
+/persona ARCHI - Design [feature] architecture following src/ patterns
+
+# Implementation
+
+/persona DEV - Implement [feature] with tests following copilot-instructions.md
+
+# Code review
+
+/persona CRITIC - Review changes against quality standards
+
+# Security audit
+
+/persona SEC - Security review of [component]
+
+# Documentation
+
+/persona TECH_WRITER - Document [feature] in docs/
+
+# Team review
+
+/team dream-team - Comprehensive review of [PR/feature]
+
+# Standards work
+
+/team standardization - Review PCL language spec compliance
+```
+
+---
+
+## 🔥 Pro Tips Summary
+
+1. **Batch operations** - Request multiple reads/writes in parallel
+2. **Precise context** - Provide file paths, line ranges, specific goals
+3. **Use personas** - Activate specialized AI personas for focused tasks
+4. **Track progress** - Use manage_todo_list for complex work
+5. **Quality gates** - Always run lint + test + build after changes
+6. **Reference patterns** - Point to existing code as templates
+7. **Multi-replace** - Use multi_replace_string_in_file for efficiency
+8. **Targeted reads** - Read specific line ranges, not entire files
+9. **Status sync** - Keep ROADMAP.md, pcl_todo.md, QUICK-STATUS.md updated
+10. **Test coverage** - Maintain ≥80% coverage, check with npm run test:coverage
+
+---
+
+**Performance Mantra**: _"Batch operations, precise context, quality gates, track progress."_

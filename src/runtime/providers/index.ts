@@ -158,7 +158,7 @@ export interface AIProvider {
   /**
    * Stream response chunks as they're generated
    */
-  streamResponse(request: GenerationRequest): AsyncIterator<GenerationChunk>;
+  streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk>;
 
   /**
    * Count tokens in a string (approximate)
@@ -171,7 +171,7 @@ export interface AIProvider {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export class ProviderRegistry {
-  private providers = new Map<string, AIProvider>();
+  private readonly providers = new Map<string, AIProvider>();
   private defaultProvider: string | null = null;
 
   /**
@@ -181,9 +181,7 @@ export class ProviderRegistry {
     this.providers.set(provider.name, provider);
 
     // Set first provider as default
-    if (this.defaultProvider === null) {
-      this.defaultProvider = provider.name;
-    }
+    this.defaultProvider ??= provider.name;
   }
 
   /**
@@ -264,3 +262,15 @@ export class ProviderRegistry {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const providers = new ProviderRegistry();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Provider Implementations
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { MockProvider } from './mock';
+export { AnthropicProvider } from './anthropic';
+export { OpenAIProvider } from './openai';
+
+export type { MockProviderConfig } from './mock';
+export type { AnthropicProviderConfig } from './anthropic';
+export type { OpenAIProviderConfig } from './openai';

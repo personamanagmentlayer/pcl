@@ -18,7 +18,8 @@
       "Bash(npm run test:standalone:*)",
       "Bash(npm run test:quick:*)",
       "Bash(VERBOSE=1 node:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(grep:*)"
     ]
   }
 }

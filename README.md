@@ -39,18 +39,18 @@
 pub persona SEC {
   intent: "Identify and mitigate security vulnerabilities"
   tone: vigilant
-  
+
   skills {
     "OWASP Top 10"
     "STRIDE threat modeling"
     "Security code review"
   }
-  
+
   constraints {
     "Always assume breach"
     maxResponseTime <= 5s
   }
-  
+
   pub fn analyze(target: String) -> SecurityReport {
     // Analysis implementation
   }
@@ -100,13 +100,13 @@ pub persona ARCHI {
   name: "Software Architect"
   intent: "Design robust, scalable systems"
   tone: analytical
-  
+
   skills {
     "System design"
     "Design patterns"
     "Trade-off analysis"
   }
-  
+
   constraints {
     "Consider maintainability"
     "Document decisions"
@@ -149,14 +149,14 @@ if critical then SEC -> AUDIT else DEV
 
 Control how multiple persona outputs combine:
 
-| Mode | Description |
-|------|-------------|
-| `Primary` | Lead persona decides, others advise |
-| `Consensus` | Synthesize all perspectives |
-| `Majority` | Weighted voting |
-| `Debate` | Visible deliberation |
-| `Compare` | Side-by-side comparison |
-| `Chain` | Sequential transformation |
+| Mode        | Description                         |
+| ----------- | ----------------------------------- |
+| `Primary`   | Lead persona decides, others advise |
+| `Consensus` | Synthesize all perspectives         |
+| `Majority`  | Weighted voting                     |
+| `Debate`    | Visible deliberation                |
+| `Compare`   | Side-by-side comparison             |
+| `Chain`     | Sequential transformation           |
 
 ## Type System
 
@@ -240,13 +240,13 @@ pcl-language/
 
 PCL comes in several variants:
 
-| Variant | Purpose | Target |
-|---------|---------|--------|
-| **PCL/Lite** | Portable subset | Chat interfaces |
-| **PCL/Core** | Full language | Node.js, Browsers |
-| **PCL/Script** | Scripting | Automation |
-| **PCL/Query** | SQL-like queries | Data exploration |
-| **PCL/ML** | ML workflows | Training pipelines |
+| Variant        | Purpose          | Target             |
+| -------------- | ---------------- | ------------------ |
+| **PCL/Lite**   | Portable subset  | Chat interfaces    |
+| **PCL/Core**   | Full language    | Node.js, Browsers  |
+| **PCL/Script** | Scripting        | Automation         |
+| **PCL/Query**  | SQL-like queries | Data exploration   |
+| **PCL/ML**     | ML workflows     | Training pipelines |
 
 ## Compilation Targets
 
@@ -278,9 +278,92 @@ import { workflow, parallel } from "@pcl/workflow"
 import { test, assert } from "@pcl/test"
 ```
 
+## 📚 Documentation & Guides
+
+### For Developers
+
+- **[VS Code Setup Guide](docs/guides/VSCODE-SETUP.md)** - Complete IDE configuration for PCL development
+- **[GitHub Copilot Quick Reference](docs/COPILOT-QUICK-REFERENCE.md)** - Essential Copilot commands and patterns
+- **[Claude Quick Reference](docs/CLAUDE-QUICK-REFERENCE.md)** - Essential Claude commands and workflows
+- **[GitHub Copilot Instructions](.github/copilot-instructions.md)** - Comprehensive coding standards (Copilot-optimized)
+- **[Claude Instructions](.claude/CLAUDE-INSTRUCTIONS.md)** - Claude-specific configuration and best practices
+- **[Getting Started](docs/guides/GETTING-STARTED.md)** - First steps with PCL
+
+### Project Management
+
+- **[Roadmap](.roadmap/ROADMAP.md)** - Complete development roadmap from Phase 0 to Phase 5
+- **[Quick Status](.roadmap/QUICK-STATUS.md)** - Current capabilities and metrics
+- **[Todo List](.roadmap/pcl_todo.md)** - Active work tracker
+- **[PCL Bootstrap](.roadmap/bootstrap/BOOTSTRAP_EN.md)** - Embedded runtime v1.0 specification
+
+### API Reference
+
+- **[Parser API](docs/api/PARSER.md)** - Parser implementation details
+- **[Semantic Analysis](docs/api/SEMANTIC.md)** - Type checking and validation
+- **[Code Generation](docs/api/CODEGEN.md)** - Target code generators
+- **[Language Reference](docs/reference/LANGUAGE.md)** - Complete language specification
+
+### Tutorials
+
+- **[Tutorial 1: Your First Persona](examples/tutorials/01-first-persona/)** - Create and execute a simple persona
+- **[Tutorial 2: Teams](examples/tutorials/02-teams/)** - Multi-persona collaboration
+- **[Tutorial 3: Workflows](examples/tutorials/03-workflows/)** - Orchestration patterns
+- **[Tutorial 4: Real Application](examples/tutorials/04-real-app/)** - Building production apps
+- **[Tutorial 5: Multi-Language](examples/tutorials/05-integration/)** - Cross-language integration
+- **[Tutorial 6: Advanced Features](examples/tutorials/06-advanced/)** - Power user techniques
+
+### For Contributors
+
+- **[.vscode/README.md](.vscode/README.md)** - VS Code workspace configuration guide
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to PCL
+- **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
+
+## 🚀 High-Performance Development
+
+### Using AI Assistants Effectively
+
+PCL includes comprehensive guides for working with **GitHub Copilot** and **Claude Code**:
+
+**Activate Specialized Personas:**
+
+```markdown
+/persona ARCHI - Design system architecture
+/persona DEV - Implement features with tests
+/persona SEC - Security audit and review
+/persona TECH_WRITER - Write documentation
+/team dream-team - Multi-perspective review
+```
+
+**Optimize for Performance:**
+
+```markdown
+✅ Batch operations - Request parallel file reads
+✅ Precise context - Provide file paths and line ranges
+✅ Quality gates - Always run lint + test after changes
+✅ Track progress - Use manage_todo_list for complex work
+```
+
+**Quick Reference Cards:**
+
+- **[GitHub Copilot Quick Reference](docs/COPILOT-QUICK-REFERENCE.md)** - Copilot-specific patterns
+- **[Claude Quick Reference](docs/CLAUDE-QUICK-REFERENCE.md)** - Claude-specific workflows
+
+### VS Code Configuration
+
+Pre-configured workspace with:
+
+- ✅ TypeScript optimization (4GB memory, auto-imports)
+- ✅ Auto-formatting on save (ESLint + Prettier)
+- ✅ Integrated testing (Vitest Explorer)
+- ✅ Custom tasks (Quality Gate, Pre-Commit Check)
+- ✅ Debugging configurations (Test, Parser, Runtime)
+
+Full setup instructions: **[VS Code Setup Guide](docs/guides/VSCODE-SETUP.md)**
+
 ## Roadmap
 
 ### v1.0 — Core (Q2 2025)
+
 - [x] EBNF Grammar specification
 - [x] Lexer implementation
 - [x] Parser implementation
@@ -289,18 +372,21 @@ import { test, assert } from "@pcl/test"
 - [ ] CLI tool
 
 ### v2.0 — Ecosystem (Q4 2025)
+
 - [ ] Package manager (pclpkg)
 - [ ] Language Server Protocol
 - [ ] VS Code extension
 - [ ] Build system
 
 ### v3.0 — Scale (Q2 2026)
+
 - [ ] Multi-provider support
 - [ ] MCP integration
 - [ ] Distributed execution
 - [ ] Enterprise security
 
 ### v4.0 — Maturity (Q4 2026)
+
 - [ ] AI-native features
 - [ ] Visual programming
 - [ ] Marketplace
@@ -362,6 +448,6 @@ Apache 2.0 — See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**PCL** — *Making AI behavior programmable, portable, and predictable.*
+**PCL** — _Making AI behavior programmable, portable, and predictable._
 
 </div>

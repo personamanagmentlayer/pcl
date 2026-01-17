@@ -66,6 +66,30 @@ export {
 } from './runtime';
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//                              PROVIDERS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export {
+  providers,
+  ProviderRegistry,
+  MockProvider,
+  AnthropicProvider,
+  OpenAIProvider,
+} from './runtime/providers';
+
+export type {
+  AIProvider,
+  ProviderCapabilities,
+  GenerationRequest,
+  GenerationResponse,
+  GenerationChunk,
+  Tool,
+  ToolCall,
+  TokenUsage,
+  FinishReason,
+} from './runtime/providers';
+
+// ═══════════════════════════════════════════════════════════════════════════════
 //                              CODE GENERATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
