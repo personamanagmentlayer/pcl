@@ -70,7 +70,24 @@ export async function infoCommand(
         process.exit(1);
       }
 
-      artifact = versionResult.value;
+      // Get the artifact for this version
+      const versionData = versionResult.value;
+      const artifactResult = await registry.find({
+        filter: { deleted: false },
+      });
+      if (!artifactResult.ok || !artifactResult.value) {
+        console.error(formatError('Failed to get artifacts'));
+        if (!artifactResult.ok) {
+          console.error(artifactResult.error.message);
+        }
+        process.exit(1);
+      }
+      const foundArtifact = artifactResult.value.find(a => a.id === versionData.artifactId);
+      if (!foundArtifact) {
+        console.error(formatError('Artifact not found for version'));
+        process.exit(1);
+      }
+      artifact = foundArtifact;
     }
 
     // Display artifact details based on format
@@ -86,7 +103,7 @@ export async function infoCommand(
     if (showSource) {
       console.log('\n' + chalk.bold('Source Code:'));
       console.log(chalk.dim('─'.repeat(80)));
-      console.log(artifact.content);
+      console.log(artifact.source);
       console.log(chalk.dim('─'.repeat(80)));
     }
 

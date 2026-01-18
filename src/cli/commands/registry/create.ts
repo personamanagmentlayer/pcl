@@ -47,7 +47,7 @@ export async function createCommand(
 
     if (!parseResult.ok) {
       console.error(formatError('Failed to parse PCL file'));
-      console.error(parseResult.error.message);
+      console.error(parseResult.error.map(e => e.message).join('\n'));
       process.exit(1);
     }
 
@@ -109,7 +109,7 @@ export async function createCommand(
         name: metadata.name,
         version: metadata.version,
         description: metadata.description,
-        tags: metadata.tags,
+        tags: metadata.tags || [],
         author: metadata.author,
         authorEmail: metadata.authorEmail,
         organization: metadata.organization,
@@ -117,6 +117,13 @@ export async function createCommand(
         skills: metadata.skills,
         slug: metadata.slug,
       },
+      stats: {
+        downloads: 0,
+        stars: 0,
+        views: 0,
+      },
+      published: false,
+      deleted: false,
     });
 
     if (!createResult.ok) {
@@ -131,7 +138,7 @@ export async function createCommand(
     // Publish if requested
     if (publish) {
       console.log('Publishing artifact...');
-      const publishResult = await registry.publish(artifact.id);
+      const publishResult = await registry.publish(artifact.id, artifact.metadata.version);
 
       if (!publishResult.ok) {
         console.error(formatError('Failed to publish artifact'));

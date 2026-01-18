@@ -14,7 +14,6 @@ import {
 import type {
   ArtifactType,
   Query,
-  SortOrder,
 } from '../../../registry/interfaces';
 
 export interface ListOptions {
@@ -50,20 +49,20 @@ export async function listCommand(options: ListOptions = {}): Promise<void> {
     // Build query
     const query: Query = {
       pagination: { limit, offset },
-      sorting: {
+      sort: {
         field: sort as any,
-        order: order as SortOrder,
+        order: order as 'asc' | 'desc',
       },
     };
 
     // Add filters
     if (type) {
-      query.filters = { type };
+      query.filter = { type };
     }
 
     if (published !== undefined) {
-      query.filters = {
-        ...query.filters,
+      query.filter = {
+        ...query.filter,
         published,
       };
     }

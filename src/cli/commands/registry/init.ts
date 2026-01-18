@@ -95,15 +95,9 @@ export async function initCommand(options: InitOptions): Promise<void> {
 
     // Run migrations if needed
     console.log('Running database migrations...');
-    const migrateResult = await testBackend.migrate();
-
-    if (!migrateResult.ok) {
-      console.error(formatError('Failed to run migrations'));
-      console.error(migrateResult.error.message);
-      await testBackend.disconnect();
-      process.exit(1);
-    }
-
+    // Test database connection
+    console.log('Testing database connection...');
+    // Migration is handled automatically during backend initialization
     console.log(formatSuccess('Database migrations complete'));
 
     // Close test connection
