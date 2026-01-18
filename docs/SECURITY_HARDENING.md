@@ -9,11 +9,13 @@ This document outlines the comprehensive security measures implemented in the PC
 ### 1. Repository Security
 
 #### Code Owners (CODEOWNERS)
+
 - **Purpose**: Enforce mandatory code reviews for critical files
 - **Implementation**: `.github/CODEOWNERS`
 - **Coverage**: Security files, governance docs, core compiler, registry system, build configs
 
 #### Branch Protection
+
 - **Status**: Requires GitHub Pro or public repository
 - **Recommendations**:
   - Require pull request reviews before merging
@@ -25,6 +27,7 @@ This document outlines the comprehensive security measures implemented in the PC
 ### 2. Dependency Security
 
 #### Dependabot Configuration
+
 - **Location**: `.github/dependabot.yml`
 - **Features**:
   - Weekly dependency updates (Monday 9:00 UTC)
@@ -33,6 +36,7 @@ This document outlines the comprehensive security measures implemented in the PC
   - GitHub Actions monitoring
 
 #### Audit Commands
+
 ```bash
 # Security audit
 npm run security:audit
@@ -47,6 +51,7 @@ npm run security:scan
 ### 3. Secret Scanning
 
 #### Gitleaks Configuration
+
 - **Location**: `.gitleaks.toml`
 - **Coverage**:
   - API keys and tokens
@@ -56,6 +61,7 @@ npm run security:scan
   - Custom PCL patterns
 
 #### Run Locally
+
 ```bash
 # Install gitleaks
 # Windows: choco install gitleaks
@@ -72,6 +78,7 @@ npx gitleaks detect --source . --branch main
 ### 4. Automated Security Scanning
 
 #### GitHub Actions Workflow
+
 - **Location**: `.github/workflows/security.yml`
 - **Schedule**: Daily at 2:00 AM UTC + on push/PR
 - **Scans**:
@@ -84,7 +91,9 @@ npx gitleaks detect --source . --branch main
 ### 5. Secure Coding Practices
 
 #### .gitignore Hardening
+
 Enhanced to exclude:
+
 - Environment files (`.env*`)
 - Credentials and keys (`*.pem`, `*.key`, `secrets.json`)
 - Cloud provider configs (AWS, Azure, GCP)
@@ -92,6 +101,7 @@ Enhanced to exclude:
 - API tokens
 
 #### Input Validation
+
 ```typescript
 // Example: Persona name validation
 function validatePersonaName(name: string): boolean {
@@ -100,10 +110,11 @@ function validatePersonaName(name: string): boolean {
 ```
 
 #### Error Handling
+
 ```typescript
 // Never expose sensitive information in errors
 catch (error) {
-  logger.error('Operation failed', { 
+  logger.error('Operation failed', {
     operation: 'parse',
     // DO NOT log: passwords, tokens, PII
   });
@@ -114,26 +125,31 @@ catch (error) {
 ## 🚨 Vulnerability Reporting
 
 ### Private Reporting (Critical Issues)
+
 **Email**: security@pcl-lang.org
 
 **Include**:
+
 - Detailed description
 - Steps to reproduce
 - Impact assessment
 - Suggested fix (optional)
 
 **Response SLA**:
+
 - Acknowledgment: 48 hours
 - Initial assessment: 7 days
 - Fix timeline: Based on severity
 
 ### Public Reporting (Non-Critical)
+
 - Use GitHub Security Advisory
 - Use Issue Template: `.github/ISSUE_TEMPLATE/security_vulnerability.yml`
 
 ## 📋 Security Checklist for Contributors
 
 ### Before Committing
+
 - [ ] No hardcoded secrets or credentials
 - [ ] Input validation for all user inputs
 - [ ] Error messages don't expose sensitive data
@@ -141,6 +157,7 @@ catch (error) {
 - [ ] Run `npm run security:scan`
 
 ### Before Submitting PR
+
 - [ ] All tests pass
 - [ ] Security tests added for new features
 - [ ] SECURITY_CHECKLIST.md reviewed
@@ -150,6 +167,7 @@ catch (error) {
 ## 🔐 Security Best Practices
 
 ### 1. Secrets Management
+
 ```bash
 # ✅ GOOD: Use environment variables
 export PCL_API_KEY=your-key-here
@@ -160,6 +178,7 @@ const apiKey = 'sk-1234567890'; // NEVER!
 ```
 
 ### 2. Dependency Management
+
 ```bash
 # Check for outdated packages
 npm outdated
@@ -175,6 +194,7 @@ npm audit fix
 ```
 
 ### 3. Code Review
+
 - Review security impact of all changes
 - Check for injection vulnerabilities
 - Verify input validation
@@ -182,6 +202,7 @@ npm audit fix
 - Test error handling
 
 ### 4. Authentication & Authorization
+
 ```typescript
 // Implement proper access controls
 function checkPermission(user: User, resource: Resource): boolean {
@@ -195,18 +216,21 @@ function checkPermission(user: User, resource: Resource): boolean {
 ## 🛠️ Security Tools & Resources
 
 ### Installed Tools
+
 - **ESLint**: Static code analysis
 - **TypeScript**: Type safety
 - **Husky**: Pre-commit hooks
 - **lint-staged**: Staged files linting
 
 ### Recommended Tools
+
 - **Gitleaks**: Secret scanning
 - **npm audit**: Dependency vulnerabilities
 - **Snyk**: Continuous security monitoring
 - **SonarQube**: Code quality & security
 
 ### External Resources
+
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [CWE Top 25](https://cwe.mitre.org/top25/)
 - [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
@@ -215,6 +239,7 @@ function checkPermission(user: User, resource: Resource): boolean {
 ## 📊 Security Metrics
 
 Track these metrics:
+
 - Time to patch critical vulnerabilities: < 48 hours
 - Dependency update frequency: Weekly
 - Security scan frequency: Daily
@@ -245,6 +270,6 @@ Track these metrics:
 
 ---
 
-**Last Updated**: January 2026  
-**Version**: 1.0  
+**Last Updated**: January 2026
+**Version**: 1.0
 **Maintained By**: PCL Security Team

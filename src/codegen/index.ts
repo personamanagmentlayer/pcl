@@ -2056,8 +2056,8 @@ class TypeScriptGenerator {
     let primary: string | null = null;
     let mergeMode = 'primary';
     let quorum: { required: number; total: number } | null = null;
-    let topic: string | null = null;
-    let timeout = 30000;
+    const topic: string | null = null;
+    const timeout = 30000;
 
     for (const member of decl.body.members) {
       if (member.kind === 'TeamMembersDeclaration') {

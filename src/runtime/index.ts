@@ -1142,7 +1142,7 @@ class ExpressionEvaluator {
 
     switch (expr.operator) {
       case '!':
-        return !Boolean(operand);
+        return !operand;
       case '-':
         return -(operand as number);
       case '+':
@@ -1573,7 +1573,7 @@ export class WorkflowExecutor {
           // Evaluate condition - continue until it's true
           if (expr.condition) {
             const conditionResult = this.evaluator.evaluate(expr.condition, evalContext);
-            shouldContinue = !Boolean(conditionResult);
+            shouldContinue = !conditionResult;
           } else {
             shouldContinue = false;
           }

@@ -1243,7 +1243,7 @@ export class Parser {
   }
 
   private parseConditional(): AST.Expression {
-    let expr = this.parseBinary(0);
+    const expr = this.parseBinary(0);
 
     if (this.match(TokenType.QUESTION)) {
       const consequent = this.parseExpression();
@@ -3430,7 +3430,7 @@ export class Parser {
 
     // Re-export all
     if (this.match(TokenType.STAR)) {
-      let specifiers: AST.ExportSpecifier[] = [];
+      const specifiers: AST.ExportSpecifier[] = [];
 
       if (this.matchKeyword('as')) {
         const exported = this.parseIdentifier();

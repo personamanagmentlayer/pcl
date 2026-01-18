@@ -27,9 +27,9 @@ Fixes #
 
 <!-- List the specific changes made in this PR -->
 
-- 
-- 
-- 
+-
+-
+-
 
 ## Testing
 
@@ -46,9 +46,9 @@ Fixes #
 
 <!-- Describe manual testing steps performed -->
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Security Considerations
 

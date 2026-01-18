@@ -1,39 +1,54 @@
 # Code Owners for PCL Repository
-# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+<h<https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners>
+
+<h<https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners>
+
+# <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners>
 
 # Global ownership - requires review from core team
-* @personamanagmentlayer
+
+- @personamanagmentlayer
 
 # Security-critical files - require security team review
+
 SECURITY.md @personamanagmentlayer
 .github/workflows/security.yml @personamanagmentlayer
+
 .github/dependabot.yml @personamanagmentlayer
 
 # Governance and compliance - require legal/governance review
+
 /GOVERNANCE/ @personamanagmentlayer
 LICENSE @personamanagmentlayer
 LICENSE-DOCS @personamanagmentlayer
+
 NOTICE @personamanagmentlayer
 TRADEMARK_POLICY.md @personamanagmentlayer
 
 # Core compiler components - require architecture review
+
 /src/lexer/ @personamanagmentlayer
 /src/parser/ @personamanagmentlayer
+
 /src/semantic/ @personamanagmentlayer
 /src/codegen/ @personamanagmentlayer
 /src/runtime/ @personamanagmentlayer
 
 # Registry system - requires security and architecture review
+
 /src/registry/ @personamanagmentlayer
 /src/cli/commands/registry/ @personamanagmentlayer
 
 # Build and deployment configuration
+
 package.json @personamanagmentlayer
 tsconfig.json @personamanagmentlayer
 vitest.config.ts @personamanagmentlayer
 .github/workflows/ @personamanagmentlayer
 
 # Documentation - technical writers can review
+
 /docs/ @personamanagmentlayer
 README.md @personamanagmentlayer
 QUICKSTART.md @personamanagmentlayer
