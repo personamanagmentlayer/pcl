@@ -1,0 +1,128 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in PCL
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees:
+  - personamanagmentlayer
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the form below with as much detail as possible.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Please confirm before submitting
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I am using the latest version of PCL
+          required: true
+        - label: I have read the documentation and followed best practices
+          required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: What went wrong?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the behavior
+      placeholder: |
+        1. Create a PCL file with...
+        2. Run command...
+        3. Observe error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Describe the expected outcome
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Describe what actually happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: pcl-code
+    attributes:
+      label: PCL Code Sample
+      description: Minimal PCL code that reproduces the issue
+      render: pcl
+      placeholder: |
+        persona EXAMPLE {
+          // Your code here
+        }
+
+  - type: textarea
+    id: error-output
+    attributes:
+      label: Error Output
+      description: Full error message and stack trace
+      render: shell
+      placeholder: Paste error output here
+
+  - type: input
+    id: version
+    attributes:
+      label: PCL Version
+      description: Run `pcl --version` or check package.json
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js Version
+      description: Run `node --version`
+      placeholder: "v20.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that might be relevant
+      placeholder: Screenshots, environment details, related issues, etc.
+
+  - type: checkboxes
+    id: security
+    attributes:
+      label: Security Impact
+      description: Does this bug have security implications?
+      options:
+        - label: This bug may have security implications (report privately to security@pcl-lang.org)

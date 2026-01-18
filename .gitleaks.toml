@@ -1,0 +1,46 @@
+# Gitleaks Configuration for PCL Repository
+# https://github.com/gitleaks/gitleaks
+
+title = "PCL Security Scanning Configuration"
+
+[extend]
+useDefault = true
+
+# Custom rules for PCL-specific patterns
+[[rules]]
+id = "pcl-api-key"
+description = "PCL API Key"
+regex = '''pcl[_-]?api[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{32,})['"]?'''
+tags = ["key", "PCL"]
+
+[[rules]]
+id = "generic-secret"
+description = "Generic Secret"
+regex = '''(?i)(secret|password|passwd|pwd|token)\s*[:=]\s*['"]?([^\s'"]{8,})['"]?'''
+tags = ["secret", "generic"]
+
+[[rules]]
+id = "private-key"
+description = "Private Key"
+regex = '''-----BEGIN[ A-Z]*PRIVATE KEY-----'''
+tags = ["key", "private"]
+
+# Allowlist for false positives
+[allowlist]
+description = "Allowlist for false positives"
+paths = [
+  '''.*\.md$''',  # Markdown documentation examples
+  '''.*\.example$''',  # Example files
+  '''tests/fixtures/.*''',  # Test fixtures
+  '''examples/.*\.pcl$'''  # Example PCL files
+]
+
+regexes = [
+  '''example[_-]?(key|token|secret)''',  # Example credentials
+  '''test[_-]?(key|token|secret)''',  # Test credentials
+  '''dummy[_-]?(key|token|secret)''',  # Dummy credentials
+  '''YOUR_[A-Z_]+_HERE''',  # Placeholder patterns
+]
+
+# Commits to exclude
+commits = []

@@ -18,6 +18,8 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0--alpha-orange.svg)](CHANGELOG.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3+-blue.svg)](https://www.typescriptlang.org/)
+[![Security](https://img.shields.io/badge/Security-Policy-green.svg)](SECURITY.md)
+[![Dependabot](https://img.shields.io/badge/Dependabot-Enabled-blue.svg)](.github/dependabot.yml)
 
 **Standards Compliance**:
 [![ISO 27001](https://img.shields.io/badge/ISO_27001-Aligned-green.svg)](GOVERNANCE/PCL_SECURITY_MODEL.md)

@@ -99,7 +99,12 @@
     "repl": "tsx src/cli/index.ts repl",
     "parse": "tsx src/cli/index.ts parse",
     "check": "tsx src/cli/index.ts check",
-    "gen": "tsx src/cli/index.ts gen"
+    "gen": "tsx src/cli/index.ts gen",
+    "security:audit": "npm audit --audit-level=moderate",
+    "security:audit:fix": "npm audit fix",
+    "security:secrets": "echo 'Run: npx gitleaks detect --source . -v' && echo 'Install gitleaks: https://github.com/gitleaks/gitleaks#installing'",
+    "security:licenses": "npx license-checker --summary",
+    "security:scan": "npm run security:audit && npm run typecheck && npm run lint"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

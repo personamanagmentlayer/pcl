@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/personamanagmentlayer/pcl/discussions
+    about: Ask questions and discuss ideas with the community
+  
+  - name: 📚 Documentation
+    url: https://github.com/personamanagmentlayer/pcl/tree/main/docs
+    about: Read the official PCL documentation
+  
+  - name: 🔒 Security Vulnerability (Private)
+    url: mailto:security@pcl-lang.org
+    about: Report critical security vulnerabilities privately
+  
+  - name: 🏢 Governance & Compliance
+    url: mailto:governance@pcl-lang.org
+    about: Questions about governance, licensing, or compliance

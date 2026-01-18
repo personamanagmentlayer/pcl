@@ -118,6 +118,38 @@ logs/
 .env.production
 .envrc
 
+# API Keys and Credentials
+*.pem
+*.key
+*.cert
+*.p12
+*.pfx
+secrets.json
+credentials.json
+service-account*.json
+*-credentials.json
+auth.json
+token.json
+.npmrc-local
+
+# AWS
+.aws/
+aws-exports.js
+
+# Azure
+.azure/
+
+# Google Cloud
+gcloud/
+.gcp/
+
+# SSH Keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*.ppk
+
 # ============================================
 # OS & Editor Files
 # ============================================
