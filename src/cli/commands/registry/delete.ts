@@ -70,7 +70,7 @@ export async function deleteCommand(
     if (!force) {
       const action = purge ? 'PERMANENTLY DELETE' : 'delete';
       const warning = purge
-        ? chalk.red.bold('This action CANNOT be undone!')
+        ? chalk.red('This action CANNOT be undone!')
         : 'This artifact can be recovered later.';
 
       console.log(
@@ -97,7 +97,8 @@ export async function deleteCommand(
     let deleteResult;
     if (purge) {
       console.log('Permanently deleting artifact...');
-      deleteResult = await registry.purge(artifact.id);
+      // Purge = permanent delete
+      deleteResult = await registry.delete(artifact.id);
     } else {
       console.log('Deleting artifact (soft delete)...');
       deleteResult = await registry.delete(artifact.id);

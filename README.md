@@ -57,7 +57,20 @@ Traditional AI development lacks:
 
 **PCL solves this** by treating AI personas as **governed entities**, not just code.
 
-## Quick Start
+## ⚡ Quick Start - What Works Today
+
+> **📖 New User?** Read the [**Getting Started Guide (Current Features)**](docs/guides/GETTING-STARTED-CURRENT.md) for a practical, working introduction to PCL's implemented features.
+
+**What PCL can do right now** (Phase 1 Complete):
+- ✅ Parse PCL files to AST
+- ✅ Type checking and semantic analysis
+- ✅ Registry system with 4 backends (Memory, JSON File, SQLite, PostgreSQL)
+- ✅ Full-text search with filters
+- ✅ Performance benchmarks
+
+**Coming soon** (Phase 2): Code generation, runtime execution, LLM integration
+
+### Example Persona (Current Syntax)
 
 ```pcl
 // Define a security analyst persona
@@ -137,17 +150,36 @@ PCL is built on international standards for enterprise-grade security and AI gov
 ## Installation
 
 ```bash
-# Install PCL CLI
-npm install -g @pcl/cli
+# Clone the repository
+git clone https://github.com/personamanagmentlayer/pcl-lite.git
+cd pcl-lite
 
-# Or with pnpm
-pnpm add -g @pcl/cli
+# Install dependencies
+npm install
 
-# Initialize a new project
-pcl init my-project
+# Build PCL
+npm run build
 
-# Run a PCL file
-pcl run main.pcl
+# Verify installation
+node dist/cli/index.js --version
+```
+
+**Available Commands**:
+
+```bash
+# Parsing & Analysis
+node dist/cli/index.js parse <file>      # Parse PCL → AST
+node dist/cli/index.js check <file>      # Type check PCL file
+node dist/cli/index.js repl              # Interactive REPL
+
+# Registry Management (Database-Free!)
+node dist/cli/index.js registry init                 # Initialize registry
+node dist/cli/index.js registry create <file>        # Add persona
+node dist/cli/index.js registry search <query>       # Search personas
+node dist/cli/index.js registry list                 # List all personas
+node dist/cli/index.js registry info <id|slug>       # View details
+node dist/cli/index.js registry publish <id|slug>    # Publish persona
+node dist/cli/index.js registry delete <id|slug>     # Delete persona
 ```
 
 ## 🎉 Database-Free Registry
