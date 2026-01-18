@@ -43,7 +43,7 @@ export class AnthropicProvider implements AIProvider {
     streaming: true,
     toolCalling: true,
     vision: true,
-    maxTokens: 4096,
+    maxTokens: 8192,
     maxContextWindow: 200_000, // Claude 3 context window
     models: [
       'claude-3-5-sonnet-20241022',
@@ -51,6 +51,7 @@ export class AnthropicProvider implements AIProvider {
       'claude-3-opus-20240229',
       'claude-3-sonnet-20240229',
       'claude-3-haiku-20240307',
+      'claude-3-7-sonnet-20250219', // Latest Sonnet 3.7
     ],
   };
 
@@ -64,7 +65,7 @@ export class AnthropicProvider implements AIProvider {
       baseURL: config.baseURL,
     });
 
-    this.defaultModel = config.defaultModel || 'claude-3-5-sonnet-20241022';
+    this.defaultModel = config.defaultModel || 'claude-3-7-sonnet-20250219';
   }
 
   /**

@@ -24,6 +24,15 @@ import { createRuntime } from '../runtime';
 const analyze = (program: any) =>
   ({ ok: true, value: { symbols: {}, errors: [], warnings: [] } }) as any;
 import type { PCLError } from '../types';
+import {
+  createCommand,
+  searchCommand,
+  listCommand,
+  infoCommand,
+  publishCommand,
+  deleteCommand,
+  initCommand,
+} from './commands/registry';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CLI CONFIGURATION
@@ -54,17 +63,34 @@ Commands:
   gen <file>         Generate code from a PCL file
   run <file>         Load and run a PCL file
   repl               Start interactive REPL
+
+  Registry Commands:
+  registry init              Initialize a new registry database
+  registry create <file>     Create artifact from PCL file
+  registry search <query>    Search for artifacts
+  registry list              List all artifacts
+  registry info <id|slug>    Show artifact details
+  registry publish <id|slug> Publish an artifact
+  registry delete <id|slug>  Delete an artifact
+
   version            Show version information
   help               Show this help message
 
 Options:
   -o, --output <file>    Output file
-  -f, --format <format>  Output format (json, yaml, pretty)
+  -f, --format <format>  Output format (json, yaml, table, pretty)
   -t, --target <target>  Generation target (prompt, typescript, json, markdown)
   -q, --quiet            Suppress output
   -v, --verbose          Verbose output
   --no-color             Disable colored output
   --strict               Enable strict type checking
+
+  Registry Options:
+  --backend <type>       Backend to use (memory, json-file, sqlite, postgres)
+  --db <path>            Database path (SQLite or JSON file)
+  --publish              Publish after creation
+  --force                Force operation without confirmation
+  --purge                Permanently delete (use with delete)
 
 Examples:
   pcl parse main.pcl
@@ -75,6 +101,14 @@ Examples:
   pcl fmt main.pcl -o formatted.pcl
   pcl run main.pcl
   pcl repl
+
+  pcl registry init --backend sqlite
+  pcl registry create ./personas/expert.pcl --publish
+  pcl registry search "python expert" --type persona
+  pcl registry list --format table
+  pcl registry info code-reviewer
+  pcl registry publish code-reviewer
+  pcl registry delete old-persona --purge
 `;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -161,11 +195,22 @@ function formatError(
 
 interface CommandOptions {
   output?: string;
-  format?: 'json' | 'yaml' | 'pretty';
+  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list';
   target?: GeneratorTarget;
   quiet?: boolean;
   verbose?: boolean;
   strict?: boolean;
+  // Registry options
+  backend?: 'memory' | 'json-file' | 'sqlite' | 'postgres';
+  publish?: boolean;
+  force?: boolean;
+  purge?: boolean;
+  db?: string;
+  host?: string;
+  port?: number;
+  database?: string;
+  user?: string;
+  password?: string;
 }
 
 /**
@@ -569,7 +614,7 @@ Enter PCL code to parse and evaluate.
 
 function formatAST(
   program: Program,
-  format: 'json' | 'yaml' | 'pretty'
+  format: 'json' | 'yaml' | 'pretty' | 'table' | 'list'
 ): string {
   if (format === 'json') {
     return JSON.stringify(program, replacer, 2);
@@ -657,6 +702,26 @@ async function main(): Promise<number> {
       options.verbose = true;
     } else if (arg === '--strict') {
       options.strict = true;
+    } else if (arg === '--backend') {
+      options.backend = args[++i] as any;
+    } else if (arg === '--publish') {
+      options.publish = true;
+    } else if (arg === '--force') {
+      options.force = true;
+    } else if (arg === '--purge') {
+      options.purge = true;
+    } else if (arg === '--db') {
+      options.db = args[++i];
+    } else if (arg === '--host') {
+      options.host = args[++i];
+    } else if (arg === '--port') {
+      options.port = parseInt(args[++i], 10);
+    } else if (arg === '--database') {
+      options.database = args[++i];
+    } else if (arg === '--user') {
+      options.user = args[++i];
+    } else if (arg === '--password') {
+      options.password = args[++i];
     } else if (!arg.startsWith('-')) {
       positional.push(arg);
     }
@@ -713,6 +778,93 @@ async function main(): Promise<number> {
 
     case 'repl':
       return commandRepl();
+
+    case 'registry': {
+      const subcommand = positional[1];
+      const registryArg = positional[2];
+
+      // Build registry options from CLI args
+      const registryOptions: any = {};
+      if (options.backend) registryOptions.backend = options.backend;
+      if (options.publish) registryOptions.publish = options.publish;
+      if (options.force) registryOptions.force = options.force;
+      if (options.purge) registryOptions.purge = options.purge;
+      if (options.format) registryOptions.format = options.format;
+      if (options.db) registryOptions.db = options.db;
+      if (options.host) registryOptions.host = options.host;
+      if (options.port) registryOptions.port = options.port;
+      if (options.database) registryOptions.database = options.database;
+      if (options.user) registryOptions.user = options.user;
+      if (options.password) registryOptions.password = options.password;
+
+      switch (subcommand) {
+        case 'init':
+          if (!options.backend) {
+            console.error(color('red', 'Error: --backend option required'));
+            return 1;
+          }
+          await initCommand({ ...registryOptions, backend: options.backend });
+          return 0;
+
+        case 'create':
+          if (!registryArg) {
+            console.error(color('red', 'Error: No file specified'));
+            return 1;
+          }
+          await createCommand(resolve(registryArg), registryOptions);
+          return 0;
+
+        case 'search':
+          await searchCommand(registryArg || '', registryOptions);
+          return 0;
+
+        case 'list':
+          await listCommand(registryOptions);
+          return 0;
+
+        case 'info':
+          if (!registryArg) {
+            console.error(
+              color('red', 'Error: No artifact ID or slug specified')
+            );
+            return 1;
+          }
+          await infoCommand(registryArg, registryOptions);
+          return 0;
+
+        case 'publish':
+          if (!registryArg) {
+            console.error(
+              color('red', 'Error: No artifact ID or slug specified')
+            );
+            return 1;
+          }
+          await publishCommand(registryArg, registryOptions);
+          return 0;
+
+        case 'delete':
+          if (!registryArg) {
+            console.error(
+              color('red', 'Error: No artifact ID or slug specified')
+            );
+            return 1;
+          }
+          await deleteCommand(registryArg, registryOptions);
+          return 0;
+
+        default:
+          console.error(
+            color(
+              'red',
+              `Error: Unknown registry subcommand: ${subcommand || '(none)'}`
+            )
+          );
+          console.log(
+            'Available registry commands: init, create, search, list, info, publish, delete'
+          );
+          return 1;
+      }
+    }
 
     case 'version':
     case '-v':
