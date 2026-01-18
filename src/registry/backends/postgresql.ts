@@ -88,7 +88,10 @@ interface ArtifactRow {
  * PostgreSQL client interface (compatible with pg Pool)
  */
 interface PostgreSQLClient {
-  query(sql: string, params?: unknown[]): Promise<{ rows: unknown[]; rowCount: number }>;
+  query(
+    sql: string,
+    params?: unknown[]
+  ): Promise<{ rows: unknown[]; rowCount: number }>;
   connect(): Promise<PostgreSQLConnection>;
   end(): Promise<void>;
 }
@@ -97,7 +100,10 @@ interface PostgreSQLClient {
  * PostgreSQL connection interface
  */
 interface PostgreSQLConnection {
-  query(sql: string, params?: unknown[]): Promise<{ rows: unknown[]; rowCount: number }>;
+  query(
+    sql: string,
+    params?: unknown[]
+  ): Promise<{ rows: unknown[]; rowCount: number }>;
   release(): void;
 }
 
@@ -122,7 +128,10 @@ class PostgreSQLTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already committed`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -130,7 +139,10 @@ class PostgreSQLTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already rolled back`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -143,7 +155,10 @@ class PostgreSQLTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Failed to commit transaction: ${error}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -153,7 +168,10 @@ class PostgreSQLTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already committed`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -161,7 +179,10 @@ class PostgreSQLTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already rolled back`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -174,7 +195,10 @@ class PostgreSQLTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Failed to rollback transaction: ${error}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -211,6 +235,7 @@ export class PostgreSQLBackend implements IBackend {
 
     try {
       // Lazy-load pg to avoid requiring it as a dependency
+      // @ts-expect-error - pg is an optional dependency
       const { Pool } = await import('pg');
 
       this.pool = new Pool({
@@ -234,7 +259,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: `Failed to connect to PostgreSQL: ${error}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -253,7 +281,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: `Failed to disconnect from PostgreSQL: ${error}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -266,12 +297,17 @@ export class PostgreSQLBackend implements IBackend {
   //                              CRUD OPERATIONS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  async create(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<Artifact>> {
+  async create(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<Artifact>> {
     if (!this.pool) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -313,36 +349,62 @@ export class PostgreSQLBackend implements IBackend {
 
       // Insert tags
       if (artifact.metadata.tags && artifact.metadata.tags.length > 0) {
-        const tagValues = artifact.metadata.tags.map((tag) => `('${id}', '${tag}')`).join(', ');
-        await this.pool.query(`INSERT INTO tags (artifact_id, tag) VALUES ${tagValues}`);
+        const tagValues = artifact.metadata.tags
+          .map((tag) => `('${id}', '${tag}')`)
+          .join(', ');
+        await this.pool.query(
+          `INSERT INTO tags (artifact_id, tag) VALUES ${tagValues}`
+        );
       }
 
       // Insert skills
       if (artifact.metadata.skills && artifact.metadata.skills.length > 0) {
-        const skillValues = artifact.metadata.skills.map((skill) => `('${id}', '${skill}')`).join(', ');
-        await this.pool.query(`INSERT INTO skills (artifact_id, skill) VALUES ${skillValues}`);
+        const skillValues = artifact.metadata.skills
+          .map((skill) => `('${id}', '${skill}')`)
+          .join(', ');
+        await this.pool.query(
+          `INSERT INTO skills (artifact_id, skill) VALUES ${skillValues}`
+        );
       }
 
       // Insert keywords
       if (artifact.metadata.keywords && artifact.metadata.keywords.length > 0) {
-        const keywordValues = artifact.metadata.keywords.map((keyword) => `('${id}', '${keyword}')`).join(', ');
-        await this.pool.query(`INSERT INTO keywords (artifact_id, keyword) VALUES ${keywordValues}`);
+        const keywordValues = artifact.metadata.keywords
+          .map((keyword) => `('${id}', '${keyword}')`)
+          .join(', ');
+        await this.pool.query(
+          `INSERT INTO keywords (artifact_id, keyword) VALUES ${keywordValues}`
+        );
       }
 
-      return Ok(this.rowToArtifact(row, artifact.metadata.tags, artifact.metadata.skills, artifact.metadata.keywords));
+      return Ok(
+        this.rowToArtifact(
+          row,
+          artifact.metadata.tags,
+          artifact.metadata.skills,
+          artifact.metadata.keywords
+        )
+      );
     } catch (error: any) {
-      if (error.code === '23505') { // Unique violation
+      if (error.code === '23505') {
+        // Unique violation
         return Err({
           code: 'DUPLICATE',
           message: `Artifact with slug "${artifact.metadata.slug}" already exists`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
 
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to create artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -352,7 +414,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -381,17 +446,26 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to read artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
 
-  async update(id: string, updates: Partial<Artifact>): Promise<Result<Artifact>> {
+  async update(
+    id: string,
+    updates: Partial<Artifact>
+  ): Promise<Result<Artifact>> {
     if (!this.pool) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -402,7 +476,10 @@ export class PostgreSQLBackend implements IBackend {
         return Err({
           code: 'NOT_FOUND',
           message: `Artifact with ID "${id}" not found`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
 
@@ -443,7 +520,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to update artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -453,7 +533,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -468,7 +551,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to delete artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -478,18 +564,27 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
     try {
-      const result = await this.pool.query('DELETE FROM artifacts WHERE id = $1', [id]);
+      const result = await this.pool.query(
+        'DELETE FROM artifacts WHERE id = $1',
+        [id]
+      );
       return Ok(result.rowCount > 0);
     } catch (error: any) {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to purge artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -517,12 +612,17 @@ export class PostgreSQLBackend implements IBackend {
   //                              VERSION OPERATIONS (stub)
   // ═══════════════════════════════════════════════════════════════════════════
 
-  async createVersion(version: Omit<Version, 'createdAt'>): Promise<Result<Version>> {
+  async createVersion(
+    version: Omit<Version, 'createdAt'>
+  ): Promise<Result<Version>> {
     // TODO: Implement
     return Err({
       code: 'NOT_IMPLEMENTED',
       message: 'Not implemented',
-      span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+      span: {
+        start: { line: 0, column: 0, offset: 0 },
+        end: { line: 0, column: 0, offset: 0 },
+      },
     });
   }
 
@@ -531,7 +631,10 @@ export class PostgreSQLBackend implements IBackend {
     return Ok([]);
   }
 
-  async getVersion(artifactId: string, version: string): Promise<Result<Version | null>> {
+  async getVersion(
+    artifactId: string,
+    version: string
+  ): Promise<Result<Version | null>> {
     // TODO: Implement
     return Ok(null);
   }
@@ -545,7 +648,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -558,7 +664,10 @@ export class PostgreSQLBackend implements IBackend {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Failed to begin transaction: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -567,7 +676,12 @@ export class PostgreSQLBackend implements IBackend {
   //                              HELPER METHODS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  private rowToArtifact(row: ArtifactRow, tags?: string[], skills?: string[], keywords?: string[]): Artifact {
+  private rowToArtifact(
+    row: ArtifactRow,
+    tags?: string[],
+    skills?: string[],
+    keywords?: string[]
+  ): Artifact {
     return {
       id: row.id,
       type: row.type as ArtifactType,

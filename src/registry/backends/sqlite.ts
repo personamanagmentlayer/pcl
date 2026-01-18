@@ -67,9 +67,9 @@ interface ArtifactRow {
   created_at: string;
   updated_at: string;
   published: number; // Boolean (0 or 1)
-  deleted: number;   // Boolean (0 or 1)
-  tags?: string;     // Comma-separated
-  skills?: string;   // Comma-separated
+  deleted: number; // Boolean (0 or 1)
+  tags?: string; // Comma-separated
+  skills?: string; // Comma-separated
   keywords?: string; // Comma-separated
 }
 
@@ -115,7 +115,10 @@ class SQLiteTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already committed`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -123,7 +126,10 @@ class SQLiteTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already rolled back`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -135,7 +141,10 @@ class SQLiteTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Failed to commit transaction: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -145,7 +154,10 @@ class SQLiteTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already committed`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -153,7 +165,10 @@ class SQLiteTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already rolled back`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -165,7 +180,10 @@ class SQLiteTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Failed to rollback transaction: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -215,6 +233,7 @@ export class SQLiteBackend implements IBackend {
 
     try {
       // Lazy-load better-sqlite3 to avoid requiring it as a dependency
+      // @ts-expect-error - better-sqlite3 is an optional dependency
       const Database = (await import('better-sqlite3')).default;
 
       this.db = new Database(this.config.filename, {
@@ -242,7 +261,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: `Failed to connect to SQLite: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -262,7 +284,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: `Failed to disconnect from SQLite: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -275,12 +300,17 @@ export class SQLiteBackend implements IBackend {
   //                              CRUD OPERATIONS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  async create(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<Artifact>> {
+  async create(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<Artifact>> {
     if (!this.db) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -339,14 +369,20 @@ export class SQLiteBackend implements IBackend {
         return Err({
           code: 'DUPLICATE',
           message: `Artifact with slug "${artifact.metadata.slug}" already exists`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
 
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to create artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -356,12 +392,17 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
     try {
-      const row = this.stmts.selectArtifactById!.get(id) as ArtifactRow | undefined;
+      const row = this.stmts.selectArtifactById!.get(id) as
+        | ArtifactRow
+        | undefined;
 
       if (!row) {
         return Ok(null);
@@ -372,17 +413,26 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to read artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
 
-  async update(id: string, updates: Partial<Artifact>): Promise<Result<Artifact>> {
+  async update(
+    id: string,
+    updates: Partial<Artifact>
+  ): Promise<Result<Artifact>> {
     if (!this.db) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -393,7 +443,10 @@ export class SQLiteBackend implements IBackend {
         return Err({
           code: 'NOT_FOUND',
           message: `Artifact with ID "${id}" not found`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
 
@@ -435,7 +488,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to update artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -445,7 +501,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -456,7 +515,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to delete artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -466,7 +528,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -477,7 +542,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'REGISTRY_ERROR',
         message: `Failed to purge artifact: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -505,12 +573,17 @@ export class SQLiteBackend implements IBackend {
   //                              VERSION OPERATIONS (stub)
   // ═══════════════════════════════════════════════════════════════════════════
 
-  async createVersion(version: Omit<Version, 'createdAt'>): Promise<Result<Version>> {
+  async createVersion(
+    version: Omit<Version, 'createdAt'>
+  ): Promise<Result<Version>> {
     // TODO: Implement
     return Err({
       code: 'NOT_IMPLEMENTED',
       message: 'Not implemented',
-      span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+      span: {
+        start: { line: 0, column: 0, offset: 0 },
+        end: { line: 0, column: 0, offset: 0 },
+      },
     });
   }
 
@@ -519,7 +592,10 @@ export class SQLiteBackend implements IBackend {
     return Ok([]);
   }
 
-  async getVersion(artifactId: string, version: string): Promise<Result<Version | null>> {
+  async getVersion(
+    artifactId: string,
+    version: string
+  ): Promise<Result<Version | null>> {
     // TODO: Implement
     return Ok(null);
   }
@@ -533,7 +609,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -548,7 +627,10 @@ export class SQLiteBackend implements IBackend {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Failed to begin transaction: ${error.message}`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
   }
@@ -610,7 +692,9 @@ export class SQLiteBackend implements IBackend {
         homepage: row.homepage || undefined,
         tags: row.tags ? row.tags.split(',').filter(Boolean) : [],
         skills: row.skills ? row.skills.split(',').filter(Boolean) : undefined,
-        keywords: row.keywords ? row.keywords.split(',').filter(Boolean) : undefined,
+        keywords: row.keywords
+          ? row.keywords.split(',').filter(Boolean)
+          : undefined,
         custom: JSON.parse(row.custom) as Record<string, unknown>,
       },
       source: row.source,
@@ -618,7 +702,9 @@ export class SQLiteBackend implements IBackend {
         downloads: row.downloads,
         stars: row.stars,
         views: row.views,
-        lastAccessed: row.last_accessed ? new Date(row.last_accessed) : undefined,
+        lastAccessed: row.last_accessed
+          ? new Date(row.last_accessed)
+          : undefined,
       },
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),

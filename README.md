@@ -150,6 +150,83 @@ pcl init my-project
 pcl run main.pcl
 ```
 
+## 🎉 Database-Free Registry
+
+PCL now includes a **zero-dependency JSON File backend** for the registry system:
+
+- ✅ **No Database Required** - Works out of the box with no PostgreSQL or SQLite installation
+- ✅ **Human-Readable Storage** - All personas stored in `~/.pcl/registry.json`
+- ✅ **Git-Friendly** - Version control your personas with ease
+- ✅ **Portable** - Single JSON file contains your entire registry
+- ✅ **Production-Ready** - Handles up to ~1,000 artifacts efficiently
+
+### Quick Start
+
+```bash
+# Initialize registry (creates ~/.pcl/registry.json)
+pcl registry init --backend json-file
+
+# Create a persona
+pcl registry create ./my-persona.pcl
+
+# List all personas
+pcl registry list
+
+# View details
+pcl registry info my-persona
+```
+
+**Learn More**: See [DATABASE-FREE-REGISTRY.md](docs/registry/DATABASE-FREE-REGISTRY.md) for complete guide with examples.
+
+## 🔍 Search & Testing
+
+PCL includes powerful search capabilities and comprehensive testing infrastructure:
+
+### Full-Text Search
+
+Search across all your personas with filters and relevance scoring:
+
+```bash
+# Basic search
+pcl registry search "code review"
+
+# Search with filters
+pcl registry search "python" --type persona --tags development
+
+# Search specific fields
+pcl registry search "security" --fields name,description --limit 10
+```
+
+### Performance Benchmarks
+
+Run comprehensive benchmarks to understand backend performance:
+
+```bash
+# Run performance benchmarks
+ENABLE_BENCHMARKS=true npm test -- tests/registry/benchmarks.test.ts
+```
+
+**Results Summary:**
+
+- **MemoryBackend**: 100+ ops/sec, <10ms latency (best for testing)
+- **JSONFileBackend**: 10-100 ops/sec, <100ms latency (best for local dev)
+- **SQLiteBackend**: 100-1000 ops/sec, <5ms latency (best for production)
+- **PostgreSQLBackend**: 1000+ ops/sec, enterprise-scale (best for multi-user)
+
+### Integration Tests
+
+All backends tested with identical test suites ensuring consistency:
+
+```bash
+# Run integration tests
+npm test -- tests/registry/backends-integration.test.ts
+
+# Enable database backend tests
+ENABLE_DB_TESTS=true npm test -- tests/registry/backends-integration.test.ts
+```
+
+**Learn More**: See [PHASE-1.3-COMPLETE.md](.roadmap/status/PHASE-1.3-COMPLETE.md) for detailed benchmarks and test results.
+
 ## Core Concepts
 
 ### Personas

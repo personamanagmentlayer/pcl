@@ -25,8 +25,8 @@ import type {
   SearchCriteria,
   SearchResult,
   Version,
-  ArtifactType,
 } from './interfaces';
+import { ArtifactType } from './interfaces';
 import { ValidationError, NotFoundError } from './errors';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -69,7 +69,9 @@ export class RegistryManager implements IRegistry {
   private readonly backend: IBackend;
   private readonly cache?: ICache;
   private readonly searchEngine?: ISearchEngine;
-  private readonly config: Required<Omit<RegistryManagerConfig, 'cache' | 'searchEngine'>>;
+  private readonly config: Required<
+    Omit<RegistryManagerConfig, 'cache' | 'searchEngine'>
+  >;
 
   constructor(config: RegistryManagerConfig) {
     this.backend = config.backend;
@@ -87,7 +89,9 @@ export class RegistryManager implements IRegistry {
   //                              CRUD OPERATIONS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  async create(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<Artifact>> {
+  async create(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<Artifact>> {
     // Validate artifact
     if (this.config.validateArtifacts) {
       const validationResult = this.validateArtifact(artifact);
@@ -208,7 +212,10 @@ export class RegistryManager implements IRegistry {
     return Ok(artifact);
   }
 
-  async update(id: string, updates: Partial<Artifact>): Promise<Result<Artifact>> {
+  async update(
+    id: string,
+    updates: Partial<Artifact>
+  ): Promise<Result<Artifact>> {
     // Validate updates
     if (this.config.validateArtifacts && updates.metadata) {
       const validationResult = this.validateMetadata(updates.metadata);
@@ -320,8 +327,12 @@ export class RegistryManager implements IRegistry {
       return (
         artifact.metadata.name.toLowerCase().includes(query) ||
         artifact.metadata.description?.toLowerCase().includes(query) ||
-        artifact.metadata.tags.some((tag) => tag.toLowerCase().includes(query)) ||
-        artifact.metadata.skills?.some((skill) => skill.toLowerCase().includes(query))
+        artifact.metadata.tags.some((tag) =>
+          tag.toLowerCase().includes(query)
+        ) ||
+        artifact.metadata.skills?.some((skill) =>
+          skill.toLowerCase().includes(query)
+        )
       );
     });
 
@@ -343,7 +354,10 @@ export class RegistryManager implements IRegistry {
     return this.backend.listVersions(artifactId);
   }
 
-  async getVersion(artifactId: string, version: string): Promise<Result<Version | null>> {
+  async getVersion(
+    artifactId: string,
+    version: string
+  ): Promise<Result<Version | null>> {
     return this.backend.getVersion(artifactId, version);
   }
 
@@ -354,7 +368,10 @@ export class RegistryManager implements IRegistry {
       return Err({
         code: 'NOT_FOUND',
         message: `Artifact with ID "${artifactId}" not found`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -394,8 +411,14 @@ export class RegistryManager implements IRegistry {
       return Err(allResult.error);
     }
 
-    const totalDownloads = allResult.value.reduce((sum, a) => sum + a.stats.downloads, 0);
-    const totalStars = allResult.value.reduce((sum, a) => sum + a.stats.stars, 0);
+    const totalDownloads = allResult.value.reduce(
+      (sum, a) => sum + a.stats.downloads,
+      0
+    );
+    const totalStars = allResult.value.reduce(
+      (sum, a) => sum + a.stats.stars,
+      0
+    );
 
     // Get cache stats if available
     let cacheStats = undefined;
@@ -434,14 +457,16 @@ export class RegistryManager implements IRegistry {
       .toLowerCase()
       .trim()
       .replace(/[^\w\s-]/g, '') // Remove non-word chars
-      .replace(/[\s_-]+/g, '-')  // Replace spaces, underscores with hyphens
-      .replace(/^-+|-+$/g, '');  // Remove leading/trailing hyphens
+      .replace(/[\s_-]+/g, '-') // Replace spaces, underscores with hyphens
+      .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
   }
 
   /**
    * Validate artifact before creation
    */
-  private validateArtifact(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Result<void> {
+  private validateArtifact(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Result<void> {
     // Validate metadata
     const metadataResult = this.validateMetadata(artifact.metadata);
     if (!metadataResult.ok) {
@@ -453,7 +478,10 @@ export class RegistryManager implements IRegistry {
       return Err({
         code: 'VALIDATION_ERROR',
         message: 'Source code cannot be empty',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -463,14 +491,19 @@ export class RegistryManager implements IRegistry {
   /**
    * Validate artifact metadata
    */
-  private validateMetadata(metadata: Partial<Artifact['metadata']>): Result<void> {
+  private validateMetadata(
+    metadata: Partial<Artifact['metadata']>
+  ): Result<void> {
     // Validate name
     if (metadata.name !== undefined) {
       if (!metadata.name || metadata.name.trim().length === 0) {
         return Err({
           code: 'VALIDATION_ERROR',
           message: 'Artifact name cannot be empty',
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
 
@@ -478,7 +511,10 @@ export class RegistryManager implements IRegistry {
         return Err({
           code: 'VALIDATION_ERROR',
           message: 'Artifact name cannot exceed 255 characters',
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -490,7 +526,10 @@ export class RegistryManager implements IRegistry {
         return Err({
           code: 'VALIDATION_ERROR',
           message: `Invalid version format: "${metadata.version}". Expected semantic version (e.g., "1.2.3")`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -502,7 +541,10 @@ export class RegistryManager implements IRegistry {
         return Err({
           code: 'VALIDATION_ERROR',
           message: `Invalid slug format: "${metadata.slug}". Use lowercase letters, numbers, and hyphens only`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -514,7 +556,10 @@ export class RegistryManager implements IRegistry {
         return Err({
           code: 'VALIDATION_ERROR',
           message: `Invalid email format: "${metadata.authorEmail}"`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -525,7 +570,10 @@ export class RegistryManager implements IRegistry {
         return Err({
           code: 'VALIDATION_ERROR',
           message: 'Cannot have more than 20 tags',
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
 
@@ -534,7 +582,10 @@ export class RegistryManager implements IRegistry {
         return Err({
           code: 'VALIDATION_ERROR',
           message: 'Tags must be unique',
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -562,7 +613,9 @@ export class RegistryManager implements IRegistry {
 
     if (query.filter) {
       if (query.filter.type) {
-        const types = Array.isArray(query.filter.type) ? query.filter.type : [query.filter.type];
+        const types = Array.isArray(query.filter.type)
+          ? query.filter.type
+          : [query.filter.type];
         parts.push(`type:${types.join(',')}`);
       }
       if (query.filter.tags) {

@@ -21,11 +21,12 @@ export type { RegistryManagerConfig } from './manager';
 
 // Backends
 export { MemoryBackend } from './backends/memory';
+export { JSONFileBackend } from './backends/json-file';
+export type { JSONFileConfig } from './backends/json-file';
 export { PostgreSQLBackend } from './backends/postgresql';
 export type { PostgreSQLConfig } from './backends/postgresql';
 export { SQLiteBackend } from './backends/sqlite';
 export type { SQLiteConfig } from './backends/sqlite';
 
 // Legacy exports (for backwards compatibility)
-export * from './types';
 export { FileBackend } from './file-backend';

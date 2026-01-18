@@ -25,7 +25,10 @@
       "Bash(git rev-list:*)",
       "Bash(find:*)",
       "Bash(npm --version:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(for file in src/cli/commands/registry/*.ts)",
+      "Bash(do sed -i 's/await registry.close\\(\\);/\\\\/\\\\/ await registry.close\\(\\); \\\\/\\\\/ Not needed - auto-closes on process exit/' \"$file\")",
+      "Bash(done)"
     ]
   }
 }
