@@ -25,6 +25,7 @@ PCL is currently in **Phase 1 completion** with these working features:
 - **Git** (optional, for cloning)
 
 Check versions:
+
 ```bash
 node --version  # Should be v20.0.0+
 npm --version   # Should be 10.0.0+
@@ -37,8 +38,8 @@ npm --version   # Should be 10.0.0+
 ### Option 1: Clone from GitHub
 
 ```bash
-git clone https://github.com/personamanagmentlayer/pcl-lite.git
-cd pcl-lite
+git clone https://github.com/personamanagmentlayer/pcl.git
+cd pcl
 npm install
 npm run build
 ```
@@ -97,6 +98,7 @@ node dist/cli/index.js check my-assistant.pcl
 ```
 
 **Output**:
+
 - ✅ "No semantic errors" if valid
 - ❌ Error messages with line numbers if issues found
 
@@ -121,6 +123,7 @@ node dist/cli/index.js registry create my-assistant.pcl
 ```
 
 **Output**:
+
 ```
 Reading PCL file: my-assistant.pcl
 Parsing PCL source...
@@ -221,6 +224,7 @@ node dist/cli/index.js registry init --backend json-file --db ./my-registry.json
 ```
 
 **Pros**:
+
 - ✅ Zero dependencies
 - ✅ Human-readable
 - ✅ Git-friendly
@@ -237,10 +241,12 @@ node dist/cli/index.js registry init --backend memory
 ```
 
 **Pros**:
+
 - ✅ Super fast
 - ✅ No files created
 
 **Cons**:
+
 - ❌ Data lost on exit
 
 ### 3. SQLite (Optional)
@@ -253,6 +259,7 @@ node dist/cli/index.js registry init --backend sqlite
 ```
 
 **Pros**:
+
 - ✅ Fast queries
 - ✅ Full-text search
 - ✅ Handles 100K+ personas
@@ -270,6 +277,7 @@ node dist/cli/index.js registry init --backend postgres \
 ```
 
 **Pros**:
+
 - ✅ Enterprise-grade
 - ✅ Multi-user
 - ✅ ACID transactions
@@ -318,6 +326,7 @@ export Name
 ### Type System
 
 Supported types:
+
 - `String` - Text values
 - `Int` - Integer numbers
 - `Float` - Decimal numbers
@@ -550,6 +559,7 @@ node dist/cli/index.js --version
 ### Parse errors
 
 Check your syntax:
+
 - Use `:` for field assignment (not `=`)
 - Close all `{}` blocks
 - Quote string values
@@ -577,17 +587,20 @@ Look for error messages with line numbers.
 ## What's Coming Next
 
 ### Phase 1.5: Code Generation (In Progress)
+
 - Generate TypeScript classes from personas
 - Generate YAML/JSON configurations
 - Generate LLM prompts (Claude, OpenAI, Gemini)
 
 ### Phase 2: Runtime Execution
+
 - Execute personas with real LLM providers
 - Streaming responses
 - Context management
 - Memory system
 
 ### Phase 3: Advanced Features
+
 - Team collaboration
 - Workflow orchestration
 - Plugin system
@@ -604,6 +617,7 @@ ENABLE_BENCHMARKS=true npm test -- tests/registry/benchmarks.test.ts
 ```
 
 **Expected results**:
+
 - **MemoryBackend**: 1000+ ops/sec, <1ms latency
 - **JSONFileBackend**: 10-100 ops/sec, 1-10ms latency
 - **SQLiteBackend**: 100-1000 ops/sec, 1-5ms latency
@@ -614,6 +628,7 @@ ENABLE_BENCHMARKS=true npm test -- tests/registry/benchmarks.test.ts
 ## Documentation
 
 ### Working Features
+
 - ✅ [Registry System](../registry/DATABASE-FREE-REGISTRY.md) - Complete guide
 - ✅ [Registry Cheatsheet](../registry/REGISTRY-CHEATSHEET.md) - Quick reference
 - ✅ [Quick Start Local](QUICK-START-LOCAL.md) - Get started fast
@@ -621,6 +636,7 @@ ENABLE_BENCHMARKS=true npm test -- tests/registry/benchmarks.test.ts
 - ✅ [Semantic Analysis](../api/SEMANTIC.md) - Type checking
 
 ### Roadmap
+
 - 📋 [Roadmap](.roadmap/ROADMAP.md) - Full development plan
 - 📋 [Phase 1.2 Complete](.roadmap/status/PHASE-1.2-COMPLETE.md)
 - 📋 [Phase 1.3 Complete](.roadmap/status/PHASE-1.3-COMPLETE.md)
@@ -629,9 +645,9 @@ ENABLE_BENCHMARKS=true npm test -- tests/registry/benchmarks.test.ts
 
 ## Community & Support
 
-- **GitHub**: https://github.com/personamanagmentlayer/pcl-lite
-- **Issues**: https://github.com/personamanagmentlayer/pcl-lite/issues
-- **Discussions**: https://github.com/personamanagmentlayer/pcl-lite/discussions
+- **GitHub**: https://github.com/personamanagmentlayer/pcl
+- **Issues**: https://github.com/personamanagmentlayer/pcl/issues
+- **Discussions**: https://github.com/personamanagmentlayer/pcl/discussions
 
 ---
 

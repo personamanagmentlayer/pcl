@@ -7,7 +7,7 @@ This document describes the organization of the PCL project directory.
 The root directory contains only essential project files:
 
 ```
-pcl-lite/
+pcl/
 ├── README.md              # Main project documentation
 ├── CHANGELOG.md           # Version history
 ├── CONTRIBUTING.md        # Contribution guidelines

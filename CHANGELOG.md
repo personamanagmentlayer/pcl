@@ -198,8 +198,8 @@ We welcome contributions! Please see:
 
 ### Links
 
-- **Repository**: https://github.com/personamanagmentlayer/pcl-lite
-- **Issues**: https://github.com/personamanagmentlayer/pcl-lite/issues
+- **Repository**: https://github.com/personamanagmentlayer/pcl
+- **Issues**: https://github.com/personamanagmentlayer/pcl/issues
 - **License**: Apache-2.0
 
 ---

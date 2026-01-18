@@ -425,7 +425,7 @@ Read [GitHub Copilot Instructions](.github/copilot-instructions.md) for coding s
 
 Found a bug? Have a feature request?
 
-**Open an issue**: https://github.com/personamanagmentlayer/pcl-lite/issues
+**Open an issue**: https://github.com/personamanagmentlayer/pcl/issues
 
 Please include:
 
@@ -439,9 +439,9 @@ Please include:
 
 ## Community & Support
 
-- **GitHub**: https://github.com/personamanagmentlayer/pcl-lite
-- **Issues**: https://github.com/personamanagmentlayer/pcl-lite/issues
-- **Discussions**: https://github.com/personamanagmentlayer/pcl-lite/discussions
+- **GitHub**: https://github.com/personamanagmentlayer/pcl
+- **Issues**: https://github.com/personamanagmentlayer/pcl/issues
+- **Discussions**: https://github.com/personamanagmentlayer/pcl/discussions
 
 ---
 

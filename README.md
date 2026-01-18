@@ -62,6 +62,7 @@ Traditional AI development lacks:
 > **📖 New User?** Read the [**Getting Started Guide (Current Features)**](docs/guides/GETTING-STARTED-CURRENT.md) for a practical, working introduction to PCL's implemented features.
 
 **What PCL can do right now** (Phase 1 Complete):
+
 - ✅ Parse PCL files to AST
 - ✅ Type checking and semantic analysis
 - ✅ Registry system with 4 backends (Memory, JSON File, SQLite, PostgreSQL)
@@ -151,8 +152,8 @@ PCL is built on international standards for enterprise-grade security and AI gov
 
 ```bash
 # Clone the repository
-git clone https://github.com/personamanagmentlayer/pcl-lite.git
-cd pcl-lite
+git clone https://github.com/personamanagmentlayer/pcl.git
+cd pcl
 
 # Install dependencies
 npm install

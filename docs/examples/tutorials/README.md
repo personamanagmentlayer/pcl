@@ -17,7 +17,7 @@ All tutorials can be run with the **MockProvider** (no API keys needed) or with 
 ```bash
 # Clone the repository
 git clone <repo-url>
-cd pcl-lite
+cd pcl
 
 # Install dependencies
 npm install
@@ -35,11 +35,13 @@ node test-simple.mjs
 ## Tutorial Series
 
 ### Tutorial 1: Your First Persona
+
 **Duration:** 10-15 minutes | **Difficulty:** Beginner
 
 Learn the basics of creating and configuring PCL personas.
 
 **Topics:**
+
 - Persona configuration (intent, tone, skills, constraints)
 - Testing with MockProvider
 - Using real LLM providers (Claude, GPT)
@@ -51,11 +53,13 @@ Learn the basics of creating and configuring PCL personas.
 ---
 
 ### Tutorial 2: Personas Working Together (Teams)
+
 **Duration:** 15-20 minutes | **Difficulty:** Beginner-Intermediate
 
 Combine multiple personas into collaborative teams.
 
 **Topics:**
+
 - Creating teams of personas
 - Team merge modes (consensus, primary, append, debate, weighted)
 - Multi-persona collaboration patterns
@@ -66,11 +70,13 @@ Combine multiple personas into collaborative teams.
 ---
 
 ### Tutorial 3: Workflows
+
 **Duration:** 20-25 minutes | **Difficulty:** Intermediate
 
 Orchestrate complex multi-step processes with workflows.
 
 **Topics:**
+
 - Sequential workflows
 - Conditional execution (if-then-else)
 - Loops (times, while, until)
@@ -79,6 +85,7 @@ Orchestrate complex multi-step processes with workflows.
 - Timeout handling
 
 **Features from Phase 1.1C:**
+
 - ✨ Expression Evaluator
 - ✨ Dynamic condition evaluation
 - ✨ Built-in functions (isEmpty, isNull, isDefined, length)
@@ -89,11 +96,13 @@ Orchestrate complex multi-step processes with workflows.
 ---
 
 ### Tutorial 4: Building a Real Application
+
 **Duration:** 30-40 minutes | **Difficulty:** Intermediate-Advanced
 
 Build a complete code review application using personas, teams, and workflows.
 
 **Topics:**
+
 - Application architecture
 - Combining personas, teams, and workflows
 - Error handling patterns
@@ -104,11 +113,13 @@ Build a complete code review application using personas, teams, and workflows.
 ---
 
 ### Tutorial 5: Multi-Language Integration
+
 **Duration:** 25-30 minutes | **Difficulty:** Intermediate
 
 Use PCL from different programming languages.
 
 **Topics:**
+
 - Using PCL from TypeScript
 - Using PCL from JavaScript
 - Using PCL from Python
@@ -119,11 +130,13 @@ Use PCL from different programming languages.
 ---
 
 ### Tutorial 6: Advanced Features
+
 **Duration:** 35-45 minutes | **Difficulty:** Advanced
 
 Deep dive into advanced PCL capabilities.
 
 **Topics:**
+
 - Custom provider implementation
 - Advanced workflow patterns
 - Performance optimization
@@ -157,7 +170,9 @@ node test-with-openai.mjs
 ## Tutorial Features
 
 ### 📚 Comprehensive Documentation
+
 Each tutorial includes a detailed README with:
+
 - Step-by-step instructions
 - Code examples
 - Common patterns
@@ -165,14 +180,18 @@ Each tutorial includes a detailed README with:
 - Troubleshooting guide
 
 ### 💻 Working Code Examples
+
 Every tutorial provides:
+
 - Complete PCL files
 - Test scripts with MockProvider
 - Test scripts with real providers
 - Fully tested and working code
 
 ### 🎯 Progressive Learning
+
 Tutorials build on each other:
+
 1. Start with basic personas
 2. Progress to teams
 3. Master workflows
@@ -196,6 +215,7 @@ Tutorials build on each other:
 **Status:** ✅ COMPLETE (2026-01-17)
 
 **Delivered:**
+
 - 6 comprehensive tutorials
 - 20+ PCL example files
 - 10+ test scripts

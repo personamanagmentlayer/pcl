@@ -82,7 +82,9 @@ export async function infoCommand(
         }
         process.exit(1);
       }
-      const foundArtifact = artifactResult.value.find(a => a.id === versionData.artifactId);
+      const foundArtifact = artifactResult.value.find(
+        (a) => a.id === versionData.artifactId
+      );
       if (!foundArtifact) {
         console.error(formatError('Artifact not found for version'));
         process.exit(1);

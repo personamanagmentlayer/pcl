@@ -68,7 +68,10 @@ export async function publishCommand(
 
     // Publish artifact
     console.log(`Publishing ${artifact.type}: ${artifact.metadata.name}...`);
-    const publishResult = await registry.publish(artifact.id, artifact.metadata.version);
+    const publishResult = await registry.publish(
+      artifact.id,
+      artifact.metadata.version
+    );
 
     if (!publishResult.ok) {
       console.error(formatError('Failed to publish artifact'));

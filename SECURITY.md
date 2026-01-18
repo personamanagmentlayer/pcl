@@ -19,9 +19,10 @@ Please do not open a public issue on GitHub. Security vulnerabilities should be 
 
 ### 2. Report Privately
 
-Send a detailed report to: **security@pcl-lang.org** or create a private security advisory on GitHub.
+Send a detailed report to: **<security@pclang.org>** or create a private security advisory on GitHub.
 
 Include:
+
 - Description of the vulnerability
 - Steps to reproduce the issue
 - Potential impact
@@ -46,26 +47,31 @@ Include:
 When using PCL:
 
 ### 1. Input Validation
+
 - Always validate and sanitize user input before processing
 - Use PCL's built-in validation mechanisms
 - Be cautious with dynamic persona composition
 
 ### 2. Access Control
+
 - Implement proper authentication for registry access
 - Use role-based access control for team operations
 - Secure API keys and credentials
 
 ### 3. Registry Security
+
 - Use encrypted connections (HTTPS/TLS) for registry communication
 - Regularly audit registry access logs
 - Keep registry backend software up to date
 
 ### 4. Code Execution
+
 - Be cautious when executing dynamically generated PCL code
 - Validate workflow definitions before execution
 - Use sandboxing for untrusted persona execution
 
 ### 5. Dependencies
+
 - Regularly update dependencies using `npm audit`
 - Review security advisories for PCL and its dependencies
 - Use `npm audit fix` to patch known vulnerabilities
@@ -73,14 +79,18 @@ When using PCL:
 ## Known Security Considerations
 
 ### Bootstrap System
+
 The PCL Bootstrap system for AI chat interfaces should be used with:
+
 - Trusted AI providers only
 - Proper rate limiting
 - Input validation for persona commands
 - Monitoring for unusual activity
 
 ### Registry Backends
+
 Different backends have different security profiles:
+
 - **JSON File Backend**: Local filesystem permissions apply
 - **SQLite Backend**: Database file permissions critical
 - **PostgreSQL Backend**: Network security and authentication required
@@ -92,6 +102,7 @@ Security updates are released as soon as possible after a vulnerability is confi
 ## Compliance
 
 PCL aims to help organizations meet compliance requirements. See:
+
 - [PCL Governance](GOVERNANCE/PCL_GOVERNANCE.md)
 - [Security Model](GOVERNANCE/PCL_SECURITY_MODEL.md)
 - [Compliance Quick Reference](GOVERNANCE/COMPLIANCE_QUICK_REFERENCE.md)

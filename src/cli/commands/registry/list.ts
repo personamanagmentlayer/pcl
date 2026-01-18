@@ -11,10 +11,7 @@ import {
   formatError,
   type OutputFormat,
 } from '../../utils/output';
-import type {
-  ArtifactType,
-  Query,
-} from '../../../registry/interfaces';
+import type { ArtifactType, Query } from '../../../registry/interfaces';
 
 export interface ListOptions {
   backend?: string;

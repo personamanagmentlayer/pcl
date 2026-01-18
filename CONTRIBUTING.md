@@ -107,8 +107,8 @@ See [CONTRIBUTING_COMPLIANCE.md](GOVERNANCE/CONTRIBUTING_COMPLIANCE.md) for deta
 
 ## 🤝 Community
 
-- **Discussions**: [GitHub Discussions](https://github.com/personamanagmentlayer/pcl-lite/discussions) _(coming soon)_
-- **Issues**: [GitHub Issues](https://github.com/personamanagmentlayer/pcl-lite/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/personamanagmentlayer/pcl/discussions) _(coming soon)_
+- **Issues**: [GitHub Issues](https://github.com/personamanagmentlayer/pcl/issues)
 - **Roadmap**: [GOVERNANCE/ROADMAP.md](GOVERNANCE/ROADMAP.md)
 
 ## ⚖️ Licenses
