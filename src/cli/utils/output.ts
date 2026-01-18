@@ -5,7 +5,7 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import type { Artifact } from '../../../registry/interfaces';
+import type { Artifact } from '../../registry/interfaces';
 import { chalk } from './colors';
 import { formatTable, formatKeyValue, type TableColumn } from './table';
 
