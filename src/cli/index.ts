@@ -33,6 +33,13 @@ import {
   deleteCommand,
   initCommand,
 } from './commands/registry';
+import {
+  importCommand as skillImportCommand,
+  exportCommand as skillExportCommand,
+  validateCommand as skillValidateCommand,
+  listCommand as skillListCommand,
+  infoCommand as skillInfoCommand,
+} from './commands/skills';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CLI CONFIGURATION
@@ -73,6 +80,13 @@ Commands:
   registry publish <id|slug> Publish an artifact
   registry delete <id|slug>  Delete an artifact
 
+  Skill Commands:
+  skill import <source>      Import skill(s) from SKILL.md format
+  skill export <source>      Export skill to SKILL.md format
+  skill validate <source>    Validate skill against specification
+  skill list                 List all discovered skills
+  skill info <name|path>     Show detailed skill information
+
   version            Show version information
   help               Show this help message
 
@@ -92,6 +106,11 @@ Options:
   --force                Force operation without confirmation
   --purge                Permanently delete (use with delete)
 
+  Skill Options:
+  --spec <spec>          Specification to validate against (agentskills, claude-code)
+  --recursive            Recursively process directories
+  --format <format>      Output format (agentskills, claude-code, pcl)
+
 Examples:
   pcl parse main.pcl
   pcl lex main.pcl --format json
@@ -109,6 +128,13 @@ Examples:
   pcl registry info code-reviewer
   pcl registry publish code-reviewer
   pcl registry delete old-persona --purge
+
+  pcl skill import ~/.claude/skills/python-expert/SKILL.md -o ./skills/
+  pcl skill import ~/.claude/skills/ -o ./skills/ --recursive
+  pcl skill export ./skills/python-expert/SKILL.md --format claude-code
+  pcl skill validate ./skills/python-expert/SKILL.md --spec agentskills
+  pcl skill list --verbose
+  pcl skill info python-expert
 `;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -195,7 +221,7 @@ function formatError(
 
 interface CommandOptions {
   output?: string;
-  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list';
+  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list' | 'agentskills' | 'claude-code' | 'pcl';
   target?: GeneratorTarget;
   quiet?: boolean;
   verbose?: boolean;
@@ -211,6 +237,9 @@ interface CommandOptions {
   database?: string;
   user?: string;
   password?: string;
+  // Skill options
+  spec?: 'agentskills' | 'claude-code';
+  recursive?: boolean;
 }
 
 /**
@@ -614,8 +643,12 @@ Enter PCL code to parse and evaluate.
 
 function formatAST(
   program: Program,
-  format: 'json' | 'yaml' | 'pretty' | 'table' | 'list'
+  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list' | 'agentskills' | 'claude-code' | 'pcl'
 ): string {
+  // Default to pretty format for non-AST formats
+  if (!format || !['json', 'yaml', 'pretty', 'table', 'list'].includes(format)) {
+    format = 'pretty';
+  }
   if (format === 'json') {
     return JSON.stringify(program, replacer, 2);
   }
@@ -722,6 +755,10 @@ async function main(): Promise<number> {
       options.user = args[++i];
     } else if (arg === '--password') {
       options.password = args[++i];
+    } else if (arg === '--spec') {
+      options.spec = args[++i] as any;
+    } else if (arg === '--recursive') {
+      options.recursive = true;
     } else if (!arg.startsWith('-')) {
       positional.push(arg);
     }
@@ -861,6 +898,70 @@ async function main(): Promise<number> {
           );
           console.log(
             'Available registry commands: init, create, search, list, info, publish, delete'
+          );
+          return 1;
+      }
+    }
+
+    case 'skill': {
+      const subcommand = positional[1];
+      const skillArg = positional[2];
+
+      // Build skill options from CLI args
+      const skillOptions: any = {};
+      if (options.output) skillOptions.output = options.output;
+      if (options.format) skillOptions.format = options.format;
+      if (options.spec) skillOptions.spec = options.spec;
+      if (options.recursive) skillOptions.recursive = options.recursive;
+      if (options.verbose) skillOptions.verbose = options.verbose;
+      if (options.force) skillOptions.force = options.force;
+
+      switch (subcommand) {
+        case 'import':
+          if (!skillArg) {
+            console.error(color('red', 'Error: No source specified'));
+            return 1;
+          }
+          await skillImportCommand(skillArg, skillOptions);
+          return 0;
+
+        case 'export':
+          if (!skillArg) {
+            console.error(color('red', 'Error: No source specified'));
+            return 1;
+          }
+          await skillExportCommand(skillArg, skillOptions);
+          return 0;
+
+        case 'validate':
+          if (!skillArg) {
+            console.error(color('red', 'Error: No source specified'));
+            return 1;
+          }
+          await skillValidateCommand(skillArg, skillOptions);
+          return 0;
+
+        case 'list':
+          await skillListCommand(skillOptions);
+          return 0;
+
+        case 'info':
+          if (!skillArg) {
+            console.error(color('red', 'Error: No skill name or path specified'));
+            return 1;
+          }
+          await skillInfoCommand(skillArg, skillOptions);
+          return 0;
+
+        default:
+          console.error(
+            color(
+              'red',
+              `Error: Unknown skill subcommand: ${subcommand || '(none)'}`
+            )
+          );
+          console.log(
+            'Available skill commands: import, export, validate, list, info'
           );
           return 1;
       }

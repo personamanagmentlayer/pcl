@@ -663,6 +663,10 @@ export interface SkillBody extends ASTNode {
 export type SkillMember =
   | SkillItemsDeclaration
   | SkillCategoryDeclaration
+  | SkillInstructionsDeclaration
+  | SkillExamplesDeclaration
+  | SkillToolsDeclaration
+  | SkillDependenciesDeclaration
   | PropertyDeclaration;
 
 export interface SkillItemsDeclaration extends ASTNode {
@@ -673,6 +677,32 @@ export interface SkillItemsDeclaration extends ASTNode {
 export interface SkillCategoryDeclaration extends ASTNode {
   readonly kind: 'SkillCategoryDeclaration';
   readonly category: StringLiteral;
+}
+
+export interface SkillInstructionsDeclaration extends ASTNode {
+  readonly kind: 'SkillInstructionsDeclaration';
+  readonly instructions: StringLiteral; // Markdown or plain text
+}
+
+export interface SkillExamplesDeclaration extends ASTNode {
+  readonly kind: 'SkillExamplesDeclaration';
+  readonly examples: readonly SkillExample[];
+}
+
+export interface SkillExample extends ASTNode {
+  readonly kind: 'SkillExample';
+  readonly description: StringLiteral;
+  readonly code: StringLiteral;
+}
+
+export interface SkillToolsDeclaration extends ASTNode {
+  readonly kind: 'SkillToolsDeclaration';
+  readonly tools: readonly StringLiteral[];
+}
+
+export interface SkillDependenciesDeclaration extends ASTNode {
+  readonly kind: 'SkillDependenciesDeclaration';
+  readonly dependencies: readonly StringLiteral[];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

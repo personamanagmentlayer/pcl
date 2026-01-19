@@ -51,7 +51,7 @@ let total = 0;
 
 async function runTest(test) {
   return new Promise((resolve) => {
-    const testPath = join(__dirname, test.file);
+    const testPath = join(__dirname, '..', test.file);
     const proc = spawn('node', [testPath], {
       stdio: ['ignore', 'pipe', 'pipe'],
       shell: true,

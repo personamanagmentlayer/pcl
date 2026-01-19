@@ -11,7 +11,7 @@
  * @since 2026-01-16
  */
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { parse } from '../src/parser';
 import { analyze } from '../src/semantic';
 
@@ -128,6 +128,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.errors).toHaveLength(0);
     });
 
@@ -148,6 +149,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.errors).toHaveLength(0);
     });
   });
@@ -167,6 +169,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.errors).toHaveLength(1);
       expect(result.value.errors[0].message).toContain(
         "Cannot export 'NonExistentPersona': symbol not found"
@@ -188,6 +191,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.errors).toHaveLength(0);
     });
 
@@ -206,6 +210,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.warnings).toHaveLength(1);
       expect(result.value.warnings[0].message).toContain(
         "Exporting private symbol 'PrivatePersona'"
@@ -227,6 +232,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.errors).toHaveLength(0);
     });
   });
@@ -406,6 +412,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.errors).toHaveLength(2);
       expect(result.value.errors[0].message).toContain(
         "Cannot export 'UndefinedSymbol': symbol not found"
@@ -431,6 +438,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.warnings).toHaveLength(2);
       expect(result.value.warnings[0].message).toContain(
         'Exporting private symbol'
@@ -468,8 +476,11 @@ describe('Phase 2: Module Visibility', () => {
         team T { members: [A, B] }
       `;
 
-      const result1 = analyze(parse(source).value.program);
-      const result2 = analyze(parse(source).value.program, {
+      const parseResult = parse(source);
+      if (!parseResult.ok) return;
+
+      const result1 = analyze(parseResult.value.program);
+      const result2 = analyze(parseResult.value.program, {
         modulePath: 'test.pcl',
       });
 
@@ -492,6 +503,7 @@ describe('Phase 2: Module Visibility', () => {
       });
 
       expect(result.ok).toBe(true);
+      if (!result.ok) return;
       expect(result.value.errors).toHaveLength(0);
     });
 

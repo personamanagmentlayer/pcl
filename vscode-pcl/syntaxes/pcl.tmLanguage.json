@@ -1,0 +1,130 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "PCL",
+  "scopeName": "source.pcl",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#keywords" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#operators" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.pcl",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.pcl",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.declaration.pcl",
+          "match": "\\b(persona|team|workflow|skill)\\b"
+        },
+        {
+          "name": "keyword.control.pcl",
+          "match": "\\b(if|then|else|match|case|default|when)\\b"
+        },
+        {
+          "name": "keyword.other.pcl",
+          "match": "\\b(import|export|from|as|include|extend|override|mixin)\\b"
+        },
+        {
+          "name": "storage.type.pcl",
+          "match": "\\b(String|Int|Float|Bool|Array|Map|Set|Tuple|Persona|Team|Workflow|Skill)\\b"
+        },
+        {
+          "name": "constant.language.pcl",
+          "match": "\\b(true|false|null)\\b"
+        },
+        {
+          "name": "variable.language.pcl",
+          "match": "\\b(this|self|super)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.pcl",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.pcl",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.pcl",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.pcl",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.pcl",
+          "match": "\\b\\d+\\.\\d+([eE][+-]?\\d+)?\\b"
+        },
+        {
+          "name": "constant.numeric.integer.pcl",
+          "match": "\\b\\d+\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.workflow.pcl",
+          "match": "(->|\\|\\||\\||=>)"
+        },
+        {
+          "name": "keyword.operator.comparison.pcl",
+          "match": "(==|!=|<=|>=|<|>)"
+        },
+        {
+          "name": "keyword.operator.logical.pcl",
+          "match": "(&&|\\|\\||!)"
+        },
+        {
+          "name": "keyword.operator.assignment.pcl",
+          "match": "(:=|=)"
+        },
+        {
+          "name": "keyword.operator.arithmetic.pcl",
+          "match": "(\\+|-|\\*|/|%)"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "entity.name.type.pcl",
+          "match": "\\b[A-Z][A-Z0-9_]*\\b"
+        },
+        {
+          "name": "variable.other.pcl",
+          "match": "\\b[a-z_][a-zA-Z0-9_]*\\b"
+        }
+      ]
+    }
+  }
+}

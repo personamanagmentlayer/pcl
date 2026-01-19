@@ -3310,6 +3310,98 @@ export class Parser {
           category,
           span: this.makeSpan(catStart, this.previous().span.end),
         });
+      } else if (this.checkKeyword('instructions')) {
+        const instrStart = this.peek().span.start;
+        this.advance();
+        this.expect(TokenType.COLON, 'Expected ":"');
+        const instructions = this.parseStringLiteral();
+        this.consumeOptionalSemicolon();
+        members.push({
+          kind: 'SkillInstructionsDeclaration',
+          instructions,
+          span: this.makeSpan(instrStart, this.previous().span.end),
+        });
+      } else if (this.checkKeyword('examples')) {
+        const exStart = this.peek().span.start;
+        this.advance();
+        this.expect(TokenType.COLON, 'Expected ":"');
+        this.expect(TokenType.LBRACKET, 'Expected "["');
+        const examples: AST.SkillExample[] = [];
+        while (!this.check(TokenType.RBRACKET) && !this.isAtEnd()) {
+          // Parse { description: "...", code: "..." }
+          const objStart = this.peek().span.start;
+          this.expect(TokenType.LBRACE, 'Expected "{"');
+
+          // Parse description property
+          const descId = this.parseIdentifier();
+          if (descId.name !== 'description') {
+            this.error(`Expected 'description' property, got '${descId.name}'`);
+          }
+          this.expect(TokenType.COLON, 'Expected ":"');
+          const description = this.parseStringLiteral();
+          this.match(TokenType.COMMA);
+
+          // Parse code property
+          const codeId = this.parseIdentifier();
+          if (codeId.name !== 'code') {
+            this.error(`Expected 'code' property, got '${codeId.name}'`);
+          }
+          this.expect(TokenType.COLON, 'Expected ":"');
+          const code = this.parseStringLiteral();
+          this.match(TokenType.COMMA);
+
+          this.expect(TokenType.RBRACE, 'Expected "}"');
+
+          examples.push({
+            kind: 'SkillExample',
+            description,
+            code,
+            span: this.makeSpan(objStart, this.previous().span.end),
+          });
+
+          this.match(TokenType.COMMA);
+        }
+        this.expect(TokenType.RBRACKET, 'Expected "]"');
+        this.consumeOptionalSemicolon();
+        members.push({
+          kind: 'SkillExamplesDeclaration',
+          examples,
+          span: this.makeSpan(exStart, this.previous().span.end),
+        });
+      } else if (this.checkKeyword('tools')) {
+        const toolsStart = this.peek().span.start;
+        this.advance();
+        this.expect(TokenType.COLON, 'Expected ":"');
+        this.expect(TokenType.LBRACKET, 'Expected "["');
+        const tools: AST.StringLiteral[] = [];
+        while (!this.check(TokenType.RBRACKET) && !this.isAtEnd()) {
+          tools.push(this.parseStringLiteral());
+          this.match(TokenType.COMMA);
+        }
+        this.expect(TokenType.RBRACKET, 'Expected "]"');
+        this.consumeOptionalSemicolon();
+        members.push({
+          kind: 'SkillToolsDeclaration',
+          tools,
+          span: this.makeSpan(toolsStart, this.previous().span.end),
+        });
+      } else if (this.checkKeyword('dependencies')) {
+        const depsStart = this.peek().span.start;
+        this.advance();
+        this.expect(TokenType.COLON, 'Expected ":"');
+        this.expect(TokenType.LBRACKET, 'Expected "["');
+        const dependencies: AST.StringLiteral[] = [];
+        while (!this.check(TokenType.RBRACKET) && !this.isAtEnd()) {
+          dependencies.push(this.parseStringLiteral());
+          this.match(TokenType.COMMA);
+        }
+        this.expect(TokenType.RBRACKET, 'Expected "]"');
+        this.consumeOptionalSemicolon();
+        members.push({
+          kind: 'SkillDependenciesDeclaration',
+          dependencies,
+          span: this.makeSpan(depsStart, this.previous().span.end),
+        });
       } else {
         members.push(this.parsePropertyDeclaration([], []));
       }

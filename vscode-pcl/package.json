@@ -1,0 +1,91 @@
+{
+  "name": "vscode-pcl",
+  "displayName": "PCL Language Support",
+  "description": "Language support for Persona Configuration Language (PCL)",
+  "version": "1.0.0",
+  "publisher": "personalayer",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "pcl",
+    "persona",
+    "ai",
+    "agent",
+    "configuration"
+  ],
+  "activationEvents": [
+    "onLanguage:pcl"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "pcl",
+        "aliases": [
+          "PCL",
+          "Persona Configuration Language"
+        ],
+        "extensions": [
+          ".pcl"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/pcl-icon.png",
+          "dark": "./icons/pcl-icon.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pcl",
+        "scopeName": "source.pcl",
+        "path": "./syntaxes/pcl.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "PCL Language Server",
+      "properties": {
+        "pcl.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the PCL language server."
+        },
+        "pcl.maxCachedDocuments": {
+          "type": "number",
+          "default": 100,
+          "description": "Maximum number of documents to keep in cache."
+        },
+        "pcl.diagnosticsDebounce": {
+          "type": "number",
+          "default": 300,
+          "description": "Debounce time (ms) for diagnostics."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.75.0",
+    "typescript": "^5.0.0",
+    "@vscode/vsce": "^2.19.0"
+  }
+}

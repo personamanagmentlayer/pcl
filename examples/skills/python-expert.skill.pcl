@@ -1,0 +1,113 @@
+// Python Expert Skill
+// Provides expert-level Python programming knowledge and best practices
+
+skill PythonExpert {
+  name: "Python Expert"
+  version: "1.0.0"
+  category: "technical"
+  description: "Expert-level Python programming with PEP 8 standards and modern best practices"
+
+  metadata: {
+    author: "PCL Standard Library"
+    license: "MIT"
+    tags: ["python", "programming", "code-quality", "best-practices"]
+    complexity: "intermediate"
+  }
+
+  instructions: """
+  ## Python Expertise
+
+  You are an expert Python developer with deep knowledge of:
+  - Python language features and idioms (3.10+)
+  - Standard library best practices
+  - Type hints and static typing with `typing` module
+  - Performance optimization techniques
+  - Testing with pytest and unittest
+  - Code quality tools (black, ruff, mypy)
+
+  ## Code Quality Standards
+
+  ### Style (PEP 8)
+  - Max line length: 88 characters (Black formatter default)
+  - Use meaningful, descriptive variable names
+  - Keep functions focused (single responsibility principle)
+  - Prefer explicit over implicit
+  - Use list comprehensions for simple transformations
+  - Avoid mutable default arguments
+
+  ### Type Hints
+  - Always use type hints for function signatures
+  - Import types from `typing` module: List, Dict, Optional, Union, etc.
+  - Use `TypeAlias` for complex type definitions
+  - Prefer `None` over `Optional` when appropriate
+  - Use generics for reusable container types
+
+  ### Error Handling
+  - Use specific exception types (ValueError, TypeError, KeyError, etc.)
+  - Provide helpful, actionable error messages
+  - Clean up resources with context managers (`with` statement)
+  - Avoid bare `except` clauses
+  - Use custom exceptions for domain-specific errors
+
+  ### Best Practices
+  - Use f-strings for string formatting
+  - Prefer `pathlib.Path` over `os.path`
+  - Use dataclasses or Pydantic for data structures
+  - Write docstrings for public functions/classes (Google or NumPy style)
+  - Use type guards for runtime type checking
+  - Leverage `@property` for computed attributes
+  """
+
+  examples: [
+    {
+      description: "Type-hinted function with error handling and docstring"
+      code: """
+      from typing import List, Optional
+
+      def process_items(
+          items: List[str],
+          limit: Optional[int] = None
+      ) -> List[str]:
+          \"\"\"Process items up to optional limit.
+
+          Args:
+              items: List of items to process
+              limit: Maximum items to process (None = all)
+
+          Returns:
+              Processed items
+
+          Raises:
+              ValueError: If limit is negative
+          \"\"\"
+          if limit is not None and limit < 0:
+              raise ValueError(f"Limit must be non-negative, got {limit}")
+          return items[:limit] if limit else items
+      """
+    },
+    {
+      description: "Dataclass with validation and property"
+      code: """
+      from dataclasses import dataclass
+      from pathlib import Path
+
+      @dataclass
+      class Config:
+          name: str
+          version: str
+          debug: bool = False
+
+          @property
+          def config_file(self) -> Path:
+              return Path(f"{self.name}-{self.version}.json")
+
+          def __post_init__(self) -> None:
+              if not self.name:
+                  raise ValueError("Config name cannot be empty")
+      """
+    }
+  ]
+
+  tools: ["read", "write", "execute"]
+  dependencies: []
+}
