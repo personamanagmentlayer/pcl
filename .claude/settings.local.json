@@ -28,7 +28,8 @@
       "Bash(git push:*)",
       "Bash(for file in src/cli/commands/registry/*.ts)",
       "Bash(do sed -i 's/await registry.close\\(\\);/\\\\/\\\\/ await registry.close\\(\\); \\\\/\\\\/ Not needed - auto-closes on process exit/' \"$file\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(for dir in snowflake-expert databricks-expert airflow-expert dbt-expert looker-expert tableau-expert powerbi-expert data-mesh-expert)"
     ]
   }
 }
