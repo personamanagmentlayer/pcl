@@ -40,6 +40,9 @@ import {
   listCommand as skillListCommand,
   infoCommand as skillInfoCommand,
 } from './commands/skills';
+import { initCommand as projectInitCommand } from './commands/init';
+import { buildCommand as projectBuildCommand } from './commands/build';
+import { installCommand as projectInstallCommand } from './commands/install';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CLI CONFIGURATION
@@ -70,6 +73,11 @@ Commands:
   gen <file>         Generate code from a PCL file
   run <file>         Load and run a PCL file
   repl               Start interactive REPL
+
+  Project Commands:
+  init               Initialize a new PCL project
+  build              Build PCL project according to pcl.json
+  install [packages] Install dependencies
 
   Registry Commands:
   registry init              Initialize a new registry database
@@ -111,6 +119,13 @@ Options:
   --recursive            Recursively process directories
   --format <format>      Output format (agentskills, claude-code, pcl)
 
+  Project Options:
+  --config <path>        Path to pcl.json (default: ./pcl.json)
+  --watch                Watch for file changes and rebuild
+  --save                 Save package to dependencies
+  --save-dev             Save package to devDependencies
+  --production           Skip devDependencies installation
+
 Examples:
   pcl parse main.pcl
   pcl lex main.pcl --format json
@@ -120,6 +135,13 @@ Examples:
   pcl fmt main.pcl -o formatted.pcl
   pcl run main.pcl
   pcl repl
+
+  pcl init
+  pcl build
+  pcl build --target prompt --verbose
+  pcl install
+  pcl install @pcl/stdlib --save
+  pcl install my-persona --save-dev
 
   pcl registry init --backend sqlite
   pcl registry create ./personas/expert.pcl --publish
@@ -240,6 +262,12 @@ interface CommandOptions {
   // Skill options
   spec?: 'agentskills' | 'claude-code';
   recursive?: boolean;
+  // Build system options
+  config?: string;
+  watch?: boolean;
+  save?: boolean;
+  saveDev?: boolean;
+  production?: boolean;
 }
 
 /**
@@ -759,6 +787,16 @@ async function main(): Promise<number> {
       options.spec = args[++i] as any;
     } else if (arg === '--recursive') {
       options.recursive = true;
+    } else if (arg === '--config') {
+      options.config = args[++i];
+    } else if (arg === '--watch') {
+      options.watch = true;
+    } else if (arg === '--save') {
+      options.save = true;
+    } else if (arg === '--save-dev') {
+      options.saveDev = true;
+    } else if (arg === '--production') {
+      options.production = true;
     } else if (!arg.startsWith('-')) {
       positional.push(arg);
     }
@@ -815,6 +853,45 @@ async function main(): Promise<number> {
 
     case 'repl':
       return commandRepl();
+
+    case 'init': {
+      const buildOptions: any = {};
+      if (options.config) buildOptions.config = options.config;
+      if (options.verbose) buildOptions.verbose = options.verbose;
+      if (options.force) buildOptions.force = options.force;
+
+      // Additional options from positional args
+      if (positional[1]) buildOptions.name = positional[1];
+
+      await projectInitCommand(buildOptions);
+      return 0;
+    }
+
+    case 'build': {
+      const buildOptions: any = {};
+      if (options.config) buildOptions.config = options.config;
+      if (options.watch) buildOptions.watch = options.watch;
+      if (options.verbose) buildOptions.verbose = options.verbose;
+      if (options.target) buildOptions.target = options.target;
+
+      await projectBuildCommand(buildOptions);
+      return 0;
+    }
+
+    case 'install': {
+      const installOptions: any = {};
+      if (options.config) installOptions.config = options.config;
+      if (options.save) installOptions.save = options.save;
+      if (options.saveDev) installOptions.saveDev = options.saveDev;
+      if (options.production) installOptions.production = options.production;
+      if (options.verbose) installOptions.verbose = options.verbose;
+
+      // Collect packages to install (everything after 'install')
+      const packages = positional.slice(1);
+
+      await projectInstallCommand(packages, installOptions);
+      return 0;
+    }
 
     case 'registry': {
       const subcommand = positional[1];

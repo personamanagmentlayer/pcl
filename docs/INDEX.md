@@ -83,7 +83,66 @@ Complete guide to all PCL documentation, organized by topic and phase.
 - [Claude Code Compatibility](skills/CLAUDE-CODE-COMPATIBILITY.md) - Claude Code integration guide (2,800 lines)
 - [Agent Skills Compatibility](skills/AGENT-SKILLS-COMPATIBILITY.md) - agentskills.io integration (1,500 lines)
 
-### Skills Specifications
+---
+
+## 🛠️ Phase 2.3: Skills CLI (100% Complete)
+
+### Skills CLI Documentation
+
+- [Skills CLI Complete](../PHASE-2.3-COMPLETE.md) - Full phase summary
+- [CLI Usage Guide](skills/CLI-USAGE.md) - Comprehensive CLI documentation (660 lines)
+- [Quick Reference](../SKILLS-CLI-QUICK-REF.md) - Command quick reference
+
+### Skills Commands
+
+- **import** - Import skills from SKILL.md format
+- **export** - Export skills to SKILL.md format
+- **validate** - Validate skills against specifications
+- **list** - List all discovered skills
+- **info** - Show detailed skill information
+
+### Skills CLI Compatibility
+
+- **Agent Skills**: 100% validation support
+- **Claude Code**: 95% validation support
+- **Bidirectional**: Import/export both formats
+
+---
+
+## 📦 Phase 2.4: Build System & Package Manager (100% Complete)
+
+### Build System Documentation
+
+- [Build System Complete](../PHASE-2.4-COMPLETE.md) - Full phase summary
+- [Build System Guide](BUILD-SYSTEM.md) - Comprehensive guide (700+ lines)
+- [Quick Reference](../BUILD-QUICK-REF.md) - Command quick reference
+
+### Package Management Commands
+
+- **pcl init** - Initialize new PCL projects
+- **pcl build** - Build projects to multiple formats
+- **pcl install** - Install and manage dependencies
+- **Lock Files** - Reproducible builds with pcl-lock.json
+- **Dependency Resolution** - Automatic transitive dependencies
+
+### Build Output Targets
+
+- **prompt** - Text prompts (.prompt.txt) per persona
+- **json** - JSON representation (.json)
+- **yaml** - YAML representation (.yaml)
+- **typescript** - TypeScript types (.ts)
+- **markdown** - Documentation (.md)
+
+### Build System Features
+
+- NPM-compatible package format
+- Semantic versioning support
+- Version ranges (^, ~, >=, etc.)
+- Circular dependency detection
+- Version conflict detection
+
+### Ecosystem Specifications
+
 - [Agent Skills Spec](https://agentskills.io/specification) - Official Agent Skills specification
 - [Claude Code Skills](https://code.claude.com/docs/en/skills) - Official Claude Code documentation
 - [PCL Skills Format](skills/PCL-SKILLS-FORMAT.md) - PCL native skill format
@@ -210,11 +269,20 @@ Complete guide to all PCL documentation, organized by topic and phase.
 - [Phase 1 Complete](../.roadmap/status/PHASE-1.2-1.4-COMPLETE.md) - Core language
 - [Phase 2.1 Complete](../.roadmap/status/PHASE-2.1-COMPLETE.md) - LSP
 - [Phase 2.2 Complete](../.roadmap/status/PHASE-2.2-CLAUDE-CODE-SKILLS.md) - Skills
-- [Session Summary](../.roadmap/status/SESSION-SUMMARY-2026-01-18.md) - Latest session
+- [Phase 2.3 Complete](phases/SKILLS-CLI-COMPLETE.md) - Skills CLI
+- [Phase 2.4 Complete](phases/PHASE-2.4-COMPLETE.md) - Build System
+- [Phase 2 Validation](phases/PHASE-2-VALIDATION.md) - Phase 2 validation
+- [Phase 2 Complete](phases/PHASE-2-COMPLETE.md) - Phase 2 summary
+
+### Current Phases (In Progress)
+- [Phase 2.5-2.7 Plan](phases/PHASE-2.5-2.7-PLAN.md) - IDE Extensions, Skills Library, Registry
+- [Phase 2.5-2.7 Progress](phases/PHASE-2.5-2.7-PROGRESS.md) - Current progress
+
+### Session Summaries
+- [Session 2026-01-18 Final](sessions/SESSION-2026-01-18-FINAL.md) - Latest session summary
+- [Session Summary Detailed](sessions/SESSION-SUMMARY-DETAILED.md) - Detailed progress
 
 ### Future Plans
-- [Phase 2.3 Plan](../.roadmap/PHASE-2.3-PLAN.md) - IDE extensions
-- [Phase 2.4 Plan](../.roadmap/PHASE-2.4-PLAN.md) - Build system
 - [Phase 3 Plan](../.roadmap/PHASE-3-PLAN.md) - Advanced features
 
 ---
@@ -264,15 +332,26 @@ Complete guide to all PCL documentation, organized by topic and phase.
 
 ## 🔍 Quick Reference
 
+### Quick Start Guides
+
+- [Quickstart Guide](quickref/QUICKSTART.md) - Get started in 5 minutes
+- [Build System Quick Ref](quickref/BUILD-QUICK-REF.md) - Build commands reference
+- [Skills CLI Quick Ref](quickref/SKILLS-CLI-QUICK-REF.md) - Skills commands reference
+
 ### Common Tasks
 
 | Task | Documentation |
 |------|---------------|
 | Install PCL | [README.md](../README.md#installation) |
+| Quick Start | [Quickstart Guide](quickref/QUICKSTART.md) |
 | Create first persona | [Getting Started](guides/GETTING-STARTED-CURRENT.md) |
+| Initialize PCL project | [Build System Guide](BUILD-SYSTEM.md) |
+| Build PCL project | [Build Quick Ref](quickref/BUILD-QUICK-REF.md) |
+| Install dependencies | [Build System Guide](BUILD-SYSTEM.md) |
 | Use VSCode extension | [Extension README](../vscode-pcl/README.md) |
 | Import Agent Skills | [Agent Skills Guide](skills/AGENT-SKILLS-COMPATIBILITY.md) |
 | Import Claude Code skills | [Claude Code Guide](skills/CLAUDE-CODE-COMPATIBILITY.md) |
+| Manage skills | [Skills CLI Quick Ref](quickref/SKILLS-CLI-QUICK-REF.md) |
 | Set up registry | [Registry Guide](guides/REGISTRY.md) |
 | Run tests | [Testing Guide](../test/README.md) |
 | Deploy to production | [Deployment Guide](guides/DEPLOYMENT.md) |

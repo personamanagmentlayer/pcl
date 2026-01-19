@@ -75,19 +75,19 @@ src/
         └── registry/      # Registry CLI commands
 ```
 
-## Examples (`examples/`)
+## Examples (`docs/examples/`)
 
 ```
-examples/
-├── tutorials/             # Tutorial examples
-│   ├── 01-first-persona/
-│   ├── 02-teams/
-│   ├── 03-workflows/
-│   ├── 04-real-app/
-│   ├── 05-integration/
-│   └── 06-advanced/
-└── personas/              # Example personas (NEW)
-    └── test-persona.pcl
+docs/examples/
+      ├── tutorials/             # Tutorial examples
+      │   ├── 01-first-persona/
+      │   ├── 02-teams/
+      │   ├── 03-workflows/
+      │   ├── 04-real-app/
+      │   ├── 05-integration/
+      │   └── 06-advanced/
+      └── personas/              # Example personas (NEW)
+          └── test-persona.pcl
 ```
 
 ## Tests (`tests/`)
