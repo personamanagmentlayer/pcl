@@ -1,44 +1,56 @@
 # Legal Tech Expert
 
 ---
+
 skill_id: legal-tech-expert
 name: Legal Tech Expert
-category: domains
-tags: [legal, legaltech, case-management, e-discovery, contracts, legal-research, compliance, litigation]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master legal technology systems and case management
-  - Understand e-discovery and document review processes
-  - Implement contract lifecycle management solutions
-  - Apply legal research and analytics capabilities
-  - Navigate compliance and regulatory technology
-prerequisites:
-  - Understanding of legal workflows and procedures
-  - Knowledge of document management systems
-  - Familiarity with data privacy regulations
-  - Experience with enterprise software systems
-outcome: Build comprehensive legal technology solutions including case management, e-discovery workflows, contract analysis, and legal research systems
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [legal, legaltech, case-management, e-discovery, contracts, legal-research, compliance, litigation]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master legal technology systems and case management
+- Understand e-discovery and document review processes
+- Implement contract lifecycle management solutions
+- Apply legal research and analytics capabilities
+- Navigate compliance and regulatory technology
+  prerequisites:
+- Understanding of legal workflows and procedures
+- Knowledge of document management systems
+- Familiarity with data privacy regulations
+- Experience with enterprise software systems
+  outcome: Build comprehensive legal technology solutions including case management, e-discovery workflows, contract analysis, and legal research systems
+
 ---
 
 ## Core Concepts
 
 ### Case Management Systems
+
 Case management platforms organize legal matters, track deadlines, manage documents, coordinate teams, and provide matter-centric workflows for law firms and corporate legal departments.
 
 ### E-Discovery & Document Review
+
 Electronic discovery involves identifying, collecting, and analyzing electronically stored information (ESI) for legal proceedings, with technology-assisted review (TAR) and predictive coding capabilities.
 
 ### Contract Lifecycle Management (CLM)
+
 CLM systems automate contract creation, negotiation, approval, execution, and analysis, providing repository management, obligation tracking, and renewal management.
 
 ### Legal Research & Analytics
+
 Advanced legal research platforms use AI to search case law, statutes, and regulations, providing citation analysis, outcome prediction, and legal precedent identification.
 
 ### Compliance Management
+
 Technology solutions for tracking regulatory requirements, managing policies, conducting audits, and ensuring organizational compliance with legal obligations.
 
 ## Code Examples
@@ -463,6 +475,7 @@ class ContractAnalyzer:
 ## Best Practices
 
 ### Case Management
+
 - Implement matter-centric organization with clear hierarchies
 - Automate deadline calendaring with court rule integration
 - Use role-based access control for confidential matters
@@ -471,6 +484,7 @@ class ContractAnalyzer:
 - Implement conflict checking systems
 
 ### E-Discovery
+
 - Apply proportionality principles to scope ESI collection
 - Implement early case assessment (ECA) to reduce costs
 - Use TAR/predictive coding for large document sets
@@ -479,6 +493,7 @@ class ContractAnalyzer:
 - Create detailed preservation notices
 
 ### Contract Management
+
 - Centralize contract repository with metadata
 - Implement automated obligation tracking and alerts
 - Use template libraries with approved language
@@ -487,6 +502,7 @@ class ContractAnalyzer:
 - Track contract value and renewal dates
 
 ### Compliance
+
 - Map regulatory requirements to business processes
 - Implement policy acknowledgment workflows
 - Conduct regular compliance audits
@@ -497,6 +513,7 @@ class ContractAnalyzer:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Storing case information in disparate systems
 - Manual deadline tracking without redundancy
 - Inadequate privilege review protocols
@@ -507,6 +524,7 @@ class ContractAnalyzer:
 - Inadequate backup and disaster recovery
 
 ### Common Mistakes
+
 - Overlooking metadata in e-discovery
 - Failing to apply legal holds properly
 - Inadequate redaction of privileged material
@@ -518,6 +536,7 @@ class ContractAnalyzer:
 ## Resources
 
 ### Legal Tech Platforms
+
 - Clio - Cloud-based practice management
 - NetDocuments - Document management system
 - Relativity - E-discovery platform
@@ -526,18 +545,21 @@ class ContractAnalyzer:
 - DocuSign - Electronic signature platform
 
 ### Industry Organizations
+
 - Legal Technology Resource Center (ABA)
 - International Legal Technology Association (ILTA)
 - Association of Certified E-Discovery Specialists (ACEDS)
 - Legal Marketing Association
 
 ### Legal Frameworks
+
 - Federal Rules of Civil Procedure (FRCP)
 - eDiscovery Reference Model
 - Sedona Conference Principles
 - ISO 27001 for legal data security
 
 ### Learning Resources
+
 - ILTA Webinars and conferences
 - Legal Tech News publications
 - Legaltech Hub training resources
@@ -545,4 +567,4 @@ class ContractAnalyzer:
 
 ---
 
-*Part of the PCL Standard Library - Master legal technology systems and digital transformation in legal services.*
+_Part of the PCL Standard Library - Master legal technology systems and digital transformation in legal services._

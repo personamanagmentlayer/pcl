@@ -1,44 +1,58 @@
 # Gaming Expert
 
 ---
+
 skill_id: gaming-expert
 name: Gaming Expert
-category: domains
-tags: [gaming, game-development, game-engines, multiplayer, game-analytics, monetization, unity, unreal]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master game development frameworks and engines
-  - Understand multiplayer networking and synchronization
-  - Implement game analytics and telemetry
-  - Apply game economy and monetization strategies
-  - Navigate game lifecycle management and live ops
-prerequisites:
-  - Understanding of game design principles
-  - Knowledge of real-time systems and performance
-  - Familiarity with 3D math and physics
-  - Experience with game development tools
-outcome: Build comprehensive game systems including gameplay mechanics, multiplayer infrastructure, analytics tracking, and monetization features
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- Grep
+- Glob
+  category: domains
+  tags: [gaming, game-development, game-engines, multiplayer, game-analytics, monetization, unity, unreal]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master game development frameworks and engines
+- Understand multiplayer networking and synchronization
+- Implement game analytics and telemetry
+- Apply game economy and monetization strategies
+- Navigate game lifecycle management and live ops
+  prerequisites:
+- Understanding of game design principles
+- Knowledge of real-time systems and performance
+- Familiarity with 3D math and physics
+- Experience with game development tools
+  outcome: Build comprehensive game systems including gameplay mechanics, multiplayer infrastructure, analytics tracking, and monetization features
+
 ---
 
 ## Core Concepts
 
 ### Game Development Frameworks
+
 Core systems and engines (Unity, Unreal, Godot) that provide rendering, physics, audio, input handling, and scripting capabilities for building interactive game experiences.
 
 ### Multiplayer Networking
+
 Real-time synchronization of game state across multiple clients using techniques like client-server architecture, peer-to-peer, lag compensation, and prediction for responsive gameplay.
 
 ### Game Analytics & Telemetry
+
 Instrumentation and tracking of player behavior, session data, progression metrics, and performance indicators to understand engagement and optimize game design.
 
 ### Game Economy & Monetization
+
 Design and implementation of in-game currencies, virtual goods, pricing strategies, and monetization models including F2P, premium, subscriptions, and in-app purchases.
 
 ### Live Operations (LiveOps)
+
 Ongoing game management including content updates, events, balancing, player support, and community management to maintain engagement post-launch.
 
 ## Code Examples
@@ -657,6 +671,7 @@ class GameEconomy:
 ## Best Practices
 
 ### Game Development
+
 - Implement frame-rate independent game logic
 - Use object pooling for frequent instantiation
 - Profile and optimize performance regularly
@@ -666,6 +681,7 @@ class GameEconomy:
 - Maintain clean separation of concerns
 
 ### Multiplayer
+
 - Use authoritative server architecture
 - Implement client-side prediction
 - Apply lag compensation techniques
@@ -675,6 +691,7 @@ class GameEconomy:
 - Handle disconnections gracefully
 
 ### Analytics
+
 - Track key engagement metrics (DAU, retention, session length)
 - Implement funnel analysis
 - A/B test game features
@@ -684,6 +701,7 @@ class GameEconomy:
 - Create actionable dashboards
 
 ### Monetization
+
 - Balance free and paid content
 - Test pricing strategies
 - Avoid pay-to-win mechanics
@@ -695,6 +713,7 @@ class GameEconomy:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Unoptimized asset loading causing lag
 - Client-authoritative multiplayer (enables cheating)
 - Ignoring player feedback and metrics
@@ -705,6 +724,7 @@ class GameEconomy:
 - No live operations plan
 
 ### Common Mistakes
+
 - Not testing on target hardware
 - Overlooking mobile battery usage
 - Unbalanced game economy
@@ -717,24 +737,28 @@ class GameEconomy:
 ## Resources
 
 ### Game Engines
+
 - Unity - Popular cross-platform engine
 - Unreal Engine - AAA-quality engine
 - Godot - Open-source engine
 - GameMaker Studio - 2D game development
 
 ### Multiplayer Frameworks
+
 - Photon - Real-time multiplayer
 - Mirror Networking - Unity networking
 - Netcode for GameObjects - Unity multiplayer
 - PlayFab - Backend services
 
 ### Analytics Platforms
+
 - Unity Analytics
 - GameAnalytics
 - Firebase Analytics
 - deltaDNA
 
 ### Learning Resources
+
 - GDC (Game Developers Conference)
 - Gamasutra articles
 - Unity Learn platform
@@ -742,4 +766,4 @@ class GameEconomy:
 
 ---
 
-*Part of the PCL Standard Library - Master game development systems and create engaging interactive experiences.*
+_Part of the PCL Standard Library - Master game development systems and create engaging interactive experiences._

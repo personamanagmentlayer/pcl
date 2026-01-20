@@ -1,6 +1,25 @@
 ---
 description: Expert in Salesforce platform development, Apex programming, Lightning Web Components, SOQL/SOSL queries, Salesforce APIs, and AppExchange solutions
-keywords: [salesforce, apex, lwc, lightning, soql, salesforce-api, crm, force-platform, appexchange]
+tags: ['salesforce', 'crm', 'cloud', 'business-apps']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - Grep
+  - Glob
+  - WebSearch
+keywords:
+  [
+    salesforce,
+    apex,
+    lwc,
+    lightning,
+    soql,
+    salesforce-api,
+    crm,
+    force-platform,
+    appexchange,
+  ]
 category: domains
 expertise_level: expert
 ---
@@ -10,6 +29,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Salesforce Platform
+
 - **Sales Cloud** - Sales automation and CRM
 - **Service Cloud** - Customer service and support
 - **Experience Cloud** - Customer portals and communities
@@ -18,6 +38,7 @@ expertise_level: expert
 - **Platform** - Custom app development (Force.com)
 
 ### Development Components
+
 - **Apex** - Object-oriented programming language
 - **Lightning Web Components (LWC)** - Modern UI framework
 - **Visualforce** - Server-side rendered UI (legacy)
@@ -26,6 +47,7 @@ expertise_level: expert
 - **Triggers** - Event-driven automation
 
 ### Integration & APIs
+
 - **REST API** - RESTful web services
 - **SOAP API** - Enterprise WSDL-based integration
 - **Bulk API** - Large data volume operations
@@ -130,106 +152,109 @@ import getAccounts from '@salesforce/apex/AccountController.getAccounts';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class AccountList extends LightningElement {
-    @track accounts = [];
-    @track error;
-    @track searchKey = '';
-    wiredAccountsResult;
+  @track accounts = [];
+  @track error;
+  @track searchKey = '';
+  wiredAccountsResult;
 
-    columns = [
-        { label: 'Account Name', fieldName: 'Name', type: 'text' },
-        { label: 'Industry', fieldName: 'Industry', type: 'text' },
-        { label: 'Type', fieldName: 'Type', type: 'text' },
-        { label: 'Phone', fieldName: 'Phone', type: 'phone' },
-        {
-            type: 'button',
-            typeAttributes: {
-                label: 'View',
-                name: 'view',
-                variant: 'brand'
-            }
-        }
-    ];
+  columns = [
+    { label: 'Account Name', fieldName: 'Name', type: 'text' },
+    { label: 'Industry', fieldName: 'Industry', type: 'text' },
+    { label: 'Type', fieldName: 'Type', type: 'text' },
+    { label: 'Phone', fieldName: 'Phone', type: 'phone' },
+    {
+      type: 'button',
+      typeAttributes: {
+        label: 'View',
+        name: 'view',
+        variant: 'brand',
+      },
+    },
+  ];
 
-    @wire(getAccounts, { searchKey: '$searchKey' })
-    wiredAccounts(result) {
-        this.wiredAccountsResult = result;
-        if (result.data) {
-            this.accounts = result.data;
-            this.error = undefined;
-        } else if (result.error) {
-            this.error = result.error;
-            this.accounts = [];
-        }
+  @wire(getAccounts, { searchKey: '$searchKey' })
+  wiredAccounts(result) {
+    this.wiredAccountsResult = result;
+    if (result.data) {
+      this.accounts = result.data;
+      this.error = undefined;
+    } else if (result.error) {
+      this.error = result.error;
+      this.accounts = [];
     }
+  }
 
-    handleSearch(event) {
-        this.searchKey = event.target.value;
+  handleSearch(event) {
+    this.searchKey = event.target.value;
+  }
+
+  handleRowAction(event) {
+    const actionName = event.detail.action.name;
+    const row = event.detail.row;
+
+    if (actionName === 'view') {
+      this.viewAccount(row.Id);
     }
+  }
 
-    handleRowAction(event) {
-        const actionName = event.detail.action.name;
-        const row = event.detail.row;
+  viewAccount(accountId) {
+    this[NavigationMixin.Navigate]({
+      type: 'standard__recordPage',
+      attributes: {
+        recordId: accountId,
+        objectApiName: 'Account',
+        actionName: 'view',
+      },
+    });
+  }
 
-        if (actionName === 'view') {
-            this.viewAccount(row.Id);
-        }
-    }
-
-    viewAccount(accountId) {
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: {
-                recordId: accountId,
-                objectApiName: 'Account',
-                actionName: 'view'
-            }
-        });
-    }
-
-    handleRefresh() {
-        return refreshApex(this.wiredAccountsResult);
-    }
+  handleRefresh() {
+    return refreshApex(this.wiredAccountsResult);
+  }
 }
 ```
 
 ```html
 <!-- accountList.html -->
 <template>
-    <lightning-card title="Account List" icon-name="standard:account">
-        <div class="slds-m-around_medium">
-            <lightning-input
-                type="search"
-                label="Search"
-                value={searchKey}
-                onchange={handleSearch}
-                placeholder="Search accounts...">
-            </lightning-input>
-        </div>
+  <lightning-card title="Account List" icon-name="standard:account">
+    <div class="slds-m-around_medium">
+      <lightning-input
+        type="search"
+        label="Search"
+        value="{searchKey}"
+        onchange="{handleSearch}"
+        placeholder="Search accounts..."
+      >
+      </lightning-input>
+    </div>
 
-        <template if:true={accounts}>
-            <lightning-datatable
-                key-field="Id"
-                data={accounts}
-                columns={columns}
-                onrowaction={handleRowAction}
-                hide-checkbox-column>
-            </lightning-datatable>
-        </template>
+    <template if:true="{accounts}">
+      <lightning-datatable
+        key-field="Id"
+        data="{accounts}"
+        columns="{columns}"
+        onrowaction="{handleRowAction}"
+        hide-checkbox-column
+      >
+      </lightning-datatable>
+    </template>
 
-        <template if:true={error}>
-            <div class="slds-m-around_medium">
-                <p class="slds-text-color_error">{error}</p>
-            </div>
-        </template>
+    <template if:true="{error}">
+      <div class="slds-m-around_medium">
+        <p class="slds-text-color_error">{error}</p>
+      </div>
+    </template>
 
-        <div slot="actions">
-            <lightning-button
-                label="Refresh"
-                icon-name="utility:refresh"
-                onclick={handleRefresh}>
-            </lightning-button>
-        </div>
-    </lightning-card>
+    <div slot="actions">
+      <lightning-button
+        label="Refresh"
+        icon-name="utility:refresh"
+        onclick="{handleRefresh}"
+      >
+      </lightning-button>
+    </div>
+  </lightning-card>
 </template>
 ```
 
@@ -371,6 +396,7 @@ public class ExternalAPIService {
 ## Best Practices
 
 ### Development Standards
+
 - Follow Apex coding conventions and style guide
 - Use bulkified code patterns (no SOQL/DML in loops)
 - Implement proper exception handling
@@ -379,6 +405,7 @@ public class ExternalAPIService {
 - Document complex business logic
 
 ### Governor Limits
+
 - Maximum 100 SOQL queries per transaction
 - Maximum 150 DML statements per transaction
 - Maximum 10,000 records per SOQL query
@@ -387,6 +414,7 @@ public class ExternalAPIService {
 - Implement batch Apex for large data volumes
 
 ### Security Best Practices
+
 - Use "with sharing" keyword for classes
 - Implement field-level security checks
 - Validate user input and sanitize data
@@ -395,6 +423,7 @@ public class ExternalAPIService {
 - Regular security reviews and audits
 
 ### Lightning Best Practices
+
 - Use cacheable Apex methods with @wire
 - Implement proper error handling
 - Minimize server round trips
@@ -405,6 +434,7 @@ public class ExternalAPIService {
 ## Anti-Patterns
 
 ### Code Smells
+
 - SOQL/DML statements inside loops
 - Hard-coded IDs and values
 - Missing null checks
@@ -413,6 +443,7 @@ public class ExternalAPIService {
 - Missing test coverage
 
 ### Design Issues
+
 - Tight coupling between components
 - No separation of concerns
 - Monolithic trigger code
@@ -421,6 +452,7 @@ public class ExternalAPIService {
 - No error handling strategy
 
 ### Performance Issues
+
 - Unnecessary SOQL queries
 - Processing too many records synchronously
 - Missing indexes on frequently queried fields
@@ -431,24 +463,28 @@ public class ExternalAPIService {
 ## Resources
 
 ### Official Documentation
+
 - [Salesforce Developer Documentation](https://developer.salesforce.com/docs) - Complete reference
 - [Apex Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/) - Language guide
 - [Lightning Component Library](https://developer.salesforce.com/docs/component-library) - UI components
 - [API Reference](https://developer.salesforce.com/docs/apis) - All Salesforce APIs
 
 ### Learning Platforms
+
 - [Trailhead](https://trailhead.salesforce.com/) - Free interactive learning
 - [Salesforce Developer Centers](https://developer.salesforce.com/) - Resources and tools
 - [Salesforce Help](https://help.salesforce.com/) - Product documentation
 - [Salesforce University](https://www.salesforce.com/services/learning-and-certification/) - Official training
 
 ### Tools & Extensions
+
 - [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) - Command-line interface
 - [VS Code Salesforce Extensions](https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode) - IDE support
 - [Developer Console](https://help.salesforce.com/articleView?id=code_dev_console.htm) - Browser-based IDE
 - [Workbench](https://workbench.developerforce.com/) - Web-based admin tool
 
 ### Community Resources
+
 - [Salesforce Stack Exchange](https://salesforce.stackexchange.com/) - Q&A community
 - [Salesforce Developer Forums](https://developer.salesforce.com/forums) - Discussion boards
 - [GitHub Salesforce Samples](https://github.com/trailheadapps) - Example applications

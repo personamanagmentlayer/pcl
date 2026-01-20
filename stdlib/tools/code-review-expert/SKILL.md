@@ -1,6 +1,7 @@
 ---
 name: code-review-expert
 description: Expert-level code review focusing on quality, security, performance, and maintainability. Use this skill for conducting thorough code reviews, identifying issues, and providing constructive feedback.
+tags: ['code-review', 'quality', 'best-practices', 'collaboration']
 allowed-tools:
   - Read
   - Write
@@ -63,6 +64,7 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 ### 1. Initial Scan (2-3 minutes)
 
 **Quick checklist:**
+
 - [ ] Does the code compile/run?
 - [ ] Are tests passing?
 - [ ] What is the scope and purpose of the change?
@@ -71,6 +73,7 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 ### 2. Functional Review (5-10 minutes)
 
 **Verify:**
+
 - Does the code do what it's supposed to do?
 - Are edge cases handled?
 - Is error handling appropriate?
@@ -79,6 +82,7 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 ### 3. Quality Review (10-15 minutes)
 
 **Check:**
+
 - Code readability and clarity
 - Naming conventions
 - Code duplication
@@ -88,6 +92,7 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 ### 4. Security Review (5-10 minutes)
 
 **Look for:**
+
 - Input validation issues
 - Authentication/authorization flaws
 - Sensitive data exposure
@@ -97,6 +102,7 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 ### 5. Performance Review (5-10 minutes)
 
 **Analyze:**
+
 - Algorithm efficiency
 - Database query optimization
 - Caching opportunities
@@ -108,6 +114,7 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 ### Provide Constructive Feedback
 
 **Good feedback structure:**
+
 ```
 **Issue**: [Clear description of the problem]
 **Location**: [File and line number]
@@ -117,7 +124,8 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 ```
 
 **Example:**
-```
+
+````
 **Issue**: SQL injection vulnerability
 **Location**: `api/users.js:42`
 **Severity**: Critical
@@ -126,14 +134,16 @@ You are an expert code reviewer with deep knowledge of software quality, securit
 **Current code:**
 ```javascript
 const query = `SELECT * FROM users WHERE id = '${userId}'`;
-```
+````
 
 **Recommended:**
+
 ```javascript
 const query = 'SELECT * FROM users WHERE id = ?';
 const results = await db.query(query, [userId]);
 ```
-```
+
+````
 
 ### Use the Right Tone
 
@@ -183,9 +193,10 @@ try {
 } catch (error) {
   // Silently ignoring errors
 }
-```
+````
 
 **✅ Good pattern:**
+
 ```javascript
 try {
   await processPayment(order);
@@ -193,7 +204,7 @@ try {
   logger.error('Payment processing failed', {
     orderId: order.id,
     error: error.message,
-    stack: error.stack
+    stack: error.stack,
   });
   throw new PaymentError('Failed to process payment', { cause: error });
 }
@@ -202,6 +213,7 @@ try {
 ### Pattern 2: Input Validation
 
 **❌ Antipattern - Trusting user input:**
+
 ```python
 def get_user(user_id):
     # No validation - SQL injection risk
@@ -210,6 +222,7 @@ def get_user(user_id):
 ```
 
 **✅ Good pattern:**
+
 ```python
 def get_user(user_id: int) -> User:
     # Type validation and parameterized query
@@ -228,6 +241,7 @@ def get_user(user_id: int) -> User:
 ### Pattern 3: Resource Management
 
 **❌ Antipattern - Resource leaks:**
+
 ```python
 def process_file(filename):
     file = open(filename, 'r')
@@ -237,6 +251,7 @@ def process_file(filename):
 ```
 
 **✅ Good pattern:**
+
 ```python
 def process_file(filename: str) -> None:
     with open(filename, 'r') as file:
@@ -248,6 +263,7 @@ def process_file(filename: str) -> None:
 ### Pattern 4: Null/Undefined Handling
 
 **❌ Antipattern - No null checks:**
+
 ```javascript
 function getUserEmail(user) {
   return user.profile.email.toLowerCase();
@@ -256,6 +272,7 @@ function getUserEmail(user) {
 ```
 
 **✅ Good pattern:**
+
 ```javascript
 function getUserEmail(user) {
   if (!user?.profile?.email) {
@@ -376,7 +393,7 @@ function getUserEmail(user: User): string {
 
 ### Security Issue
 
-```
+````
 **Security: SQL Injection Vulnerability** (Critical)
 
 **Location**: `src/api/users.ts:45`
@@ -386,20 +403,23 @@ The current implementation concatenates user input directly into SQL queries, cr
 **Current code:**
 ```typescript
 const query = `SELECT * FROM users WHERE username = '${username}'`;
-```
+````
 
 **Recommended:**
+
 ```typescript
 const query = 'SELECT * FROM users WHERE username = ?';
 const users = await db.query(query, [username]);
 ```
 
 This prevents attackers from injecting malicious SQL code through the username parameter.
+
 ```
 
 ### Performance Issue
 
 ```
+
 **Performance: N+1 Query Problem** (High)
 
 **Location**: `src/services/orders.ts:120`
@@ -407,15 +427,19 @@ This prevents attackers from injecting malicious SQL code through the username p
 The current implementation executes a separate query for each order item, resulting in N+1 database queries.
 
 **Current code:**
+
 ```javascript
 for (const order of orders) {
-  order.items = await db.query('SELECT * FROM order_items WHERE order_id = ?', [order.id]);
+  order.items = await db.query('SELECT * FROM order_items WHERE order_id = ?', [
+    order.id,
+  ]);
 }
 ```
 
 **Recommended:**
+
 ```javascript
-const orderIds = orders.map(o => o.id);
+const orderIds = orders.map((o) => o.id);
 const allItems = await db.query(
   'SELECT * FROM order_items WHERE order_id IN (?)',
   [orderIds]
@@ -428,17 +452,19 @@ const itemsByOrder = allItems.reduce((acc, item) => {
   return acc;
 }, {});
 
-orders.forEach(order => {
+orders.forEach((order) => {
   order.items = itemsByOrder[order.id] || [];
 });
 ```
 
 This reduces database round-trips from N+1 to 2 queries total.
+
 ```
 
 ### Code Quality Issue
 
 ```
+
 **Code Quality: Function Too Complex** (Medium)
 
 **Location**: `src/utils/validation.ts:25`
@@ -466,6 +492,7 @@ function validateUsername(username: string): ValidationResult {
 ```
 
 This improves readability and makes each validation easier to test independently.
+
 ```
 
 ## Resources
@@ -487,3 +514,4 @@ Before approving:
 - [ ] Documentation is updated
 - [ ] Breaking changes are noted
 - [ ] Feedback is constructive and specific
+```

@@ -1,6 +1,23 @@
 ---
 description: Expert in Cypress testing framework, custom commands, fixtures, plugins, visual testing, and component testing
-keywords: [cypress, e2e-testing, cypress-commands, fixtures, cypress-plugins, visual-testing, component-testing]
+tags: ['testing', 'e2e', 'cypress', 'qa', 'automation']
+allowed-tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
+keywords:
+  [
+    cypress,
+    e2e-testing,
+    cypress-commands,
+    fixtures,
+    cypress-plugins,
+    visual-testing,
+    component-testing,
+  ]
 category: qa
 expertise_level: expert
 ---
@@ -10,6 +27,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Cypress Framework
+
 - **JavaScript-Based** - Native JavaScript testing
 - **Real-Time Reloads** - Auto-reloading on file changes
 - **Time Travel** - Debug via snapshots
@@ -18,6 +36,7 @@ expertise_level: expert
 - **Screenshots & Videos** - Built-in capture
 
 ### Test Structure
+
 - **describe/it** - Mocha-style test organization
 - **Hooks** - before, beforeEach, after, afterEach
 - **Custom Commands** - Reusable test logic
@@ -26,6 +45,7 @@ expertise_level: expert
 - **Chains** - Fluent command interface
 
 ### Advanced Features
+
 - **Intercepts** - Network request control
 - **Component Testing** - React, Vue, Angular components
 - **Visual Testing** - Applitools integration
@@ -39,38 +59,38 @@ expertise_level: expert
 
 ```javascript
 describe('User Authentication', () => {
-    beforeEach(() => {
-        cy.visit('/login');
-    });
+  beforeEach(() => {
+    cy.visit('/login');
+  });
 
-    it('successfully logs in with valid credentials', () => {
-        cy.get('input[name="email"]').type('user@example.com');
-        cy.get('input[name="password"]').type('SecurePass123');
-        cy.get('button[type="submit"]').click();
+  it('successfully logs in with valid credentials', () => {
+    cy.get('input[name="email"]').type('user@example.com');
+    cy.get('input[name="password"]').type('SecurePass123');
+    cy.get('button[type="submit"]').click();
 
-        cy.url().should('include', '/dashboard');
-        cy.get('.user-menu').should('be.visible');
-        cy.contains('Welcome back').should('be.visible');
-    });
+    cy.url().should('include', '/dashboard');
+    cy.get('.user-menu').should('be.visible');
+    cy.contains('Welcome back').should('be.visible');
+  });
 
-    it('shows error with invalid credentials', () => {
-        cy.get('input[name="email"]').type('invalid@example.com');
-        cy.get('input[name="password"]').type('WrongPassword');
-        cy.get('button[type="submit"]').click();
+  it('shows error with invalid credentials', () => {
+    cy.get('input[name="email"]').type('invalid@example.com');
+    cy.get('input[name="password"]').type('WrongPassword');
+    cy.get('button[type="submit"]').click();
 
-        cy.get('.error-message')
-            .should('be.visible')
-            .and('contain', 'Invalid email or password');
+    cy.get('.error-message')
+      .should('be.visible')
+      .and('contain', 'Invalid email or password');
 
-        cy.url().should('include', '/login');
-    });
+    cy.url().should('include', '/login');
+  });
 
-    it('validates required fields', () => {
-        cy.get('button[type="submit"]').click();
+  it('validates required fields', () => {
+    cy.get('button[type="submit"]').click();
 
-        cy.get('input[name="email"]:invalid').should('exist');
-        cy.get('input[name="password"]:invalid').should('exist');
-    });
+    cy.get('input[name="email"]:invalid').should('exist');
+    cy.get('input[name="password"]:invalid').should('exist');
+  });
 });
 ```
 
@@ -79,62 +99,62 @@ describe('User Authentication', () => {
 ```javascript
 // cypress/support/commands.js
 Cypress.Commands.add('login', (email, password) => {
-    cy.session([email, password], () => {
-        cy.visit('/login');
-        cy.get('input[name="email"]').type(email);
-        cy.get('input[name="password"]').type(password);
-        cy.get('button[type="submit"]').click();
-        cy.url().should('include', '/dashboard');
-    });
+  cy.session([email, password], () => {
+    cy.visit('/login');
+    cy.get('input[name="email"]').type(email);
+    cy.get('input[name="password"]').type(password);
+    cy.get('button[type="submit"]').click();
+    cy.url().should('include', '/dashboard');
+  });
 });
 
 Cypress.Commands.add('logout', () => {
-    cy.get('.user-menu').click();
-    cy.contains('Logout').click();
-    cy.url().should('include', '/login');
+  cy.get('.user-menu').click();
+  cy.contains('Logout').click();
+  cy.url().should('include', '/login');
 });
 
 Cypress.Commands.add('createUser', (userData) => {
-    cy.request({
-        method: 'POST',
-        url: '/api/users',
-        body: userData,
-        headers: {
-            'Authorization': `Bearer ${Cypress.env('API_TOKEN')}`
-        }
-    }).then((response) => {
-        expect(response.status).to.eq(201);
-        return response.body;
-    });
+  cy.request({
+    method: 'POST',
+    url: '/api/users',
+    body: userData,
+    headers: {
+      Authorization: `Bearer ${Cypress.env('API_TOKEN')}`,
+    },
+  }).then((response) => {
+    expect(response.status).to.eq(201);
+    return response.body;
+  });
 });
 
 Cypress.Commands.add('fillForm', (formData) => {
-    Object.keys(formData).forEach(key => {
-        cy.get(`[name="${key}"]`).type(formData[key]);
-    });
+  Object.keys(formData).forEach((key) => {
+    cy.get(`[name="${key}"]`).type(formData[key]);
+  });
 });
 
 Cypress.Commands.add('waitForApi', (alias) => {
-    cy.wait(alias).its('response.statusCode').should('eq', 200);
+  cy.wait(alias).its('response.statusCode').should('eq', 200);
 });
 
 // Usage in tests
 describe('Authenticated Tests', () => {
-    beforeEach(() => {
-        cy.login('user@example.com', 'SecurePass123');
-        cy.visit('/dashboard');
+  beforeEach(() => {
+    cy.login('user@example.com', 'SecurePass123');
+    cy.visit('/dashboard');
+  });
+
+  it('can create a new project', () => {
+    cy.fillForm({
+      title: 'New Project',
+      description: 'Project Description',
+      budget: '50000',
     });
 
-    it('can create a new project', () => {
-        cy.fillForm({
-            title: 'New Project',
-            description: 'Project Description',
-            budget: '50000'
-        });
-
-        cy.get('button[type="submit"]').click();
-        cy.contains('Project created successfully').should('be.visible');
-    });
+    cy.get('button[type="submit"]').click();
+    cy.contains('Project created successfully').should('be.visible');
+  });
 });
 ```
 
@@ -142,58 +162,58 @@ describe('Authenticated Tests', () => {
 
 ```javascript
 describe('API Integration', () => {
-    beforeEach(() => {
-        cy.intercept('GET', '/api/users', {
-            statusCode: 200,
-            body: {
-                users: [
-                    { id: 1, name: 'John Doe', email: 'john@example.com' },
-                    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
-                ]
-            }
-        }).as('getUsers');
+  beforeEach(() => {
+    cy.intercept('GET', '/api/users', {
+      statusCode: 200,
+      body: {
+        users: [
+          { id: 1, name: 'John Doe', email: 'john@example.com' },
+          { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+        ],
+      },
+    }).as('getUsers');
 
-        cy.visit('/users');
+    cy.visit('/users');
+  });
+
+  it('displays mocked user data', () => {
+    cy.wait('@getUsers');
+
+    cy.get('table tbody tr').should('have.length', 2);
+    cy.contains('John Doe').should('be.visible');
+    cy.contains('Jane Smith').should('be.visible');
+  });
+
+  it('handles API errors gracefully', () => {
+    cy.intercept('POST', '/api/users', {
+      statusCode: 500,
+      body: { error: 'Internal server error' },
+    }).as('createUser');
+
+    cy.get('button:contains("Add User")').click();
+    cy.fillForm({
+      name: 'Test User',
+      email: 'test@example.com',
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.wait('@createUser');
+    cy.contains('Failed to create user').should('be.visible');
+  });
+
+  it('monitors network requests', () => {
+    cy.intercept('GET', '/api/profile').as('getProfile');
+    cy.intercept('GET', '/api/settings').as('getSettings');
+
+    cy.visit('/profile');
+
+    cy.wait('@getProfile').then((interception) => {
+      expect(interception.response.statusCode).to.equal(200);
+      expect(interception.response.body).to.have.property('name');
     });
 
-    it('displays mocked user data', () => {
-        cy.wait('@getUsers');
-
-        cy.get('table tbody tr').should('have.length', 2);
-        cy.contains('John Doe').should('be.visible');
-        cy.contains('Jane Smith').should('be.visible');
-    });
-
-    it('handles API errors gracefully', () => {
-        cy.intercept('POST', '/api/users', {
-            statusCode: 500,
-            body: { error: 'Internal server error' }
-        }).as('createUser');
-
-        cy.get('button:contains("Add User")').click();
-        cy.fillForm({
-            name: 'Test User',
-            email: 'test@example.com'
-        });
-        cy.get('button[type="submit"]').click();
-
-        cy.wait('@createUser');
-        cy.contains('Failed to create user').should('be.visible');
-    });
-
-    it('monitors network requests', () => {
-        cy.intercept('GET', '/api/profile').as('getProfile');
-        cy.intercept('GET', '/api/settings').as('getSettings');
-
-        cy.visit('/profile');
-
-        cy.wait('@getProfile').then((interception) => {
-            expect(interception.response.statusCode).to.equal(200);
-            expect(interception.response.body).to.have.property('name');
-        });
-
-        cy.wait('@getSettings').its('response.body.theme').should('eq', 'dark');
-    });
+    cy.wait('@getSettings').its('response.body.theme').should('eq', 'dark');
+  });
 });
 ```
 
@@ -398,37 +418,37 @@ import { mount } from '@cypress/react';
 import Button from '../../src/components/Button';
 
 describe('Button Component', () => {
-    it('renders with text', () => {
-        mount(<Button>Click me</Button>);
-        cy.contains('Click me').should('be.visible');
-    });
+  it('renders with text', () => {
+    mount(<Button>Click me</Button>);
+    cy.contains('Click me').should('be.visible');
+  });
 
-    it('handles click events', () => {
-        const onClickSpy = cy.spy().as('onClick');
-        mount(<Button onClick={onClickSpy}>Click me</Button>);
+  it('handles click events', () => {
+    const onClickSpy = cy.spy().as('onClick');
+    mount(<Button onClick={onClickSpy}>Click me</Button>);
 
-        cy.contains('Click me').click();
-        cy.get('@onClick').should('have.been.calledOnce');
-    });
+    cy.contains('Click me').click();
+    cy.get('@onClick').should('have.been.calledOnce');
+  });
 
-    it('applies variant styles', () => {
-        mount(<Button variant="primary">Primary</Button>);
-        cy.get('button').should('have.class', 'btn-primary');
+  it('applies variant styles', () => {
+    mount(<Button variant="primary">Primary</Button>);
+    cy.get('button').should('have.class', 'btn-primary');
 
-        mount(<Button variant="secondary">Secondary</Button>);
-        cy.get('button').should('have.class', 'btn-secondary');
-    });
+    mount(<Button variant="secondary">Secondary</Button>);
+    cy.get('button').should('have.class', 'btn-secondary');
+  });
 
-    it('disables when prop is set', () => {
-        mount(<Button disabled>Disabled</Button>);
-        cy.get('button').should('be.disabled');
-    });
+  it('disables when prop is set', () => {
+    mount(<Button disabled>Disabled</Button>);
+    cy.get('button').should('be.disabled');
+  });
 
-    it('shows loading state', () => {
-        mount(<Button loading>Loading...</Button>);
-        cy.get('button').should('have.class', 'btn-loading');
-        cy.get('.spinner').should('be.visible');
-    });
+  it('shows loading state', () => {
+    mount(<Button loading>Loading...</Button>);
+    cy.get('button').should('have.class', 'btn-loading');
+    cy.get('.spinner').should('be.visible');
+  });
 });
 ```
 
@@ -438,63 +458,64 @@ describe('Button Component', () => {
 const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
-    e2e: {
-        baseUrl: 'http://localhost:3000',
-        viewportWidth: 1280,
-        viewportHeight: 720,
-        video: true,
-        screenshotOnRunFailure: true,
-        experimentalSessionAndOrigin: true,
-        setupNodeEvents(on, config) {
-            // Code coverage
-            require('@cypress/code-coverage/task')(on, config);
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+    viewportWidth: 1280,
+    viewportHeight: 720,
+    video: true,
+    screenshotOnRunFailure: true,
+    experimentalSessionAndOrigin: true,
+    setupNodeEvents(on, config) {
+      // Code coverage
+      require('@cypress/code-coverage/task')(on, config);
 
-            // Custom tasks
-            on('task', {
-                log(message) {
-                    console.log(message);
-                    return null;
-                },
-                table(data) {
-                    console.table(data);
-                    return null;
-                }
-            });
-
-            return config;
+      // Custom tasks
+      on('task', {
+        log(message) {
+          console.log(message);
+          return null;
         },
-        env: {
-            API_URL: 'http://localhost:4000/api',
-            API_TOKEN: 'test-token'
-        }
-    },
-
-    component: {
-        devServer: {
-            framework: 'react',
-            bundler: 'vite'
+        table(data) {
+          console.table(data);
+          return null;
         },
-        setupNodeEvents(on, config) {
-            require('@cypress/code-coverage/task')(on, config);
-            return config;
-        }
-    },
+      });
 
-    retries: {
-        runMode: 2,
-        openMode: 0
+      return config;
     },
+    env: {
+      API_URL: 'http://localhost:4000/api',
+      API_TOKEN: 'test-token',
+    },
+  },
 
-    defaultCommandTimeout: 10000,
-    pageLoadTimeout: 30000,
-    requestTimeout: 10000,
-    responseTimeout: 30000
+  component: {
+    devServer: {
+      framework: 'react',
+      bundler: 'vite',
+    },
+    setupNodeEvents(on, config) {
+      require('@cypress/code-coverage/task')(on, config);
+      return config;
+    },
+  },
+
+  retries: {
+    runMode: 2,
+    openMode: 0,
+  },
+
+  defaultCommandTimeout: 10000,
+  pageLoadTimeout: 30000,
+  requestTimeout: 10000,
+  responseTimeout: 30000,
 });
 ```
 
 ## Best Practices
 
 ### Test Organization
+
 - Keep tests independent and isolated
 - Use descriptive test names
 - Group related tests with describe blocks
@@ -503,7 +524,8 @@ module.exports = defineConfig({
 - Avoid test interdependencies
 
 ### Selectors
-- Prefer data-* attributes for testing
+
+- Prefer data-\* attributes for testing
 - Use cy.contains() for text-based selection
 - Avoid CSS classes and IDs tied to styling
 - Use role-based selectors when possible
@@ -511,6 +533,7 @@ module.exports = defineConfig({
 - Document selector strategies
 
 ### Assertions
+
 - Use should() for auto-retry assertions
 - Chain assertions when appropriate
 - Test both positive and negative cases
@@ -519,6 +542,7 @@ module.exports = defineConfig({
 - Verify multiple aspects
 
 ### Performance
+
 - Use cy.session() for authentication
 - Leverage fixtures for test data
 - Mock external API calls
@@ -529,6 +553,7 @@ module.exports = defineConfig({
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Using cy.wait() with arbitrary time
 - Not using data-testid attributes
 - Overly complex test logic
@@ -537,6 +562,7 @@ module.exports = defineConfig({
 - Missing cleanup in afterEach
 
 ### Selector Issues
+
 - Using fragile CSS selectors
 - Relying on element position
 - Not using data attributes
@@ -545,6 +571,7 @@ module.exports = defineConfig({
 - Coupling tests to UI structure
 
 ### Test Design Problems
+
 - Tests depending on execution order
 - Too many assertions in one test
 - Not testing edge cases
@@ -555,24 +582,28 @@ module.exports = defineConfig({
 ## Resources
 
 ### Official Documentation
+
 - [Cypress Documentation](https://docs.cypress.io/) - Complete guide
 - [API Reference](https://docs.cypress.io/api/table-of-contents) - API docs
 - [Best Practices](https://docs.cypress.io/guides/references/best-practices) - Guidelines
 - [Real World App](https://github.com/cypress-io/cypress-realworld-app) - Example app
 
 ### Learning Resources
+
 - [Cypress YouTube](https://www.youtube.com/channel/UC-EOsTo2l2x39e4JmSaWNRQ) - Video tutorials
 - [Cypress Examples](https://example.cypress.io/) - Live examples
 - [Cypress Discord](https://discord.com/invite/cypress) - Community chat
 - [Cypress Blog](https://www.cypress.io/blog/) - Articles and updates
 
 ### Tools & Extensions
+
 - [Cypress Studio](https://docs.cypress.io/guides/references/cypress-studio) - Test generator
 - [Cypress Dashboard](https://www.cypress.io/dashboard) - Test analytics
 - [Testing Library](https://testing-library.com/docs/cypress-testing-library/intro/) - Better selectors
 - [Cypress Plugins](https://docs.cypress.io/plugins) - Plugin directory
 
 ### Community Resources
+
 - [GitHub Discussions](https://github.com/cypress-io/cypress/discussions) - Q&A
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/cypress) - Community help
 - [Awesome Cypress](https://github.com/chrisbreiding/awesome-cypress) - Curated resources

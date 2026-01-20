@@ -1,6 +1,9 @@
 ---
 name: docker-expert
 description: Expert-level Docker containerization, image optimization, and container orchestration. Use this skill for building efficient Docker images, managing containers, and implementing Docker best practices.
+tags: ['devops', 'containers', 'docker', 'infrastructure']
+version: 1.0.0
+category: devops
 allowed-tools:
   - Read
   - Write
@@ -58,6 +61,7 @@ You are an expert in Docker containerization with deep knowledge of Dockerfile o
 ### 1. Dockerfile Optimization
 
 **Multi-stage build for minimal size:**
+
 ```dockerfile
 # Build stage
 FROM node:20-alpine AS builder
@@ -87,6 +91,7 @@ CMD ["node", "dist/index.js"]
 ```
 
 **Layer caching optimization:**
+
 ```dockerfile
 FROM python:3.11-slim
 
@@ -103,6 +108,7 @@ CMD ["python", "app.py"]
 ```
 
 **Use .dockerignore:**
+
 ```
 node_modules
 npm-debug.log
@@ -121,6 +127,7 @@ __pycache__
 ### 2. Security Best Practices
 
 **Run as non-root user:**
+
 ```dockerfile
 FROM node:20-alpine
 
@@ -145,6 +152,7 @@ CMD ["node", "server.js"]
 ```
 
 **Use distroless images:**
+
 ```dockerfile
 # Build stage
 FROM golang:1.21-alpine AS builder
@@ -159,6 +167,7 @@ ENTRYPOINT ["/app"]
 ```
 
 **Scan images for vulnerabilities:**
+
 ```bash
 # Using Docker Scout
 docker scout cves my-image:latest
@@ -170,6 +179,7 @@ trivy image my-image:latest
 ### 3. Resource Management
 
 **Set resource limits:**
+
 ```yaml
 # docker-compose.yml
 services:
@@ -186,6 +196,7 @@ services:
 ```
 
 **Health checks:**
+
 ```dockerfile
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://localhost:3000/health || exit 1
@@ -194,6 +205,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 ### 4. Networking
 
 **Custom network for service isolation:**
+
 ```yaml
 services:
   frontend:
@@ -317,7 +329,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - API_URL=http://backend:4000
     depends_on:
@@ -333,7 +345,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "4000:4000"
+      - '4000:4000'
     environment:
       - DATABASE_URL=postgresql://user:password@database:5432/mydb
       - REDIS_URL=redis://cache:6379
@@ -346,7 +358,7 @@ services:
       - app-network
       - db-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:4000/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -366,7 +378,7 @@ services:
     networks:
       - db-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user"]
+      test: ['CMD-SHELL', 'pg_isready -U user']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -407,15 +419,15 @@ services:
       - .:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
-      - "9229:9229"  # Node.js debugger
+      - '3000:3000'
+      - '9229:9229' # Node.js debugger
     environment:
       - NODE_ENV=development
     command: npm run dev
-
 ```
 
 **Dockerfile with development target:**
+
 ```dockerfile
 FROM node:20-alpine AS base
 WORKDIR /app
@@ -555,16 +567,16 @@ CMD ["/app/server"]
 ```yaml
 services:
   app:
-    profiles: ["production", "development"]
+    profiles: ['production', 'development']
     # ...
 
   test-db:
-    profiles: ["development"]
+    profiles: ['development']
     # Only runs in development
     image: postgres:16-alpine
 
   monitoring:
-    profiles: ["production"]
+    profiles: ['production']
     # Only runs in production
     image: prometheus
 ```

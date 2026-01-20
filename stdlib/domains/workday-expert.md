@@ -1,6 +1,22 @@
 ---
 description: Expert in Workday HCM platform, integrations, custom reports, business processes, calculated fields, and Workday Studio development
-keywords: [workday, hcm, workday-integration, workday-studio, xpath, business-process, custom-reports, prism-analytics]
+tags: ['workday', 'hr', 'finance', 'erp', 'cloud']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - WebSearch
+keywords:
+  [
+    workday,
+    hcm,
+    workday-integration,
+    workday-studio,
+    xpath,
+    business-process,
+    custom-reports,
+    prism-analytics,
+  ]
 category: domains
 expertise_level: expert
 ---
@@ -10,6 +26,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Workday Modules
+
 - **HCM** - Human Capital Management (core HR)
 - **Recruiting** - Talent acquisition and applicant tracking
 - **Payroll** - Global payroll processing
@@ -20,6 +37,7 @@ expertise_level: expert
 - **Talent & Performance** - Performance reviews and goals
 
 ### Integration Technologies
+
 - **Workday Studio** - Java-based integration development
 - **EIB** - Enterprise Interface Builder (spreadsheet-based)
 - **Cloud Connect** - Pre-built integrations
@@ -28,6 +46,7 @@ expertise_level: expert
 - **Workday Extend** - Custom application platform
 
 ### Reporting & Analytics
+
 - **Custom Reports** - Matrix, composite, and advanced reports
 - **Report Writer** - Drag-and-drop report builder
 - **Calculated Fields** - Custom formulas and logic
@@ -388,6 +407,7 @@ class WorkdayAPI:
 ## Best Practices
 
 ### Report Development
+
 - Use appropriate report types (matrix, composite, advanced)
 - Optimize performance with filters and prompts
 - Document calculated field formulas
@@ -396,6 +416,7 @@ class WorkdayAPI:
 - Implement proper data security
 
 ### Integration Design
+
 - Use Cloud Connect for standard integrations
 - Implement error handling and retry logic
 - Log all integration activities
@@ -404,6 +425,7 @@ class WorkdayAPI:
 - Monitor integration performance
 
 ### Business Process Configuration
+
 - Keep processes simple and maintainable
 - Document approval routing logic
 - Test all conditional paths
@@ -412,6 +434,7 @@ class WorkdayAPI:
 - Implement proper security groups
 
 ### Security & Compliance
+
 - Follow principle of least privilege
 - Use security groups effectively
 - Implement proper data segregation
@@ -422,6 +445,7 @@ class WorkdayAPI:
 ## Anti-Patterns
 
 ### Configuration Issues
+
 - Overly complex calculated fields
 - Excessive nesting in business processes
 - Hard-coding values instead of using references
@@ -430,6 +454,7 @@ class WorkdayAPI:
 - Poor naming conventions
 
 ### Performance Problems
+
 - Reports without appropriate filters
 - Large batch integrations during business hours
 - Missing indexes on custom fields
@@ -438,6 +463,7 @@ class WorkdayAPI:
 - Not leveraging caching mechanisms
 
 ### Design Mistakes
+
 - Tight coupling between integrations
 - Duplicate business logic across processes
 - Inadequate data validation
@@ -448,24 +474,28 @@ class WorkdayAPI:
 ## Resources
 
 ### Official Documentation
+
 - [Workday Community](https://community.workday.com/) - Main knowledge base
 - [Workday Learning](https://www.workday.com/en-us/customer-experience/workday-learning.html) - Training resources
 - [Web Services Directory](https://community.workday.com/sites/default/files/file-hosting/productionapi/index.html) - API reference
 - [Workday Studio Guide](https://doc.workday.com/) - Integration development
 
 ### Learning Platforms
+
 - [Workday Pro](https://www.workday.com/en-us/customer-experience/workday-pro.html) - Certification program
 - [Workday Learning](https://mylearning.workday.com/) - Online courses
 - [Community Forums](https://community.workday.com/forums) - User discussions
 - [Workday Brainstorm](https://brainstorm.workday.com/) - Feature requests
 
 ### Tools & Resources
+
 - [Workday Studio](https://www.workday.com/en-us/products/platform-product-extensions/integration-cloud.html) - Integration IDE
 - [EIB Templates](https://community.workday.com/) - Import/export templates
 - [REST API Explorer](https://community.workday.com/) - API testing tool
 - [Prism Analytics](https://www.workday.com/en-us/products/platform-product-extensions/prism-analytics.html) - Data integration
 
 ### Community Resources
+
 - [Workday Community Site](https://community.workday.com/) - Forums and documentation
 - [Workday Blog](https://blog.workday.com/) - Product updates
 - [YouTube Channel](https://www.youtube.com/user/workday) - Video tutorials

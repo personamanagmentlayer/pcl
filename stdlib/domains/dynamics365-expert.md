@@ -1,6 +1,22 @@
 ---
 description: Expert in Dynamics 365 platform, model-driven apps, canvas apps, Power Automate flows, Dataverse, plugins, and custom workflows
-keywords: [dynamics365, power-platform, dataverse, model-driven-apps, canvas-apps, power-automate, dynamics-crm, plugins]
+tags: ['microsoft', 'erp', 'crm', 'business-apps', 'dynamics365']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - WebSearch
+keywords:
+  [
+    dynamics365,
+    power-platform,
+    dataverse,
+    model-driven-apps,
+    canvas-apps,
+    power-automate,
+    dynamics-crm,
+    plugins,
+  ]
 category: domains
 expertise_level: expert
 ---
@@ -10,6 +26,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Dynamics 365 Applications
+
 - **Sales** - Sales force automation and CRM
 - **Customer Service** - Service management and support
 - **Field Service** - Field operations management
@@ -20,6 +37,7 @@ expertise_level: expert
 - **Commerce** - E-commerce and retail
 
 ### Dataverse Platform
+
 - **Tables** - Data storage entities (formerly entities)
 - **Columns** - Field definitions (formerly attributes)
 - **Relationships** - Entity associations
@@ -28,6 +46,7 @@ expertise_level: expert
 - **Solutions** - Packaging and deployment
 
 ### Customization & Development
+
 - **Model-Driven Apps** - Data-driven applications
 - **Canvas Apps** - Flexible UI applications
 - **Plugins** - Server-side event handlers (C#)
@@ -240,206 +259,213 @@ namespace CustomPlugins
 // Account Form Script
 var AccountForm = AccountForm || {};
 
-(function() {
-    "use strict";
+(function () {
+  'use strict';
 
-    // Form OnLoad event
-    this.OnLoad = function(executionContext) {
-        var formContext = executionContext.getFormContext();
+  // Form OnLoad event
+  this.OnLoad = function (executionContext) {
+    var formContext = executionContext.getFormContext();
 
-        console.log("Account form loaded");
+    console.log('Account form loaded');
 
-        // Set field requirements
-        setFieldRequirements(formContext);
+    // Set field requirements
+    setFieldRequirements(formContext);
 
-        // Configure business rules
-        configureBusinessRules(formContext);
+    // Configure business rules
+    configureBusinessRules(formContext);
 
-        // Populate related data
-        populateRelatedData(formContext);
+    // Populate related data
+    populateRelatedData(formContext);
 
-        // Add event handlers
-        addEventHandlers(formContext);
-    };
+    // Add event handlers
+    addEventHandlers(formContext);
+  };
 
-    // Form OnSave event
-    this.OnSave = function(executionContext) {
-        var formContext = executionContext.getFormContext();
+  // Form OnSave event
+  this.OnSave = function (executionContext) {
+    var formContext = executionContext.getFormContext();
 
-        console.log("Account form saving");
+    console.log('Account form saving');
 
-        // Validate data
-        if (!validateForm(formContext)) {
-            executionContext.getEventArgs().preventDefault();
-            return false;
-        }
-
-        // Additional save logic
-        performPreSaveOperations(formContext);
-    };
-
-    // Field OnChange event
-    this.OnRevenueChange = function(executionContext) {
-        var formContext = executionContext.getFormContext();
-        var revenue = formContext.getAttribute("revenue").getValue();
-
-        if (revenue) {
-            // Calculate and set account rating
-            var rating;
-            if (revenue > 1000000) {
-                rating = 1; // Hot
-            } else if (revenue > 100000) {
-                rating = 2; // Warm
-            } else {
-                rating = 3; // Cold
-            }
-
-            formContext.getAttribute("accountratingcode").setValue(rating);
-
-            // Show/hide sections based on revenue
-            if (revenue > 500000) {
-                formContext.ui.tabs.get("tab_vip").setVisible(true);
-            } else {
-                formContext.ui.tabs.get("tab_vip").setVisible(false);
-            }
-        }
-    };
-
-    // Custom button action
-    this.CreateOpportunity = function(executionContext) {
-        var formContext = executionContext.getFormContext();
-        var accountId = formContext.data.entity.getId().replace(/[{}]/g, "");
-        var accountName = formContext.getAttribute("name").getValue();
-
-        // Create opportunity record
-        var opportunity = {
-            "name": accountName + " - New Opportunity",
-            "customerid_account@odata.bind": "/accounts(" + accountId + ")",
-            "estimatedvalue": 50000,
-            "stepname": "1-Qualify"
-        };
-
-        Xrm.WebApi.createRecord("opportunity", opportunity)
-            .then(function(result) {
-                var opportunityId = result.id;
-                console.log("Opportunity created: " + opportunityId);
-
-                Xrm.Navigation.openForm({
-                    entityName: "opportunity",
-                    entityId: opportunityId
-                }).then(
-                    function(success) {
-                        console.log("Opportunity form opened");
-                    },
-                    function(error) {
-                        console.error("Error opening form: " + error.message);
-                    }
-                );
-            })
-            .catch(function(error) {
-                Xrm.Navigation.openAlertDialog({
-                    text: "Error creating opportunity: " + error.message
-                });
-            });
-    };
-
-    // Private functions
-    function setFieldRequirements(formContext) {
-        formContext.getAttribute("name").setRequiredLevel("required");
-        formContext.getAttribute("telephone1").setRequiredLevel("required");
-        formContext.getAttribute("emailaddress1").setRequiredLevel("recommended");
+    // Validate data
+    if (!validateForm(formContext)) {
+      executionContext.getEventArgs().preventDefault();
+      return false;
     }
 
-    function configureBusinessRules(formContext) {
-        var accountType = formContext.getAttribute("customertypecode").getValue();
+    // Additional save logic
+    performPreSaveOperations(formContext);
+  };
 
-        if (accountType === 3) { // Partner
-            formContext.getControl("parentaccountid").setVisible(true);
-            formContext.getAttribute("parentaccountid").setRequiredLevel("required");
-        } else {
-            formContext.getControl("parentaccountid").setVisible(false);
-            formContext.getAttribute("parentaccountid").setRequiredLevel("none");
-        }
+  // Field OnChange event
+  this.OnRevenueChange = function (executionContext) {
+    var formContext = executionContext.getFormContext();
+    var revenue = formContext.getAttribute('revenue').getValue();
+
+    if (revenue) {
+      // Calculate and set account rating
+      var rating;
+      if (revenue > 1000000) {
+        rating = 1; // Hot
+      } else if (revenue > 100000) {
+        rating = 2; // Warm
+      } else {
+        rating = 3; // Cold
+      }
+
+      formContext.getAttribute('accountratingcode').setValue(rating);
+
+      // Show/hide sections based on revenue
+      if (revenue > 500000) {
+        formContext.ui.tabs.get('tab_vip').setVisible(true);
+      } else {
+        formContext.ui.tabs.get('tab_vip').setVisible(false);
+      }
     }
+  };
 
-    function populateRelatedData(formContext) {
-        var accountId = formContext.data.entity.getId().replace(/[{}]/g, "");
+  // Custom button action
+  this.CreateOpportunity = function (executionContext) {
+    var formContext = executionContext.getFormContext();
+    var accountId = formContext.data.entity.getId().replace(/[{}]/g, '');
+    var accountName = formContext.getAttribute('name').getValue();
 
-        if (accountId) {
-            // Retrieve and display contact count
-            var fetchXml = [
-                "<fetch aggregate='true'>",
-                "  <entity name='contact'>",
-                "    <attribute name='contactid' aggregate='count' alias='contactcount'/>",
-                "    <filter>",
-                "      <condition attribute='parentcustomerid' operator='eq' value='" + accountId + "'/>",
-                "    </filter>",
-                "  </entity>",
-                "</fetch>"
-            ].join("");
+    // Create opportunity record
+    var opportunity = {
+      name: accountName + ' - New Opportunity',
+      'customerid_account@odata.bind': '/accounts(' + accountId + ')',
+      estimatedvalue: 50000,
+      stepname: '1-Qualify',
+    };
 
-            Xrm.WebApi.retrieveMultipleRecords("contact", "?fetchXml=" + encodeURIComponent(fetchXml))
-                .then(function(result) {
-                    if (result.entities.length > 0) {
-                        var count = result.entities[0].contactcount;
-                        formContext.getControl("header_contactcount").setValue(count);
-                    }
-                })
-                .catch(function(error) {
-                    console.error("Error retrieving contacts: " + error.message);
-                });
-        }
+    Xrm.WebApi.createRecord('opportunity', opportunity)
+      .then(function (result) {
+        var opportunityId = result.id;
+        console.log('Opportunity created: ' + opportunityId);
+
+        Xrm.Navigation.openForm({
+          entityName: 'opportunity',
+          entityId: opportunityId,
+        }).then(
+          function (success) {
+            console.log('Opportunity form opened');
+          },
+          function (error) {
+            console.error('Error opening form: ' + error.message);
+          }
+        );
+      })
+      .catch(function (error) {
+        Xrm.Navigation.openAlertDialog({
+          text: 'Error creating opportunity: ' + error.message,
+        });
+      });
+  };
+
+  // Private functions
+  function setFieldRequirements(formContext) {
+    formContext.getAttribute('name').setRequiredLevel('required');
+    formContext.getAttribute('telephone1').setRequiredLevel('required');
+    formContext.getAttribute('emailaddress1').setRequiredLevel('recommended');
+  }
+
+  function configureBusinessRules(formContext) {
+    var accountType = formContext.getAttribute('customertypecode').getValue();
+
+    if (accountType === 3) {
+      // Partner
+      formContext.getControl('parentaccountid').setVisible(true);
+      formContext.getAttribute('parentaccountid').setRequiredLevel('required');
+    } else {
+      formContext.getControl('parentaccountid').setVisible(false);
+      formContext.getAttribute('parentaccountid').setRequiredLevel('none');
     }
+  }
 
-    function addEventHandlers(formContext) {
-        formContext.getAttribute("revenue").addOnChange(AccountForm.OnRevenueChange);
-        formContext.getAttribute("customertypecode").addOnChange(function() {
-            configureBusinessRules(formContext);
+  function populateRelatedData(formContext) {
+    var accountId = formContext.data.entity.getId().replace(/[{}]/g, '');
+
+    if (accountId) {
+      // Retrieve and display contact count
+      var fetchXml = [
+        "<fetch aggregate='true'>",
+        "  <entity name='contact'>",
+        "    <attribute name='contactid' aggregate='count' alias='contactcount'/>",
+        '    <filter>',
+        "      <condition attribute='parentcustomerid' operator='eq' value='" +
+          accountId +
+          "'/>",
+        '    </filter>',
+        '  </entity>',
+        '</fetch>',
+      ].join('');
+
+      Xrm.WebApi.retrieveMultipleRecords(
+        'contact',
+        '?fetchXml=' + encodeURIComponent(fetchXml)
+      )
+        .then(function (result) {
+          if (result.entities.length > 0) {
+            var count = result.entities[0].contactcount;
+            formContext.getControl('header_contactcount').setValue(count);
+          }
+        })
+        .catch(function (error) {
+          console.error('Error retrieving contacts: ' + error.message);
         });
     }
+  }
 
-    function validateForm(formContext) {
-        var isValid = true;
-        var messages = [];
+  function addEventHandlers(formContext) {
+    formContext
+      .getAttribute('revenue')
+      .addOnChange(AccountForm.OnRevenueChange);
+    formContext.getAttribute('customertypecode').addOnChange(function () {
+      configureBusinessRules(formContext);
+    });
+  }
 
-        // Validate phone number format
-        var phone = formContext.getAttribute("telephone1").getValue();
-        if (phone && !isValidPhoneNumber(phone)) {
-            messages.push("Please enter a valid phone number.");
-            isValid = false;
-        }
+  function validateForm(formContext) {
+    var isValid = true;
+    var messages = [];
 
-        // Validate email format
-        var email = formContext.getAttribute("emailaddress1").getValue();
-        if (email && !isValidEmail(email)) {
-            messages.push("Please enter a valid email address.");
-            isValid = false;
-        }
-
-        if (!isValid) {
-            Xrm.Navigation.openAlertDialog({
-                text: messages.join("\n")
-            });
-        }
-
-        return isValid;
+    // Validate phone number format
+    var phone = formContext.getAttribute('telephone1').getValue();
+    if (phone && !isValidPhoneNumber(phone)) {
+      messages.push('Please enter a valid phone number.');
+      isValid = false;
     }
 
-    function performPreSaveOperations(formContext) {
-        // Update modified fields
-        formContext.getAttribute("new_lastupdated").setValue(new Date());
+    // Validate email format
+    var email = formContext.getAttribute('emailaddress1').getValue();
+    if (email && !isValidEmail(email)) {
+      messages.push('Please enter a valid email address.');
+      isValid = false;
     }
 
-    function isValidPhoneNumber(phone) {
-        var regex = /^[\d\s\-\+\(\)]+$/;
-        return regex.test(phone);
+    if (!isValid) {
+      Xrm.Navigation.openAlertDialog({
+        text: messages.join('\n'),
+      });
     }
 
-    function isValidEmail(email) {
-        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    }
+    return isValid;
+  }
 
+  function performPreSaveOperations(formContext) {
+    // Update modified fields
+    formContext.getAttribute('new_lastupdated').setValue(new Date());
+  }
+
+  function isValidPhoneNumber(phone) {
+    var regex = /^[\d\s\-\+\(\)]+$/;
+    return regex.test(phone);
+  }
+
+  function isValidEmail(email) {
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
 }).call(AccountForm);
 ```
 
@@ -574,6 +600,7 @@ var AccountForm = AccountForm || {};
 ## Best Practices
 
 ### Solution Architecture
+
 - Use solutions for all customizations
 - Implement managed solutions for production
 - Use segmented solutions for modularity
@@ -582,6 +609,7 @@ var AccountForm = AccountForm || {};
 - Test in dev/test environments
 
 ### Plugin Development
+
 - Register plugins in sandbox mode
 - Implement proper exception handling
 - Use tracing for debugging
@@ -590,6 +618,7 @@ var AccountForm = AccountForm || {};
 - Write unit tests
 
 ### Security & Compliance
+
 - Implement field-level security
 - Use security roles appropriately
 - Apply hierarchical security when needed
@@ -598,6 +627,7 @@ var AccountForm = AccountForm || {};
 - Follow data privacy regulations
 
 ### Performance Optimization
+
 - Minimize plugin executions
 - Use asynchronous plugins when possible
 - Optimize FetchXML queries
@@ -608,6 +638,7 @@ var AccountForm = AccountForm || {};
 ## Anti-Patterns
 
 ### Development Issues
+
 - Synchronous plugins for long operations
 - Insufficient error handling
 - Hard-coded GUIDs and URLs
@@ -616,6 +647,7 @@ var AccountForm = AccountForm || {};
 - Overuse of JavaScript on forms
 
 ### Design Problems
+
 - Over-customization of entities
 - Poor data model design
 - Inconsistent naming conventions
@@ -624,6 +656,7 @@ var AccountForm = AccountForm || {};
 - No testing strategy
 
 ### Performance Problems
+
 - Retrieving all columns when not needed
 - Nested loops in plugins
 - Synchronous workflows for batch operations
@@ -634,24 +667,28 @@ var AccountForm = AccountForm || {};
 ## Resources
 
 ### Official Documentation
+
 - [Dynamics 365 Documentation](https://docs.microsoft.com/dynamics365/) - Complete guide
 - [Dataverse Documentation](https://docs.microsoft.com/power-apps/developer/data-platform/) - Platform docs
 - [Power Platform Documentation](https://docs.microsoft.com/power-platform/) - Platform overview
 - [Web API Reference](https://docs.microsoft.com/power-apps/developer/data-platform/webapi/reference) - API docs
 
 ### Learning Platforms
+
 - [Microsoft Learn](https://learn.microsoft.com/training/dynamics365/) - Training paths
 - [Power Platform Learning](https://powerapps.microsoft.com/learn/) - Courses
 - [Dynamics 365 Training](https://dynamics.microsoft.com/training/) - Official training
 - [Microsoft Virtual Training Days](https://www.microsoft.com/trainingdays) - Live events
 
 ### Tools & Resources
+
 - [XrmToolBox](https://www.xrmtoolbox.com/) - Essential toolset
 - [Plugin Registration Tool](https://docs.microsoft.com/power-apps/developer/data-platform/download-tools-nuget) - Register plugins
 - [Configuration Migration Tool](https://docs.microsoft.com/power-platform/admin/manage-configuration-data) - Data migration
 - [Solution Packager](https://docs.microsoft.com/power-platform/alm/solution-packager-tool) - Version control
 
 ### Community Resources
+
 - [Power Platform Community](https://powerusers.microsoft.com/) - Forums
 - [Dynamics 365 Community](https://community.dynamics.com/) - User community
 - [GitHub Power Platform](https://github.com/microsoft/PowerPlatform-Samples) - Sample code

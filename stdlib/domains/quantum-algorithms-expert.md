@@ -1,44 +1,58 @@
 # Quantum Algorithms Expert
 
 ---
+
 skill_id: quantum-algorithms-expert
 name: Quantum Algorithms Expert
-category: domains
-tags: [quantum-computing, qiskit, quantum-algorithms, qaoa, vqe, quantum-ml, quantum-circuits, qubits]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master quantum algorithm design and implementation
-  - Build quantum circuits using Qiskit and quantum SDKs
-  - Implement variational quantum algorithms (VQE, QAOA)
-  - Apply quantum machine learning techniques
-  - Optimize quantum circuits for real quantum hardware
-prerequisites:
-  - Strong linear algebra and complex numbers
-  - Understanding of quantum mechanics basics
-  - Python programming proficiency
-  - Knowledge of classical algorithms
-outcome: Develop production-ready quantum algorithms for optimization, simulation, and machine learning on near-term quantum devices
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- Grep
+- Glob
+  category: domains
+  tags: [quantum-computing, qiskit, quantum-algorithms, qaoa, vqe, quantum-ml, quantum-circuits, qubits]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master quantum algorithm design and implementation
+- Build quantum circuits using Qiskit and quantum SDKs
+- Implement variational quantum algorithms (VQE, QAOA)
+- Apply quantum machine learning techniques
+- Optimize quantum circuits for real quantum hardware
+  prerequisites:
+- Strong linear algebra and complex numbers
+- Understanding of quantum mechanics basics
+- Python programming proficiency
+- Knowledge of classical algorithms
+  outcome: Develop production-ready quantum algorithms for optimization, simulation, and machine learning on near-term quantum devices
+
 ---
 
 ## Core Concepts
 
 ### Quantum Bits (Qubits)
+
 Fundamental unit of quantum information existing in superposition of |0⟩ and |1⟩ states. Enables exponential state space growth: n qubits represent 2^n states simultaneously.
 
 ### Quantum Gates & Circuits
+
 Unitary operations manipulating qubit states. Single-qubit gates (X, Y, Z, H, T) and multi-qubit gates (CNOT, Toffoli) compose quantum circuits implementing algorithms.
 
 ### Quantum Entanglement
+
 Quantum correlation where measuring one qubit instantly affects entangled qubits. Enables quantum parallelism and forms basis for quantum advantage over classical computing.
 
 ### Variational Quantum Algorithms
+
 Hybrid quantum-classical algorithms for near-term devices. Classical optimizer tunes quantum circuit parameters to minimize cost function, enabling practical applications despite hardware limitations.
 
 ### Quantum Advantage
+
 Scenarios where quantum algorithms outperform best known classical algorithms. Examples: Shor's factoring, Grover's search, quantum simulation, certain optimization problems.
 
 ## Code Examples
@@ -592,6 +606,7 @@ if __name__ == '__main__':
 ## Best Practices
 
 ### Circuit Design
+
 - Minimize circuit depth for NISQ devices
 - Use native gate sets of target hardware
 - Implement error mitigation techniques
@@ -601,6 +616,7 @@ if __name__ == '__main__':
 - Implement circuit optimization passes
 
 ### Algorithm Development
+
 - Start with classical simulation and small systems
 - Use variational approaches for near-term devices
 - Implement hybrid quantum-classical workflows
@@ -610,6 +626,7 @@ if __name__ == '__main__':
 - Design error-resilient algorithms
 
 ### Optimization
+
 - Use gradient-free optimizers for noisy landscapes
 - Implement parameter shift rule for gradients
 - Apply circuit compilation and transpilation
@@ -619,6 +636,7 @@ if __name__ == '__main__':
 - Monitor convergence criteria
 
 ### Hardware Considerations
+
 - Understand qubit connectivity constraints
 - Account for device-specific error rates
 - Use calibration data for optimization
@@ -630,6 +648,7 @@ if __name__ == '__main__':
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Using too many qubits for current hardware
 - Ignoring noise and decoherence
 - Not transpiling circuits for target hardware
@@ -640,6 +659,7 @@ if __name__ == '__main__':
 - Treating quantum computer as classical accelerator
 
 ### Design Issues
+
 - Implementing classical algorithms on quantum hardware
 - Not leveraging quantum advantage properly
 - Monolithic circuits without modular design
@@ -652,6 +672,7 @@ if __name__ == '__main__':
 ## Resources
 
 ### Quantum Development Frameworks
+
 - Qiskit - IBM quantum SDK
 - Cirq - Google quantum framework
 - PennyLane - Quantum ML library
@@ -660,6 +681,7 @@ if __name__ == '__main__':
 - Amazon Braket SDK
 
 ### Quantum Hardware Access
+
 - IBM Quantum - Cloud quantum computers
 - Amazon Braket - Multi-provider access
 - Azure Quantum - Microsoft quantum cloud
@@ -668,6 +690,7 @@ if __name__ == '__main__':
 - D-Wave - Quantum annealing
 
 ### Learning Resources
+
 - Qiskit Textbook - Comprehensive quantum computing guide
 - Nielsen & Chuang - Quantum Computation textbook
 - Quantum Algorithm Zoo
@@ -676,6 +699,7 @@ if __name__ == '__main__':
 - IBM Quantum Challenge
 
 ### Research & Community
+
 - Quantum Open Source Foundation
 - Unitary Fund - Quantum software grants
 - QuTiP - Quantum toolbox in Python
@@ -685,4 +709,4 @@ if __name__ == '__main__':
 
 ---
 
-*Part of the PCL Standard Library - Harness quantum computing for optimization, simulation, and machine learning breakthroughs.*
+_Part of the PCL Standard Library - Harness quantum computing for optimization, simulation, and machine learning breakthroughs._

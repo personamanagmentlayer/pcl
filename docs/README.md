@@ -37,6 +37,7 @@ persona Assistant {
 ```
 
 **Generate for any platform:**
+
 ```bash
 pcl compile assistant.pcl --format typescript    # TypeScript classes
 pcl compile assistant.pcl --format yaml          # Configuration files
@@ -50,6 +51,7 @@ pcl compile assistant.pcl --format prompt        # LLM prompts (Claude, GPT, Gem
 ### ✅ Universal Definition
 
 Define personas once in PCL, use everywhere:
+
 - TypeScript (native support)
 - Python (via YAML/JSON)
 - Go (via JSON)
@@ -60,6 +62,7 @@ Define personas once in PCL, use everywhere:
 ### ✅ Type-Safe
 
 Full semantic analysis ensures correctness:
+
 - Type checking
 - Symbol resolution
 - Constraint validation
@@ -68,6 +71,7 @@ Full semantic analysis ensures correctness:
 ### ✅ Multi-Format Output
 
 Generate code in multiple formats:
+
 - **JSON** - Structured data
 - **YAML** - Configuration files
 - **Markdown** - Documentation
@@ -104,6 +108,13 @@ Start here if you're new to PCL:
    - Rust integration
    - Shell integration
 
+3. **[VS Code Setup Guide](./VSCODE_SETUP.md)**
+   - Workspace configuration
+   - Recommended extensions
+   - Debugging setup
+   - Keyboard shortcuts
+   - Tasks and automation
+
 ### API Reference
 
 Complete technical documentation:
@@ -133,6 +144,14 @@ Detailed specifications:
 - **[Language Reference](./reference/LANGUAGE.md)** - PCL syntax and semantics
 - **[Type System](./reference/TYPE-SYSTEM.md)** - Type definitions and rules
 - **[Error Codes](./reference/ERROR-CODES.md)** - Error reference guide
+
+### Skills & Governance (NEW - v2.0.0)
+
+Standard Library documentation:
+
+- **[Skills Integration Guide](./SKILLS_INTEGRATION_GUIDE.md)** - How to use skills
+- **[Persona Building Guide](./PERSONA_BUILDING_GUIDE.md)** - Build governed personas
+- **[Governance Model](./GOVERNANCE_MODEL.md)** - Compliance framework
 
 ---
 
@@ -169,7 +188,7 @@ import { createAssistant } from './assistant';
 const assistant = createAssistant();
 assistant.activate();
 
-const response = await assistant.process("Help me organize");
+const response = await assistant.process('Help me organize');
 console.log(response);
 ```
 
@@ -276,6 +295,7 @@ Deploy the same persona across Claude, OpenAI, and Gemini with provider-specific
 ### Personas
 
 A **persona** is an AI agent with:
+
 - **Intent** - What it does
 - **Skills** - What it can do
 - **Constraints** - How it should behave
@@ -307,6 +327,7 @@ persona Specialized extends Base {
 Two types of constraints:
 
 **String constraints** (guidelines):
+
 ```pcl
 constraints {
   "Be concise and helpful"
@@ -315,6 +336,7 @@ constraints {
 ```
 
 **Expression constraints** (validation):
+
 ```pcl
 constraints {
   maxTokens <= 8000
@@ -361,9 +383,9 @@ Human-readable configuration:
 personas:
   Assistant:
     id: Assistant
-    intent: "Help users"
+    intent: 'Help users'
     skills:
-      - "Task management"
+      - 'Task management'
 ```
 
 ### TypeScript
@@ -383,6 +405,7 @@ export class AssistantPersona {
 LLM-optimized formats:
 
 **Claude (XML):**
+
 ```xml
 <persona>
 <name>Assistant</name>
@@ -391,12 +414,15 @@ LLM-optimized formats:
 ```
 
 **OpenAI (Markdown):**
+
 ```markdown
 # Assistant
+
 You are Assistant. Help users with their tasks.
 ```
 
 **Gemini (Contextual):**
+
 ```
 Assistant - Help users
 Context: You are an assistant specialized in...
@@ -487,6 +513,7 @@ Source Code (.pcl)
 ### ⚠️ Known Limitations
 
 Parser has limited support for:
+
 - Team declarations
 - Workflow declarations
 - Skill declarations
@@ -507,14 +534,14 @@ Parser has limited support for:
 
 ## Project Metrics
 
-| Metric | Value |
-|--------|-------|
-| Tests Passing | 47/47 (100%) |
-| Build Time | 6.2s |
-| Type Definitions | 114.45 KB |
-| TypeScript Errors | 0 |
-| Code Quality | A+ |
-| Documentation | Complete |
+| Metric            | Value        |
+| ----------------- | ------------ |
+| Tests Passing     | 47/47 (100%) |
+| Build Time        | 6.2s         |
+| Type Definitions  | 114.45 KB    |
+| TypeScript Errors | 0            |
+| Code Quality      | A+           |
+| Documentation     | Complete     |
 
 ---
 
@@ -530,6 +557,7 @@ Parser has limited support for:
 ### Contributing
 
 We welcome contributions! See:
+
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Development Guide](../DEVELOPMENT.md)
 - [Code of Conduct](../CODE_OF_CONDUCT.md)

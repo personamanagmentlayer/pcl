@@ -1,6 +1,23 @@
 ---
 description: Expert in performance and load testing using JMeter, k6, Gatling, load patterns, metrics analysis, and performance optimization
-keywords: [load-testing, performance-testing, jmeter, k6, gatling, stress-testing, performance-metrics, scalability]
+tags: ['performance', 'load-testing', 'testing', 'qa', 'scalability']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - Grep
+  - Glob
+keywords:
+  [
+    load-testing,
+    performance-testing,
+    jmeter,
+    k6,
+    gatling,
+    stress-testing,
+    performance-metrics,
+    scalability,
+  ]
 category: qa
 expertise_level: expert
 ---
@@ -10,6 +27,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Load Testing Types
+
 - **Load Testing** - Expected load performance
 - **Stress Testing** - Beyond capacity limits
 - **Spike Testing** - Sudden load increases
@@ -18,6 +36,7 @@ expertise_level: expert
 - **Volume Testing** - Large data handling
 
 ### Key Metrics
+
 - **Response Time** - Request completion time
 - **Throughput** - Requests per second (RPS)
 - **Error Rate** - Percentage of failed requests
@@ -26,6 +45,7 @@ expertise_level: expert
 - **Resource Utilization** - CPU, memory, network
 
 ### Tools & Frameworks
+
 - **Apache JMeter** - Java-based load testing
 - **k6** - Modern JavaScript load testing
 - **Gatling** - Scala-based performance testing
@@ -50,111 +70,121 @@ const loginAttempts = new Counter('login_attempts');
 
 // Test configuration
 export const options = {
-    stages: [
-        { duration: '2m', target: 100 },  // Ramp-up to 100 users
-        { duration: '5m', target: 100 },  // Stay at 100 users
-        { duration: '2m', target: 200 },  // Ramp-up to 200 users
-        { duration: '5m', target: 200 },  // Stay at 200 users
-        { duration: '2m', target: 0 },    // Ramp-down to 0 users
-    ],
-    thresholds: {
-        'http_req_duration': ['p(95)<500', 'p(99)<1000'],
-        'errors': ['rate<0.1'],
-        'http_req_failed': ['rate<0.05'],
-    },
+  stages: [
+    { duration: '2m', target: 100 }, // Ramp-up to 100 users
+    { duration: '5m', target: 100 }, // Stay at 100 users
+    { duration: '2m', target: 200 }, // Ramp-up to 200 users
+    { duration: '5m', target: 200 }, // Stay at 200 users
+    { duration: '2m', target: 0 }, // Ramp-down to 0 users
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<500', 'p(99)<1000'],
+    errors: ['rate<0.1'],
+    http_req_failed: ['rate<0.05'],
+  },
 };
 
 // Test data
 const users = JSON.parse(open('./users.json'));
 
 export function setup() {
-    // Setup code (runs once)
-    console.log('Starting load test...');
-    return { timestamp: Date.now() };
+  // Setup code (runs once)
+  console.log('Starting load test...');
+  return { timestamp: Date.now() };
 }
 
 export default function (data) {
-    const user = users[Math.floor(Math.random() * users.length)];
-    const baseUrl = 'https://api.example.com';
+  const user = users[Math.floor(Math.random() * users.length)];
+  const baseUrl = 'https://api.example.com';
 
-    // Login
-    const loginStart = Date.now();
-    const loginRes = http.post(`${baseUrl}/auth/login`, JSON.stringify({
-        email: user.email,
-        password: user.password
-    }), {
-        headers: { 'Content-Type': 'application/json' },
-        tags: { name: 'Login' }
-    });
-
-    loginAttempts.add(1);
-    loginDuration.add(Date.now() - loginStart);
-
-    const loginSuccess = check(loginRes, {
-        'login status is 200': (r) => r.status === 200,
-        'login response has token': (r) => r.json('token') !== undefined,
-    });
-
-    errorRate.add(!loginSuccess);
-
-    if (!loginSuccess) {
-        console.error(`Login failed for user ${user.email}`);
-        return;
+  // Login
+  const loginStart = Date.now();
+  const loginRes = http.post(
+    `${baseUrl}/auth/login`,
+    JSON.stringify({
+      email: user.email,
+      password: user.password,
+    }),
+    {
+      headers: { 'Content-Type': 'application/json' },
+      tags: { name: 'Login' },
     }
+  );
 
-    const token = loginRes.json('token');
-    const authHeaders = {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        },
-        tags: { name: 'Authenticated Request' }
-    };
+  loginAttempts.add(1);
+  loginDuration.add(Date.now() - loginStart);
 
-    sleep(1); // Think time
+  const loginSuccess = check(loginRes, {
+    'login status is 200': (r) => r.status === 200,
+    'login response has token': (r) => r.json('token') !== undefined,
+  });
 
-    // Get user profile
-    const profileRes = http.get(`${baseUrl}/profile`, authHeaders);
-    check(profileRes, {
-        'profile status is 200': (r) => r.status === 200,
-        'profile has user data': (r) => r.json('user') !== undefined,
-    });
+  errorRate.add(!loginSuccess);
 
-    sleep(2);
+  if (!loginSuccess) {
+    console.error(`Login failed for user ${user.email}`);
+    return;
+  }
 
-    // Create resource
-    const createRes = http.post(`${baseUrl}/resources`, JSON.stringify({
-        name: `Resource_${Date.now()}`,
-        description: 'Test resource'
-    }), authHeaders);
+  const token = loginRes.json('token');
+  const authHeaders = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    tags: { name: 'Authenticated Request' },
+  };
 
-    check(createRes, {
-        'create status is 201': (r) => r.status === 201,
-        'create response has id': (r) => r.json('id') !== undefined,
-    });
+  sleep(1); // Think time
 
-    sleep(1);
+  // Get user profile
+  const profileRes = http.get(`${baseUrl}/profile`, authHeaders);
+  check(profileRes, {
+    'profile status is 200': (r) => r.status === 200,
+    'profile has user data': (r) => r.json('user') !== undefined,
+  });
 
-    // List resources
-    const listRes = http.get(`${baseUrl}/resources?page=1&limit=20`, authHeaders);
-    check(listRes, {
-        'list status is 200': (r) => r.status === 200,
-        'list has items': (r) => r.json('items').length > 0,
-    });
+  sleep(2);
 
-    sleep(2);
+  // Create resource
+  const createRes = http.post(
+    `${baseUrl}/resources`,
+    JSON.stringify({
+      name: `Resource_${Date.now()}`,
+      description: 'Test resource',
+    }),
+    authHeaders
+  );
+
+  check(createRes, {
+    'create status is 201': (r) => r.status === 201,
+    'create response has id': (r) => r.json('id') !== undefined,
+  });
+
+  sleep(1);
+
+  // List resources
+  const listRes = http.get(`${baseUrl}/resources?page=1&limit=20`, authHeaders);
+  check(listRes, {
+    'list status is 200': (r) => r.status === 200,
+    'list has items': (r) => r.json('items').length > 0,
+  });
+
+  sleep(2);
 }
 
 export function teardown(data) {
-    // Cleanup code (runs once)
-    console.log(`Load test completed. Duration: ${Date.now() - data.timestamp}ms`);
+  // Cleanup code (runs once)
+  console.log(
+    `Load test completed. Duration: ${Date.now() - data.timestamp}ms`
+  );
 }
 
 export function handleSummary(data) {
-    return {
-        'summary.json': JSON.stringify(data),
-        'stdout': textSummary(data, { indent: ' ', enableColors: true }),
-    };
+  return {
+    'summary.json': JSON.stringify(data),
+    stdout: textSummary(data, { indent: ' ', enableColors: true }),
+  };
 }
 ```
 
@@ -385,6 +415,7 @@ class APIUser(HttpUser):
 ## Best Practices
 
 ### Test Design
+
 - Start with baseline performance
 - Define clear performance goals
 - Use realistic load patterns
@@ -393,6 +424,7 @@ class APIUser(HttpUser):
 - Monitor system resources
 
 ### Load Patterns
+
 - Ramp-up gradually
 - Test at sustained load
 - Include spike scenarios
@@ -401,6 +433,7 @@ class APIUser(HttpUser):
 - Test auto-scaling
 
 ### Metrics & Analysis
+
 - Define SLAs upfront
 - Monitor response times (p50, p95, p99)
 - Track error rates
@@ -409,6 +442,7 @@ class APIUser(HttpUser):
 - Analyze bottlenecks
 
 ### Environment
+
 - Use dedicated test environment
 - Match production configuration
 - Isolate test traffic
@@ -419,6 +453,7 @@ class APIUser(HttpUser):
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Testing from single location only
 - Not ramping up load gradually
 - Ignoring think time
@@ -427,6 +462,7 @@ class APIUser(HttpUser):
 - Testing in production
 
 ### Test Design Issues
+
 - Unrealistic load patterns
 - Missing data variation
 - No error handling
@@ -435,6 +471,7 @@ class APIUser(HttpUser):
 - Not testing edge cases
 
 ### Analysis Problems
+
 - Focusing only on averages
 - Ignoring outliers
 - Not correlating metrics
@@ -445,24 +482,28 @@ class APIUser(HttpUser):
 ## Resources
 
 ### Official Documentation
+
 - [k6 Documentation](https://k6.io/docs/) - Modern load testing
 - [JMeter Manual](https://jmeter.apache.org/usermanual/index.html) - Complete guide
 - [Gatling Documentation](https://gatling.io/docs/current/) - Performance testing
 - [Locust Documentation](https://docs.locust.io/) - Python load testing
 
 ### Learning Resources
+
 - [Performance Testing Guidance](https://www.perfmatrix.com/) - Best practices
 - [k6 YouTube](https://www.youtube.com/@k6test) - Video tutorials
 - [JMeter Academy](https://www.blazemeter.com/jmeter-tutorial) - Training
 - [Awesome Load Testing](https://github.com/topics/load-testing) - Curated resources
 
 ### Tools & Platforms
+
 - [BlazeMeter](https://www.blazemeter.com/) - JMeter cloud platform
 - [k6 Cloud](https://k6.io/cloud/) - k6 SaaS platform
 - [Grafana Cloud k6](https://grafana.com/products/cloud/k6/) - Monitoring integration
 - [Artillery Pro](https://www.artillery.io/) - Enterprise features
 
 ### Community Resources
+
 - [k6 Community](https://community.k6.io/) - Forums
 - [JMeter Forum](https://jmeter.apache.org/mail2.html) - Mailing lists
 - [Load Testing Slack](https://k6.io/slack) - k6 Slack channel

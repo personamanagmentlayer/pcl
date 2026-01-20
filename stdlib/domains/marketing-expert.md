@@ -1,44 +1,56 @@
 # Marketing Expert
 
 ---
+
 skill_id: marketing-expert
 name: Marketing Expert
-category: domains
-tags: [marketing, marketing-automation, campaigns, analytics, seo, content-marketing, email-marketing, digital-marketing]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master marketing automation platforms and workflows
-  - Understand campaign management and optimization
-  - Implement marketing analytics and attribution
-  - Apply SEO and content marketing strategies
-  - Navigate multi-channel marketing orchestration
-prerequisites:
-  - Understanding of marketing principles and customer journey
-  - Knowledge of digital marketing channels
-  - Familiarity with web analytics and tracking
-  - Experience with CRM systems
-outcome: Build comprehensive marketing technology solutions including automation workflows, campaign management, analytics tracking, and multi-channel orchestration
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [marketing, marketing-automation, campaigns, analytics, seo, content-marketing, email-marketing, digital-marketing]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master marketing automation platforms and workflows
+- Understand campaign management and optimization
+- Implement marketing analytics and attribution
+- Apply SEO and content marketing strategies
+- Navigate multi-channel marketing orchestration
+  prerequisites:
+- Understanding of marketing principles and customer journey
+- Knowledge of digital marketing channels
+- Familiarity with web analytics and tracking
+- Experience with CRM systems
+  outcome: Build comprehensive marketing technology solutions including automation workflows, campaign management, analytics tracking, and multi-channel orchestration
+
 ---
 
 ## Core Concepts
 
 ### Marketing Automation
+
 Platforms that automate repetitive marketing tasks, nurture leads through personalized workflows, score prospects, and integrate with CRM systems for unified customer engagement.
 
 ### Campaign Management
+
 End-to-end management of marketing campaigns across channels including planning, execution, tracking, optimization, and ROI measurement with A/B testing capabilities.
 
 ### Marketing Analytics & Attribution
+
 Data analysis to understand campaign performance, customer behavior, conversion paths, and attribute revenue to specific marketing touchpoints across the customer journey.
 
 ### SEO & Content Marketing
+
 Search engine optimization strategies combined with content creation, distribution, and performance tracking to drive organic traffic and engagement.
 
 ### Multi-Channel Orchestration
+
 Coordinated customer experiences across email, social media, paid advertising, mobile, and web with consistent messaging and timing optimization.
 
 ## Code Examples
@@ -561,6 +573,7 @@ class ContentMarketingEngine:
 ## Best Practices
 
 ### Marketing Automation
+
 - Implement lead scoring with clear MQL/SQL definitions
 - Create lifecycle-based nurture workflows
 - Use personalization tokens and dynamic content
@@ -570,6 +583,7 @@ class ContentMarketingEngine:
 - Implement re-engagement campaigns for inactive leads
 
 ### Campaign Management
+
 - Set clear KPIs and success metrics upfront
 - Use UTM parameters for tracking
 - Implement conversion tracking pixels
@@ -579,6 +593,7 @@ class ContentMarketingEngine:
 - Conduct post-campaign analysis
 
 ### Analytics & Attribution
+
 - Implement multi-touch attribution modeling
 - Track customer journey across all touchpoints
 - Use data visualization for insights
@@ -588,6 +603,7 @@ class ContentMarketingEngine:
 - Focus on actionable metrics, not vanity metrics
 
 ### Content Marketing
+
 - Create content calendar aligned with business goals
 - Optimize content for target keywords
 - Implement content distribution strategy
@@ -599,6 +615,7 @@ class ContentMarketingEngine:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Batch and blast email campaigns
 - Ignoring mobile optimization
 - Over-automating without personalization
@@ -609,6 +626,7 @@ class ContentMarketingEngine:
 - Ignoring data privacy regulations
 
 ### Common Mistakes
+
 - Too many emails causing unsubscribes
 - Complex workflows without testing
 - Not segmenting audiences
@@ -620,6 +638,7 @@ class ContentMarketingEngine:
 ## Resources
 
 ### Marketing Platforms
+
 - HubSpot - All-in-one marketing platform
 - Marketo - Enterprise marketing automation
 - Pardot - B2B marketing automation
@@ -629,6 +648,7 @@ class ContentMarketingEngine:
 - Hootsuite - Social media management
 
 ### Industry Resources
+
 - Content Marketing Institute
 - Marketing Land
 - MarTech Conference
@@ -637,6 +657,7 @@ class ContentMarketingEngine:
 - Moz SEO Learning Center
 
 ### Standards & Best Practices
+
 - CAN-SPAM compliance
 - GDPR marketing guidelines
 - Email deliverability best practices
@@ -644,4 +665,4 @@ class ContentMarketingEngine:
 
 ---
 
-*Part of the PCL Standard Library - Master marketing technology and digital marketing excellence.*
+_Part of the PCL Standard Library - Master marketing technology and digital marketing excellence._

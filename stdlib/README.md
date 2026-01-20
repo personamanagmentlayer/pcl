@@ -1,411 +1,467 @@
-# PCL Standard Skills Library
+# PCL Standard Library (stdlib)
 
-**Version**: 1.0.0
+**Version**: 2.0.0
 **Status**: ✅ Production Ready
+**Total Skills**: 173 Expert-Level Skills
 
 ---
 
-## Overview
+## 🎯 What is the Standard Library?
 
-The PCL Standard Skills Library (`@pcl/stdlib`) provides a comprehensive collection of production-ready skills for common development tasks. All skills are fully compatible with both Agent Skills and Claude Code formats.
+The **PCL Standard Library** is a comprehensive collection of **173 expert-level skills** for AI agent personas, providing deep domain expertise across programming languages, frameworks, cloud platforms, data systems, security, and industry verticals.
 
-### Key Features
+Each skill represents **expert-level mastery** in a specific domain with:
 
-- ✅ **40+ Production Skills** - Covering all major development domains
-- ✅ **100% Compatible** - Agent Skills and Claude Code compatible
-- ✅ **Well-Documented** - Extensive documentation and examples
-- ✅ **Best Practices** - Following industry standards
-- ✅ **Tested** - Validated against both specifications
-- ✅ **Maintained** - Regular updates and improvements
+- **Core Concepts**: Fundamental principles and architecture
+- **Code Examples**: Production-ready implementations (250-800+ lines)
+- **Best Practices**: Industry standards and proven patterns
+- **Anti-Patterns**: Common mistakes to avoid
+- **Resources**: Documentation, tools, and learning materials
 
----
+## 📊 Library Statistics
 
-## Installation
+- **Total Skills**: 173 expert-level skills
+- **Categories**: 14 major domains
+- **Total Content**: ~120,000+ lines of expert knowledge
+- **Coverage**: Languages, Frameworks, Cloud, Data, Security, DevOps, Industries, and more
+
+## 🗂️ Skill Categories
+
+| Category              | Count | Examples                                                               |
+| --------------------- | ----- | ---------------------------------------------------------------------- |
+| **Languages**         | 22    | Python, TypeScript, Rust, Go, Java, Kotlin, Scala, Haskell, Julia, Zig |
+| **Frameworks**        | 21    | React, Vue, Angular, Next.js, Django, Spring Boot, Flutter, Tauri      |
+| **DevOps**            | 17    | Kubernetes, Docker, Terraform, ArgoCD, Prometheus, Grafana, Istio      |
+| **Domains**           | 76    | Healthcare, Finance, Legal, Manufacturing, Energy, AgTech, Web3        |
+| **Data & Analytics**  | 14    | Snowflake, Databricks, Airflow, dbt, Tableau, Power BI, Kafka          |
+| **Security**          | 12    | Penetration Testing, Zero Trust, GDPR, SOC2, Cryptography              |
+| **QA & Testing**      | 12    | Playwright, Cypress, Jest, Selenium, Load Testing, Chaos Engineering   |
+| **API & Integration** | 6     | REST, GraphQL, gRPC, Microservices, API Design                         |
+| **Cloud Platforms**   | 4     | AWS, Azure, GCP, Cloudflare                                            |
+| **AI & ML**           | 4     | Machine Learning, AI Architecture, Data Science                        |
+| **Tools**             | 5     | Slack, Teams, Discord, WebRTC, Video Streaming                         |
+| **Professional**      | 6     | Banking, Legal, Accounting, FinOps, Auditing                           |
+| **Scientific**        | 3     | Quantum Computing, Bioinformatics, Research                            |
+| **Design**            | 1     | System & UX Design                                                     |
+
+See [SKILLS_INVENTORY.md](SKILLS_INVENTORY.md) for the complete skill list.
+
+## 🚀 Quick Start
+
+### 1. Browse Available Skills
 
 ```bash
-# Install the standard library
-pcl install @pcl/stdlib --save
+# List all skills
+find stdlib -name "SKILL.md" -o -name "*-expert.md"
 
-# Or install individual categories
-pcl install @pcl/stdlib-languages --save
-pcl install @pcl/stdlib-devops --save
-pcl install @pcl/stdlib-data --save
+# Search for specific domain
+find stdlib -name "*react*"
+find stdlib -name "*kubernetes*"
 ```
 
----
+### 2. Load Skills into a Persona
 
-## Skill Categories
+```yaml
+# persona.pcl
+persona "FullStackDeveloper" {
+  version = "1.0.0"
 
-### 1. Programming Languages (15 skills)
-
-**Backend Languages:**
-- `python-expert` - Python 3.10+ development
-- `javascript-expert` - JavaScript/ES2023+ development
-- `typescript-expert` - TypeScript development
-- `java-expert` - Java 17+ development
-- `go-expert` - Go development
-- `rust-expert` - Rust development
-- `csharp-expert` - C# development
-- `ruby-expert` - Ruby development
-- `php-expert` - PHP 8+ development
-
-**Systems Languages:**
-- `c-expert` - C programming
-- `cpp-expert` - Modern C++ development
-- `swift-expert` - Swift development
-- `kotlin-expert` - Kotlin development
-
-**Scripting:**
-- `bash-expert` - Shell scripting
-- `powershell-expert` - PowerShell scripting
-
-### 2. DevOps & Infrastructure (12 skills)
-
-**Containerization:**
-- `docker-expert` - Docker containers and images
-- `kubernetes-expert` - Kubernetes orchestration
-- `docker-compose-expert` - Docker Compose
-
-**Infrastructure as Code:**
-- `terraform-expert` - Terraform infrastructure
-- `ansible-expert` - Ansible automation
-- `cloudformation-expert` - AWS CloudFormation
-
-**Cloud Platforms:**
-- `aws-expert` - Amazon Web Services
-- `azure-expert` - Microsoft Azure
-- `gcp-expert` - Google Cloud Platform
-
-**CI/CD:**
-- `github-actions-expert` - GitHub Actions
-- `gitlab-ci-expert` - GitLab CI/CD
-- `jenkins-expert` - Jenkins automation
-
-### 3. Data & Analytics (8 skills)
-
-**Data Analysis:**
-- `data-analysis-expert` - Pandas, NumPy, data manipulation
-- `sql-expert` - SQL databases and queries
-- `data-visualization-expert` - Matplotlib, Seaborn, Plotly
-
-**Databases:**
-- `postgresql-expert` - PostgreSQL administration
-- `mysql-expert` - MySQL administration
-- `mongodb-expert` - MongoDB operations
-- `redis-expert` - Redis caching
-
-**Machine Learning:**
-- `ml-basics-expert` - ML fundamentals and scikit-learn
-
-### 4. Development Tools (10 skills)
-
-**Version Control:**
-- `git-expert` - Git workflows and best practices
-- `code-review-expert` - Code review processes
-
-**Testing:**
-- `testing-expert` - Test strategies and frameworks
-- `tdd-expert` - Test-driven development
-- `integration-testing-expert` - Integration testing
-
-**Documentation:**
-- `technical-writing-expert` - Technical documentation
-- `api-documentation-expert` - API documentation
-
-**Code Quality:**
-- `refactoring-expert` - Code refactoring techniques
-- `performance-optimization-expert` - Performance tuning
-- `security-expert` - Security best practices
-
----
-
-## Usage
-
-### Using in Personas
-
-```pcl
-persona FULLSTACK_DEVELOPER {
-  name: "Full Stack Developer"
-  version: "1.0.0"
-
-  // Load multiple skills
-  skills: [
-    "@pcl/stdlib/python-expert",
-    "@pcl/stdlib/typescript-expert",
-    "@pcl/stdlib/docker-expert",
-    "@pcl/stdlib/git-expert"
+  # Load skills from stdlib
+  skills = [
+    "stdlib/languages/typescript-expert",
+    "stdlib/frameworks/react-expert",
+    "stdlib/frameworks/nextjs-expert",
+    "stdlib/data/postgresql-expert",
+    "stdlib/devops/docker-expert"
   ]
 
-  config: {
-    model: "claude-sonnet-4"
-    temperature: 0.3
-  }
-
-  prompts: {
-    system: """
-    You are a full-stack developer with expertise in Python, TypeScript, Docker, and Git.
-    Apply best practices from loaded skills.
-    """
+  constraints {
+    max_tokens = 8000
+    allowed_tools = ["Read", "Write", "Edit", "Bash"]
   }
 }
 ```
 
-### Using Individual Skills
+### 3. Use Skills in Multi-Agent Systems
 
-```bash
-# Import a specific skill
-pcl skill import @pcl/stdlib/python-expert -o ./skills/
+```yaml
+# multi-agent-system.pcl
+system "DataPlatform" {
 
-# Use in your project
-pcl build
+agent "DataEngineer" {
+skills = [
+"stdlib/data/airflow-expert",
+"stdlib/data/dbt-expert",
+"stdlib/data/snowflake-expert",
+"stdlib/languages/python-expert"
+]
+role = "Build and maintain data pipelines"
+}
+
+agent "DataAnalyst" {
+skills = [
+"stdlib/data/tableau-expert",
+"stdlib/data/powerbi-expert",
+"stdlib/data/sql-expert"
+]
+role = "Create dashboards and analytics"
+}
+
+agent "MLEngineer" {
+skills = [
+"stdlib/ai/ml-expert",
+"stdlib/data/databricks-expert",
+"stdlib/languages/python-expert"
+]
+role = "Train and deploy ML models"
+}
+}
 ```
 
----
+## 📖 Skill Format
 
-## Skill Directory Structure
-
-```
-stdlib/
-├── README.md
-├── package.json
-├── languages/
-│   ├── python-expert/
-│   │   └── SKILL.md
-│   ├── javascript-expert/
-│   │   └── SKILL.md
-│   ├── typescript-expert/
-│   │   └── SKILL.md
-│   ├── java-expert/
-│   │   └── SKILL.md
-│   ├── go-expert/
-│   │   └── SKILL.md
-│   └── ...
-├── devops/
-│   ├── docker-expert/
-│   │   └── SKILL.md
-│   ├── kubernetes-expert/
-│   │   └── SKILL.md
-│   ├── terraform-expert/
-│   │   └── SKILL.md
-│   └── ...
-├── data/
-│   ├── data-analysis-expert/
-│   │   └── SKILL.md
-│   ├── sql-expert/
-│   │   └── SKILL.md
-│   └── ...
-└── tools/
-    ├── git-expert/
-    │   └── SKILL.md
-    ├── code-review-expert/
-    │   └── SKILL.md
-    └── ...
-```
-
----
-
-## Skill Format
-
-All skills follow the Agent Skills specification format:
+Each skill follows the **PCL Agent Skills Specification**:
 
 ```markdown
 ---
 name: skill-name
-description: When to use this skill
+version: 1.0.0
+description: Brief description of the skill
+category: domain
+tags: [tag1, tag2, tag3]
 allowed-tools:
   - Read
   - Write
-  - Bash(language:*)
+  - Edit
+  - Bash(command:*)
 ---
 
-# Skill Name
+# Skill Title
 
-You are an expert in [domain].
+Brief introduction to the skill domain.
 
-## Expertise
+## Core Concepts
 
-- Skill area 1
-- Skill area 2
-- ...
+### Concept 1
+
+Explanation...
+
+## Code Examples
+
+\`\`\`language
+// Production-ready code example
+// 50-200 lines demonstrating real-world usage
+\`\`\`
 
 ## Best Practices
 
-1. Practice 1
-2. Practice 2
-...
+- Practice 1
+- Practice 2
 
-## Common Tasks
+## Anti-Patterns
 
-### Task 1
-Instructions...
+❌ Anti-pattern 1
+❌ Anti-pattern 2
 
-### Task 2
-Instructions...
+## Resources
+
+- Documentation: https://...
+- Tools: https://...
 ```
 
----
+## 🎭 Example Personas
 
-## Quality Standards
+### Full-Stack Web Developer
 
-All skills in the standard library meet these criteria:
+```yaml
+persona "FullStackDev" {
+  description = "Expert full-stack web developer"
 
-### ✅ Content Quality
-- Based on official documentation and best practices
-- Regularly updated with latest versions
-- Includes common patterns and anti-patterns
-- Provides concrete examples
+  skills = [
+    # Frontend
+    "stdlib/languages/typescript-expert",
+    "stdlib/frameworks/react-expert",
+    "stdlib/frameworks/nextjs-expert",
 
-### ✅ Format Compliance
-- 100% Agent Skills specification compliant
-- 95% Claude Code specification compatible
-- Valid YAML frontmatter
-- Proper markdown formatting
+    # Backend
+    "stdlib/languages/nodejs-expert",
+    "stdlib/frameworks/fastapi-expert",
+    "stdlib/api/graphql-expert",
 
-### ✅ Testing
-- Validated with `pcl skill validate`
-- Tested with real-world scenarios
-- User feedback incorporated
+    # Database
+    "stdlib/data/postgresql-expert",
+    "stdlib/data/redis-expert",
 
-### ✅ Documentation
-- Clear usage instructions
-- Examples provided
-- Prerequisites listed
-- Version compatibility noted
+    # DevOps
+    "stdlib/devops/docker-expert",
+    "stdlib/devops/kubernetes-expert",
+    "stdlib/cloud/aws-expert"
+  ]
 
----
+  constraints {
+    governance_level = "high"
+    risk_classification = "medium"
+  }
+}
+```
 
-## Development
+### Cloud Security Architect
 
-### Contributing Skills
+```yaml
+persona "SecurityArchitect" {
+  description = "Expert in cloud security and compliance"
 
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines on contributing new skills.
+  skills = [
+    # Security
+    "stdlib/security/zero-trust-expert",
+    "stdlib/security/cryptography-expert",
+    "stdlib/security/penetration-testing-expert",
 
-**Requirements:**
-- Follow Agent Skills specification
-- Include comprehensive documentation
-- Provide usage examples
-- Pass validation tests
+    # Compliance
+    "stdlib/security/gdpr-expert",
+    "stdlib/security/soc2-expert",
 
-### Testing Skills
+    # Cloud
+    "stdlib/cloud/aws-expert",
+    "stdlib/cloud/azure-expert",
+    "stdlib/devops/kubernetes-expert",
+    "stdlib/devops/istio-expert"
+  ]
+
+  constraints {
+    governance_level = "critical"
+    risk_classification = "high"
+    audit_required = true
+  }
+}
+```
+
+### Data Platform Engineer
+
+```yaml
+persona "DataEngineer" {
+  description = "Expert in modern data platforms"
+
+  skills = [
+    # Languages
+    "stdlib/languages/python-expert",
+    "stdlib/languages/scala-expert",
+
+    # Data Platforms
+    "stdlib/data/snowflake-expert",
+    "stdlib/data/databricks-expert",
+
+    # Orchestration
+    "stdlib/data/airflow-expert",
+    "stdlib/data/dbt-expert",
+
+    # Streaming
+    "stdlib/data/kafka-expert",
+
+    # Cloud
+    "stdlib/cloud/aws-expert",
+    "stdlib/devops/terraform-expert"
+  ]
+
+  constraints {
+    governance_level = "high"
+    data_classification = ["pii", "confidential"]
+  }
+}
+```
+
+## 🔍 Skill Discovery
+
+### By Technology Stack
+
+**MERN Stack**:
+
+- mongodb-expert
+- nodejs-expert
+- react-expert
+- typescript-expert
+
+**Data Science Stack**:
+
+- python-expert
+- data-science-expert
+- ml-expert
+- databricks-expert
+
+**Cloud Native Stack**:
+
+- kubernetes-expert
+- istio-expert
+- prometheus-expert
+- grafana-expert
+- argocd-expert
+
+**Mobile Development**:
+
+- flutter-expert
+- react-native-expert
+- ios-expert
+- android-expert
+
+### By Industry
+
+**Healthcare**: healthcare, healthtech-expert, pharmaceutical-expert
+**Finance**: banking-expert, fintech-expert, trading-expert
+**Legal**: lawyer-expert, legal-tech, legaltech-expert
+**Manufacturing**: manufacturing-expert, iot-expert
+**Agriculture**: farming, agtech-expert
+
+## 🛡️ Governance & Security
+
+Skills integrate with PCL's governance framework:
+
+### Risk Classification
+
+```yaml
+skill "penetration-testing-expert" {
+  risk_level = "high"          # Can execute security tests
+  requires_approval = true      # Human approval needed
+  audit_all_actions = true      # Log everything
+}
+
+skill "react-expert" {
+  risk_level = "low"           # UI development only
+  requires_approval = false
+}
+```
+
+### Tool Permissions
+
+```yaml
+# Skill declares what tools it needs
+allowed-tools:
+  - Read # Can read files
+  - Write # Can write files
+  - Edit # Can edit files
+  - Bash(npm:*, yarn:*) # Can run npm/yarn only
+  - Bash(kubectl:get:*) # Can only run kubectl get
+```
+
+### Compliance Alignment
+
+Skills support compliance frameworks:
+
+- **ISO 42001** - AI risk management
+- **ISO 27001** - Information security
+- **GDPR** - Data protection (gdpr-expert skill)
+- **SOC 2** - Security controls (soc2-expert skill)
+- **OWASP** - Security best practices
+
+## 📚 Skill Composition Patterns
+
+### Layered Architecture
+
+```yaml
+persona "EnterpriseBackend" {
+  skills = [
+    # Layer 1: Language
+    "stdlib/languages/java-expert",
+
+    # Layer 2: Framework
+    "stdlib/frameworks/spring-boot-expert",
+
+    # Layer 3: Data
+    "stdlib/data/postgresql-expert",
+    "stdlib/data/redis-expert",
+
+    # Layer 4: Integration
+    "stdlib/api/microservices-expert",
+    "stdlib/api/graphql-expert",
+
+    # Layer 5: Infrastructure
+    "stdlib/devops/kubernetes-expert",
+    "stdlib/devops/istio-expert",
+    "stdlib/cloud/aws-expert"
+  ]
+}
+```
+
+### Cross-Functional Teams
+
+```yaml
+system "ProductDevelopment" {
+
+persona "Frontend" {
+skills = ["react-expert", "typescript-expert", "cypress-expert"]
+}
+
+persona "Backend" {
+skills = ["go-expert", "postgresql-expert", "microservices-expert"]
+}
+
+persona "DevOps" {
+skills = ["kubernetes-expert", "terraform-expert", "prometheus-expert"]
+}
+
+persona "Security" {
+skills = ["penetration-testing-expert", "zero-trust-expert"]
+}
+}
+```
+
+## 📊 Documentation
+
+- **[SKILLS_INVENTORY.md](SKILLS_INVENTORY.md)** - Complete skill list organized by category
+- **[DIRECTORY_STRUCTURE.md](DIRECTORY_STRUCTURE.md)** - File organization and structure
+- **[COMPLETE_LIBRARY_MANIFEST.md](COMPLETE_LIBRARY_MANIFEST.md)** - Full manifest with statistics
+
+## 🔧 Development & Contributing
+
+### Creating Custom Skills
+
+1. **Copy an existing skill as template**:
 
 ```bash
-# Validate a skill
-pcl skill validate stdlib/languages/python-expert/SKILL.md --spec agentskills
-
-# Test in a persona
-pcl init test-project
-# Add skill to persona
-pcl build
+cp -r stdlib/languages/python-expert stdlib/languages/my-skill
 ```
 
----
+2. **Edit SKILL.md** with your expertise
 
-## Skill Details
+3. **Validate the skill**:
 
-### Python Expert (`python-expert`)
+```bash
+python scripts/validate-skill.py stdlib/languages/my-skill
+```
 
-**Description**: Expert-level Python programming with modern best practices
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
 
-**Version**: 1.0.0
-**License**: Apache-2.0
+## 📈 What's New in v2.0.0
 
-**Capabilities:**
-- Python 3.10+ syntax and features
-- Type hints and mypy
-- Async/await patterns
-- Virtual environments
-- Package management (pip, poetry)
-- Testing (pytest, unittest)
-- Common libraries (requests, pandas, etc.)
+**Major Expansion**: 100 → 173 skills (+73 skills)
 
-**Tools**: Read, Write, Bash(python:*)
+**New Categories Added**:
 
----
+- **Modern Languages**: Zig, Nim, Julia, Haskell, Clojure
+- **Modern Frameworks**: Vue, Angular, Svelte, Next.js, Remix, Flutter, Tauri
+- **Emerging Tech**: Web3, Metaverse, Edge Computing, Serverless, WebAssembly, Robotics, 5G
+- **Data Platforms**: Snowflake, Databricks, Airflow, dbt, Looker, Tableau, Power BI
+- **Security & Compliance**: Penetration Testing, Zero Trust, GDPR, SOC2, Cryptography
+- **Cloud Native**: Istio, Helm, ArgoCD, Prometheus, Grafana, Linkerd
+- **Mobile & Desktop**: Flutter, React Native, iOS, Android, Electron, Tauri
+- **Industry Specializations**: Pharmaceutical, Biotech, FinTech, RegTech, PropTech, CleanTech
+- **Enterprise Systems**: SAP, Salesforce, ServiceNow, Workday, Oracle, Microsoft 365
+- **Testing & QA**: Playwright, Cypress, Jest, Selenium, Load Testing, Chaos Engineering
+- **Communication**: Slack, Teams, Discord, WebRTC, Video Streaming
 
-### TypeScript Expert (`typescript-expert`)
+## 📝 License
 
-**Description**: Expert-level TypeScript development with modern tooling
+Part of the PCL project. See [LICENSE](../LICENSE) for details.
 
-**Version**: 1.0.0
-**License**: Apache-2.0
+## 🔗 Related Documentation
 
-**Capabilities:**
-- TypeScript 5.0+ features
-- Advanced types (generics, conditional, mapped)
-- tsconfig.json configuration
-- Modern bundlers (Vite, webpack)
-- Testing (Jest, Vitest)
-- Node.js and browser development
-
-**Tools**: Read, Write, Bash(npm:*, tsc:*, node:*)
+- [PCL Specification](../docs/SPECIFICATION.md)
+- [Persona Guide](../docs/PERSONAS.md)
+- [Governance Framework](../docs/GOVERNANCE.md)
+- [Security Model](../.github/EMERGENCY_SECURITY.md)
 
 ---
 
-### Docker Expert (`docker-expert`)
-
-**Description**: Docker containerization and image management
-
-**Version**: 1.0.0
-**License**: Apache-2.0
-
-**Capabilities:**
-- Dockerfile best practices
-- Multi-stage builds
-- Image optimization
-- Docker Compose
-- Container networking
-- Volume management
-- Security hardening
-
-**Tools**: Read, Write, Bash(docker:*)
-
----
-
-### Git Expert (`git-expert`)
-
-**Description**: Git version control and collaboration workflows
-
-**Version**: 1.0.0
-**License**: Apache-2.0
-
-**Capabilities:**
-- Git workflow strategies (GitFlow, trunk-based)
-- Branching and merging
-- Rebase and cherry-pick
-- Conflict resolution
-- Commit message conventions
-- Git hooks
-- Submodules and subtrees
-
-**Tools**: Read, Bash(git:*)
-
----
-
-## License
-
-Apache-2.0 - See [LICENSE](../LICENSE)
-
----
-
-## Support
-
-**Issues**: [GitHub Issues](https://github.com/personalayer/pcl/issues)
-**Discussions**: [GitHub Discussions](https://github.com/personalayer/pcl/discussions)
-**Documentation**: [PCL Documentation](../docs/INDEX.md)
-
----
-
-## Changelog
-
-### v1.0.0 (2026-01-19)
-
-**Initial Release:**
-- 40+ production-ready skills
-- Coverage across languages, devops, data, and tools
-- Full Agent Skills and Claude Code compatibility
-- Comprehensive documentation
-
----
+**The PCL Standard Library** - Governed AI expertise at scale 🚀
 
 **Last Updated**: 2026-01-19
 **Maintainer**: PCL Team

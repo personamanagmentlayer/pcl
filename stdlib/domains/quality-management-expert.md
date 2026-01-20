@@ -1,44 +1,56 @@
 # Quality Management Expert
 
 ---
+
 skill_id: quality-management-expert
 name: Quality Management Expert
-category: domains
-tags: [quality, qms, iso, compliance, auditing, continuous-improvement, six-sigma, quality-assurance]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master quality management systems (QMS)
-  - Understand compliance and regulatory requirements
-  - Implement audit management and corrective actions
-  - Apply continuous improvement methodologies
-  - Navigate quality metrics and performance tracking
-prerequisites:
-  - Understanding of quality management principles
-  - Knowledge of ISO standards and frameworks
-  - Familiarity with audit processes
-  - Experience with process improvement methods
-outcome: Build comprehensive quality management solutions including QMS implementation, audit tracking, nonconformance management, and continuous improvement programs
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [quality, qms, iso, compliance, auditing, continuous-improvement, six-sigma, quality-assurance]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master quality management systems (QMS)
+- Understand compliance and regulatory requirements
+- Implement audit management and corrective actions
+- Apply continuous improvement methodologies
+- Navigate quality metrics and performance tracking
+  prerequisites:
+- Understanding of quality management principles
+- Knowledge of ISO standards and frameworks
+- Familiarity with audit processes
+- Experience with process improvement methods
+  outcome: Build comprehensive quality management solutions including QMS implementation, audit tracking, nonconformance management, and continuous improvement programs
+
 ---
 
 ## Core Concepts
 
 ### Quality Management Systems (QMS)
+
 Structured frameworks for managing quality processes, documenting procedures, tracking metrics, and ensuring compliance with standards like ISO 9001, providing systematic approach to quality assurance.
 
 ### Compliance & Regulatory Management
+
 Systems for tracking regulatory requirements, managing certifications, conducting compliance audits, and maintaining documentation to meet industry standards and legal obligations.
 
 ### Audit Management
+
 Planning, executing, and tracking internal and external audits including preparation, finding documentation, corrective action tracking, and audit report management.
 
 ### Nonconformance & Corrective Action
+
 Identification, documentation, root cause analysis, and resolution of quality issues using methodologies like 8D, 5 Whys, and fishbone diagrams with preventive action implementation.
 
 ### Continuous Improvement
+
 Systematic approaches like Six Sigma, Lean, Kaizen, and PDCA (Plan-Do-Check-Act) for ongoing process optimization, waste reduction, and quality enhancement.
 
 ## Code Examples
@@ -615,6 +627,7 @@ class QualityInspection:
 ## Best Practices
 
 ### QMS Implementation
+
 - Define clear quality policy and objectives
 - Document processes and procedures
 - Implement document control system
@@ -625,6 +638,7 @@ class QualityInspection:
 - Risk-based thinking
 
 ### Nonconformance Management
+
 - Timely reporting and investigation
 - Root cause analysis for all major NCs
 - Effective corrective actions
@@ -634,6 +648,7 @@ class QualityInspection:
 - Escalation procedures
 
 ### Audit Management
+
 - Risk-based audit planning
 - Trained and competent auditors
 - Objective and evidence-based
@@ -643,6 +658,7 @@ class QualityInspection:
 - Lessons learned documentation
 
 ### Continuous Improvement
+
 - Data-driven decision making
 - Employee involvement and empowerment
 - Structured improvement methodologies
@@ -654,6 +670,7 @@ class QualityInspection:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - QMS as documentation exercise only
 - Blame culture for nonconformances
 - Superficial root cause analysis
@@ -664,6 +681,7 @@ class QualityInspection:
 - Ignoring customer feedback
 
 ### Common Mistakes
+
 - Over-documentation without value
 - Generic corrective actions
 - Not addressing root causes
@@ -676,6 +694,7 @@ class QualityInspection:
 ## Resources
 
 ### QMS Standards
+
 - ISO 9001 - Quality Management System
 - ISO 13485 - Medical Devices QMS
 - IATF 16949 - Automotive QMS
@@ -683,6 +702,7 @@ class QualityInspection:
 - ISO 14001 - Environmental Management
 
 ### Methodologies
+
 - Six Sigma (DMAIC methodology)
 - Lean Manufacturing
 - Total Quality Management (TQM)
@@ -690,6 +710,7 @@ class QualityInspection:
 - 8D Problem Solving
 
 ### Tools
+
 - MasterControl - QMS software
 - ETQ Reliance - Quality management
 - Qualio - Cloud QMS
@@ -697,6 +718,7 @@ class QualityInspection:
 - Arena - PLM with quality
 
 ### Learning Resources
+
 - ASQ (American Society for Quality)
 - ISO 9001 Lead Auditor training
 - Six Sigma certifications (Green Belt, Black Belt)
@@ -705,4 +727,4 @@ class QualityInspection:
 
 ---
 
-*Part of the PCL Standard Library - Master quality management systems and drive organizational excellence through continuous improvement.*
+_Part of the PCL Standard Library - Master quality management systems and drive organizational excellence through continuous improvement._

@@ -1,6 +1,22 @@
 ---
 description: Expert in SharePoint Server and SharePoint Online, site collections, lists and libraries, workflows, SharePoint Framework (SPFx), and PnP patterns
-keywords: [sharepoint, spfx, sharepoint-framework, pnp, sharepoint-online, site-collections, content-types, workflows]
+tags: ['sharepoint', 'microsoft', 'collaboration', 'intranet', 'cms']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - WebSearch
+keywords:
+  [
+    sharepoint,
+    spfx,
+    sharepoint-framework,
+    pnp,
+    sharepoint-online,
+    site-collections,
+    content-types,
+    workflows,
+  ]
 category: domains
 expertise_level: expert
 ---
@@ -10,6 +26,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### SharePoint Architecture
+
 - **Site Collections** - Top-level sites with shared settings
 - **Sites & Subsites** - Hierarchical structure
 - **Lists & Libraries** - Data storage containers
@@ -18,6 +35,7 @@ expertise_level: expert
 - **Permissions** - Security and access control
 
 ### Development Approaches
+
 - **SPFx** - SharePoint Framework (modern)
 - **Add-ins** - SharePoint-hosted and provider-hosted apps
 - **Web Parts** - Custom UI components
@@ -26,6 +44,7 @@ expertise_level: expert
 - **CSOM** - Client-Side Object Model
 
 ### Content Management
+
 - **Document Management** - Version control, check-in/out
 - **Metadata** - Columns and managed metadata
 - **Search** - Enterprise search capabilities
@@ -45,7 +64,7 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
-  PropertyPaneCheckbox
+  PropertyPaneCheckbox,
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
@@ -59,7 +78,6 @@ export interface IHelloWorldWebPartProps {
 }
 
 export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
-
   public render(): void {
     const element: React.ReactElement<IHelloWorldProps> = React.createElement(
       HelloWorld,
@@ -68,7 +86,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
         showWelcome: this.properties.showWelcome,
         listName: this.properties.listName,
         context: this.context,
-        siteUrl: this.context.pageContext.web.absoluteUrl
+        siteUrl: this.context.pageContext.web.absoluteUrl,
       }
     );
 
@@ -88,26 +106,26 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
       pages: [
         {
           header: {
-            description: 'Configure web part settings'
+            description: 'Configure web part settings',
           },
           groups: [
             {
               groupName: 'Basic Settings',
               groupFields: [
                 PropertyPaneTextField('description', {
-                  label: 'Description'
+                  label: 'Description',
                 }),
                 PropertyPaneCheckbox('showWelcome', {
-                  text: 'Show welcome message'
+                  text: 'Show welcome message',
                 }),
                 PropertyPaneTextField('listName', {
-                  label: 'List Name'
-                })
-              ]
-            }
-          ]
-        }
-      ]
+                  label: 'List Name',
+                }),
+              ],
+            },
+          ],
+        },
+      ],
     };
   }
 }
@@ -283,198 +301,208 @@ Enable-PnPFeature -Identity "Workflows" -Scope Web
 ```javascript
 // SharePoint REST API Service
 class SharePointService {
-    constructor(siteUrl) {
-        this.siteUrl = siteUrl;
-        this.baseUrl = `${siteUrl}/_api`;
-    }
+  constructor(siteUrl) {
+    this.siteUrl = siteUrl;
+    this.baseUrl = `${siteUrl}/_api`;
+  }
 
-    // Get request digest for POST operations
-    async getRequestDigest() {
-        const response = await fetch(`${this.siteUrl}/_api/contextinfo`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json;odata=verbose'
-            },
-            credentials: 'same-origin'
-        });
+  // Get request digest for POST operations
+  async getRequestDigest() {
+    const response = await fetch(`${this.siteUrl}/_api/contextinfo`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json;odata=verbose',
+      },
+      credentials: 'same-origin',
+    });
 
-        const data = await response.json();
-        return data.d.GetContextWebInformation.FormDigestValue;
-    }
+    const data = await response.json();
+    return data.d.GetContextWebInformation.FormDigestValue;
+  }
 
-    // Get list items
-    async getListItems(listTitle, select = '*', filter = '', orderBy = '', top = 100) {
-        let url = `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items?`;
+  // Get list items
+  async getListItems(
+    listTitle,
+    select = '*',
+    filter = '',
+    orderBy = '',
+    top = 100
+  ) {
+    let url = `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items?`;
 
-        if (select) url += `$select=${select}&`;
-        if (filter) url += `$filter=${filter}&`;
-        if (orderBy) url += `$orderby=${orderBy}&`;
-        if (top) url += `$top=${top}`;
+    if (select) url += `$select=${select}&`;
+    if (filter) url += `$filter=${filter}&`;
+    if (orderBy) url += `$orderby=${orderBy}&`;
+    if (top) url += `$top=${top}`;
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json;odata=verbose'
-            },
-            credentials: 'same-origin'
-        });
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json;odata=verbose',
+      },
+      credentials: 'same-origin',
+    });
 
-        const data = await response.json();
-        return data.d.results;
-    }
+    const data = await response.json();
+    return data.d.results;
+  }
 
-    // Create list item
-    async createListItem(listTitle, itemProperties) {
-        const digest = await this.getRequestDigest();
+  // Create list item
+  async createListItem(listTitle, itemProperties) {
+    const digest = await this.getRequestDigest();
 
-        // Get list item type
-        const listResponse = await fetch(
-            `${this.baseUrl}/web/lists/getbytitle('${listTitle}')`,
-            {
-                method: 'GET',
-                headers: { 'Accept': 'application/json;odata=verbose' },
-                credentials: 'same-origin'
-            }
-        );
-        const listData = await listResponse.json();
-        const itemType = listData.d.ListItemEntityTypeFullName;
+    // Get list item type
+    const listResponse = await fetch(
+      `${this.baseUrl}/web/lists/getbytitle('${listTitle}')`,
+      {
+        method: 'GET',
+        headers: { Accept: 'application/json;odata=verbose' },
+        credentials: 'same-origin',
+      }
+    );
+    const listData = await listResponse.json();
+    const itemType = listData.d.ListItemEntityTypeFullName;
 
-        // Create item
-        const response = await fetch(
-            `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items`,
-            {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json;odata=verbose',
-                    'Content-Type': 'application/json;odata=verbose',
-                    'X-RequestDigest': digest
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    '__metadata': { 'type': itemType },
-                    ...itemProperties
-                })
-            }
-        );
+    // Create item
+    const response = await fetch(
+      `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json;odata=verbose',
+          'Content-Type': 'application/json;odata=verbose',
+          'X-RequestDigest': digest,
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          __metadata: { type: itemType },
+          ...itemProperties,
+        }),
+      }
+    );
 
-        const data = await response.json();
-        return data.d;
-    }
+    const data = await response.json();
+    return data.d;
+  }
 
-    // Update list item
-    async updateListItem(listTitle, itemId, itemProperties) {
-        const digest = await this.getRequestDigest();
+  // Update list item
+  async updateListItem(listTitle, itemId, itemProperties) {
+    const digest = await this.getRequestDigest();
 
-        // Get item type
-        const listResponse = await fetch(
-            `${this.baseUrl}/web/lists/getbytitle('${listTitle}')`,
-            {
-                method: 'GET',
-                headers: { 'Accept': 'application/json;odata=verbose' },
-                credentials: 'same-origin'
-            }
-        );
-        const listData = await listResponse.json();
-        const itemType = listData.d.ListItemEntityTypeFullName;
+    // Get item type
+    const listResponse = await fetch(
+      `${this.baseUrl}/web/lists/getbytitle('${listTitle}')`,
+      {
+        method: 'GET',
+        headers: { Accept: 'application/json;odata=verbose' },
+        credentials: 'same-origin',
+      }
+    );
+    const listData = await listResponse.json();
+    const itemType = listData.d.ListItemEntityTypeFullName;
 
-        // Update item
-        await fetch(
-            `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items(${itemId})`,
-            {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json;odata=verbose',
-                    'Content-Type': 'application/json;odata=verbose',
-                    'X-RequestDigest': digest,
-                    'IF-MATCH': '*',
-                    'X-HTTP-Method': 'MERGE'
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    '__metadata': { 'type': itemType },
-                    ...itemProperties
-                })
-            }
-        );
+    // Update item
+    await fetch(
+      `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items(${itemId})`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json;odata=verbose',
+          'Content-Type': 'application/json;odata=verbose',
+          'X-RequestDigest': digest,
+          'IF-MATCH': '*',
+          'X-HTTP-Method': 'MERGE',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          __metadata: { type: itemType },
+          ...itemProperties,
+        }),
+      }
+    );
 
-        return { success: true };
-    }
+    return { success: true };
+  }
 
-    // Delete list item
-    async deleteListItem(listTitle, itemId) {
-        const digest = await this.getRequestDigest();
+  // Delete list item
+  async deleteListItem(listTitle, itemId) {
+    const digest = await this.getRequestDigest();
 
-        await fetch(
-            `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items(${itemId})`,
-            {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json;odata=verbose',
-                    'X-RequestDigest': digest,
-                    'IF-MATCH': '*',
-                    'X-HTTP-Method': 'DELETE'
-                },
-                credentials: 'same-origin'
-            }
-        );
+    await fetch(
+      `${this.baseUrl}/web/lists/getbytitle('${listTitle}')/items(${itemId})`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json;odata=verbose',
+          'X-RequestDigest': digest,
+          'IF-MATCH': '*',
+          'X-HTTP-Method': 'DELETE',
+        },
+        credentials: 'same-origin',
+      }
+    );
 
-        return { success: true };
-    }
+    return { success: true };
+  }
 
-    // Upload file
-    async uploadFile(libraryTitle, fileName, fileContent) {
-        const digest = await this.getRequestDigest();
+  // Upload file
+  async uploadFile(libraryTitle, fileName, fileContent) {
+    const digest = await this.getRequestDigest();
 
-        const response = await fetch(
-            `${this.baseUrl}/web/GetFolderByServerRelativeUrl('${libraryTitle}')/Files/add(url='${fileName}',overwrite=true)`,
-            {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json;odata=verbose',
-                    'X-RequestDigest': digest
-                },
-                credentials: 'same-origin',
-                body: fileContent
-            }
-        );
+    const response = await fetch(
+      `${this.baseUrl}/web/GetFolderByServerRelativeUrl('${libraryTitle}')/Files/add(url='${fileName}',overwrite=true)`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json;odata=verbose',
+          'X-RequestDigest': digest,
+        },
+        credentials: 'same-origin',
+        body: fileContent,
+      }
+    );
 
-        const data = await response.json();
-        return data.d;
-    }
+    const data = await response.json();
+    return data.d;
+  }
 
-    // Search
-    async search(queryText, selectProperties = '*', rowLimit = 50) {
-        const url = `${this.baseUrl}/search/query?querytext='${encodeURIComponent(queryText)}'&selectproperties='${selectProperties}'&rowlimit=${rowLimit}`;
+  // Search
+  async search(queryText, selectProperties = '*', rowLimit = 50) {
+    const url = `${this.baseUrl}/search/query?querytext='${encodeURIComponent(queryText)}'&selectproperties='${selectProperties}'&rowlimit=${rowLimit}`;
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json;odata=verbose'
-            },
-            credentials: 'same-origin'
-        });
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json;odata=verbose',
+      },
+      credentials: 'same-origin',
+    });
 
-        const data = await response.json();
-        return data.d.query.PrimaryQueryResult.RelevantResults.Table.Rows.results;
-    }
+    const data = await response.json();
+    return data.d.query.PrimaryQueryResult.RelevantResults.Table.Rows.results;
+  }
 }
 
 // Usage
 const sp = new SharePointService(_spPageContextInfo.webAbsoluteUrl);
 
 // Get items
-const items = await sp.getListItems('Projects', 'Id,Title,ProjectStatus', 'ProjectStatus eq \'Active\'');
+const items = await sp.getListItems(
+  'Projects',
+  'Id,Title,ProjectStatus',
+  "ProjectStatus eq 'Active'"
+);
 
 // Create item
 const newItem = await sp.createListItem('Projects', {
-    Title: 'New Project',
-    ProjectStatus: 'Planning',
-    ProjectCode: 'PROJ-001'
+  Title: 'New Project',
+  ProjectStatus: 'Planning',
+  ProjectCode: 'PROJ-001',
 });
 
 // Update item
 await sp.updateListItem('Projects', newItem.Id, {
-    ProjectStatus: 'Active'
+  ProjectStatus: 'Active',
 });
 
 // Delete item
@@ -484,6 +512,7 @@ await sp.deleteListItem('Projects', newItem.Id);
 ## Best Practices
 
 ### Site Architecture
+
 - Use hub sites for site association
 - Implement flat site structure (avoid deep subsites)
 - Use modern sites over classic
@@ -492,6 +521,7 @@ await sp.deleteListItem('Projects', newItem.Id);
 - Implement proper governance
 
 ### Content Organization
+
 - Use content types for consistency
 - Apply metadata for better findability
 - Implement managed metadata for taxonomy
@@ -500,6 +530,7 @@ await sp.deleteListItem('Projects', newItem.Id);
 - Set up retention and disposal policies
 
 ### Development Standards
+
 - Follow SPFx development guidelines
 - Use PnP libraries for common operations
 - Implement proper error handling
@@ -508,6 +539,7 @@ await sp.deleteListItem('Projects', newItem.Id);
 - Document custom solutions
 
 ### Performance Optimization
+
 - Minimize REST API calls
 - Use batch operations for multiple requests
 - Implement caching strategies
@@ -518,6 +550,7 @@ await sp.deleteListItem('Projects', newItem.Id);
 ## Anti-Patterns
 
 ### Architecture Issues
+
 - Deep site hierarchy (more than 2-3 levels)
 - Over-customization of out-of-box features
 - Using classic sites for new development
@@ -526,6 +559,7 @@ await sp.deleteListItem('Projects', newItem.Id);
 - Mixed modern and classic experiences
 
 ### Development Problems
+
 - Using JSOM in new solutions (use REST or PnP)
 - Hard-coding site URLs
 - No error handling
@@ -534,6 +568,7 @@ await sp.deleteListItem('Projects', newItem.Id);
 - Missing responsive design
 
 ### Content Management Issues
+
 - Using folders instead of metadata
 - Not leveraging content types
 - Poor metadata strategy
@@ -544,24 +579,28 @@ await sp.deleteListItem('Projects', newItem.Id);
 ## Resources
 
 ### Official Documentation
+
 - [SharePoint Documentation](https://docs.microsoft.com/sharepoint/) - Complete guide
 - [SPFx Documentation](https://docs.microsoft.com/sharepoint/dev/spfx/sharepoint-framework-overview) - Framework guide
 - [REST API Reference](https://docs.microsoft.com/sharepoint/dev/sp-add-ins/get-to-know-the-sharepoint-rest-service) - API docs
 - [PnP Documentation](https://pnp.github.io/) - Patterns and practices
 
 ### Learning Platforms
+
 - [Microsoft Learn SharePoint](https://learn.microsoft.com/training/browse/?products=sharepoint) - Training modules
 - [SharePoint Dev Center](https://developer.microsoft.com/sharepoint) - Developer resources
 - [SharePoint Community](https://techcommunity.microsoft.com/t5/sharepoint/ct-p/SharePoint) - Forums
 - [YouTube SharePoint Channel](https://www.youtube.com/sharepoint) - Video tutorials
 
 ### Tools & Resources
+
 - [PnP PowerShell](https://pnp.github.io/powershell/) - Automation cmdlets
 - [PnP JS](https://pnp.github.io/pnpjs/) - JavaScript library
 - [SPFx Yeoman Generator](https://www.npmjs.com/package/@microsoft/generator-sharepoint) - Project scaffolding
 - [SharePoint Online Management Shell](https://www.microsoft.com/download/details.aspx?id=35588) - PowerShell module
 
 ### Community Resources
+
 - [PnP GitHub](https://github.com/pnp) - Sample code and libraries
 - [SharePoint StackExchange](https://sharepoint.stackexchange.com/) - Q&A community
 - [SharePoint User Group](https://www.meetup.com/topics/sharepoint/) - Local meetups
