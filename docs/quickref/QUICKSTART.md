@@ -26,8 +26,8 @@ npm --version   # Should be 10.0.0 or higher
 ## Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/personamanagmentlayer/pcl-lite.git
-cd pcl-lite
+git clone https://github.com/personamanagmentlayer/pcl.git
+cd pcl
 ```
 
 ---
