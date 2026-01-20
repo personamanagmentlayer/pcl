@@ -13,8 +13,8 @@ Complete guide to configuring Visual Studio Code for optimal PCL development exp
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/personamanagmentlayer/pcl-lite.git
-cd pcl-lite
+git clone https://github.com/personamanagmentlayer/pcl.git
+cd pcl
 npm install
 ```
 

@@ -55,11 +55,13 @@ await backend.connect();
 ```
 
 **Pros**:
+
 - Zero configuration
 - Fast (in-memory)
 - Perfect for testing
 
 **Cons**:
+
 - Data lost on restart
 - No persistence
 
@@ -79,12 +81,14 @@ await backend.connect();
 ```
 
 **Pros**:
+
 - File-based persistence
 - No server required
 - FTS5 full-text search
 - Handles 10k-1M artifacts
 
 **Cons**:
+
 - Single-writer limitation
 - Not suitable for high concurrency
 
@@ -109,6 +113,7 @@ await backend.connect();
 ```
 
 **Pros**:
+
 - Production-grade reliability
 - Connection pooling
 - Advanced search (trigram)
@@ -116,6 +121,7 @@ await backend.connect();
 - ACID transactions
 
 **Cons**:
+
 - Requires PostgreSQL server
 - More complex setup
 
@@ -198,7 +204,9 @@ const pythonResult = await registry.find({
 if (pythonResult.ok) {
   console.log(`Found ${pythonResult.value.length} Python personas`);
   for (const persona of pythonResult.value) {
-    console.log(`- ${persona.metadata.name} (${persona.stats.downloads} downloads)`);
+    console.log(
+      `- ${persona.metadata.name} (${persona.stats.downloads} downloads)`
+    );
   }
 }
 
@@ -245,7 +253,10 @@ await registry.update(persona.id, {
 // List all versions
 const versionsResult = await registry.listVersions(persona.id);
 if (versionsResult.ok) {
-  console.log('Versions:', versionsResult.value.map(v => v.version));
+  console.log(
+    'Versions:',
+    versionsResult.value.map((v) => v.version)
+  );
   // Output: ['2.0.0', '1.0.0']
 }
 
@@ -306,7 +317,9 @@ class RedisCache implements ICache {
 }
 
 // Use with registry
-const backend = new PostgreSQLBackend({ /* config */ });
+const backend = new PostgreSQLBackend({
+  /* config */
+});
 const cache = new RedisCache(new Redis());
 
 const registry = new RegistryManager({
@@ -359,8 +372,12 @@ const tx = txResult.value;
 
 try {
   // Multiple operations in transaction
-  const persona1 = await backend.create({ /* ... */ });
-  const persona2 = await backend.create({ /* ... */ });
+  const persona1 = await backend.create({
+    /* ... */
+  });
+  const persona2 = await backend.create({
+    /* ... */
+  });
   const team = await backend.create({
     type: ArtifactType.TEAM,
     metadata: {
@@ -377,7 +394,6 @@ try {
   // Commit if all succeeded
   await tx.commit();
   console.log('Transaction committed');
-
 } catch (error) {
   // Rollback on error
   await tx.rollback();
@@ -455,13 +471,13 @@ const registry = new RegistryManager({
 
 ```typescript
 // Good
-version: '1.0.0'      // Initial release
-version: '1.1.0'      // New features, backward compatible
-version: '2.0.0'      // Breaking changes
+version: '1.0.0'; // Initial release
+version: '1.1.0'; // New features, backward compatible
+version: '2.0.0'; // Breaking changes
 
 // Bad
-version: 'v1'
-version: 'latest'
+version: 'v1';
+version: 'latest';
 ```
 
 ### 3. Handle Errors Properly
@@ -509,14 +525,19 @@ try {
 
 ```typescript
 class CustomRegistryManager extends RegistryManager {
-  async create(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<Artifact>> {
+  async create(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<Artifact>> {
     // Custom validation
     if (artifact.type === ArtifactType.PERSONA) {
       if (!artifact.metadata.skills || artifact.metadata.skills.length === 0) {
         return Err({
           code: 'VALIDATION_ERROR',
           message: 'Personas must have at least one skill',
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -538,7 +559,9 @@ const artifacts = await oldBackend.find({});
 if (!artifacts.ok) throw new Error('Failed to read');
 
 // Import to new backend
-const newBackend = new PostgreSQLBackend({ /* config */ });
+const newBackend = new PostgreSQLBackend({
+  /* config */
+});
 await newBackend.connect();
 
 for (const artifact of artifacts.value) {
@@ -605,6 +628,6 @@ const result = await registry.find({
 
 ## Support
 
-- Issues: https://github.com/personamanagmentlayer/pcl-lite/issues
+- Issues: https://github.com/personamanagmentlayer/pcl/issues
 - Documentation: https://docs.pcl-lang.org
 - Email: support@pcl-lang.org

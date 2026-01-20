@@ -228,12 +228,12 @@ jobs:
 
           ## 📚 Documentation
 
-          - [GitHub Repository](https://github.com/personamanagmentlayer/pcl-lite)
+          - [GitHub Repository](https://github.com/personamanagmentlayer/pcl)
           - [Package on npm](https://www.npmjs.com/package/@pcl/sdk)
 
           ## 🐛 Bug Reports
 
-          Please report issues at: https://github.com/personamanagmentlayer/pcl-lite/issues
+          Please report issues at: https://github.com/personamanagmentlayer/pcl/issues
           EOF
 
           echo "release_notes<<EOF" >> $GITHUB_OUTPUT
@@ -267,4 +267,4 @@ jobs:
           VERSION="${{ needs.validate.outputs.version }}"
           echo "✅ PCL v$VERSION has been successfully released!"
           echo "📦 npm: https://www.npmjs.com/package/@pcl/sdk/v/$VERSION"
-          echo "🐙 GitHub: https://github.com/personamanagmentlayer/pcl-lite/releases/tag/v$VERSION"
+          echo "🐙 GitHub: https://github.com/personamanagmentlayer/pcl/releases/tag/v$VERSION"

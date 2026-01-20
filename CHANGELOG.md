@@ -214,5 +214,5 @@ PCL follows [Semantic Versioning](https://semver.org/):
 
 ---
 
-[Unreleased]: https://github.com/personamanagmentlayer/pcl-lite/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/personamanagmentlayer/pcl-lite/releases/tag/v1.0.0
+[Unreleased]: https://github.com/personamanagmentlayer/pcl/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/personamanagmentlayer/pcl/releases/tag/v1.0.0
