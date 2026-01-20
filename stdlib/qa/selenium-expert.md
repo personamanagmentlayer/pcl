@@ -1,6 +1,23 @@
 ---
 description: Expert in Selenium WebDriver, Selenium Grid, page object model, waits, cross-browser testing, and test automation frameworks
-keywords: [selenium, webdriver, selenium-grid, page-object-model, cross-browser-testing, test-automation, selenium-python]
+tags: ['testing', 'e2e', 'selenium', 'qa', 'automation']
+allowed-tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
+keywords:
+  [
+    selenium,
+    webdriver,
+    selenium-grid,
+    page-object-model,
+    cross-browser-testing,
+    test-automation,
+    selenium-python,
+  ]
 category: qa
 expertise_level: expert
 ---
@@ -10,6 +27,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Selenium Components
+
 - **WebDriver** - Browser automation API
 - **Selenium Grid** - Distributed test execution
 - **IDE** - Record and playback tool
@@ -18,6 +36,7 @@ expertise_level: expert
 - **Actions API** - Complex user interactions
 
 ### Browser Support
+
 - **Chrome/Chromium** - ChromeDriver
 - **Firefox** - GeckoDriver
 - **Safari** - SafariDriver
@@ -26,6 +45,7 @@ expertise_level: expert
 - **Remote** - Selenium Grid execution
 
 ### Advanced Features
+
 - **Page Object Model** - Design pattern
 - **Test Frameworks** - TestNG, JUnit, pytest
 - **Parallel Execution** - Grid and ThreadLocal
@@ -344,15 +364,15 @@ public class LoginTest {
 
 ```yaml
 # docker-compose.yml for Selenium Grid
-version: "3"
+version: '3'
 services:
   selenium-hub:
     image: selenium/hub:latest
     container_name: selenium-hub
     ports:
-      - "4444:4444"
-      - "4442:4442"
-      - "4443:4443"
+      - '4444:4444'
+      - '4442:4442'
+      - '4443:4443'
 
   chrome:
     image: selenium/node-chrome:latest
@@ -364,7 +384,7 @@ services:
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
-      - "5900:5900"
+      - '5900:5900'
 
   firefox:
     image: selenium/node-firefox:latest
@@ -376,7 +396,7 @@ services:
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
-      - "5901:5900"
+      - '5901:5900'
 ```
 
 ```python
@@ -447,6 +467,7 @@ def send_keys_with_modifier(driver, element, text):
 ## Best Practices
 
 ### Locator Strategy
+
 - Prefer ID over other locators
 - Use CSS selectors over XPath
 - Add data-testid attributes
@@ -455,6 +476,7 @@ def send_keys_with_modifier(driver, element, text):
 - Document locator choices
 
 ### Wait Strategy
+
 - Use explicit waits over implicit
 - Set appropriate timeouts
 - Wait for specific conditions
@@ -463,6 +485,7 @@ def send_keys_with_modifier(driver, element, text):
 - Use fluent waits for complex conditions
 
 ### Test Design
+
 - Implement Page Object Model
 - Keep tests independent
 - Use proper test data management
@@ -471,6 +494,7 @@ def send_keys_with_modifier(driver, element, text):
 - Log and screenshot failures
 
 ### Performance
+
 - Reuse browser sessions when possible
 - Use parallel execution
 - Optimize wait times
@@ -481,6 +505,7 @@ def send_keys_with_modifier(driver, element, text):
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Using sleep instead of waits
 - Hard-coded wait times
 - Not handling stale elements
@@ -489,6 +514,7 @@ def send_keys_with_modifier(driver, element, text):
 - No error handling
 
 ### Locator Issues
+
 - Brittle XPath expressions
 - Using absolute XPath
 - Relying on index positions
@@ -497,6 +523,7 @@ def send_keys_with_modifier(driver, element, text):
 - Coupling to UI changes
 
 ### Test Design Problems
+
 - Tests depending on order
 - Shared state between tests
 - No Page Object Model
@@ -507,24 +534,28 @@ def send_keys_with_modifier(driver, element, text):
 ## Resources
 
 ### Official Documentation
+
 - [Selenium Documentation](https://www.selenium.dev/documentation/) - Complete guide
 - [WebDriver API](https://www.selenium.dev/selenium/docs/api/py/) - Python API docs
 - [Selenium Grid](https://www.selenium.dev/documentation/grid/) - Grid guide
 - [Best Practices](https://www.selenium.dev/documentation/test_practices/) - Guidelines
 
 ### Learning Resources
+
 - [Selenium YouTube](https://www.youtube.com/@SeleniumConference) - Conference talks
 - [Test Automation University](https://testautomationu.applitools.com/) - Free courses
 - [Selenium Blog](https://www.selenium.dev/blog/) - Updates and articles
 - [Awesome Selenium](https://github.com/christian-bromann/awesome-selenium) - Resources
 
 ### Tools & Extensions
+
 - [Selenium IDE](https://www.selenium.dev/selenium-ide/) - Record and playback
 - [WebDriver Manager](https://github.com/bonigarcia/webdrivermanager) - Driver management
 - [Selenoid](https://aerokube.com/selenoid/) - Alternative to Grid
 - [Zalenium](https://github.com/zalando/zalenium) - Selenium Grid alternative
 
 ### Community Resources
+
 - [Selenium Forum](https://groups.google.com/g/selenium-users) - Google Group
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/selenium) - Q&A
 - [GitHub Selenium](https://github.com/SeleniumHQ/selenium) - Source code

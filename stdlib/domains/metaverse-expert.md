@@ -1,44 +1,57 @@
 # Metaverse Expert
 
 ---
+
 skill_id: metaverse-expert
 name: Metaverse Expert
-category: domains
-tags: [metaverse, vr, ar, xr, unity, unreal-engine, 3d, virtual-worlds, nft, spatial-computing]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master VR/AR development for immersive experiences
-  - Build virtual worlds using Unity and Unreal Engine
-  - Implement spatial computing and 3D interactions
-  - Integrate blockchain and NFTs in metaverse applications
-  - Optimize performance for real-time 3D rendering
-prerequisites:
-  - Strong C# or C++ programming skills
-  - Understanding of 3D mathematics and graphics
-  - Knowledge of game development principles
-  - Familiarity with XR hardware and SDKs
-outcome: Create production-ready metaverse experiences including VR/AR applications, virtual worlds, social platforms, and blockchain-integrated digital assets
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- WebSearch
+  category: domains
+  tags: [metaverse, vr, ar, xr, unity, unreal-engine, 3d, virtual-worlds, nft, spatial-computing]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master VR/AR development for immersive experiences
+- Build virtual worlds using Unity and Unreal Engine
+- Implement spatial computing and 3D interactions
+- Integrate blockchain and NFTs in metaverse applications
+- Optimize performance for real-time 3D rendering
+  prerequisites:
+- Strong C# or C++ programming skills
+- Understanding of 3D mathematics and graphics
+- Knowledge of game development principles
+- Familiarity with XR hardware and SDKs
+  outcome: Create production-ready metaverse experiences including VR/AR applications, virtual worlds, social platforms, and blockchain-integrated digital assets
+
 ---
 
 ## Core Concepts
 
 ### Extended Reality (XR)
+
 Umbrella term encompassing Virtual Reality (VR), Augmented Reality (AR), and Mixed Reality (MR). VR provides fully immersive digital environments, AR overlays digital content on the real world, and MR blends both seamlessly.
 
 ### Spatial Computing
+
 Technology enabling digital content to interact with three-dimensional space. Includes position tracking, gesture recognition, spatial mapping, and environmental understanding for natural human-computer interaction.
 
 ### Virtual Worlds
+
 Persistent, shared 3D environments where users interact through avatars. Features include real-time multiplayer networking, user-generated content, virtual economies, and social interactions.
 
 ### Digital Assets & NFTs
+
 Unique digital items represented as blockchain tokens (NFTs). Includes virtual land, wearables, art, and in-game items with verifiable ownership and cross-platform interoperability.
 
 ### Metaverse Platforms
+
 Interconnected virtual ecosystems like Decentraland, The Sandbox, Roblox, and VRChat. Each provides tools for creation, social interaction, commerce, and experiences within their virtual worlds.
 
 ## Code Examples
@@ -832,6 +845,7 @@ namespace MetaverseSDK.Networking
 ## Best Practices
 
 ### VR/AR Development
+
 - Maintain consistent 90+ FPS for VR to prevent motion sickness
 - Implement comfort options (teleportation, snap turning, vignette)
 - Use appropriate UI scale and placement (1-3 meters from user)
@@ -841,6 +855,7 @@ namespace MetaverseSDK.Networking
 - Follow platform-specific guidelines (Oculus, SteamVR, ARKit)
 
 ### Performance Optimization
+
 - Use Level of Detail (LOD) systems aggressively
 - Implement occlusion culling and frustum culling
 - Optimize draw calls through batching and instancing
@@ -850,6 +865,7 @@ namespace MetaverseSDK.Networking
 - Use asynchronous loading for large assets
 
 ### Virtual World Design
+
 - Create clear wayfinding and navigation systems
 - Design for scalability (instancing, zone management)
 - Implement anti-griefing and moderation tools
@@ -859,6 +875,7 @@ namespace MetaverseSDK.Networking
 - Consider accessibility features
 
 ### Blockchain Integration
+
 - Verify NFT ownership off-chain when possible
 - Cache blockchain data to reduce API calls
 - Implement fallback for blockchain connectivity issues
@@ -870,6 +887,7 @@ namespace MetaverseSDK.Networking
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Neglecting VR comfort causing motion sickness
 - Poor performance optimization leading to frame drops
 - Overcomplicating UI in 3D space
@@ -880,6 +898,7 @@ namespace MetaverseSDK.Networking
 - Excessive polygon counts in 3D models
 
 ### Design Issues
+
 - Cluttered virtual spaces with too many elements
 - Unclear interaction affordances
 - Lack of onboarding for VR newcomers
@@ -892,6 +911,7 @@ namespace MetaverseSDK.Networking
 ## Resources
 
 ### Game Engines & Tools
+
 - Unity - Leading XR development platform
 - Unreal Engine - High-fidelity 3D engine
 - Blender - Open-source 3D modeling
@@ -900,6 +920,7 @@ namespace MetaverseSDK.Networking
 - Photon/Mirror - Multiplayer networking
 
 ### XR SDKs & Platforms
+
 - Meta Quest SDK - Oculus development
 - SteamVR - Valve's VR platform
 - ARKit - Apple AR framework
@@ -908,6 +929,7 @@ namespace MetaverseSDK.Networking
 - Vuforia - AR development platform
 
 ### Metaverse Platforms
+
 - Decentraland - Ethereum-based virtual world
 - The Sandbox - User-generated content platform
 - Roblox - Social gaming metaverse
@@ -916,6 +938,7 @@ namespace MetaverseSDK.Networking
 - Spatial - AR/VR collaboration platform
 
 ### Learning Resources
+
 - Unity XR Documentation
 - Oculus Developer Resources
 - Unreal Engine XR Guides
@@ -925,4 +948,4 @@ namespace MetaverseSDK.Networking
 
 ---
 
-*Part of the PCL Standard Library - Build immersive experiences for the next generation of the internet.*
+_Part of the PCL Standard Library - Build immersive experiences for the next generation of the internet._

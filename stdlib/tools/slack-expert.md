@@ -1,6 +1,23 @@
 ---
 description: Expert in Slack bot development, Block Kit UI, Events API, slash commands, OAuth flows, and app distribution
-keywords: [slack, slack-bot, block-kit, slack-api, slash-commands, slack-oauth, bot-development]
+tags: ['slack', 'communication', 'collaboration', 'bots', 'api']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - Grep
+  - Glob
+  - WebSearch
+keywords:
+  [
+    slack,
+    slack-bot,
+    block-kit,
+    slack-api,
+    slash-commands,
+    slack-oauth,
+    bot-development,
+  ]
 category: tools
 expertise_level: expert
 ---
@@ -10,6 +27,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Slack Platform
+
 - **Bolt Framework** - Official Slack app framework
 - **Web API** - HTTP-based API methods
 - **Events API** - Real-time event subscriptions
@@ -18,6 +36,7 @@ expertise_level: expert
 - **App Distribution** - App Directory publishing
 
 ### Key Features
+
 - **Slash Commands** - Custom commands (/command)
 - **Interactive Components** - Buttons, menus, modals
 - **Block Kit** - Rich message formatting
@@ -26,6 +45,7 @@ expertise_level: expert
 - **Shortcuts** - Quick actions
 
 ### Development Tools
+
 - **Bolt for JavaScript** - Node.js framework
 - **Bolt for Python** - Python framework
 - **Block Kit Builder** - Visual UI designer
@@ -370,115 +390,116 @@ if __name__ == "__main__":
 ```javascript
 // Rich interactive message
 const complexMessage = {
-    blocks: [
+  blocks: [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: 'Daily Stand-up Report',
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*Project Alpha* - Status Update',
+      },
+    },
+    {
+      type: 'divider',
+    },
+    {
+      type: 'section',
+      fields: [
         {
-            type: 'header',
-            text: {
+          type: 'mrkdwn',
+          text: '*Completed:*\n5 tasks',
+        },
+        {
+          type: 'mrkdwn',
+          text: '*In Progress:*\n3 tasks',
+        },
+        {
+          type: 'mrkdwn',
+          text: '*Blocked:*\n1 task',
+        },
+        {
+          type: 'mrkdwn',
+          text: '*Total:*\n9 tasks',
+        },
+      ],
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*Blockers:*\n• API authentication issues',
+      },
+      accessory: {
+        type: 'image',
+        image_url: 'https://api.example.com/chart.png',
+        alt_text: 'Progress chart',
+      },
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: 'Last updated: <!date^1649876543^{date_short_pretty} at {time}|March 1, 2024>',
+        },
+      ],
+    },
+    {
+      type: 'actions',
+      elements: [
+        {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            text: 'View Details',
+          },
+          style: 'primary',
+          action_id: 'view_details',
+        },
+        {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            text: 'Add Task',
+          },
+          action_id: 'add_task',
+        },
+        {
+          type: 'overflow',
+          options: [
+            {
+              text: {
                 type: 'plain_text',
-                text: 'Daily Stand-up Report'
-            }
-        },
-        {
-            type: 'section',
-            text: {
-                type: 'mrkdwn',
-                text: '*Project Alpha* - Status Update'
-            }
-        },
-        {
-            type: 'divider'
-        },
-        {
-            type: 'section',
-            fields: [
-                {
-                    type: 'mrkdwn',
-                    text: '*Completed:*\n5 tasks'
-                },
-                {
-                    type: 'mrkdwn',
-                    text: '*In Progress:*\n3 tasks'
-                },
-                {
-                    type: 'mrkdwn',
-                    text: '*Blocked:*\n1 task'
-                },
-                {
-                    type: 'mrkdwn',
-                    text: '*Total:*\n9 tasks'
-                }
-            ]
-        },
-        {
-            type: 'section',
-            text: {
-                type: 'mrkdwn',
-                text: '*Blockers:*\n• API authentication issues'
+                text: 'Export Report',
+              },
+              value: 'export',
             },
-            accessory: {
-                type: 'image',
-                image_url: 'https://api.example.com/chart.png',
-                alt_text: 'Progress chart'
-            }
+            {
+              text: {
+                type: 'plain_text',
+                text: 'Share to Channel',
+              },
+              value: 'share',
+            },
+          ],
+          action_id: 'overflow_actions',
         },
-        {
-            type: 'context',
-            elements: [
-                {
-                    type: 'mrkdwn',
-                    text: 'Last updated: <!date^1649876543^{date_short_pretty} at {time}|March 1, 2024>'
-                }
-            ]
-        },
-        {
-            type: 'actions',
-            elements: [
-                {
-                    type: 'button',
-                    text: {
-                        type: 'plain_text',
-                        text: 'View Details'
-                    },
-                    style: 'primary',
-                    action_id: 'view_details'
-                },
-                {
-                    type: 'button',
-                    text: {
-                        type: 'plain_text',
-                        text: 'Add Task'
-                    },
-                    action_id: 'add_task'
-                },
-                {
-                    type: 'overflow',
-                    options: [
-                        {
-                            text: {
-                                type: 'plain_text',
-                                text: 'Export Report'
-                            },
-                            value: 'export'
-                        },
-                        {
-                            text: {
-                                type: 'plain_text',
-                                text: 'Share to Channel'
-                            },
-                            value: 'share'
-                        }
-                    ],
-                    action_id: 'overflow_actions'
-                }
-            ]
-        }
-    ]
+      ],
+    },
+  ],
 };
 ```
 
 ## Best Practices
 
 ### Bot Design
+
 - Use clear, concise commands
 - Provide helpful error messages
 - Implement command validation
@@ -487,6 +508,7 @@ const complexMessage = {
 - Handle errors gracefully
 
 ### UI/UX
+
 - Use Block Kit for rich formatting
 - Provide interactive components
 - Keep modals simple and focused
@@ -495,6 +517,7 @@ const complexMessage = {
 - Make messages scannable
 
 ### Security
+
 - Validate signing secrets
 - Use OAuth for installations
 - Request minimal scopes
@@ -503,6 +526,7 @@ const complexMessage = {
 - Sanitize user input
 
 ### Performance
+
 - Use async/await properly
 - Batch API calls when possible
 - Cache frequently accessed data
@@ -513,6 +537,7 @@ const complexMessage = {
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Not acknowledging interactions quickly
 - Overly complex modal forms
 - Spamming channels with messages
@@ -521,6 +546,7 @@ const complexMessage = {
 - Ignoring rate limits
 
 ### Design Issues
+
 - Too many slash commands
 - Unclear command syntax
 - No help documentation
@@ -529,6 +555,7 @@ const complexMessage = {
 - Missing user feedback
 
 ### Security Problems
+
 - Exposing tokens in code
 - Not validating requests
 - Over-scoped permissions
@@ -539,24 +566,28 @@ const complexMessage = {
 ## Resources
 
 ### Official Documentation
+
 - [Slack API Documentation](https://api.slack.com/) - Complete reference
 - [Bolt Framework](https://slack.dev/bolt-js/) - JavaScript framework
 - [Block Kit](https://api.slack.com/block-kit) - UI framework
 - [App Manifest](https://api.slack.com/reference/manifests) - App configuration
 
 ### Learning Resources
+
 - [Slack Tutorials](https://api.slack.com/tutorials) - Official tutorials
 - [Block Kit Builder](https://app.slack.com/block-kit-builder) - Visual designer
 - [Slack Community](https://api.slack.com/community) - Forums and discussions
 - [YouTube Slack Dev](https://www.youtube.com/@SlackPlatform) - Video tutorials
 
 ### Tools & Libraries
+
 - [Slack CLI](https://api.slack.com/automation/cli) - Command-line tools
 - [slack-ruby-bot](https://github.com/slack-ruby/slack-ruby-bot) - Ruby framework
 - [Slackbot](https://github.com/lins05/slackbot) - Python bot
 - [node-slack-sdk](https://github.com/slackapi/node-slack-sdk) - Node.js SDK
 
 ### Community Resources
+
 - [Slack Platform Blog](https://api.slack.com/blog) - Updates
 - [GitHub Slack](https://github.com/slackapi) - Sample code
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/slack-api) - Q&A

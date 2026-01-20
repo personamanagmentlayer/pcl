@@ -1,6 +1,23 @@
 ---
 description: Expert in Microsoft 365 ecosystem, Power Platform, SharePoint Online, Microsoft Teams, Graph API, and Microsoft 365 administration
-keywords: [microsoft365, m365, power-platform, sharepoint, teams, graph-api, powerapps, power-automate, office365]
+tags: ['microsoft', 'office365', 'm365', 'productivity', 'cloud']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - WebSearch
+keywords:
+  [
+    microsoft365,
+    m365,
+    power-platform,
+    sharepoint,
+    teams,
+    graph-api,
+    powerapps,
+    power-automate,
+    office365,
+  ]
 category: domains
 expertise_level: expert
 ---
@@ -10,6 +27,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Microsoft 365 Services
+
 - **Exchange Online** - Email and calendar services
 - **SharePoint Online** - Document management and collaboration
 - **Microsoft Teams** - Chat, meetings, and collaboration
@@ -18,6 +36,7 @@ expertise_level: expert
 - **Microsoft 365 Apps** - Office applications (Word, Excel, PowerPoint)
 
 ### Power Platform
+
 - **Power Apps** - Custom business applications
 - **Power Automate** - Workflow automation
 - **Power BI** - Business intelligence and analytics
@@ -26,6 +45,7 @@ expertise_level: expert
 - **Connectors** - Integration with external services
 
 ### Graph API
+
 - **Users & Groups** - Identity and access management
 - **Mail & Calendar** - Email and scheduling
 - **Files & Sites** - Document management
@@ -43,198 +63,201 @@ import { Client } from '@microsoft/microsoft-graph-client';
 import { ClientSecretCredential } from '@azure/identity';
 
 class GraphAPIService {
-    private client: Client;
+  private client: Client;
 
-    constructor(tenantId: string, clientId: string, clientSecret: string) {
-        const credential = new ClientSecretCredential(
-            tenantId,
-            clientId,
-            clientSecret
-        );
+  constructor(tenantId: string, clientId: string, clientSecret: string) {
+    const credential = new ClientSecretCredential(
+      tenantId,
+      clientId,
+      clientSecret
+    );
 
-        this.client = Client.initWithMiddleware({
-            authProvider: {
-                getAccessToken: async () => {
-                    const token = await credential.getToken(
-                        'https://graph.microsoft.com/.default'
-                    );
-                    return token.token;
-                }
-            }
+    this.client = Client.initWithMiddleware({
+      authProvider: {
+        getAccessToken: async () => {
+          const token = await credential.getToken(
+            'https://graph.microsoft.com/.default'
+          );
+          return token.token;
+        },
+      },
+    });
+  }
+
+  // Get user information
+  async getUser(userId: string) {
+    try {
+      const user = await this.client
+        .api(`/users/${userId}`)
+        .select('displayName,mail,jobTitle,department')
+        .get();
+
+      return user;
+    } catch (error) {
+      console.error('Error getting user:', error);
+      throw error;
+    }
+  }
+
+  // List user's emails
+  async listEmails(userId: string, top: number = 10) {
+    try {
+      const messages = await this.client
+        .api(`/users/${userId}/messages`)
+        .top(top)
+        .select('subject,from,receivedDateTime,isRead')
+        .orderby('receivedDateTime desc')
+        .get();
+
+      return messages.value;
+    } catch (error) {
+      console.error('Error listing emails:', error);
+      throw error;
+    }
+  }
+
+  // Send email
+  async sendEmail(userId: string, to: string, subject: string, body: string) {
+    const message = {
+      message: {
+        subject: subject,
+        body: {
+          contentType: 'HTML',
+          content: body,
+        },
+        toRecipients: [
+          {
+            emailAddress: {
+              address: to,
+            },
+          },
+        ],
+      },
+    };
+
+    try {
+      await this.client.api(`/users/${userId}/sendMail`).post(message);
+
+      return { success: true };
+    } catch (error) {
+      console.error('Error sending email:', error);
+      throw error;
+    }
+  }
+
+  // Create Teams meeting
+  async createTeamsMeeting(
+    userId: string,
+    subject: string,
+    startTime: Date,
+    endTime: Date
+  ) {
+    const meeting = {
+      subject: subject,
+      start: {
+        dateTime: startTime.toISOString(),
+        timeZone: 'UTC',
+      },
+      end: {
+        dateTime: endTime.toISOString(),
+        timeZone: 'UTC',
+      },
+      isOnlineMeeting: true,
+      onlineMeetingProvider: 'teamsForBusiness',
+    };
+
+    try {
+      const event = await this.client
+        .api(`/users/${userId}/calendar/events`)
+        .post(meeting);
+
+      return event;
+    } catch (error) {
+      console.error('Error creating meeting:', error);
+      throw error;
+    }
+  }
+
+  // Upload file to SharePoint
+  async uploadFileToSharePoint(
+    siteId: string,
+    driveId: string,
+    fileName: string,
+    fileContent: Buffer
+  ) {
+    try {
+      const uploadSession = await this.client
+        .api(
+          `/sites/${siteId}/drives/${driveId}/root:/${fileName}:/createUploadSession`
+        )
+        .post({});
+
+      // Upload file in chunks (for large files)
+      const maxChunkSize = 320 * 1024; // 320 KB
+      let offset = 0;
+
+      while (offset < fileContent.length) {
+        const chunk = fileContent.slice(offset, offset + maxChunkSize);
+        const contentRange = `bytes ${offset}-${offset + chunk.length - 1}/${fileContent.length}`;
+
+        const response = await fetch(uploadSession.uploadUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Range': contentRange,
+            'Content-Length': chunk.length.toString(),
+          },
+          body: chunk,
         });
+
+        offset += chunk.length;
+      }
+
+      return { success: true, fileName };
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
     }
+  }
 
-    // Get user information
-    async getUser(userId: string) {
-        try {
-            const user = await this.client
-                .api(`/users/${userId}`)
-                .select('displayName,mail,jobTitle,department')
-                .get();
+  // Get Teams channels
+  async getTeamsChannels(teamId: string) {
+    try {
+      const channels = await this.client.api(`/teams/${teamId}/channels`).get();
 
-            return user;
-        } catch (error) {
-            console.error('Error getting user:', error);
-            throw error;
-        }
+      return channels.value;
+    } catch (error) {
+      console.error('Error getting channels:', error);
+      throw error;
     }
+  }
 
-    // List user's emails
-    async listEmails(userId: string, top: number = 10) {
-        try {
-            const messages = await this.client
-                .api(`/users/${userId}/messages`)
-                .top(top)
-                .select('subject,from,receivedDateTime,isRead')
-                .orderby('receivedDateTime desc')
-                .get();
+  // Post message to Teams channel
+  async postToChannel(teamId: string, channelId: string, message: string) {
+    const chatMessage = {
+      body: {
+        content: message,
+        contentType: 'html',
+      },
+    };
 
-            return messages.value;
-        } catch (error) {
-            console.error('Error listing emails:', error);
-            throw error;
-        }
+    try {
+      const result = await this.client
+        .api(`/teams/${teamId}/channels/${channelId}/messages`)
+        .post(chatMessage);
+
+      return result;
+    } catch (error) {
+      console.error('Error posting message:', error);
+      throw error;
     }
-
-    // Send email
-    async sendEmail(userId: string, to: string, subject: string, body: string) {
-        const message = {
-            message: {
-                subject: subject,
-                body: {
-                    contentType: 'HTML',
-                    content: body
-                },
-                toRecipients: [
-                    {
-                        emailAddress: {
-                            address: to
-                        }
-                    }
-                ]
-            }
-        };
-
-        try {
-            await this.client
-                .api(`/users/${userId}/sendMail`)
-                .post(message);
-
-            return { success: true };
-        } catch (error) {
-            console.error('Error sending email:', error);
-            throw error;
-        }
-    }
-
-    // Create Teams meeting
-    async createTeamsMeeting(userId: string, subject: string, startTime: Date, endTime: Date) {
-        const meeting = {
-            subject: subject,
-            start: {
-                dateTime: startTime.toISOString(),
-                timeZone: 'UTC'
-            },
-            end: {
-                dateTime: endTime.toISOString(),
-                timeZone: 'UTC'
-            },
-            isOnlineMeeting: true,
-            onlineMeetingProvider: 'teamsForBusiness'
-        };
-
-        try {
-            const event = await this.client
-                .api(`/users/${userId}/calendar/events`)
-                .post(meeting);
-
-            return event;
-        } catch (error) {
-            console.error('Error creating meeting:', error);
-            throw error;
-        }
-    }
-
-    // Upload file to SharePoint
-    async uploadFileToSharePoint(
-        siteId: string,
-        driveId: string,
-        fileName: string,
-        fileContent: Buffer
-    ) {
-        try {
-            const uploadSession = await this.client
-                .api(`/sites/${siteId}/drives/${driveId}/root:/${fileName}:/createUploadSession`)
-                .post({});
-
-            // Upload file in chunks (for large files)
-            const maxChunkSize = 320 * 1024; // 320 KB
-            let offset = 0;
-
-            while (offset < fileContent.length) {
-                const chunk = fileContent.slice(offset, offset + maxChunkSize);
-                const contentRange = `bytes ${offset}-${offset + chunk.length - 1}/${fileContent.length}`;
-
-                const response = await fetch(uploadSession.uploadUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Range': contentRange,
-                        'Content-Length': chunk.length.toString()
-                    },
-                    body: chunk
-                });
-
-                offset += chunk.length;
-            }
-
-            return { success: true, fileName };
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            throw error;
-        }
-    }
-
-    // Get Teams channels
-    async getTeamsChannels(teamId: string) {
-        try {
-            const channels = await this.client
-                .api(`/teams/${teamId}/channels`)
-                .get();
-
-            return channels.value;
-        } catch (error) {
-            console.error('Error getting channels:', error);
-            throw error;
-        }
-    }
-
-    // Post message to Teams channel
-    async postToChannel(teamId: string, channelId: string, message: string) {
-        const chatMessage = {
-            body: {
-                content: message,
-                contentType: 'html'
-            }
-        };
-
-        try {
-            const result = await this.client
-                .api(`/teams/${teamId}/channels/${channelId}/messages`)
-                .post(chatMessage);
-
-            return result;
-        } catch (error) {
-            console.error('Error posting message:', error);
-            throw error;
-        }
-    }
+  }
 }
 
 // Usage
 const graphService = new GraphAPIService(
-    'your-tenant-id',
-    'your-client-id',
-    'your-client-secret'
+  'your-tenant-id',
+  'your-client-id',
+  'your-client-secret'
 );
 
 // Get user
@@ -243,10 +266,10 @@ console.log('User:', user.displayName);
 
 // Send email
 await graphService.sendEmail(
-    'user@domain.com',
-    'recipient@domain.com',
-    'Hello from Graph API',
-    '<h1>Hello!</h1><p>This is a test email.</p>'
+  'user@domain.com',
+  'recipient@domain.com',
+  'Hello from Graph API',
+  '<h1>Hello!</h1><p>This is a test email.</p>'
 );
 ```
 
@@ -517,6 +540,7 @@ Navigate(
 ## Best Practices
 
 ### Microsoft 365 Administration
+
 - Implement multi-factor authentication (MFA)
 - Use conditional access policies
 - Regular security audits and compliance reviews
@@ -525,6 +549,7 @@ Navigate(
 - Monitor usage analytics
 
 ### Power Platform Development
+
 - Follow naming conventions for apps and flows
 - Implement proper error handling
 - Use environment variables for configuration
@@ -533,6 +558,7 @@ Navigate(
 - Use connections securely
 
 ### Graph API Integration
+
 - Use application permissions appropriately
 - Implement proper token caching
 - Handle rate limiting and throttling
@@ -541,6 +567,7 @@ Navigate(
 - Log API calls for troubleshooting
 
 ### SharePoint Best Practices
+
 - Use modern sites over classic
 - Implement proper information architecture
 - Use content types for consistency
@@ -551,6 +578,7 @@ Navigate(
 ## Anti-Patterns
 
 ### Configuration Issues
+
 - Over-privileged service accounts
 - Sharing sensitive data externally without controls
 - No backup or disaster recovery plan
@@ -559,6 +587,7 @@ Navigate(
 - No usage monitoring
 
 ### Development Problems
+
 - Hard-coded credentials in flows
 - Overly complex Power Apps formulas
 - Missing error handling in automations
@@ -567,6 +596,7 @@ Navigate(
 - Poor documentation
 
 ### Performance Issues
+
 - Large attachments in emails
 - Inefficient SharePoint queries
 - Too many API calls
@@ -577,24 +607,28 @@ Navigate(
 ## Resources
 
 ### Official Documentation
+
 - [Microsoft 365 Documentation](https://docs.microsoft.com/microsoft-365/) - Complete guide
 - [Graph API Reference](https://docs.microsoft.com/graph/) - API documentation
 - [Power Platform Documentation](https://docs.microsoft.com/power-platform/) - Low-code platforms
 - [SharePoint Documentation](https://docs.microsoft.com/sharepoint/) - SharePoint guide
 
 ### Learning Platforms
+
 - [Microsoft Learn](https://learn.microsoft.com/) - Free training paths
 - [Power Platform Learning](https://powerapps.microsoft.com/learn/) - Power Platform courses
 - [Microsoft 365 Training](https://support.microsoft.com/training) - End-user training
 - [Microsoft Virtual Training Days](https://www.microsoft.com/trainingdays) - Live training
 
 ### Tools & Resources
+
 - [Graph Explorer](https://developer.microsoft.com/graph/graph-explorer) - Test Graph API
 - [PnP PowerShell](https://pnp.github.io/powershell/) - SharePoint automation
 - [Power Platform CLI](https://docs.microsoft.com/power-platform/developer/cli/introduction) - Command-line tools
 - [SharePoint PnP](https://pnp.github.io/) - Patterns and practices
 
 ### Community Resources
+
 - [Microsoft 365 Community](https://techcommunity.microsoft.com/t5/microsoft-365/ct-p/microsoft365) - Forums
 - [Power Platform Community](https://powerusers.microsoft.com/) - Power users forum
 - [Microsoft 365 Blog](https://www.microsoft.com/microsoft-365/blog/) - Product updates

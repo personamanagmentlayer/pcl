@@ -1,6 +1,22 @@
 ---
 description: Expert in chaos engineering principles, failure injection, resilience testing, Chaos Monkey, Gremlin, and building fault-tolerant systems
-keywords: [chaos-engineering, failure-injection, resilience-testing, chaos-monkey, gremlin, fault-tolerance, site-reliability]
+tags: ['chaos-engineering', 'reliability', 'testing', 'sre', 'resilience']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - Grep
+  - Glob
+keywords:
+  [
+    chaos-engineering,
+    failure-injection,
+    resilience-testing,
+    chaos-monkey,
+    gremlin,
+    fault-tolerance,
+    site-reliability,
+  ]
 category: qa
 expertise_level: expert
 ---
@@ -10,6 +26,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Chaos Engineering Principles
+
 - **Hypothesis-Driven** - Define expected system behavior
 - **Production Testing** - Test in real environments
 - **Minimize Blast Radius** - Start small, expand gradually
@@ -18,6 +35,7 @@ expertise_level: expert
 - **Observability** - Monitor system behavior
 
 ### Failure Types
+
 - **Network Failures** - Latency, packet loss, partitions
 - **Resource Exhaustion** - CPU, memory, disk
 - **Service Failures** - Process crashes, unavailability
@@ -26,6 +44,7 @@ expertise_level: expert
 - **Dependency Failures** - Third-party service outages
 
 ### Tools & Platforms
+
 - **Chaos Monkey** - Netflix's random termination tool
 - **Gremlin** - Enterprise chaos engineering platform
 - **Chaos Toolkit** - Open-source chaos experiments
@@ -44,74 +63,74 @@ title: Service Resilience Under Load
 description: Test service behavior when database becomes unavailable
 
 configuration:
-    service_url: https://api.example.com
-    health_endpoint: /health
+  service_url: https://api.example.com
+  health_endpoint: /health
 
 steady-state-hypothesis:
-    title: Service is healthy and responsive
-    probes:
-        - name: service-is-available
-          type: probe
-          provider:
-              type: http
-              url: ${service_url}${health_endpoint}
-              timeout: 5
-          tolerance: 200
+  title: Service is healthy and responsive
+  probes:
+    - name: service-is-available
+      type: probe
+      provider:
+        type: http
+        url: ${service_url}${health_endpoint}
+        timeout: 5
+      tolerance: 200
 
-        - name: response-time-acceptable
-          type: probe
-          provider:
-              type: http
-              url: ${service_url}/api/users
-              timeout: 2
-          tolerance:
-              type: probe
-              status: 200
+    - name: response-time-acceptable
+      type: probe
+      provider:
+        type: http
+        url: ${service_url}/api/users
+        timeout: 2
+      tolerance:
+        type: probe
+        status: 200
 
 method:
-    - type: action
-      name: introduce-database-latency
-      provider:
-          type: python
-          module: chaosaws.rds.actions
-          func: inject_db_latency
-          arguments:
-              db_identifier: production-db
-              latency_ms: 2000
-              duration: 60
+  - type: action
+    name: introduce-database-latency
+    provider:
+      type: python
+      module: chaosaws.rds.actions
+      func: inject_db_latency
+      arguments:
+        db_identifier: production-db
+        latency_ms: 2000
+        duration: 60
 
-    - type: probe
-      name: check-error-rate
-      provider:
-          type: http
-          url: ${service_url}/metrics
-      tolerance:
-          type: jsonpath
-          path: $.error_rate
-          expect: less_than(0.05)
+  - type: probe
+    name: check-error-rate
+    provider:
+      type: http
+      url: ${service_url}/metrics
+    tolerance:
+      type: jsonpath
+      path: $.error_rate
+      expect: less_than(0.05)
 
-    - type: action
-      name: terminate-random-instance
-      provider:
-          type: python
-          module: chaosaws.ec2.actions
-          func: terminate_instances
-          arguments:
-              filters: [{"Name": "tag:Service", "Values": ["api"]}]
-              az: us-east-1a
+  - type: action
+    name: terminate-random-instance
+    provider:
+      type: python
+      module: chaosaws.ec2.actions
+      func: terminate_instances
+      arguments:
+        filters: [{ 'Name': 'tag:Service', 'Values': ['api'] }]
+        az: us-east-1a
 
-    - type: pause
-      duration: 30
+  - type: pause
+    duration: 30
 
 rollbacks:
-    - type: action
-      name: restore-database-performance
-      provider:
-          type: python
-          module: chaosaws.rds.actions
-          func: remove_db_latency
-          arguments:
-              db_identifier: production-db
+  - type: action
+    name: restore-database-performance
+    provider:
+      type: python
+      module: chaosaws.rds.actions
+      func: remove_db_latency
+      arguments:
+        db_identifier: production-db
 ```
 
 ### Gremlin Attack Scenarios
@@ -416,6 +435,7 @@ spec:
 ## Best Practices
 
 ### Experiment Design
+
 - Start with hypothesis
 - Define steady-state metrics
 - Begin with small blast radius
@@ -424,6 +444,7 @@ spec:
 - Document learnings
 
 ### Safety Measures
+
 - Implement circuit breakers
 - Set up monitoring/alerting
 - Have rollback procedures
@@ -432,6 +453,7 @@ spec:
 - Get stakeholder buy-in
 
 ### Observability
+
 - Monitor golden signals
 - Track error rates
 - Measure latency (p50, p95, p99)
@@ -440,6 +462,7 @@ spec:
 - Correlate metrics
 
 ### Culture
+
 - Foster blameless culture
 - Share learnings openly
 - Make chaos regular practice
@@ -450,6 +473,7 @@ spec:
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Testing in production without preparation
 - No rollback plan
 - Ignoring blast radius
@@ -458,6 +482,7 @@ spec:
 - Blaming teams for failures
 
 ### Experiment Design Issues
+
 - No clear hypothesis
 - Undefined success criteria
 - Too broad scope initially
@@ -466,6 +491,7 @@ spec:
 - Poor documentation
 
 ### Cultural Problems
+
 - Blame-focused culture
 - Resistance to controlled failure
 - Lack of stakeholder support
@@ -476,24 +502,28 @@ spec:
 ## Resources
 
 ### Official Documentation
+
 - [Principles of Chaos Engineering](https://principlesofchaos.org/) - Core principles
 - [Chaos Toolkit](https://chaostoolkit.org/reference/api/experiment/) - Tool docs
 - [Gremlin Documentation](https://www.gremlin.com/docs/) - Platform guide
 - [Litmus Documentation](https://docs.litmuschaos.io/) - Kubernetes chaos
 
 ### Learning Resources
+
 - [Chaos Engineering Book](https://www.oreilly.com/library/view/chaos-engineering/9781492043867/) - O'Reilly
 - [Google SRE Book](https://sre.google/sre-book/table-of-contents/) - SRE practices
 - [Awesome Chaos Engineering](https://github.com/dastergon/awesome-chaos-engineering) - Resources
 - [Chaos Engineering YouTube](https://www.youtube.com/results?search_query=chaos+engineering) - Videos
 
 ### Tools & Platforms
+
 - [Chaos Monkey](https://netflix.github.io/chaosmonkey/) - Netflix tool
 - [Gremlin Free](https://www.gremlin.com/community) - Free tier
 - [Chaos Mesh](https://chaos-mesh.org/) - Kubernetes platform
 - [Toxiproxy](https://github.com/Shopify/toxiproxy) - Network simulator
 
 ### Community Resources
+
 - [Chaos Engineering Slack](https://chaos-community.slack.com/) - Community
 - [Reddit SRE](https://www.reddit.com/r/sre/) - Discussions
 - [Chaos Conf](https://www.chaosconf.io/) - Annual conference

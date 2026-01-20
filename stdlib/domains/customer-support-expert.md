@@ -1,44 +1,56 @@
 # Customer Support Expert
 
 ---
+
 skill_id: customer-support-expert
 name: Customer Support Expert
-category: domains
-tags: [support, helpdesk, ticketing, customer-service, knowledge-base, sla, service-desk, customer-success]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master helpdesk and ticketing systems
-  - Understand SLA management and escalation processes
-  - Implement knowledge base and self-service solutions
-  - Apply customer satisfaction measurement and analytics
-  - Navigate omnichannel support operations
-prerequisites:
-  - Understanding of customer service principles
-  - Knowledge of ITIL or service desk frameworks
-  - Familiarity with support workflows and processes
-  - Experience with customer communication channels
-outcome: Build comprehensive customer support systems including ticketing, knowledge management, SLA tracking, and customer satisfaction analytics
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [support, helpdesk, ticketing, customer-service, knowledge-base, sla, service-desk, customer-success]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master helpdesk and ticketing systems
+- Understand SLA management and escalation processes
+- Implement knowledge base and self-service solutions
+- Apply customer satisfaction measurement and analytics
+- Navigate omnichannel support operations
+  prerequisites:
+- Understanding of customer service principles
+- Knowledge of ITIL or service desk frameworks
+- Familiarity with support workflows and processes
+- Experience with customer communication channels
+  outcome: Build comprehensive customer support systems including ticketing, knowledge management, SLA tracking, and customer satisfaction analytics
+
 ---
 
 ## Core Concepts
 
 ### Helpdesk & Ticketing Systems
+
 Centralized platforms for managing customer inquiries, tracking issues through resolution, automating workflows, and maintaining complete interaction history across support channels.
 
 ### SLA Management
+
 Service Level Agreement tracking that defines and monitors response and resolution times, escalation procedures, and ensures contractual support commitments are met.
 
 ### Knowledge Base Management
+
 Self-service repositories containing articles, FAQs, troubleshooting guides, and documentation that enable customers to resolve issues independently and support agents to find answers quickly.
 
 ### Customer Satisfaction Measurement
+
 Systems for collecting feedback through surveys (CSAT, NPS, CES), analyzing sentiment, tracking trends, and identifying improvement opportunities in support quality.
 
 ### Omnichannel Support
+
 Unified support experience across multiple channels (email, chat, phone, social media, mobile) with consistent information and seamless transitions between channels.
 
 ## Code Examples
@@ -578,6 +590,7 @@ class CustomerSatisfactionTracker:
 ## Best Practices
 
 ### Ticketing System
+
 - Use clear ticket categorization and tagging
 - Implement automated ticket routing and assignment
 - Set realistic SLAs based on priority and customer tier
@@ -587,6 +600,7 @@ class CustomerSatisfactionTracker:
 - Regular ticket queue monitoring
 
 ### SLA Management
+
 - Define measurable service level objectives
 - Monitor SLA compliance in real-time
 - Set up alerts for at-risk tickets
@@ -596,6 +610,7 @@ class CustomerSatisfactionTracker:
 - Build in buffer time for complex issues
 
 ### Knowledge Base
+
 - Keep articles current and accurate
 - Use clear, simple language
 - Include screenshots and videos
@@ -606,6 +621,7 @@ class CustomerSatisfactionTracker:
 - Make KB searchable and accessible
 
 ### Customer Satisfaction
+
 - Send surveys at appropriate times
 - Keep surveys short and focused
 - Act on feedback systematically
@@ -617,6 +633,7 @@ class CustomerSatisfactionTracker:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Slow response times without acknowledgment
 - Inconsistent information across channels
 - Agents working from outdated knowledge
@@ -627,6 +644,7 @@ class CustomerSatisfactionTracker:
 - Not tracking support metrics
 
 ### Common Mistakes
+
 - Over-promising and under-delivering on SLAs
 - Treating all tickets equally regardless of impact
 - Closing tickets without customer confirmation
@@ -638,6 +656,7 @@ class CustomerSatisfactionTracker:
 ## Resources
 
 ### Support Platforms
+
 - Zendesk - Popular helpdesk solution
 - Freshdesk - Modern support platform
 - ServiceNow - Enterprise service management
@@ -646,11 +665,13 @@ class CustomerSatisfactionTracker:
 - Jira Service Management - ITSM platform
 
 ### Frameworks
+
 - ITIL (Information Technology Infrastructure Library)
 - HDI Support Center Certification
 - Customer Service Institute standards
 
 ### Learning Resources
+
 - Zendesk Customer Service Training
 - HDI (Help Desk Institute) certification
 - ICMI (International Customer Management Institute)
@@ -658,4 +679,4 @@ class CustomerSatisfactionTracker:
 
 ---
 
-*Part of the PCL Standard Library - Master customer support technology and deliver exceptional service experiences.*
+_Part of the PCL Standard Library - Master customer support technology and deliver exceptional service experiences._

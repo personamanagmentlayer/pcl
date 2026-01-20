@@ -1,44 +1,56 @@
 # HR Tech Expert
 
 ---
+
 skill_id: hr-tech-expert
 name: HR Tech Expert
-category: domains
-tags: [hr, hris, recruitment, ats, payroll, performance-management, employee-engagement, talent-management]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master HRIS and talent management systems
-  - Understand recruitment and applicant tracking systems
-  - Implement performance management solutions
-  - Apply payroll and benefits administration technology
-  - Navigate employee engagement and analytics platforms
-prerequisites:
-  - Understanding of HR processes and workflows
-  - Knowledge of employment law and compliance
-  - Familiarity with data privacy regulations
-  - Experience with enterprise software systems
-outcome: Build comprehensive HR technology solutions including HRIS implementation, recruitment automation, performance management, and employee analytics
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [hr, hris, recruitment, ats, payroll, performance-management, employee-engagement, talent-management]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master HRIS and talent management systems
+- Understand recruitment and applicant tracking systems
+- Implement performance management solutions
+- Apply payroll and benefits administration technology
+- Navigate employee engagement and analytics platforms
+  prerequisites:
+- Understanding of HR processes and workflows
+- Knowledge of employment law and compliance
+- Familiarity with data privacy regulations
+- Experience with enterprise software systems
+  outcome: Build comprehensive HR technology solutions including HRIS implementation, recruitment automation, performance management, and employee analytics
+
 ---
 
 ## Core Concepts
 
 ### HRIS (Human Resource Information Systems)
+
 Core systems that maintain employee data, organizational structure, job information, compensation, and provide foundation for all HR processes and reporting.
 
 ### Applicant Tracking Systems (ATS)
+
 Recruitment platforms that manage job postings, candidate applications, interview scheduling, hiring workflows, and provide candidate relationship management.
 
 ### Performance Management
+
 Systems for goal setting, continuous feedback, performance reviews, 360-degree assessments, and development planning that align individual and organizational objectives.
 
 ### Payroll & Benefits Administration
+
 Automated systems for calculating compensation, processing payroll, managing benefits enrollment, tracking time and attendance, and ensuring compliance.
 
 ### Employee Engagement
+
 Platforms for measuring employee satisfaction, conducting surveys, gathering feedback, recognizing achievements, and improving workplace culture.
 
 ## Code Examples
@@ -533,6 +545,7 @@ class PerformanceManagementSystem:
 ## Best Practices
 
 ### HRIS Implementation
+
 - Maintain single source of truth for employee data
 - Implement strong data privacy and security controls
 - Use role-based access with principle of least privilege
@@ -541,6 +554,7 @@ class PerformanceManagementSystem:
 - Regular data quality audits and cleanup
 
 ### Recruitment
+
 - Use structured interview processes
 - Implement candidate relationship management
 - Track source effectiveness and ROI
@@ -549,6 +563,7 @@ class PerformanceManagementSystem:
 - Monitor diversity and inclusion metrics
 
 ### Performance Management
+
 - Align individual goals with company objectives
 - Encourage continuous feedback, not just annual reviews
 - Use calibration sessions for rating consistency
@@ -557,6 +572,7 @@ class PerformanceManagementSystem:
 - Enable peer and 360-degree feedback
 
 ### Employee Engagement
+
 - Conduct regular pulse surveys
 - Act on feedback with visible changes
 - Track employee Net Promoter Score (eNPS)
@@ -567,6 +583,7 @@ class PerformanceManagementSystem:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Siloed HR systems without integration
 - Manual data entry across multiple systems
 - Inadequate data security and privacy controls
@@ -577,6 +594,7 @@ class PerformanceManagementSystem:
 - Ignoring compliance requirements
 
 ### Common Mistakes
+
 - Over-customization of vendor systems
 - Insufficient change management
 - Inadequate training for HR staff and employees
@@ -588,6 +606,7 @@ class PerformanceManagementSystem:
 ## Resources
 
 ### HR Tech Platforms
+
 - Workday - Enterprise HRIS and talent management
 - SAP SuccessFactors - Comprehensive HR suite
 - BambooHR - SMB-focused HR platform
@@ -597,12 +616,14 @@ class PerformanceManagementSystem:
 - Culture Amp - Employee engagement
 
 ### Industry Standards
+
 - SHRM (Society for Human Resource Management)
 - HR Open Standards
 - GDPR compliance for employee data
 - EEO/AAP reporting requirements
 
 ### Learning Resources
+
 - HR Technology Conference
 - SHRM Annual Conference
 - HR Executive resources
@@ -610,4 +631,4 @@ class PerformanceManagementSystem:
 
 ---
 
-*Part of the PCL Standard Library - Master HR technology systems and digital transformation in human capital management.*
+_Part of the PCL Standard Library - Master HR technology systems and digital transformation in human capital management._

@@ -1,44 +1,56 @@
 # E-Learning Expert
 
 ---
+
 skill_id: e-learning-expert
 name: E-Learning Expert
-category: domains
-tags: [e-learning, lms, online-education, course-management, student-engagement, assessment, edtech, learning-analytics]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master learning management systems (LMS)
-  - Understand course creation and content delivery
-  - Implement student engagement and assessment systems
-  - Apply learning analytics and progress tracking
-  - Navigate adaptive learning and personalization
-prerequisites:
-  - Understanding of educational principles and pedagogy
-  - Knowledge of instructional design models
-  - Familiarity with multimedia content creation
-  - Experience with online learning platforms
-outcome: Build comprehensive e-learning solutions including course management, student engagement, assessment systems, and learning analytics
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [e-learning, lms, online-education, course-management, student-engagement, assessment, edtech, learning-analytics]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master learning management systems (LMS)
+- Understand course creation and content delivery
+- Implement student engagement and assessment systems
+- Apply learning analytics and progress tracking
+- Navigate adaptive learning and personalization
+  prerequisites:
+- Understanding of educational principles and pedagogy
+- Knowledge of instructional design models
+- Familiarity with multimedia content creation
+- Experience with online learning platforms
+  outcome: Build comprehensive e-learning solutions including course management, student engagement, assessment systems, and learning analytics
+
 ---
 
 ## Core Concepts
 
 ### Learning Management Systems (LMS)
+
 Platforms that deliver, track, and manage educational content, supporting course creation, student enrollment, progress tracking, and assessment with comprehensive reporting capabilities.
 
 ### Course Design & Content Delivery
+
 Structured approach to creating engaging learning experiences using instructional design principles, multimedia content, interactive elements, and various delivery formats (video, text, interactive).
 
 ### Student Engagement & Collaboration
+
 Tools and strategies to maintain learner motivation including discussion forums, peer collaboration, gamification, social learning, and interactive activities that promote active learning.
 
 ### Assessment & Evaluation
+
 Systems for measuring learning outcomes through quizzes, assignments, projects, and automated grading with feedback mechanisms to support formative and summative assessment.
 
 ### Learning Analytics
+
 Data-driven insights into student performance, engagement patterns, completion rates, and learning effectiveness to optimize course design and provide personalized interventions.
 
 ## Code Examples
@@ -682,6 +694,7 @@ class LearningAnalytics:
 ## Best Practices
 
 ### Course Design
+
 - Follow instructional design models (ADDIE, SAM)
 - Chunk content into digestible modules
 - Include varied content types for different learning styles
@@ -691,6 +704,7 @@ class LearningAnalytics:
 - Design for accessibility (WCAG compliance)
 
 ### Student Engagement
+
 - Use multimedia and interactive content
 - Implement discussion forums and peer interaction
 - Provide timely feedback on assessments
@@ -700,6 +714,7 @@ class LearningAnalytics:
 - Offer multiple paths through content
 
 ### Assessment
+
 - Align assessments with learning objectives
 - Use varied assessment types
 - Provide immediate feedback on quizzes
@@ -709,6 +724,7 @@ class LearningAnalytics:
 - Track assessment analytics
 
 ### Learning Analytics
+
 - Monitor engagement and completion metrics
 - Identify at-risk students early
 - Track time-on-task and effort
@@ -720,6 +736,7 @@ class LearningAnalytics:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Content dumps without structure
 - Passive video-only courses
 - No interaction or engagement
@@ -730,6 +747,7 @@ class LearningAnalytics:
 - Poor mobile experience
 
 ### Common Mistakes
+
 - Overloading courses with content
 - Unclear learning objectives
 - Inconsistent grading criteria
@@ -742,6 +760,7 @@ class LearningAnalytics:
 ## Resources
 
 ### LMS Platforms
+
 - Canvas - Open-source LMS
 - Moodle - Popular open-source platform
 - Blackboard - Enterprise LMS
@@ -750,18 +769,21 @@ class LearningAnalytics:
 - TalentLMS - Cloud-based solution
 
 ### Content Creation Tools
+
 - Articulate Storyline - E-learning authoring
 - Adobe Captivate - Interactive courses
 - Camtasia - Video editing
 - H5P - Interactive content
 
 ### Standards
+
 - SCORM - Content packaging standard
 - xAPI (Tin Can API) - Learning data standard
 - LTI - Learning Tools Interoperability
 - QM Standards - Quality Matters rubric
 
 ### Learning Resources
+
 - Instructional Design Central
 - eLearning Industry publications
 - ATD (Association for Talent Development)
@@ -769,4 +791,4 @@ class LearningAnalytics:
 
 ---
 
-*Part of the PCL Standard Library - Master e-learning technology and create engaging online educational experiences.*
+_Part of the PCL Standard Library - Master e-learning technology and create engaging online educational experiences._

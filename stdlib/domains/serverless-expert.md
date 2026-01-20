@@ -1,44 +1,58 @@
 # Serverless Expert
 
 ---
+
 skill_id: serverless-expert
 name: Serverless Expert
-category: domains
-tags: [serverless, faas, lambda, azure-functions, event-driven, cloud-native, microservices, api-gateway]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master serverless architecture patterns and best practices
-  - Build event-driven systems with AWS Lambda and Azure Functions
-  - Implement Function-as-a-Service (FaaS) applications
-  - Design for cold starts and optimization strategies
-  - Integrate serverless with API Gateway and event sources
-prerequisites:
-  - Strong cloud platform knowledge (AWS/Azure/GCP)
-  - Understanding of event-driven architectures
-  - Knowledge of microservices patterns
-  - Familiarity with Infrastructure as Code
-outcome: Design and implement production-grade serverless applications with optimal performance, cost efficiency, and scalability
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- Grep
+- Glob
+  category: domains
+  tags: [serverless, faas, lambda, azure-functions, event-driven, cloud-native, microservices, api-gateway]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master serverless architecture patterns and best practices
+- Build event-driven systems with AWS Lambda and Azure Functions
+- Implement Function-as-a-Service (FaaS) applications
+- Design for cold starts and optimization strategies
+- Integrate serverless with API Gateway and event sources
+  prerequisites:
+- Strong cloud platform knowledge (AWS/Azure/GCP)
+- Understanding of event-driven architectures
+- Knowledge of microservices patterns
+- Familiarity with Infrastructure as Code
+  outcome: Design and implement production-grade serverless applications with optimal performance, cost efficiency, and scalability
+
 ---
 
 ## Core Concepts
 
 ### Function-as-a-Service (FaaS)
+
 Cloud computing model where functions execute in response to events without managing servers. Platform automatically provisions, scales, and manages infrastructure based on demand.
 
 ### Event-Driven Architecture
+
 Design paradigm where functions react to events from various sources (HTTP requests, database changes, file uploads, queues). Enables loose coupling and scalability.
 
 ### Cold Starts & Warm Starts
+
 Cold start occurs when function executes for first time or after idle period, requiring initialization. Warm starts reuse existing execution environment for faster response times.
 
 ### Serverless Orchestration
+
 Coordination of multiple serverless functions in workflows using services like AWS Step Functions or Azure Durable Functions. Enables complex business logic across distributed functions.
 
 ### Serverless Security
+
 Security considerations including IAM roles, function permissions, API authentication, secrets management, and VPC networking for serverless workloads.
 
 ## Code Examples
@@ -399,14 +413,14 @@ provider:
             - dynamodb:DeleteItem
           Resource:
             - !GetAtt OrdersTable.Arn
-            - !Sub "${OrdersTable.Arn}/index/*"
+            - !Sub '${OrdersTable.Arn}/index/*'
 
         - Effect: Allow
           Action:
             - s3:GetObject
             - s3:PutObject
           Resource:
-            - !Sub "${OrdersBucket.Arn}/*"
+            - !Sub '${OrdersBucket.Arn}/*'
 
         - Effect: Allow
           Action:
@@ -418,7 +432,7 @@ provider:
           Action:
             - lambda:InvokeFunction
           Resource:
-            - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*"
+            - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
 
   # Environment variables
   environment:
@@ -537,7 +551,7 @@ functions:
     timeout: 300
     events:
       - schedule:
-          rate: cron(0 2 * * ? *)  # Daily at 2 AM UTC
+          rate: cron(0 2 * * ? *) # Daily at 2 AM UTC
           enabled: true
           input:
             action: cleanup
@@ -612,7 +626,7 @@ resources:
       Properties:
         QueueName: ${self:service}-queue-${self:provider.stage}
         VisibilityTimeout: 180
-        MessageRetentionPeriod: 1209600  # 14 days
+        MessageRetentionPeriod: 1209600 # 14 days
         RedrivePolicy:
           deadLetterTargetArn: !GetAtt OrderDLQ.Arn
           maxReceiveCount: 3
@@ -622,7 +636,7 @@ resources:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: ${self:service}-dlq-${self:provider.stage}
-        MessageRetentionPeriod: 1209600  # 14 days
+        MessageRetentionPeriod: 1209600 # 14 days
 
     # API Gateway authorizer
     ApiAuthorizer:
@@ -673,6 +687,7 @@ custom:
 ## Best Practices
 
 ### Function Design
+
 - Keep functions small and single-purpose
 - Design for idempotency to handle retries safely
 - Use environment variables for configuration
@@ -682,6 +697,7 @@ custom:
 - Minimize cold start impact with provisioned concurrency
 
 ### Performance Optimization
+
 - Reuse connections and clients outside handler
 - Use connection pooling for databases
 - Minimize package size and dependencies
@@ -691,6 +707,7 @@ custom:
 - Implement caching strategies
 
 ### Event-Driven Patterns
+
 - Use dead letter queues for failed events
 - Implement exponential backoff for retries
 - Design for eventual consistency
@@ -700,6 +717,7 @@ custom:
 - Use fan-out patterns for parallel processing
 
 ### Cost Optimization
+
 - Right-size memory allocation
 - Use reserved concurrency carefully
 - Implement request throttling
@@ -711,6 +729,7 @@ custom:
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Long-running functions exceeding timeout limits
 - Not handling cold starts appropriately
 - Synchronous processing of independent tasks
@@ -721,6 +740,7 @@ custom:
 - Recursive function calls without limits
 
 ### Design Issues
+
 - Functions doing too much (violating single responsibility)
 - Tight coupling between functions
 - Not using infrastructure as code
@@ -733,6 +753,7 @@ custom:
 ## Resources
 
 ### Serverless Platforms
+
 - AWS Lambda - Leading FaaS platform
 - Azure Functions - Microsoft serverless
 - Google Cloud Functions
@@ -741,6 +762,7 @@ custom:
 - Netlify Functions
 
 ### Frameworks & Tools
+
 - Serverless Framework - Multi-cloud IaC
 - AWS SAM - AWS native framework
 - Terraform - Infrastructure as code
@@ -749,6 +771,7 @@ custom:
 - serverless-offline - Local development
 
 ### Monitoring & Observability
+
 - AWS X-Ray - Distributed tracing
 - CloudWatch - Logs and metrics
 - Datadog - APM and monitoring
@@ -757,6 +780,7 @@ custom:
 - Thundra - Debugging and profiling
 
 ### Learning Resources
+
 - AWS Well-Architected Serverless Lens
 - Serverless Architecture Patterns
 - Azure Serverless Computing Cookbook
@@ -766,4 +790,4 @@ custom:
 
 ---
 
-*Part of the PCL Standard Library - Build scalable, cost-effective applications without managing servers.*
+_Part of the PCL Standard Library - Build scalable, cost-effective applications without managing servers._

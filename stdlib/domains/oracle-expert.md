@@ -1,6 +1,24 @@
 ---
 description: Expert in Oracle Database, PL/SQL programming, Oracle RAC, Data Guard, performance tuning, backup/recovery, and enterprise database administration
-keywords: [oracle, database, plsql, rac, data-guard, performance-tuning, rman, awr, sql-tuning]
+tags: ['oracle', 'database', 'enterprise', 'erp']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - Grep
+  - Glob
+keywords:
+  [
+    oracle,
+    database,
+    plsql,
+    rac,
+    data-guard,
+    performance-tuning,
+    rman,
+    awr,
+    sql-tuning,
+  ]
 category: domains
 expertise_level: expert
 ---
@@ -10,6 +28,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Oracle Architecture
+
 - **Instance** - Memory structures (SGA, PGA) and background processes
 - **Database** - Physical files (data files, control files, redo logs)
 - **Tablespace** - Logical storage container
@@ -18,6 +37,7 @@ expertise_level: expert
 - **Data Guard** - Disaster recovery and data protection
 
 ### PL/SQL Programming
+
 - **Procedures** - Reusable code blocks
 - **Functions** - Return value blocks
 - **Packages** - Grouped procedures and functions
@@ -26,6 +46,7 @@ expertise_level: expert
 - **Exception Handling** - Error management
 
 ### Performance & Tuning
+
 - **Execution Plans** - Query optimization paths
 - **AWR** - Automatic Workload Repository
 - **ASH** - Active Session History
@@ -439,6 +460,7 @@ LIST BACKUP SUMMARY;
 ## Best Practices
 
 ### Database Design
+
 - Normalize data to appropriate level (usually 3NF)
 - Use appropriate data types
 - Implement proper constraints (PK, FK, CHECK)
@@ -447,6 +469,7 @@ LIST BACKUP SUMMARY;
 - Implement proper security model
 
 ### PL/SQL Development
+
 - Use bind variables to prevent SQL injection
 - Implement exception handling
 - Use bulk operations for better performance
@@ -455,6 +478,7 @@ LIST BACKUP SUMMARY;
 - Use packages for code organization
 
 ### Performance Optimization
+
 - Analyze execution plans regularly
 - Update statistics frequently
 - Use appropriate indexes
@@ -463,6 +487,7 @@ LIST BACKUP SUMMARY;
 - Monitor AWR reports
 
 ### High Availability
+
 - Implement Oracle RAC for clustering
 - Configure Data Guard for disaster recovery
 - Use RMAN for backup and recovery
@@ -473,7 +498,8 @@ LIST BACKUP SUMMARY;
 ## Anti-Patterns
 
 ### Code Issues
-- SELECT * in production code
+
+- SELECT \* in production code
 - Implicit cursors for large result sets
 - Missing exception handling
 - Hard-coded values
@@ -481,6 +507,7 @@ LIST BACKUP SUMMARY;
 - Autonomous transactions without clear purpose
 
 ### Performance Problems
+
 - Missing indexes on foreign keys
 - No statistics on tables
 - Using hints unnecessarily
@@ -489,6 +516,7 @@ LIST BACKUP SUMMARY;
 - Inadequate memory allocation
 
 ### Design Mistakes
+
 - Denormalization without justification
 - Missing constraints
 - Improper use of sequences
@@ -499,24 +527,28 @@ LIST BACKUP SUMMARY;
 ## Resources
 
 ### Official Documentation
+
 - [Oracle Documentation](https://docs.oracle.com/en/database/) - Complete documentation
 - [PL/SQL Language Reference](https://docs.oracle.com/en/database/oracle/oracle-database/21/lnpls/) - Language guide
 - [Performance Tuning Guide](https://docs.oracle.com/en/database/oracle/oracle-database/21/tgdba/) - Tuning reference
 - [Database Concepts](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/) - Architecture guide
 
 ### Learning Platforms
+
 - [Oracle University](https://education.oracle.com/) - Official training
 - [Oracle Learning Library](https://apexapps.oracle.com/pls/apex/f?p=44785:1) - Free courses
 - [LiveSQL](https://livesql.oracle.com/) - Online SQL practice
 - [Oracle Base](https://oracle-base.com/) - Tutorials and articles
 
 ### Tools & Resources
+
 - [SQL Developer](https://www.oracle.com/database/technologies/appdev/sqldeveloper-landing.html) - Free IDE
 - [Enterprise Manager](https://www.oracle.com/enterprise-manager/) - Database management
 - [RMAN](https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/) - Backup and recovery
 - [AWR Reports](https://docs.oracle.com/en/database/oracle/oracle-database/21/tgdba/automatic-performance-diagnostics.html) - Performance analysis
 
 ### Community Resources
+
 - [Ask TOM](https://asktom.oracle.com/) - Q&A by Oracle experts
 - [Oracle Community](https://community.oracle.com/) - Forums
 - [Oracle Blogs](https://blogs.oracle.com/database/) - Technical articles

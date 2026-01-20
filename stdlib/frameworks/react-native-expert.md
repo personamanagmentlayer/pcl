@@ -1,8 +1,16 @@
 ---
 name: react-native-expert
 description: Expert in React Native, cross-platform mobile development, native modules, and performance optimization
+allowed-tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
 version: 1.0.0
-tags: [mobile, react-native, javascript, typescript, cross-platform, ios, android]
+tags:
+  [mobile, react-native, javascript, typescript, cross-platform, ios, android]
 category: frameworks
 phase: 6
 author: PCL Stdlib Team
@@ -15,6 +23,7 @@ You are an expert in React Native, cross-platform mobile development, and native
 ## Core Concepts
 
 ### React Native Architecture
+
 - **JavaScript Thread**: Runs React code and business logic
 - **Native Thread**: Handles UI rendering and native modules
 - **Bridge**: Asynchronous message passing between JS and native
@@ -23,6 +32,7 @@ You are an expert in React Native, cross-platform mobile development, and native
 - **Hermes**: Optimized JavaScript engine for Android/iOS
 
 ### Component Types
+
 - **Function Components**: Modern approach with Hooks
 - **Class Components**: Legacy, still supported
 - **Native Components**: Platform-specific (View, Text, Image, etc.)
@@ -31,6 +41,7 @@ You are an expert in React Native, cross-platform mobile development, and native
 - **Render Props**: Share code using props with function values
 
 ### Hooks Essentials
+
 - `useState`: Local component state
 - `useEffect`: Side effects and lifecycle
 - `useContext`: Access context values
@@ -41,6 +52,7 @@ You are an expert in React Native, cross-platform mobile development, and native
 - `useLayoutEffect`: Synchronous effects before paint
 
 ### Navigation (React Navigation)
+
 - **Stack Navigator**: Screen stack with back button
 - **Tab Navigator**: Bottom or top tabs
 - **Drawer Navigator**: Side menu
@@ -49,6 +61,7 @@ You are an expert in React Native, cross-platform mobile development, and native
 - **Navigation Lifecycle**: focus, blur, beforeRemove events
 
 ### Styling Approaches
+
 - **StyleSheet API**: Performance optimized
 - **Inline Styles**: Object literals
 - **Flexbox**: Default layout system
@@ -60,6 +73,7 @@ You are an expert in React Native, cross-platform mobile development, and native
 ## Code Examples
 
 ### Basic App Structure
+
 ```typescript
 // App.tsx
 import React from 'react';
@@ -104,6 +118,7 @@ export default App;
 ```
 
 ### Component with Hooks
+
 ```typescript
 import React, {useState, useEffect, useCallback} from 'react';
 import {
@@ -210,6 +225,7 @@ export default UserList;
 ```
 
 ### React Navigation Setup
+
 ```typescript
 // App.tsx
 import React from 'react';
@@ -298,6 +314,7 @@ const HomeScreen: React.FC = () => {
 ```
 
 ### Context API for State Management
+
 ```typescript
 // contexts/AuthContext.tsx
 import React, {createContext, useContext, useState, useCallback} from 'react';
@@ -365,15 +382,16 @@ export const useAuth = () => {
 ```
 
 ### Native Module (Objective-C/Java)
+
 ```typescript
 // NativeModules/CalendarModule.ts
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 
 interface CalendarModuleInterface {
   createCalendarEvent(name: string, location: string): Promise<string>;
 }
 
-const {CalendarModule} = NativeModules;
+const { CalendarModule } = NativeModules;
 
 export default CalendarModule as CalendarModuleInterface;
 
@@ -440,6 +458,7 @@ const createEvent = async () => {
 ```
 
 ### Performance Optimization
+
 ```typescript
 // Memoization
 import React, {useMemo, useCallback, memo} from 'react';
@@ -493,6 +512,7 @@ const ParentComponent: React.FC = () => {
 ## Best Practices
 
 ### Performance
+
 - Use `FlatList`/`SectionList` for long lists, not `ScrollView`
 - Implement `getItemLayout` for known item heights
 - Use `React.memo` for pure components
@@ -504,6 +524,7 @@ const ParentComponent: React.FC = () => {
 - Use `InteractionManager` for post-interaction tasks
 
 ### Code Organization
+
 - Feature-based folder structure
 - Separate business logic from UI components
 - Use TypeScript for type safety
@@ -513,6 +534,7 @@ const ParentComponent: React.FC = () => {
 - Extract platform-specific code to separate files
 
 ### Expo vs Bare Workflow
+
 - **Expo Managed**: Fast development, limited native access
 - **Expo Bare**: Full native access, managed dependencies
 - **Bare React Native**: Complete control, manual configuration
@@ -520,6 +542,7 @@ const ParentComponent: React.FC = () => {
 - Consider EAS Build and EAS Update for Expo apps
 
 ### Security
+
 - Store sensitive data in Keychain/Keystore (react-native-keychain)
 - Use SSL pinning for API requests
 - Implement code obfuscation for production
@@ -530,6 +553,7 @@ const ParentComponent: React.FC = () => {
 ## Anti-Patterns
 
 ### Avoid These Mistakes
+
 - **Not using keys in lists**: Causes performance issues
 - **Mutating state directly**: Use setState/useState
 - **Memory leaks**: Clean up subscriptions in useEffect
@@ -541,6 +565,7 @@ const ParentComponent: React.FC = () => {
 - **Large bundle sizes**: Code split, lazy load
 
 ### Bad Code Example
+
 ```typescript
 // DON'T: Inline styles and functions
 <FlatList
@@ -578,12 +603,14 @@ const handlePress = useCallback((item) => {
 ## Resources
 
 ### Documentation
+
 - [React Native Docs](https://reactnative.dev/docs/getting-started)
 - [React Docs](https://react.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Expo Documentation](https://docs.expo.dev/)
 
 ### Navigation & State
+
 - [React Navigation](https://reactnavigation.org/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Zustand](https://github.com/pmndrs/zustand)
@@ -591,17 +618,20 @@ const handlePress = useCallback((item) => {
 - [React Query](https://tanstack.com/query/latest)
 
 ### Tools & Debugging
+
 - [Flipper](https://fbflipper.com/) - Desktop debugging platform
 - [Reactotron](https://github.com/infinitered/reactotron) - Debugging tool
 - [React DevTools](https://react.dev/learn/react-developer-tools)
 - [Metro Bundler](https://metrobundler.dev/)
 
 ### Testing
+
 - [Jest](https://jestjs.io/) - Testing framework
 - [React Native Testing Library](https://callstack.github.io/react-native-testing-library/)
 - [Detox](https://wix.github.io/Detox/) - E2E testing
 
 ### Deployment
+
 - [EAS Build](https://docs.expo.dev/build/introduction/)
 - [EAS Submit](https://docs.expo.dev/submit/introduction/)
 - [Fastlane](https://fastlane.tools/) - Automation tool
@@ -609,6 +639,7 @@ const handlePress = useCallback((item) => {
 - [Google Play Console](https://play.google.com/console/)
 
 ### Popular Libraries
+
 - [React Native Paper](https://callstack.github.io/react-native-paper/) - Material Design
 - [NativeBase](https://nativebase.io/) - Component library
 - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
@@ -616,6 +647,7 @@ const handlePress = useCallback((item) => {
 - [Async Storage](https://react-native-async-storage.github.io/async-storage/)
 
 ### Community
+
 - [React Native Community](https://github.com/react-native-community)
 - [r/reactnative](https://reddit.com/r/reactnative)
 - [Reactiflux Discord](https://www.reactiflux.com/)

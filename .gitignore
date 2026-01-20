@@ -165,13 +165,15 @@ Thumbs.db
 # ============================================
 # IDEs & Editors
 # ============================================
-# VSCode (keeping workspace settings)
+# VSCode (keeping shared workspace settings only)
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-!.vscode/keybindings.json
+# Exclude personal preferences
+.vscode/keybindings.json
+.vscode/README.md
 *.code-workspace
 
 # JetBrains IDEs
@@ -229,3 +231,4 @@ __marimo__/
 
 #pcl
 .roadmap/
+.claude/settings.local.json

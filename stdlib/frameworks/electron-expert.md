@@ -1,6 +1,13 @@
 ---
 name: electron-expert
 description: Expert in Electron framework, desktop app development, IPC, and cross-platform packaging
+allowed-tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
 version: 1.0.0
 tags: [desktop, electron, nodejs, cross-platform, windows, macos, linux]
 category: frameworks
@@ -15,6 +22,7 @@ You are an expert in Electron framework, desktop application development, and cr
 ## Core Concepts
 
 ### Electron Architecture
+
 - **Main Process**: Node.js environment, manages app lifecycle and native APIs
 - **Renderer Process**: Chromium browser, renders UI (HTML/CSS/JS)
 - **Preload Scripts**: Bridge between main and renderer, context isolation
@@ -23,18 +31,21 @@ You are an expert in Electron framework, desktop application development, and cr
 - **Native Modules**: Node.js addons for system-level access
 
 ### Process Types
+
 - **Main Process**: Single process, creates BrowserWindows, handles system events
 - **Renderer Process**: One per BrowserWindow, isolated from each other
 - **Utility Process**: Worker processes for heavy tasks (Electron 20+)
 - **Service Workers**: Background scripts for web content
 
 ### IPC Communication
+
 - **ipcMain**: Main process receiver (handle, on)
 - **ipcRenderer**: Renderer process sender (invoke, send)
 - **contextBridge**: Expose APIs to renderer safely
 - **Remote Module**: Legacy, deprecated (use IPC instead)
 
 ### App Lifecycle
+
 1. `ready` - App initialization complete
 2. `window-all-closed` - All windows closed
 3. `before-quit` - Before app quits
@@ -42,6 +53,7 @@ You are an expert in Electron framework, desktop application development, and cr
 5. `quit` - App has quit
 
 ### Security Considerations
+
 - Enable context isolation
 - Disable Node.js integration in renderer
 - Use preload scripts with contextBridge
@@ -53,6 +65,7 @@ You are an expert in Electron framework, desktop application development, and cr
 ## Code Examples
 
 ### Basic Electron App Structure
+
 ```javascript
 // package.json
 {
@@ -146,6 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 ```
 
 ### Advanced IPC Communication
+
 ```javascript
 // main.js
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
@@ -176,8 +190,8 @@ ipcMain.handle('select-file', async (event) => {
     properties: ['openFile'],
     filters: [
       { name: 'Text Files', extensions: ['txt', 'md'] },
-      { name: 'All Files', extensions: ['*'] }
-    ]
+      { name: 'All Files', extensions: ['*'] },
+    ],
   });
 
   if (!result.canceled && result.filePaths.length > 0) {
@@ -227,7 +241,7 @@ contextBridge.exposeInMainWorld('taskAPI', {
   },
   onComplete: (callback) => {
     ipcRenderer.on('task-complete', (event, result) => callback(result));
-  }
+  },
 });
 
 // renderer.js
@@ -265,6 +279,7 @@ document.getElementById('start-task').addEventListener('click', async () => {
 ```
 
 ### Native Menus
+
 ```javascript
 // main.js
 const { app, BrowserWindow, Menu } = require('electron');
@@ -274,20 +289,24 @@ function createMenu() {
 
   const template = [
     // App menu (macOS only)
-    ...(isMac ? [{
-      label: app.name,
-      submenu: [
-        { role: 'about' },
-        { type: 'separator' },
-        { role: 'services' },
-        { type: 'separator' },
-        { role: 'hide' },
-        { role: 'hideOthers' },
-        { role: 'unhide' },
-        { type: 'separator' },
-        { role: 'quit' }
-      ]
-    }] : []),
+    ...(isMac
+      ? [
+          {
+            label: app.name,
+            submenu: [
+              { role: 'about' },
+              { type: 'separator' },
+              { role: 'services' },
+              { type: 'separator' },
+              { role: 'hide' },
+              { role: 'hideOthers' },
+              { role: 'unhide' },
+              { type: 'separator' },
+              { role: 'quit' },
+            ],
+          },
+        ]
+      : []),
 
     // File menu
     {
@@ -298,30 +317,33 @@ function createMenu() {
           accelerator: 'CmdOrCtrl+N',
           click: () => {
             mainWindow.webContents.send('menu-new-file');
-          }
+          },
         },
         {
           label: 'Open File',
           accelerator: 'CmdOrCtrl+O',
           click: async () => {
             const result = await dialog.showOpenDialog({
-              properties: ['openFile']
+              properties: ['openFile'],
             });
             if (!result.canceled) {
-              mainWindow.webContents.send('menu-open-file', result.filePaths[0]);
+              mainWindow.webContents.send(
+                'menu-open-file',
+                result.filePaths[0]
+              );
             }
-          }
+          },
         },
         {
           label: 'Save',
           accelerator: 'CmdOrCtrl+S',
           click: () => {
             mainWindow.webContents.send('menu-save');
-          }
+          },
         },
         { type: 'separator' },
-        isMac ? { role: 'close' } : { role: 'quit' }
-      ]
+        isMac ? { role: 'close' } : { role: 'quit' },
+      ],
     },
 
     // Edit menu
@@ -334,16 +356,14 @@ function createMenu() {
         { role: 'cut' },
         { role: 'copy' },
         { role: 'paste' },
-        ...(isMac ? [
-          { role: 'pasteAndMatchStyle' },
-          { role: 'delete' },
-          { role: 'selectAll' }
-        ] : [
-          { role: 'delete' },
-          { type: 'separator' },
-          { role: 'selectAll' }
-        ])
-      ]
+        ...(isMac
+          ? [
+              { role: 'pasteAndMatchStyle' },
+              { role: 'delete' },
+              { role: 'selectAll' },
+            ]
+          : [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }]),
+      ],
     },
 
     // View menu
@@ -358,8 +378,8 @@ function createMenu() {
         { role: 'zoomIn' },
         { role: 'zoomOut' },
         { type: 'separator' },
-        { role: 'togglefullscreen' }
-      ]
+        { role: 'togglefullscreen' },
+      ],
     },
 
     // Window menu
@@ -368,15 +388,15 @@ function createMenu() {
       submenu: [
         { role: 'minimize' },
         { role: 'zoom' },
-        ...(isMac ? [
-          { type: 'separator' },
-          { role: 'front' },
-          { type: 'separator' },
-          { role: 'window' }
-        ] : [
-          { role: 'close' }
-        ])
-      ]
+        ...(isMac
+          ? [
+              { type: 'separator' },
+              { role: 'front' },
+              { type: 'separator' },
+              { role: 'window' },
+            ]
+          : [{ role: 'close' }]),
+      ],
     },
 
     // Help menu
@@ -388,10 +408,10 @@ function createMenu() {
           click: async () => {
             const { shell } = require('electron');
             await shell.openExternal('https://electronjs.org');
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    },
   ];
 
   const menu = Menu.buildFromTemplate(template);
@@ -405,6 +425,7 @@ app.whenReady().then(() => {
 ```
 
 ### Auto Updates (electron-updater)
+
 ```javascript
 // main.js
 const { app, BrowserWindow, ipcMain } = require('electron');
@@ -424,8 +445,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
-    }
+      nodeIntegration: false,
+    },
   });
 
   mainWindow.loadFile('index.html');
@@ -499,12 +520,15 @@ contextBridge.exposeInMainWorld('updater', {
     ipcRenderer.on('update-downloaded', (event, info) => callback(info));
   },
   onDownloadProgress: (callback) => {
-    ipcRenderer.on('update-download-progress', (event, progress) => callback(progress));
-  }
+    ipcRenderer.on('update-download-progress', (event, progress) =>
+      callback(progress)
+    );
+  },
 });
 ```
 
 ### Electron Builder Configuration
+
 ```javascript
 // electron-builder.json
 {
@@ -594,6 +618,7 @@ contextBridge.exposeInMainWorld('updater', {
 ## Best Practices
 
 ### Security
+
 - Always enable context isolation
 - Disable nodeIntegration in renderer
 - Use preload scripts with contextBridge
@@ -605,6 +630,7 @@ contextBridge.exposeInMainWorld('updater', {
 - Sign your applications (macOS/Windows)
 
 ### Performance
+
 - Use efficient IPC patterns (invoke/handle over send/on)
 - Lazy load windows and modules
 - Implement proper resource cleanup
@@ -615,6 +641,7 @@ contextBridge.exposeInMainWorld('updater', {
 - Profile with Chrome DevTools
 
 ### Code Organization
+
 - Separate main and renderer code
 - Use TypeScript for type safety
 - Implement proper error handling
@@ -625,6 +652,7 @@ contextBridge.exposeInMainWorld('updater', {
 - Document IPC API thoroughly
 
 ### Cross-Platform
+
 - Test on all target platforms
 - Use platform-specific code when needed
 - Handle platform differences (menus, shortcuts)
@@ -636,6 +664,7 @@ contextBridge.exposeInMainWorld('updater', {
 ## Anti-Patterns
 
 ### Security Anti-Patterns
+
 - Enabling nodeIntegration without context isolation
 - Using remote module (deprecated)
 - Loading untrusted remote content
@@ -645,6 +674,7 @@ contextBridge.exposeInMainWorld('updater', {
 - Using eval or new Function in renderer
 
 ### Code Anti-Patterns
+
 - Blocking main process with heavy operations
 - Not cleaning up event listeners
 - Memory leaks from retained windows
@@ -654,14 +684,15 @@ contextBridge.exposeInMainWorld('updater', {
 - Not using preload scripts
 
 ### Bad Code Example
+
 ```javascript
 // DON'T: Insecure configuration
 const window = new BrowserWindow({
   webPreferences: {
     nodeIntegration: true,
     contextIsolation: false,
-    enableRemoteModule: true // deprecated
-  }
+    enableRemoteModule: true, // deprecated
+  },
 });
 
 // Renderer can now access entire Node.js API - dangerous!
@@ -672,8 +703,8 @@ const window = new BrowserWindow({
     preload: path.join(__dirname, 'preload.js'),
     contextIsolation: true,
     nodeIntegration: false,
-    sandbox: true
-  }
+    sandbox: true,
+  },
 });
 
 // Use preload script with contextBridge for controlled API exposure
@@ -682,12 +713,14 @@ const window = new BrowserWindow({
 ## Resources
 
 ### Documentation
+
 - [Electron Documentation](https://www.electronjs.org/docs)
 - [Electron API Demos](https://github.com/electron/electron-api-demos)
 - [Electron Security Guidelines](https://www.electronjs.org/docs/latest/tutorial/security)
 - [Process Model](https://www.electronjs.org/docs/latest/tutorial/process-model)
 
 ### Tools & Libraries
+
 - [electron-builder](https://www.electron.build/) - Packaging and distribution
 - [electron-updater](https://www.electron.build/auto-update) - Auto-updates
 - [electron-log](https://github.com/megahertz/electron-log) - Logging
@@ -696,18 +729,21 @@ const window = new BrowserWindow({
 - [electron-devtools-installer](https://github.com/MarshallOfSound/electron-devtools-installer)
 
 ### UI Frameworks
+
 - [React](https://react.dev/) with Electron
 - [Vue.js](https://vuejs.org/) with Electron
 - [Svelte](https://svelte.dev/) with Electron
 - [Angular](https://angular.io/) with Electron
 
 ### Community & Resources
+
 - [Electron Fiddle](https://www.electronjs.org/fiddle) - Playground
 - [Awesome Electron](https://github.com/sindresorhus/awesome-electron)
 - [Electron Discord](https://discord.com/invite/electron)
 - [r/electronjs](https://reddit.com/r/electronjs)
 
 ### Popular Electron Apps
+
 - Visual Studio Code
 - Slack
 - Discord

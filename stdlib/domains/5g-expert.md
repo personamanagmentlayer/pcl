@@ -1,44 +1,57 @@
 # 5G Expert
 
 ---
+
 skill_id: 5g-expert
 name: 5G Expert
-category: domains
-tags: [5g, network-slicing, mec, edge-computing, nfv, sdn, iot, urllc, embb, mmtc]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master 5G network architecture and components
-  - Implement network slicing for service differentiation
-  - Deploy Multi-access Edge Computing (MEC) applications
-  - Optimize for ultra-low latency use cases (URLLC)
-  - Integrate IoT devices with 5G networks
-prerequisites:
-  - Strong understanding of networking protocols
-  - Knowledge of SDN and NFV concepts
-  - Familiarity with cloud-native architectures
-  - Understanding of wireless communication principles
-outcome: Design and deploy production-ready 5G network solutions including network slicing, edge computing, and ultra-low latency applications
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- WebSearch
+  category: domains
+  tags: [5g, network-slicing, mec, edge-computing, nfv, sdn, iot, urllc, embb, mmtc]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master 5G network architecture and components
+- Implement network slicing for service differentiation
+- Deploy Multi-access Edge Computing (MEC) applications
+- Optimize for ultra-low latency use cases (URLLC)
+- Integrate IoT devices with 5G networks
+  prerequisites:
+- Strong understanding of networking protocols
+- Knowledge of SDN and NFV concepts
+- Familiarity with cloud-native architectures
+- Understanding of wireless communication principles
+  outcome: Design and deploy production-ready 5G network solutions including network slicing, edge computing, and ultra-low latency applications
+
 ---
 
 ## Core Concepts
 
 ### 5G Network Architecture
+
 Next-generation mobile network with service-based architecture (SBA), network functions virtualization (NFV), and software-defined networking (SDN). Supports enhanced mobile broadband (eMBB), ultra-reliable low-latency communication (URLLC), and massive machine-type communication (mMTC).
 
 ### Network Slicing
+
 Logical end-to-end networks running on shared physical infrastructure. Each slice optimized for specific service requirements (latency, bandwidth, reliability) enabling customized connectivity for diverse use cases.
 
 ### Multi-Access Edge Computing (MEC)
+
 Computing resources deployed at network edge near 5G base stations. Enables ultra-low latency applications by processing data locally instead of routing to distant cloud data centers.
 
 ### Ultra-Reliable Low-Latency Communication (URLLC)
+
 5G service category targeting <1ms latency and 99.999% reliability. Critical for industrial automation, autonomous vehicles, remote surgery, and real-time control systems.
 
 ### Massive IoT (mMTC)
+
 Support for millions of connected devices per square kilometer with optimized power consumption. Enables smart cities, agriculture, environmental monitoring, and industrial IoT applications.
 
 ## Code Examples
@@ -612,6 +625,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 ## Best Practices
 
 ### Network Slicing Design
+
 - Define clear service level agreements (SLAs) for each slice
 - Implement resource isolation between slices
 - Use dynamic resource allocation based on demand
@@ -621,6 +635,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 - Plan for slice lifecycle management
 
 ### MEC Application Development
+
 - Minimize edge-to-cloud round trips
 - Implement intelligent workload placement
 - Use stateless designs when possible
@@ -630,6 +645,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 - Monitor edge resource utilization
 
 ### URLLC Optimization
+
 - Use dedicated URLLC network slices
 - Implement deterministic networking
 - Minimize protocol overhead
@@ -639,6 +655,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 - Test failure scenarios extensively
 
 ### IoT Integration
+
 - Use NB-IoT or LTE-M for low-power devices
 - Implement efficient data aggregation
 - Use appropriate QoS for device classes
@@ -650,6 +667,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Over-provisioning slices leading to waste
 - Not implementing proper slice isolation
 - Ignoring latency requirements in design
@@ -659,6 +677,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 - Not monitoring SLA compliance
 
 ### Design Issues
+
 - Centralized processing for latency-sensitive apps
 - Not leveraging edge computing capabilities
 - Monolithic network functions
@@ -670,6 +689,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 ## Resources
 
 ### 5G Platforms & Tools
+
 - Open5GS - Open source 5G core
 - free5GC - Open source 5G core
 - OpenAirInterface - 5G RAN software
@@ -678,6 +698,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 - Kubernetes - Container orchestration
 
 ### Standards & Specifications
+
 - 3GPP specifications
 - ETSI NFV standards
 - ETSI MEC specifications
@@ -686,6 +707,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 - ITU-T recommendations
 
 ### Hardware & Infrastructure
+
 - Ericsson 5G equipment
 - Nokia 5G solutions
 - Huawei 5G infrastructure
@@ -694,6 +716,7 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 - Intel FlexRAN
 
 ### Learning Resources
+
 - 5G Academy
 - 3GPP official documentation
 - Ericsson Technology Review
@@ -703,4 +726,4 @@ async def ar_rendering_callback(data: Dict) -> Dict:
 
 ---
 
-*Part of the PCL Standard Library - Build next-generation applications on 5G networks with ultra-low latency and massive connectivity.*
+_Part of the PCL Standard Library - Build next-generation applications on 5G networks with ultra-low latency and massive connectivity._
