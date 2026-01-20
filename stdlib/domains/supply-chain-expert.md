@@ -1,44 +1,57 @@
 # Supply Chain Expert
 
 ---
+
 skill_id: supply-chain-expert
 name: Supply Chain Expert
-category: domains
-tags: [supply-chain, logistics, inventory, procurement, demand-planning, supplier-management, warehouse, scm]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master supply chain management systems
-  - Understand demand forecasting and planning
-  - Implement inventory optimization strategies
-  - Apply supplier relationship management
-  - Navigate logistics and distribution networks
-prerequisites:
-  - Understanding of supply chain fundamentals
-  - Knowledge of inventory management principles
-  - Familiarity with logistics operations
-  - Experience with ERP or SCM systems
-outcome: Build comprehensive supply chain solutions including demand planning, inventory management, supplier coordination, and logistics optimization
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- WebSearch
+  category: domains
+  tags: [supply-chain, logistics, inventory, procurement, demand-planning, supplier-management, warehouse, scm]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master supply chain management systems
+- Understand demand forecasting and planning
+- Implement inventory optimization strategies
+- Apply supplier relationship management
+- Navigate logistics and distribution networks
+  prerequisites:
+- Understanding of supply chain fundamentals
+- Knowledge of inventory management principles
+- Familiarity with logistics operations
+- Experience with ERP or SCM systems
+  outcome: Build comprehensive supply chain solutions including demand planning, inventory management, supplier coordination, and logistics optimization
+
 ---
 
 ## Core Concepts
 
 ### Supply Chain Planning
+
 Strategic and tactical planning processes including demand forecasting, supply planning, production scheduling, and sales and operations planning (S&OP) to balance supply and demand.
 
 ### Inventory Management
+
 Systems for tracking, controlling, and optimizing inventory levels across locations using methods like EOQ, JIT, safety stock calculations, and ABC analysis to minimize costs while meeting service levels.
 
 ### Procurement & Supplier Management
+
 End-to-end procurement processes including supplier selection, contract management, purchase order processing, supplier performance monitoring, and strategic sourcing decisions.
 
 ### Warehouse & Distribution
+
 Management of warehouse operations including receiving, putaway, picking, packing, shipping, and distribution network optimization to ensure efficient order fulfillment.
 
 ### Logistics Coordination
+
 Planning and execution of transportation, freight management, route optimization, carrier selection, and tracking to move goods efficiently through the supply chain.
 
 ## Code Examples
@@ -600,6 +613,7 @@ class SupplierPerformanceManager:
 ## Best Practices
 
 ### Inventory Management
+
 - Implement ABC analysis for inventory prioritization
 - Use safety stock calculations based on demand variability
 - Regular cycle counting and physical inventory
@@ -609,6 +623,7 @@ class SupplierPerformanceManager:
 - Use automated reorder points
 
 ### Demand Planning
+
 - Use multiple forecasting methods
 - Collaborate with sales and marketing
 - Account for seasonality and trends
@@ -618,6 +633,7 @@ class SupplierPerformanceManager:
 - Consider external factors (market, economy)
 
 ### Supplier Management
+
 - Diversify supplier base for risk mitigation
 - Develop strategic partnerships
 - Track supplier performance metrics
@@ -627,6 +643,7 @@ class SupplierPerformanceManager:
 - Maintain contingency suppliers
 
 ### Logistics Optimization
+
 - Optimize warehouse layout and processes
 - Use route optimization algorithms
 - Consolidate shipments when possible
@@ -638,6 +655,7 @@ class SupplierPerformanceManager:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Reactive vs proactive inventory management
 - Single source supplier dependency
 - Ignoring demand forecast accuracy
@@ -648,6 +666,7 @@ class SupplierPerformanceManager:
 - Inadequate contingency planning
 
 ### Common Mistakes
+
 - Ordering without demand analysis
 - Ignoring lead time variability
 - Poor communication with suppliers
@@ -660,6 +679,7 @@ class SupplierPerformanceManager:
 ## Resources
 
 ### SCM Platforms
+
 - SAP SCM - Enterprise supply chain
 - Oracle SCM Cloud - Cloud-based solution
 - Blue Yonder - AI-driven SCM
@@ -668,6 +688,7 @@ class SupplierPerformanceManager:
 - Llamasoft - Supply chain design
 
 ### Methodologies
+
 - SCOR Model - Supply Chain Operations Reference
 - Lean Supply Chain principles
 - Six Sigma for quality
@@ -675,11 +696,13 @@ class SupplierPerformanceManager:
 - JIT (Just-In-Time)
 
 ### Industry Organizations
+
 - APICS / ASCM - Supply chain education
 - CSCMP - Council of Supply Chain Management
 - ISM - Institute for Supply Management
 
 ### Learning Resources
+
 - MIT Center for Transportation & Logistics
 - APICS CPIM and CSCP certifications
 - Supply Chain Dive publications
@@ -687,4 +710,4 @@ class SupplierPerformanceManager:
 
 ---
 
-*Part of the PCL Standard Library - Master supply chain management and optimize end-to-end logistics operations.*
+_Part of the PCL Standard Library - Master supply chain management and optimize end-to-end logistics operations._

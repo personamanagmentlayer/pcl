@@ -1,44 +1,58 @@
 # WebAssembly Expert
 
 ---
+
 skill_id: webassembly-expert
 name: WebAssembly Expert
-category: domains
-tags: [webassembly, wasm, wasi, rust, cpp, performance, browser, emscripten, wasmtime]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master WebAssembly module development and compilation
-  - Build high-performance WASM applications from Rust and C++
-  - Implement WASI for system-level capabilities
-  - Optimize WASM for size and execution speed
-  - Integrate WASM with JavaScript and web browsers
-prerequisites:
-  - Strong Rust or C++ programming skills
-  - Understanding of low-level systems programming
-  - Knowledge of web technologies (JavaScript, browsers)
-  - Familiarity with compilation toolchains
-outcome: Create production-ready WebAssembly modules for web and server environments with optimal performance and seamless JavaScript integration
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- Grep
+- Glob
+  category: domains
+  tags: [webassembly, wasm, wasi, rust, cpp, performance, browser, emscripten, wasmtime]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master WebAssembly module development and compilation
+- Build high-performance WASM applications from Rust and C++
+- Implement WASI for system-level capabilities
+- Optimize WASM for size and execution speed
+- Integrate WASM with JavaScript and web browsers
+  prerequisites:
+- Strong Rust or C++ programming skills
+- Understanding of low-level systems programming
+- Knowledge of web technologies (JavaScript, browsers)
+- Familiarity with compilation toolchains
+  outcome: Create production-ready WebAssembly modules for web and server environments with optimal performance and seamless JavaScript integration
+
 ---
 
 ## Core Concepts
 
 ### WebAssembly (WASM)
+
 Binary instruction format designed as portable compilation target for high-level languages. Provides near-native performance in web browsers and enables code reuse across platforms.
 
 ### WASI (WebAssembly System Interface)
+
 System interface specification enabling WASM to run outside browsers with access to system resources (files, network, environment) in a secure, sandboxed manner.
 
 ### Memory Management
+
 Linear memory model where WASM modules access contiguous byte arrays. Requires careful management of memory allocation, deallocation, and sharing between WASM and JavaScript.
 
 ### Compilation Targets
+
 Languages like Rust, C++, C, Go, and AssemblyScript can compile to WASM. Each provides different toolchains (rustc, Emscripten, TinyGo) with varying levels of optimization.
 
 ### JavaScript Interop
+
 Bidirectional communication between WASM and JavaScript through imported/exported functions, shared memory, and typed arrays. Requires careful data marshalling and type conversions.
 
 ## Code Examples
@@ -329,172 +343,169 @@ pub fn matrix_multiply(a: &[f32], b: &[f32], n: usize) -> Vec<f32> {
 // wasm-loader.js - Load and initialize WASM module
 
 class WasmImageProcessor {
-    constructor() {
-        this.module = null;
-        this.processor = null;
+  constructor() {
+    this.module = null;
+    this.processor = null;
+  }
+
+  async init() {
+    // Import WASM module
+    const wasm = await import('./image_processor.js');
+    await wasm.default();
+
+    this.module = wasm;
+    console.log('WASM module loaded successfully');
+  }
+
+  /**
+   * Process image with WASM filters
+   */
+  async processImage(imageData, filters) {
+    if (!this.module) {
+      throw new Error('WASM module not initialized');
     }
 
-    async init() {
-        // Import WASM module
-        const wasm = await import('./image_processor.js');
-        await wasm.default();
+    const { width, height, data } = imageData;
 
-        this.module = wasm;
-        console.log('WASM module loaded successfully');
+    // Create processor instance
+    this.processor = new this.module.ImageProcessor(width, height);
+
+    // Copy image data to WASM memory
+    this.processor.set_data(data);
+
+    // Apply filters in sequence
+    for (const filter of filters) {
+      switch (filter.type) {
+        case 'grayscale':
+          this.processor.apply_grayscale();
+          break;
+        case 'sepia':
+          this.processor.apply_sepia();
+          break;
+        case 'brightness':
+          this.processor.apply_brightness(filter.factor || 1.0);
+          break;
+        case 'blur':
+          this.processor.apply_blur(filter.radius || 1);
+          break;
+        case 'edge':
+          this.processor.apply_edge_detection();
+          break;
+      }
     }
 
-    /**
-     * Process image with WASM filters
-     */
-    async processImage(imageData, filters) {
-        if (!this.module) {
-            throw new Error('WASM module not initialized');
-        }
+    // Get processed data back
+    const processedData = this.processor.get_data();
 
-        const { width, height, data } = imageData;
+    return new ImageData(new Uint8ClampedArray(processedData), width, height);
+  }
 
-        // Create processor instance
-        this.processor = new this.module.ImageProcessor(width, height);
+  /**
+   * Benchmark WASM vs JavaScript performance
+   */
+  async benchmark(imageData, iterations = 100) {
+    const { width, height, data } = imageData;
 
-        // Copy image data to WASM memory
-        this.processor.set_data(data);
-
-        // Apply filters in sequence
-        for (const filter of filters) {
-            switch (filter.type) {
-                case 'grayscale':
-                    this.processor.apply_grayscale();
-                    break;
-                case 'sepia':
-                    this.processor.apply_sepia();
-                    break;
-                case 'brightness':
-                    this.processor.apply_brightness(filter.factor || 1.0);
-                    break;
-                case 'blur':
-                    this.processor.apply_blur(filter.radius || 1);
-                    break;
-                case 'edge':
-                    this.processor.apply_edge_detection();
-                    break;
-            }
-        }
-
-        // Get processed data back
-        const processedData = this.processor.get_data();
-
-        return new ImageData(
-            new Uint8ClampedArray(processedData),
-            width,
-            height
-        );
+    // WASM benchmark
+    const wasmStart = performance.now();
+    for (let i = 0; i < iterations; i++) {
+      this.module.grayscale(data, width, height);
     }
+    const wasmTime = performance.now() - wasmStart;
 
-    /**
-     * Benchmark WASM vs JavaScript performance
-     */
-    async benchmark(imageData, iterations = 100) {
-        const { width, height, data } = imageData;
+    // JavaScript benchmark
+    const jsGrayscale = (data) => {
+      for (let i = 0; i < data.length; i += 4) {
+        const gray =
+          0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+        data[i] = data[i + 1] = data[i + 2] = gray;
+      }
+    };
 
-        // WASM benchmark
-        const wasmStart = performance.now();
-        for (let i = 0; i < iterations; i++) {
-            this.module.grayscale(data, width, height);
-        }
-        const wasmTime = performance.now() - wasmStart;
-
-        // JavaScript benchmark
-        const jsGrayscale = (data) => {
-            for (let i = 0; i < data.length; i += 4) {
-                const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-                data[i] = data[i + 1] = data[i + 2] = gray;
-            }
-        };
-
-        const jsStart = performance.now();
-        for (let i = 0; i < iterations; i++) {
-            jsGrayscale(data);
-        }
-        const jsTime = performance.now() - jsStart;
-
-        return {
-            wasm: wasmTime,
-            javascript: jsTime,
-            speedup: (jsTime / wasmTime).toFixed(2) + 'x',
-            wasmAvg: (wasmTime / iterations).toFixed(3) + 'ms',
-            jsAvg: (jsTime / iterations).toFixed(3) + 'ms'
-        };
+    const jsStart = performance.now();
+    for (let i = 0; i < iterations; i++) {
+      jsGrayscale(data);
     }
+    const jsTime = performance.now() - jsStart;
 
-    /**
-     * Compute-intensive task: Pi estimation
-     */
-    async estimatePi(iterations = 10000000) {
-        const start = performance.now();
-        const pi = this.module.estimate_pi(iterations);
-        const time = performance.now() - start;
+    return {
+      wasm: wasmTime,
+      javascript: jsTime,
+      speedup: (jsTime / wasmTime).toFixed(2) + 'x',
+      wasmAvg: (wasmTime / iterations).toFixed(3) + 'ms',
+      jsAvg: (jsTime / iterations).toFixed(3) + 'ms',
+    };
+  }
 
-        return {
-            pi,
-            time: time.toFixed(2) + 'ms',
-            iterations,
-            error: Math.abs(Math.PI - pi)
-        };
+  /**
+   * Compute-intensive task: Pi estimation
+   */
+  async estimatePi(iterations = 10000000) {
+    const start = performance.now();
+    const pi = this.module.estimate_pi(iterations);
+    const time = performance.now() - start;
+
+    return {
+      pi,
+      time: time.toFixed(2) + 'ms',
+      iterations,
+      error: Math.abs(Math.PI - pi),
+    };
+  }
+
+  cleanup() {
+    if (this.processor) {
+      this.processor.free();
+      this.processor = null;
     }
-
-    cleanup() {
-        if (this.processor) {
-            this.processor.free();
-            this.processor = null;
-        }
-    }
+  }
 }
 
 // Usage example
 async function main() {
-    const processor = new WasmImageProcessor();
-    await processor.init();
+  const processor = new WasmImageProcessor();
+  await processor.init();
 
-    // Load image
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
+  // Load image
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
 
-    img.onload = async () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
+  img.onload = async () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
 
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        // Apply filters
-        const processedData = await processor.processImage(imageData, [
-            { type: 'grayscale' },
-            { type: 'brightness', factor: 1.2 },
-            { type: 'blur', radius: 2 }
-        ]);
+    // Apply filters
+    const processedData = await processor.processImage(imageData, [
+      { type: 'grayscale' },
+      { type: 'brightness', factor: 1.2 },
+      { type: 'blur', radius: 2 },
+    ]);
 
-        ctx.putImageData(processedData, 0, 0);
+    ctx.putImageData(processedData, 0, 0);
 
-        // Benchmark
-        const benchmark = await processor.benchmark(imageData);
-        console.log('Benchmark results:', benchmark);
+    // Benchmark
+    const benchmark = await processor.benchmark(imageData);
+    console.log('Benchmark results:', benchmark);
 
-        // Compute-intensive task
-        const piResult = await processor.estimatePi(10000000);
-        console.log('Pi estimation:', piResult);
+    // Compute-intensive task
+    const piResult = await processor.estimatePi(10000000);
+    console.log('Pi estimation:', piResult);
 
-        processor.cleanup();
-    };
+    processor.cleanup();
+  };
 
-    img.src = 'sample-image.jpg';
+  img.src = 'sample-image.jpg';
 }
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', main);
+  document.addEventListener('DOMContentLoaded', main);
 } else {
-    main();
+  main();
 }
 ```
 
@@ -621,6 +632,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 ## Best Practices
 
 ### Performance Optimization
+
 - Minimize data copying between JavaScript and WASM
 - Use shared memory (SharedArrayBuffer) for large datasets
 - Batch operations to reduce boundary crossings
@@ -630,6 +642,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 - Enable compiler optimizations (opt-level, lto)
 
 ### Memory Management
+
 - Carefully manage manual memory allocation in C/C++
 - Use Rust's ownership system for memory safety
 - Free WASM-allocated memory from JavaScript
@@ -639,6 +652,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 - Implement proper cleanup on errors
 
 ### Module Design
+
 - Keep module size small through code splitting
 - Tree-shake unused dependencies
 - Use wasm-opt for size optimization
@@ -648,6 +662,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 - Design clear JavaScript API surface
 
 ### Development Workflow
+
 - Use wasm-pack for Rust WASM builds
 - Implement comprehensive testing (unit, integration)
 - Set up CI/CD for WASM compilation
@@ -659,6 +674,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Excessive JavaScript ↔ WASM communication overhead
 - Not handling WASM module load failures
 - Copying large data unnecessarily
@@ -668,6 +684,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 - Not optimizing for bundle size
 
 ### Design Issues
+
 - Monolithic WASM modules instead of modular design
 - Synchronous WASM instantiation blocking UI
 - Not leveraging WASM for CPU-intensive tasks
@@ -679,6 +696,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 ## Resources
 
 ### Development Tools
+
 - wasm-pack - Rust WASM build tool
 - Emscripten - C/C++ to WASM compiler
 - wasmtime - WASM runtime
@@ -687,6 +705,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 - wasm-bindgen - Rust/JS interop
 
 ### Languages & Frameworks
+
 - Rust - Systems language with excellent WASM support
 - AssemblyScript - TypeScript-like for WASM
 - C/C++ - Traditional systems languages
@@ -695,6 +714,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 - Yew - Rust web framework
 
 ### Browser APIs
+
 - WebAssembly JavaScript API
 - WASM SIMD proposal
 - WebAssembly Threads
@@ -703,6 +723,7 @@ fn process_csv(input_path: &str, output_path: &str) {
 - WebAssembly Multi-value
 
 ### Learning Resources
+
 - WebAssembly.org - Official documentation
 - MDN WebAssembly Guide
 - Rust and WebAssembly Book
@@ -712,4 +733,4 @@ fn process_csv(input_path: &str, output_path: &str) {
 
 ---
 
-*Part of the PCL Standard Library - Unlock near-native performance in web applications with WebAssembly.*
+_Part of the PCL Standard Library - Unlock near-native performance in web applications with WebAssembly._

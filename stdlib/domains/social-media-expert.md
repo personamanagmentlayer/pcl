@@ -1,44 +1,56 @@
 # Social Media Expert
 
 ---
+
 skill_id: social-media-expert
 name: Social Media Expert
-category: domains
-tags: [social-media, content-management, engagement, analytics, influencer-marketing, social-listening, community-management]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master social media management platforms
-  - Understand content scheduling and publishing
-  - Implement engagement tracking and analytics
-  - Apply influencer marketing strategies
-  - Navigate social listening and sentiment analysis
-prerequisites:
-  - Understanding of social media platforms and algorithms
-  - Knowledge of content marketing principles
-  - Familiarity with community management
-  - Experience with social media analytics
-outcome: Build comprehensive social media solutions including content management, engagement tracking, influencer campaigns, and social analytics
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [social-media, content-management, engagement, analytics, influencer-marketing, social-listening, community-management]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master social media management platforms
+- Understand content scheduling and publishing
+- Implement engagement tracking and analytics
+- Apply influencer marketing strategies
+- Navigate social listening and sentiment analysis
+  prerequisites:
+- Understanding of social media platforms and algorithms
+- Knowledge of content marketing principles
+- Familiarity with community management
+- Experience with social media analytics
+  outcome: Build comprehensive social media solutions including content management, engagement tracking, influencer campaigns, and social analytics
+
 ---
 
 ## Core Concepts
 
 ### Social Media Management
+
 Centralized platforms for managing multiple social accounts, scheduling content, collaborating with teams, and maintaining consistent brand presence across Facebook, Twitter, Instagram, LinkedIn, and other channels.
 
 ### Content Planning & Publishing
+
 Strategic approach to content creation including editorial calendars, optimal posting times, content mix strategies, hashtag optimization, and multi-platform content adaptation.
 
 ### Engagement & Community Management
+
 Active monitoring and response to comments, messages, mentions, and reviews with community building strategies, crisis management protocols, and audience relationship development.
 
 ### Social Analytics & Reporting
+
 Data-driven insights into post performance, audience demographics, engagement rates, reach, impressions, and conversion tracking to optimize social media ROI and strategy.
 
 ### Influencer Marketing
+
 Identification, outreach, collaboration, and campaign management with influencers and brand advocates to amplify reach and authenticity through partnership strategies.
 
 ## Code Examples
@@ -637,6 +649,7 @@ class InfluencerManager:
 ## Best Practices
 
 ### Content Strategy
+
 - Maintain consistent brand voice and visual identity
 - Use platform-specific content optimization
 - Follow 80/20 rule (80% value, 20% promotion)
@@ -646,6 +659,7 @@ class InfluencerManager:
 - Plan content mix (educational, entertaining, promotional)
 
 ### Engagement
+
 - Respond to comments and messages promptly
 - Monitor brand mentions and hashtags
 - Create conversations, not broadcasts
@@ -655,6 +669,7 @@ class InfluencerManager:
 - Implement social customer service
 
 ### Analytics
+
 - Track key metrics (reach, engagement, conversions)
 - A/B test content and posting times
 - Monitor competitor performance
@@ -664,6 +679,7 @@ class InfluencerManager:
 - Benchmark against industry standards
 
 ### Influencer Marketing
+
 - Vet influencers for authenticity
 - Ensure audience alignment
 - Provide creative freedom with brand guidelines
@@ -675,6 +691,7 @@ class InfluencerManager:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Buying followers or engagement
 - Over-posting or spam behavior
 - Ignoring negative comments
@@ -685,6 +702,7 @@ class InfluencerManager:
 - Poor crisis management
 
 ### Common Mistakes
+
 - Posting without strategy
 - Ignoring analytics data
 - Using too many hashtags
@@ -697,6 +715,7 @@ class InfluencerManager:
 ## Resources
 
 ### Social Media Management Tools
+
 - Hootsuite - Multi-platform management
 - Buffer - Scheduling and analytics
 - Sprout Social - Enterprise solution
@@ -704,18 +723,21 @@ class InfluencerManager:
 - Agorapulse - Social inbox management
 
 ### Analytics Platforms
+
 - Socialbakers - Social media analytics
 - Brandwatch - Social listening
 - Mention - Brand monitoring
 - Keyhole - Hashtag tracking
 
 ### Influencer Platforms
+
 - AspireIQ - Influencer marketing
 - Upfluence - Influencer discovery
 - Grin - Creator management
 - CreatorIQ - Enterprise influencer platform
 
 ### Learning Resources
+
 - Social Media Examiner
 - HubSpot Social Media Blog
 - Hootsuite Academy
@@ -723,4 +745,4 @@ class InfluencerManager:
 
 ---
 
-*Part of the PCL Standard Library - Master social media management and build engaged online communities.*
+_Part of the PCL Standard Library - Master social media management and build engaged online communities._

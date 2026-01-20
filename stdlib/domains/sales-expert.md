@@ -1,44 +1,56 @@
 # Sales Expert
 
 ---
+
 skill_id: sales-expert
 name: Sales Expert
-category: domains
-tags: [sales, crm, pipeline, lead-management, sales-analytics, forecasting, opportunity-management, sales-automation]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master CRM systems and sales pipeline management
-  - Understand lead qualification and opportunity tracking
-  - Implement sales analytics and forecasting
-  - Apply sales automation and workflow optimization
-  - Navigate territory management and quota planning
-prerequisites:
-  - Understanding of sales processes and methodologies
-  - Knowledge of customer relationship management
-  - Familiarity with sales metrics and KPIs
-  - Experience with sales tools and automation
-outcome: Build comprehensive sales technology solutions including CRM implementation, pipeline management, sales forecasting, and performance analytics
+allowed-tools:
+
+- Read
+- Write
+- WebSearch
+  category: domains
+  tags: [sales, crm, pipeline, lead-management, sales-analytics, forecasting, opportunity-management, sales-automation]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master CRM systems and sales pipeline management
+- Understand lead qualification and opportunity tracking
+- Implement sales analytics and forecasting
+- Apply sales automation and workflow optimization
+- Navigate territory management and quota planning
+  prerequisites:
+- Understanding of sales processes and methodologies
+- Knowledge of customer relationship management
+- Familiarity with sales metrics and KPIs
+- Experience with sales tools and automation
+  outcome: Build comprehensive sales technology solutions including CRM implementation, pipeline management, sales forecasting, and performance analytics
+
 ---
 
 ## Core Concepts
 
 ### Customer Relationship Management (CRM)
+
 Central platform for managing customer interactions, tracking sales activities, maintaining contact databases, and coordinating sales team efforts across the customer lifecycle.
 
 ### Sales Pipeline Management
+
 Systematic approach to tracking opportunities through sales stages, managing deal progression, identifying bottlenecks, and optimizing conversion rates at each stage.
 
 ### Lead Management & Qualification
+
 Process of capturing, scoring, routing, and nurturing leads using frameworks like BANT (Budget, Authority, Need, Timeline) or MEDDIC to identify sales-ready prospects.
 
 ### Sales Forecasting
+
 Predictive analytics using historical data, pipeline health, and probability-weighted opportunities to project future revenue and inform business planning decisions.
 
 ### Sales Automation
+
 Technology-driven workflows that automate repetitive tasks like data entry, follow-ups, proposal generation, and reporting to increase seller productivity.
 
 ## Code Examples
@@ -599,6 +611,7 @@ class SalesAnalytics:
 ## Best Practices
 
 ### CRM Management
+
 - Maintain data quality with validation rules
 - Implement standardized naming conventions
 - Use automation to reduce manual data entry
@@ -608,6 +621,7 @@ class SalesAnalytics:
 - Document sales processes in the system
 
 ### Pipeline Management
+
 - Define clear stage exit criteria
 - Regular pipeline reviews and inspection
 - Monitor pipeline coverage ratio (3-4x quota)
@@ -617,6 +631,7 @@ class SalesAnalytics:
 - Balance pipeline across stages
 
 ### Lead Management
+
 - Implement lead scoring and routing
 - Define clear qualification criteria
 - Fast response times for inbound leads
@@ -625,6 +640,7 @@ class SalesAnalytics:
 - Regular lead cleanup and archiving
 
 ### Sales Forecasting
+
 - Use multiple forecast categories
 - Weekly forecast updates and reviews
 - Track forecast accuracy over time
@@ -636,6 +652,7 @@ class SalesAnalytics:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Inaccurate or outdated CRM data
 - Lack of consistent data entry standards
 - Over-customization of CRM systems
@@ -646,6 +663,7 @@ class SalesAnalytics:
 - Ignoring pipeline coverage metrics
 
 ### Common Mistakes
+
 - Not updating opportunities regularly
 - Keeping dead deals in pipeline
 - Forecasting deals not in CRM
@@ -658,6 +676,7 @@ class SalesAnalytics:
 ## Resources
 
 ### CRM Platforms
+
 - Salesforce - Leading enterprise CRM
 - HubSpot CRM - All-in-one platform
 - Microsoft Dynamics 365 - Enterprise sales
@@ -666,6 +685,7 @@ class SalesAnalytics:
 - Close - Sales engagement platform
 
 ### Sales Methodologies
+
 - MEDDIC - Enterprise sales qualification
 - BANT - Budget, Authority, Need, Timeline
 - Challenger Sale - Teaching approach
@@ -673,6 +693,7 @@ class SalesAnalytics:
 - Solution Selling - Problem-solving approach
 
 ### Industry Resources
+
 - Sales Hacker community
 - LinkedIn Sales Solutions blog
 - Salesforce Sales Cloud resources
@@ -680,6 +701,7 @@ class SalesAnalytics:
 - AA-ISP (Sales Development)
 
 ### Learning Platforms
+
 - Salesforce Trailhead
 - HubSpot Academy Sales Certification
 - LinkedIn Learning - Sales courses
@@ -687,4 +709,4 @@ class SalesAnalytics:
 
 ---
 
-*Part of the PCL Standard Library - Master sales technology and drive revenue growth through effective CRM and pipeline management.*
+_Part of the PCL Standard Library - Master sales technology and drive revenue growth through effective CRM and pipeline management._

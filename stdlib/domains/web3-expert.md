@@ -1,44 +1,58 @@
 # Web3 Expert
 
 ---
+
 skill_id: web3-expert
 name: Web3 Expert
-category: domains
-tags: [web3, blockchain, smart-contracts, solidity, dapps, defi, ipfs, ethereum, web3js, ethersjs]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master smart contract development with Solidity
-  - Build decentralized applications (dApps)
-  - Implement DeFi protocols and mechanisms
-  - Integrate Web3.js and ethers.js libraries
-  - Deploy and interact with IPFS for decentralized storage
-prerequisites:
-  - Strong JavaScript/TypeScript fundamentals
-  - Understanding of blockchain concepts
-  - Knowledge of cryptographic principles
-  - Familiarity with Ethereum ecosystem
-outcome: Build production-ready Web3 applications including smart contracts, dApps, DeFi protocols, and decentralized storage solutions
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- Grep
+- Glob
+  category: domains
+  tags: [web3, blockchain, smart-contracts, solidity, dapps, defi, ipfs, ethereum, web3js, ethersjs]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master smart contract development with Solidity
+- Build decentralized applications (dApps)
+- Implement DeFi protocols and mechanisms
+- Integrate Web3.js and ethers.js libraries
+- Deploy and interact with IPFS for decentralized storage
+  prerequisites:
+- Strong JavaScript/TypeScript fundamentals
+- Understanding of blockchain concepts
+- Knowledge of cryptographic principles
+- Familiarity with Ethereum ecosystem
+  outcome: Build production-ready Web3 applications including smart contracts, dApps, DeFi protocols, and decentralized storage solutions
+
 ---
 
 ## Core Concepts
 
 ### Smart Contracts
+
 Self-executing code deployed on blockchain networks that automatically enforce agreements without intermediaries. Written in Solidity for EVM-compatible chains, they enable trustless, transparent, and immutable transactions.
 
 ### Decentralized Applications (dApps)
+
 Applications with backend logic running on decentralized networks rather than centralized servers. Frontend interfaces interact with smart contracts through Web3 libraries, providing censorship-resistant and transparent functionality.
 
 ### DeFi (Decentralized Finance)
+
 Financial instruments and protocols built on blockchain without traditional intermediaries. Includes lending/borrowing, decentralized exchanges (DEXs), yield farming, liquidity pools, and automated market makers (AMMs).
 
 ### Web3 Libraries
+
 JavaScript/TypeScript libraries (Web3.js, ethers.js) that enable interaction with Ethereum nodes, signing transactions, reading blockchain state, and connecting wallet providers like MetaMask.
 
 ### IPFS (InterPlanetary File System)
+
 Peer-to-peer distributed file system for decentralized storage. Content-addressed storage ensures immutability and enables efficient distribution without centralized servers.
 
 ## Code Examples
@@ -520,7 +534,7 @@ class Web3Manager {
     chainId: null,
     balance: '0',
     provider: null,
-    signer: null
+    signer: null,
   };
 
   private ipfs: any;
@@ -531,7 +545,7 @@ class Web3Manager {
     this.ipfs = create({
       host: 'ipfs.infura.io',
       port: 5001,
-      protocol: 'https'
+      protocol: 'https',
     });
   }
 
@@ -543,7 +557,7 @@ class Web3Manager {
     try {
       // Request account access
       const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts'
+        method: 'eth_requestAccounts',
       });
 
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -557,7 +571,7 @@ class Web3Manager {
         chainId: Number(network.chainId),
         balance: ethers.formatEther(balance),
         provider,
-        signer
+        signer,
       };
 
       // Setup event listeners
@@ -592,7 +606,7 @@ class Web3Manager {
       chainId: null,
       balance: '0',
       provider: null,
-      signer: null
+      signer: null,
     };
     this.contracts.clear();
   }
@@ -607,7 +621,11 @@ class Web3Manager {
     return contract;
   }
 
-  async stakeTokens(contractName: string, amount: string, lockPeriod: number): Promise<ethers.TransactionReceipt> {
+  async stakeTokens(
+    contractName: string,
+    amount: string,
+    lockPeriod: number
+  ): Promise<ethers.TransactionReceipt> {
     const contract = this.contracts.get(contractName);
     if (!contract) throw new Error('Contract not loaded');
 
@@ -697,6 +715,7 @@ export default Web3Manager;
 ## Best Practices
 
 ### Smart Contract Development
+
 - Follow checks-effects-interactions pattern to prevent reentrancy
 - Use OpenZeppelin contracts for standard implementations
 - Implement comprehensive access controls and pausability
@@ -706,6 +725,7 @@ export default Web3Manager;
 - Conduct thorough testing and external audits before mainnet
 
 ### DeFi Protocol Design
+
 - Implement circuit breakers for emergency situations
 - Use oracle price feeds with safeguards against manipulation
 - Design with composability in mind for protocol integration
@@ -715,6 +735,7 @@ export default Web3Manager;
 - Provide clear documentation for economic mechanisms
 
 ### dApp Frontend Integration
+
 - Handle network switches and wallet disconnections gracefully
 - Always estimate gas before transactions
 - Implement proper error handling for user experience
@@ -724,6 +745,7 @@ export default Web3Manager;
 - Provide clear feedback on pending transactions
 
 ### IPFS Best Practices
+
 - Pin important content to ensure availability
 - Use content addressing for immutability guarantees
 - Implement gateway fallbacks for reliability
@@ -735,6 +757,7 @@ export default Web3Manager;
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Storing large data on-chain instead of using IPFS
 - Not implementing reentrancy guards on token transfers
 - Hardcoding gas limits instead of estimating
@@ -745,6 +768,7 @@ export default Web3Manager;
 - Ignoring smart contract upgrade strategies
 
 ### Security Issues
+
 - Unchecked external calls leading to reentrancy
 - Integer overflow/underflow in calculations
 - Front-running vulnerabilities in DEX trades
@@ -757,6 +781,7 @@ export default Web3Manager;
 ## Resources
 
 ### Development Tools
+
 - Hardhat - Ethereum development environment
 - Foundry - Fast Solidity testing framework
 - Remix IDE - Browser-based Solidity IDE
@@ -765,6 +790,7 @@ export default Web3Manager;
 - Tenderly - Smart contract monitoring and debugging
 
 ### Web3 Libraries
+
 - ethers.js - Complete Ethereum library
 - Web3.js - Ethereum JavaScript API
 - wagmi - React hooks for Ethereum
@@ -773,6 +799,7 @@ export default Web3Manager;
 - WalletConnect - Multi-wallet protocol
 
 ### DeFi Resources
+
 - Uniswap V3 - Leading DEX protocol
 - Aave - Lending protocol
 - Compound - DeFi lending platform
@@ -781,6 +808,7 @@ export default Web3Manager;
 - The Graph - Blockchain indexing protocol
 
 ### Learning & Standards
+
 - Ethereum.org - Official documentation
 - Solidity docs - Language reference
 - EIPs - Ethereum Improvement Proposals
@@ -790,4 +818,4 @@ export default Web3Manager;
 
 ---
 
-*Part of the PCL Standard Library - Build the decentralized future with Web3 technologies.*
+_Part of the PCL Standard Library - Build the decentralized future with Web3 technologies._

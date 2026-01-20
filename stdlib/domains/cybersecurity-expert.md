@@ -1,44 +1,59 @@
 # Cybersecurity Expert
 
 ---
+
 skill_id: cybersecurity-expert
 name: Cybersecurity Expert
-category: domains
-tags: [security, cybersecurity, threat-detection, incident-response, vulnerability, siem, compliance, infosec]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master security information and event management (SIEM)
-  - Understand threat detection and incident response
-  - Implement vulnerability management programs
-  - Apply security compliance frameworks
-  - Navigate security operations center (SOC) workflows
-prerequisites:
-  - Understanding of network security fundamentals
-  - Knowledge of security frameworks and standards
-  - Familiarity with common attack vectors
-  - Experience with security tools and technologies
-outcome: Build comprehensive cybersecurity solutions including threat detection, incident response, vulnerability management, and security compliance monitoring
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- Grep
+- Glob
+- WebSearch
+  category: domains
+  tags: [security, cybersecurity, threat-detection, incident-response, vulnerability, siem, compliance, infosec]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master security information and event management (SIEM)
+- Understand threat detection and incident response
+- Implement vulnerability management programs
+- Apply security compliance frameworks
+- Navigate security operations center (SOC) workflows
+  prerequisites:
+- Understanding of network security fundamentals
+- Knowledge of security frameworks and standards
+- Familiarity with common attack vectors
+- Experience with security tools and technologies
+  outcome: Build comprehensive cybersecurity solutions including threat detection, incident response, vulnerability management, and security compliance monitoring
+
 ---
 
 ## Core Concepts
 
 ### Security Information & Event Management (SIEM)
+
 Centralized platforms that aggregate, analyze, and correlate security logs and events from across infrastructure to detect threats, investigate incidents, and maintain compliance.
 
 ### Threat Detection & Intelligence
+
 Proactive identification of security threats using behavioral analysis, indicators of compromise (IOCs), threat feeds, and machine learning to detect anomalies and potential attacks.
 
 ### Incident Response
+
 Structured approach to handling security breaches and cyberattacks including preparation, detection, containment, eradication, recovery, and post-incident analysis.
 
 ### Vulnerability Management
+
 Systematic identification, classification, prioritization, remediation, and mitigation of security vulnerabilities in systems, applications, and infrastructure.
 
 ### Security Compliance
+
 Ensuring organizational adherence to security standards and regulations like GDPR, HIPAA, PCI-DSS, SOC 2, ISO 27001 through controls, audits, and documentation.
 
 ## Code Examples
@@ -698,6 +713,7 @@ class VulnerabilityManagementSystem:
 ## Best Practices
 
 ### SIEM Operations
+
 - Centralize log collection from all critical systems
 - Normalize and enrich event data
 - Define clear alert escalation criteria
@@ -707,6 +723,7 @@ class VulnerabilityManagementSystem:
 - Archive logs for forensic analysis
 
 ### Incident Response
+
 - Maintain documented IR playbooks
 - Conduct regular tabletop exercises
 - Establish clear escalation procedures
@@ -716,6 +733,7 @@ class VulnerabilityManagementSystem:
 - Update procedures based on lessons learned
 
 ### Vulnerability Management
+
 - Continuous asset discovery and inventory
 - Regular vulnerability scanning
 - Risk-based prioritization (not just severity)
@@ -725,6 +743,7 @@ class VulnerabilityManagementSystem:
 - Exception handling for accepted risks
 
 ### Security Compliance
+
 - Map controls to regulatory requirements
 - Maintain evidence documentation
 - Automate compliance monitoring where possible
@@ -736,6 +755,7 @@ class VulnerabilityManagementSystem:
 ## Anti-Patterns
 
 ### Poor Practices
+
 - Alert fatigue from untuned detection rules
 - Lack of documented incident procedures
 - Ignoring low/medium severity vulnerabilities
@@ -746,6 +766,7 @@ class VulnerabilityManagementSystem:
 - Reactive vs proactive security
 
 ### Common Mistakes
+
 - Not validating security alerts
 - Delayed incident response
 - Inadequate forensic preservation
@@ -758,6 +779,7 @@ class VulnerabilityManagementSystem:
 ## Resources
 
 ### Security Platforms
+
 - Splunk - SIEM and security analytics
 - IBM QRadar - Enterprise SIEM
 - Palo Alto Networks - Next-gen firewalls
@@ -766,6 +788,7 @@ class VulnerabilityManagementSystem:
 - Rapid7 - Security analytics
 
 ### Frameworks & Standards
+
 - NIST Cybersecurity Framework
 - ISO 27001/27002
 - CIS Controls
@@ -774,12 +797,14 @@ class VulnerabilityManagementSystem:
 - GDPR, HIPAA, SOX
 
 ### Threat Intelligence
+
 - MISP - Threat intelligence platform
 - AlienVault OTX
 - VirusTotal
 - STIX/TAXII standards
 
 ### Learning Resources
+
 - SANS Institute training
 - (ISC)² - CISSP certification
 - EC-Council - CEH certification
@@ -788,4 +813,4 @@ class VulnerabilityManagementSystem:
 
 ---
 
-*Part of the PCL Standard Library - Master cybersecurity operations and protect organizational assets from evolving threats.*
+_Part of the PCL Standard Library - Master cybersecurity operations and protect organizational assets from evolving threats._

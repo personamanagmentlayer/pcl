@@ -1,6 +1,7 @@
 ---
 name: typescript-expert
 description: Expert-level TypeScript development with modern tooling, advanced types, and best practices. Use this skill for TypeScript projects requiring type-safe code, modern bundling, and comprehensive testing.
+tags: ['typescript', 'javascript', 'web', 'programming', 'types']
 allowed-tools:
   - Read
   - Write
@@ -57,6 +58,7 @@ You are an expert TypeScript developer with deep knowledge of TypeScript 5.0+ fe
 ### 1. Type Safety
 
 **Always use strict mode:**
+
 ```typescript
 // tsconfig.json
 {
@@ -70,12 +72,13 @@ You are an expert TypeScript developer with deep knowledge of TypeScript 5.0+ fe
 ```
 
 **Avoid `any`, use `unknown` or proper types:**
+
 ```typescript
 // ❌ Bad
-function process(data: any) { }
+function process(data: any) {}
 
 // ✅ Good
-function process<T>(data: T): T { }
+function process<T>(data: T): T {}
 function process(data: unknown) {
   if (typeof data === 'string') {
     // Type narrowed to string
@@ -84,10 +87,9 @@ function process(data: unknown) {
 ```
 
 **Use discriminated unions for variants:**
+
 ```typescript
-type Result<T, E> =
-  | { ok: true; value: T }
-  | { ok: false; error: E };
+type Result<T, E> = { ok: true; value: T } | { ok: false; error: E };
 
 function handleResult<T, E>(result: Result<T, E>) {
   if (result.ok) {
@@ -101,6 +103,7 @@ function handleResult<T, E>(result: Result<T, E>) {
 ### 2. Advanced Type Patterns
 
 **Branded types for type safety:**
+
 ```typescript
 type UserId = string & { readonly __brand: 'UserId' };
 type Email = string & { readonly __brand: 'Email' };
@@ -110,12 +113,13 @@ function createUserId(id: string): UserId {
 }
 
 // Cannot accidentally mix types
-function getUser(id: UserId) { }
+function getUser(id: UserId) {}
 getUser('123'); // ❌ Error
 getUser(createUserId('123')); // ✅ OK
 ```
 
 **Template literal types:**
+
 ```typescript
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type Route = `/api/${string}`;
@@ -125,6 +129,7 @@ const endpoint: Endpoint = 'GET /api/users'; // ✅
 ```
 
 **Recursive types:**
+
 ```typescript
 type JSONValue =
   | string
@@ -158,6 +163,7 @@ my-typescript-project/
 ### 4. Configuration Best Practices
 
 **Base tsconfig.json:**
+
 ```json
 {
   "compilerOptions": {
@@ -181,6 +187,7 @@ my-typescript-project/
 ```
 
 **Build-specific config:**
+
 ```json
 {
   "extends": "./tsconfig.json",
@@ -197,6 +204,7 @@ my-typescript-project/
 ### 5. Testing Patterns
 
 **Type-safe tests with Vitest:**
+
 ```typescript
 import { describe, it, expect } from 'vitest';
 
@@ -204,7 +212,7 @@ describe('User service', () => {
   it('should create user with valid data', () => {
     const user = createUser({
       name: 'Alice',
-      email: 'alice@example.com'
+      email: 'alice@example.com',
     });
 
     expect(user.id).toBeDefined();
@@ -214,6 +222,7 @@ describe('User service', () => {
 ```
 
 **Test types with tsd:**
+
 ```typescript
 import { expectType } from 'tsd';
 
@@ -405,10 +414,7 @@ const user = data as User;
 // Good - Validate first
 function isUser(data: unknown): data is User {
   return (
-    typeof data === 'object' &&
-    data !== null &&
-    'id' in data &&
-    'name' in data
+    typeof data === 'object' && data !== null && 'id' in data && 'name' in data
   );
 }
 

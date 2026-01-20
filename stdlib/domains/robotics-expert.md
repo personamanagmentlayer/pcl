@@ -1,44 +1,58 @@
 # Robotics Expert
 
 ---
+
 skill_id: robotics-expert
 name: Robotics Expert
-category: domains
-tags: [robotics, ros, ros2, autonomous-navigation, sensors, actuators, slam, motion-planning, control-systems]
-version: 1.0.0
-author: PCL Standard Library
-dependencies: []
-complexity: expert
-estimated_time: 45 minutes
-objectives:
-  - Master ROS/ROS2 architecture and development
-  - Implement autonomous navigation and path planning
-  - Integrate sensors and actuators for robot control
-  - Build SLAM systems for mapping and localization
-  - Design control systems and kinematics
-prerequisites:
-  - Strong Python and C++ programming skills
-  - Understanding of linear algebra and calculus
-  - Knowledge of control theory fundamentals
-  - Familiarity with Linux and embedded systems
-outcome: Develop production-ready robotic systems with autonomous navigation, sensor fusion, and intelligent control for real-world applications
+allowed-tools:
+
+- Read
+- Write
+- Bash
+- Grep
+- Glob
+  category: domains
+  tags: [robotics, ros, ros2, autonomous-navigation, sensors, actuators, slam, motion-planning, control-systems]
+  version: 1.0.0
+  author: PCL Standard Library
+  dependencies: []
+  complexity: expert
+  estimated_time: 45 minutes
+  objectives:
+- Master ROS/ROS2 architecture and development
+- Implement autonomous navigation and path planning
+- Integrate sensors and actuators for robot control
+- Build SLAM systems for mapping and localization
+- Design control systems and kinematics
+  prerequisites:
+- Strong Python and C++ programming skills
+- Understanding of linear algebra and calculus
+- Knowledge of control theory fundamentals
+- Familiarity with Linux and embedded systems
+  outcome: Develop production-ready robotic systems with autonomous navigation, sensor fusion, and intelligent control for real-world applications
+
 ---
 
 ## Core Concepts
 
 ### Robot Operating System (ROS/ROS2)
+
 Middleware framework providing tools, libraries, and conventions for building robot applications. ROS2 offers improved real-time performance, security, and multi-robot support over ROS1.
 
 ### SLAM (Simultaneous Localization and Mapping)
+
 Algorithm enabling robots to build maps of unknown environments while tracking their position within those maps. Essential for autonomous navigation in dynamic environments.
 
 ### Sensor Fusion
+
 Integration of data from multiple sensors (lidar, cameras, IMU, encoders) to create reliable perception of robot's environment and state. Improves accuracy and robustness.
 
 ### Motion Planning
-Algorithms for computing collision-free paths from current position to goal. Includes global planning (A*, Dijkstra) and local planning (DWA, TEB) for dynamic obstacle avoidance.
+
+Algorithms for computing collision-free paths from current position to goal. Includes global planning (A\*, Dijkstra) and local planning (DWA, TEB) for dynamic obstacle avoidance.
 
 ### Control Systems
+
 Feedback control algorithms (PID, MPC) that translate desired robot behavior into motor commands. Ensures accurate trajectory following and stable operation.
 
 ## Code Examples
@@ -782,6 +796,7 @@ class ParticleFilterSLAM:
 ## Best Practices
 
 ### ROS Development
+
 - Use ROS2 for new projects (improved architecture)
 - Follow REP guidelines for package structure
 - Implement proper lifecycle management
@@ -791,6 +806,7 @@ class ParticleFilterSLAM:
 - Maintain separation between logic and ROS interfaces
 
 ### Sensor Integration
+
 - Implement sensor fusion for redundancy
 - Calibrate sensors properly (intrinsic, extrinsic)
 - Handle sensor failures gracefully
@@ -800,6 +816,7 @@ class ParticleFilterSLAM:
 - Monitor sensor health and diagnostics
 
 ### Motion Planning
+
 - Use proven algorithms (RRT*, A*, DWA)
 - Implement both global and local planners
 - Consider kinematic and dynamic constraints
@@ -809,6 +826,7 @@ class ParticleFilterSLAM:
 - Implement recovery behaviors
 
 ### Safety & Reliability
+
 - Implement emergency stop mechanisms
 - Add watchdog timers for critical systems
 - Validate all sensor inputs
@@ -820,6 +838,7 @@ class ParticleFilterSLAM:
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Not handling coordinate frame transformations
 - Ignoring timing and synchronization issues
 - Hardcoding parameters instead of using config files
@@ -829,6 +848,7 @@ class ParticleFilterSLAM:
 - Inadequate testing in simulation
 
 ### Design Issues
+
 - Monolithic nodes instead of modular design
 - Tight coupling between components
 - Not considering real-time constraints
@@ -840,6 +860,7 @@ class ParticleFilterSLAM:
 ## Resources
 
 ### Frameworks & Middleware
+
 - ROS2 - Robot Operating System 2
 - ROS1 (legacy) - Original ROS
 - Gazebo - Robot simulation
@@ -848,6 +869,7 @@ class ParticleFilterSLAM:
 - BehaviorTree.CPP - Behavior trees
 
 ### Hardware Platforms
+
 - TurtleBot - Educational platform
 - Universal Robots - Collaborative arms
 - Boston Dynamics Spot - Quadruped
@@ -856,6 +878,7 @@ class ParticleFilterSLAM:
 - Arduino/Raspberry Pi - Embedded control
 
 ### Sensors & Actuators
+
 - Velodyne/Ouster - Lidar sensors
 - Intel RealSense - Depth cameras
 - Sick/Hokuyo - 2D lidar
@@ -864,6 +887,7 @@ class ParticleFilterSLAM:
 - Mujoco - Physics simulation
 
 ### Learning Resources
+
 - ROS2 Documentation
 - Modern Robotics textbook
 - Probabilistic Robotics (Thrun)
@@ -873,4 +897,4 @@ class ParticleFilterSLAM:
 
 ---
 
-*Part of the PCL Standard Library - Build intelligent autonomous systems that interact with the physical world.*
+_Part of the PCL Standard Library - Build intelligent autonomous systems that interact with the physical world._

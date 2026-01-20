@@ -1,0 +1,1706 @@
+{
+  "skills": [
+    {
+      "category": "domains",
+      "name": "5g-expert",
+      "path": "domains/5g-expert.md",
+      "tags": []
+    },
+    {
+      "category": "professional",
+      "name": "accountant-expert",
+      "path": "professional/accountant-expert/SKILL.md",
+      "tags": ["accounting", "tax", "financial-reporting", "gaap", "ifrs"]
+    },
+    {
+      "category": "domains",
+      "name": "aerospace-expert",
+      "path": "domains/aerospace-expert/SKILL.md",
+      "tags": [
+        "aerospace",
+        "aviation",
+        "flight",
+        "maintenance",
+        "safety",
+        "atc"
+      ]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "agtech-expert",
+      "path": "domains/agtech-expert.md",
+      "tags": [
+        "agtech",
+        "precision-agriculture",
+        "farming",
+        "crop-monitoring",
+        "livestock",
+        "farm-management",
+        "sustainable-agriculture"
+      ]
+    },
+    {
+      "category": "ai",
+      "name": "ai-architect-expert",
+      "path": "ai/ai-architect-expert/SKILL.md",
+      "tags": [
+        "ai-architecture",
+        "mlops",
+        "system-design",
+        "ai-infrastructure",
+        "scalability"
+      ]
+    },
+    {
+      "category": "ai",
+      "name": "ai-engineer-expert",
+      "path": "ai/ai-engineer-expert/SKILL.md",
+      "tags": [
+        "ai-engineering",
+        "llm",
+        "deployment",
+        "production-ai",
+        "integration"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "airflow-expert",
+      "path": "data/airflow-expert/SKILL.md",
+      "tags": [
+        "airflow",
+        "orchestration",
+        "dag",
+        "workflow",
+        "scheduling",
+        "data-pipeline"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "android-expert",
+      "path": "frameworks/android-expert.md",
+      "tags": [
+        "mobile",
+        "android",
+        "kotlin",
+        "jetpack-compose",
+        "material-design",
+        "google"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "angular-expert",
+      "path": "frameworks/angular-expert.md",
+      "tags": [
+        "angular",
+        "rxjs",
+        "typescript",
+        "dependency-injection",
+        "reactive",
+        "frontend",
+        "enterprise"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "ansible-expert",
+      "path": "devops/ansible-expert/SKILL.md",
+      "tags": [
+        "ansible",
+        "automation",
+        "configuration-management",
+        "iac",
+        "playbooks",
+        "roles"
+      ]
+    },
+    {
+      "category": "api",
+      "name": "api-design-expert",
+      "path": "api/api-design-expert/SKILL.md",
+      "tags": [
+        "api-design",
+        "rest",
+        "graphql",
+        "api-versioning",
+        "api-security"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "argocd-expert",
+      "path": "devops/argocd-expert/SKILL.md",
+      "tags": [
+        "argocd",
+        "gitops",
+        "kubernetes",
+        "continuous-deployment",
+        "declarative",
+        "automation"
+      ]
+    },
+    {
+      "category": "security",
+      "name": "audit-expert",
+      "path": "security/audit-expert/SKILL.md",
+      "tags": [
+        "audit",
+        "compliance",
+        "security-review",
+        "code-review",
+        "vulnerability-assessment",
+        "soc2",
+        "gdpr"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "automotive-expert",
+      "path": "domains/automotive-expert/SKILL.md",
+      "tags": [
+        "automotive",
+        "connected-car",
+        "fleet",
+        "telematics",
+        "adas",
+        "vehicle"
+      ]
+    },
+    {
+      "category": "cloud",
+      "name": "aws-expert",
+      "path": "cloud/aws-expert/SKILL.md",
+      "tags": ["aws", "cloud", "infrastructure", "devops", "serverless"]
+    },
+    {
+      "category": "cloud",
+      "name": "azure-expert",
+      "path": "cloud/azure-expert/SKILL.md",
+      "tags": ["azure", "cloud", "microsoft", "azure-functions", "cosmos-db"]
+    },
+    {
+      "category": "professional",
+      "name": "banking-expert",
+      "path": "professional/banking-expert/SKILL.md",
+      "tags": ["banking", "finance", "core-banking", "regulations", "payments"]
+    },
+    {
+      "category": "scientific",
+      "name": "biological-expert",
+      "path": "scientific/biological-expert/SKILL.md",
+      "tags": [
+        "biology",
+        "biotechnology",
+        "genetics",
+        "bioinformatics",
+        "genomics"
+      ]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "biotech-expert",
+      "path": "domains/biotech-expert.md",
+      "tags": [
+        "biotech",
+        "genomics",
+        "bioinformatics",
+        "lims",
+        "lab-automation",
+        "bioprocessing",
+        "gene-sequencing"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "blockchain-expert",
+      "path": "domains/blockchain-expert/SKILL.md",
+      "tags": [
+        "blockchain",
+        "web3",
+        "smart-contracts",
+        "defi",
+        "ethereum",
+        "solidity"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "business-intelligence-expert",
+      "path": "domains/business-intelligence-expert.md",
+      "tags": []
+    },
+    {
+      "category": "qa",
+      "name": "chaos-engineering-expert",
+      "path": "qa/chaos-engineering-expert.md",
+      "tags": []
+    },
+    {
+      "category": "devops",
+      "name": "cicd-expert",
+      "path": "devops/cicd-expert/SKILL.md",
+      "tags": [
+        "cicd",
+        "github-actions",
+        "jenkins",
+        "gitlab-ci",
+        "deployment",
+        "automation",
+        "pipeline"
+      ]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "cleantech-expert",
+      "path": "domains/cleantech-expert.md",
+      "tags": [
+        "cleantech",
+        "renewable-energy",
+        "carbon-tracking",
+        "esg",
+        "sustainability",
+        "energy-optimization",
+        "green-tech"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "clojure-expert",
+      "path": "languages/clojure-expert.md",
+      "tags": [
+        "clojure",
+        "clojurescript",
+        "functional-programming",
+        "immutability",
+        "repl",
+        "core-async",
+        "jvm",
+        "lisp"
+      ]
+    },
+    {
+      "category": "cloud",
+      "name": "cloudflare-expert",
+      "path": "cloud/cloudflare-expert/SKILL.md",
+      "tags": ["cloudflare", "edge-computing", "cdn", "workers", "waf"]
+    },
+    {
+      "category": "tools",
+      "name": "code-review-expert",
+      "path": "tools/code-review-expert/SKILL.md",
+      "tags": []
+    },
+    {
+      "category": "security",
+      "name": "codeql-expert",
+      "path": "security/codeql-expert/SKILL.md",
+      "tags": [
+        "codeql",
+        "static-analysis",
+        "sast",
+        "vulnerability-detection",
+        "github-security"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "construction-expert",
+      "path": "domains/construction-expert/SKILL.md",
+      "tags": [
+        "construction",
+        "bim",
+        "project-management",
+        "safety",
+        "building"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "cpp-expert",
+      "path": "languages/cpp-expert/SKILL.md",
+      "tags": [
+        "cpp",
+        "c++",
+        "c++20",
+        "c++23",
+        "stl",
+        "templates",
+        "performance",
+        "memory"
+      ]
+    },
+    {
+      "category": "security",
+      "name": "cryptography-expert",
+      "path": "security/cryptography-expert.md",
+      "tags": [
+        "cryptography",
+        "encryption",
+        "pki",
+        "tls",
+        "ssl",
+        "key-management",
+        "security",
+        "certificates"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "csharp-expert",
+      "path": "languages/csharp-expert/SKILL.md",
+      "tags": ["csharp", "dotnet", "aspnet", "enterprise", "microsoft"]
+    },
+    {
+      "category": "domains",
+      "name": "customer-support-expert",
+      "path": "domains/customer-support-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "cybersecurity-expert",
+      "path": "domains/cybersecurity-expert.md",
+      "tags": []
+    },
+    {
+      "category": "qa",
+      "name": "cypress-expert",
+      "path": "qa/cypress-expert.md",
+      "tags": []
+    },
+    {
+      "category": "languages",
+      "name": "dart-expert",
+      "path": "languages/dart-expert/SKILL.md",
+      "tags": ["dart", "flutter", "mobile", "cross-platform", "widgets"]
+    },
+    {
+      "category": "data",
+      "name": "data-mesh-expert",
+      "path": "data/data-mesh-expert/SKILL.md",
+      "tags": [
+        "data-mesh",
+        "architecture",
+        "domain-driven",
+        "data-products",
+        "governance",
+        "platform"
+      ]
+    },
+    {
+      "category": "ai",
+      "name": "data-science-expert",
+      "path": "ai/data-science-expert/SKILL.md",
+      "tags": [
+        "data-science",
+        "analytics",
+        "visualization",
+        "statistics",
+        "pandas",
+        "numpy"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "databricks-expert",
+      "path": "data/databricks-expert/SKILL.md",
+      "tags": [
+        "databricks",
+        "spark",
+        "delta-lake",
+        "mlflow",
+        "lakehouse",
+        "pyspark"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "dbt-expert",
+      "path": "data/dbt-expert/SKILL.md",
+      "tags": [
+        "dbt",
+        "analytics-engineering",
+        "sql",
+        "data-transformation",
+        "jinja",
+        "testing"
+      ]
+    },
+    {
+      "category": "design",
+      "name": "design-expert",
+      "path": "design/design-expert/SKILL.md",
+      "tags": [
+        "system-design",
+        "architecture",
+        "scalability",
+        "distributed-systems",
+        "patterns"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "devops-expert",
+      "path": "devops/devops-expert/SKILL.md",
+      "tags": ["devops", "ci-cd", "automation", "infrastructure", "culture"]
+    },
+    {
+      "category": "tools",
+      "name": "discord-expert",
+      "path": "tools/discord-expert.md",
+      "tags": []
+    },
+    {
+      "category": "frameworks",
+      "name": "django-expert",
+      "path": "frameworks/django-expert/SKILL.md",
+      "tags": ["django", "python", "web", "orm", "mvc", "rest-framework"]
+    },
+    {
+      "category": "devops",
+      "name": "docker-expert",
+      "path": "devops/docker-expert/SKILL.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "dynamics365-expert",
+      "path": "domains/dynamics365-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "e-learning-expert",
+      "path": "domains/e-learning-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "edge-computing-expert",
+      "path": "domains/edge-computing-expert.md",
+      "tags": []
+    },
+    {
+      "category": "industry-specializations",
+      "name": "edtech-expert",
+      "path": "domains/edtech-expert.md",
+      "tags": [
+        "edtech",
+        "education",
+        "e-learning",
+        "lms",
+        "adaptive-learning",
+        "student-analytics",
+        "virtual-classroom",
+        "assessment"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "education-expert",
+      "path": "domains/education/SKILL.md",
+      "tags": ["education", "edtech", "lms", "e-learning", "assessment"]
+    },
+    {
+      "category": "data",
+      "name": "elasticsearch-expert",
+      "path": "data/elasticsearch-expert/SKILL.md",
+      "tags": [
+        "elasticsearch",
+        "search",
+        "elk",
+        "logstash",
+        "kibana",
+        "full-text-search"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "electron-expert",
+      "path": "frameworks/electron-expert.md",
+      "tags": [
+        "desktop",
+        "electron",
+        "nodejs",
+        "cross-platform",
+        "windows",
+        "macos",
+        "linux"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "elixir-expert",
+      "path": "languages/elixir-expert/SKILL.md",
+      "tags": ["elixir", "phoenix", "otp", "erlang", "concurrent", "functional"]
+    },
+    {
+      "category": "domains",
+      "name": "energy-expert",
+      "path": "domains/energy-expert/SKILL.md",
+      "tags": [
+        "energy",
+        "smart-grid",
+        "renewable",
+        "power",
+        "utilities",
+        "scada"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "farming-expert",
+      "path": "domains/farming/SKILL.md",
+      "tags": [
+        "agriculture",
+        "farming",
+        "precision-agriculture",
+        "agtech",
+        "crop-management"
+      ]
+    },
+    {
+      "category": "api",
+      "name": "fastapi-expert",
+      "path": "api/fastapi-expert/SKILL.md",
+      "tags": [
+        "fastapi",
+        "python",
+        "api",
+        "async",
+        "rest",
+        "openapi",
+        "pydantic"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "finance-expert",
+      "path": "domains/finance-expert/SKILL.md",
+      "tags": [
+        "finance",
+        "fintech",
+        "banking",
+        "payments",
+        "trading",
+        "accounting"
+      ]
+    },
+    {
+      "category": "professional",
+      "name": "finops-expert",
+      "path": "professional/finops-expert/SKILL.md",
+      "tags": [
+        "finops",
+        "cloud-cost",
+        "optimization",
+        "cloud-economics",
+        "aws-cost"
+      ]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "fintech-expert",
+      "path": "domains/fintech-expert.md",
+      "tags": [
+        "fintech",
+        "payments",
+        "open-banking",
+        "psd2",
+        "blockchain",
+        "cryptocurrency",
+        "robo-advisor",
+        "digital-banking"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "flask-expert",
+      "path": "frameworks/flask-expert/SKILL.md",
+      "tags": ["flask", "python", "web-framework", "rest-api", "jinja2"]
+    },
+    {
+      "category": "frameworks",
+      "name": "flutter-expert",
+      "path": "frameworks/flutter-expert.md",
+      "tags": [
+        "mobile",
+        "flutter",
+        "dart",
+        "cross-platform",
+        "ui",
+        "state-management"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "gaming-expert",
+      "path": "domains/gaming-expert.md",
+      "tags": []
+    },
+    {
+      "category": "cloud",
+      "name": "gcp-expert",
+      "path": "cloud/gcp-expert/SKILL.md",
+      "tags": [
+        "gcp",
+        "google-cloud",
+        "cloud-functions",
+        "bigquery",
+        "firestore"
+      ]
+    },
+    {
+      "category": "security",
+      "name": "gdpr-expert",
+      "path": "security/gdpr-expert.md",
+      "tags": [
+        "gdpr",
+        "privacy",
+        "data-protection",
+        "compliance",
+        "consent",
+        "dpo",
+        "eu-regulation"
+      ]
+    },
+    {
+      "category": "tools",
+      "name": "git-expert",
+      "path": "tools/git-expert/SKILL.md",
+      "tags": ["git", "version-control", "collaboration", "workflow"]
+    },
+    {
+      "category": "languages",
+      "name": "go-expert",
+      "path": "languages/go-expert/SKILL.md",
+      "tags": ["go", "golang", "concurrency", "microservices", "backend"]
+    },
+    {
+      "category": "devops",
+      "name": "grafana-expert",
+      "path": "devops/grafana-expert/SKILL.md",
+      "tags": [
+        "grafana",
+        "dashboards",
+        "visualization",
+        "monitoring",
+        "observability",
+        "alerting"
+      ]
+    },
+    {
+      "category": "api",
+      "name": "graphql-expert",
+      "path": "api/graphql-expert/SKILL.md",
+      "tags": [
+        "graphql",
+        "api",
+        "apollo",
+        "schema",
+        "resolvers",
+        "subscriptions",
+        "relay"
+      ]
+    },
+    {
+      "category": "api",
+      "name": "grpc-expert",
+      "path": "api/grpc-expert/SKILL.md",
+      "tags": ["grpc", "protobuf", "microservices", "rpc", "streaming"]
+    },
+    {
+      "category": "languages",
+      "name": "haskell-expert",
+      "path": "languages/haskell-expert.md",
+      "tags": [
+        "haskell",
+        "functional-programming",
+        "monads",
+        "type-system",
+        "lazy-evaluation",
+        "pure-functions",
+        "category-theory"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "healthcare-expert",
+      "path": "domains/healthcare/SKILL.md",
+      "tags": ["healthcare", "medical", "hipaa", "hl7", "fhir", "ehr"]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "healthtech-expert",
+      "path": "domains/healthtech-expert.md",
+      "tags": [
+        "healthtech",
+        "telemedicine",
+        "wearables",
+        "health-analytics",
+        "patient-monitoring",
+        "digital-health",
+        "mhealth"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "helm-expert",
+      "path": "devops/helm-expert/SKILL.md",
+      "tags": [
+        "helm",
+        "kubernetes",
+        "package-manager",
+        "charts",
+        "templates",
+        "deployment"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "hospitality-expert",
+      "path": "domains/hospitality-expert/SKILL.md",
+      "tags": [
+        "hospitality",
+        "hotel",
+        "reservation",
+        "pms",
+        "revenue-management"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "hr-tech-expert",
+      "path": "domains/hr-tech-expert.md",
+      "tags": []
+    },
+    {
+      "category": "security",
+      "name": "incident-response-expert",
+      "path": "security/incident-response-expert.md",
+      "tags": [
+        "incident-response",
+        "forensics",
+        "nist",
+        "containment",
+        "recovery",
+        "cybersecurity"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "insurance-expert",
+      "path": "domains/insurance-expert/SKILL.md",
+      "tags": [
+        "insurance",
+        "underwriting",
+        "claims",
+        "actuarial",
+        "risk",
+        "insurtech"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "ios-expert",
+      "path": "frameworks/ios-expert.md",
+      "tags": ["mobile", "ios", "swift", "swiftui", "uikit", "apple", "xcode"]
+    },
+    {
+      "category": "domains",
+      "name": "iot-expert",
+      "path": "domains/iot-expert/SKILL.md",
+      "tags": [
+        "iot",
+        "embedded",
+        "edge-computing",
+        "mqtt",
+        "sensors",
+        "firmware"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "istio-expert",
+      "path": "devops/istio-expert/SKILL.md",
+      "tags": [
+        "istio",
+        "service-mesh",
+        "kubernetes",
+        "microservices",
+        "mtls",
+        "traffic-management"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "java-expert",
+      "path": "languages/java-expert/SKILL.md",
+      "tags": ["java", "jvm", "spring", "maven", "gradle", "enterprise"]
+    },
+    {
+      "category": "languages",
+      "name": "javascript-expert",
+      "path": "languages/javascript-expert/SKILL.md",
+      "tags": ["javascript", "js", "ecmascript", "es2024", "node", "npm", "web"]
+    },
+    {
+      "category": "qa",
+      "name": "jest-expert",
+      "path": "qa/jest-expert.md",
+      "tags": []
+    },
+    {
+      "category": "languages",
+      "name": "julia-expert",
+      "path": "languages/julia-expert.md",
+      "tags": [
+        "julia",
+        "scientific-computing",
+        "multiple-dispatch",
+        "performance",
+        "numerical-analysis",
+        "data-science",
+        "hpc"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "kafka-expert",
+      "path": "data/kafka-expert/SKILL.md",
+      "tags": [
+        "kafka",
+        "streaming",
+        "messaging",
+        "event-driven",
+        "kafka-streams"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "kotlin-expert",
+      "path": "languages/kotlin-expert/SKILL.md",
+      "tags": ["kotlin", "android", "coroutines", "multiplatform", "jvm"]
+    },
+    {
+      "category": "devops",
+      "name": "kubernetes-expert",
+      "path": "devops/kubernetes-expert/SKILL.md",
+      "tags": [
+        "kubernetes",
+        "k8s",
+        "containers",
+        "orchestration",
+        "devops",
+        "cloud-native"
+      ]
+    },
+    {
+      "category": "professional",
+      "name": "lawyer-expert",
+      "path": "professional/lawyer-expert/SKILL.md",
+      "tags": ["legal", "contracts", "compliance", "law", "legal-tech"]
+    },
+    {
+      "category": "domains",
+      "name": "legal-tech-expert",
+      "path": "domains/legal-tech-expert.md",
+      "tags": []
+    },
+    {
+      "category": "industry-specializations",
+      "name": "legaltech-expert",
+      "path": "domains/legaltech-expert.md",
+      "tags": [
+        "legaltech",
+        "legal",
+        "contracts",
+        "e-discovery",
+        "legal-research",
+        "case-management",
+        "document-automation"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "linkerd-expert",
+      "path": "devops/linkerd-expert/SKILL.md",
+      "tags": [
+        "linkerd",
+        "service-mesh",
+        "kubernetes",
+        "microservices",
+        "mtls",
+        "observability"
+      ]
+    },
+    {
+      "category": "qa",
+      "name": "load-testing-expert",
+      "path": "qa/load-testing-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "logistics-expert",
+      "path": "domains/logistics/SKILL.md",
+      "tags": [
+        "logistics",
+        "supply-chain",
+        "warehouse",
+        "fleet",
+        "optimization"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "looker-expert",
+      "path": "data/looker-expert/SKILL.md",
+      "tags": [
+        "looker",
+        "lookml",
+        "bi",
+        "analytics",
+        "dashboards",
+        "data-modeling"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "manufacturing-expert",
+      "path": "domains/manufacturing-expert/SKILL.md",
+      "tags": [
+        "manufacturing",
+        "industry40",
+        "production",
+        "quality",
+        "mes",
+        "plc"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "maritime-expert",
+      "path": "domains/maritime-expert/SKILL.md",
+      "tags": ["maritime", "shipping", "logistics", "vessel", "port", "cargo"]
+    },
+    {
+      "category": "domains",
+      "name": "marketing-expert",
+      "path": "domains/marketing-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "media-expert",
+      "path": "domains/media-expert/SKILL.md",
+      "tags": ["media", "video", "streaming", "broadcast", "cms", "production"]
+    },
+    {
+      "category": "domains",
+      "name": "metaverse-expert",
+      "path": "domains/metaverse-expert.md",
+      "tags": []
+    },
+    {
+      "category": "api",
+      "name": "microservices-expert",
+      "path": "api/microservices-expert/SKILL.md",
+      "tags": [
+        "microservices",
+        "distributed-systems",
+        "service-mesh",
+        "architecture"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "microsoft365-expert",
+      "path": "domains/microsoft365-expert.md",
+      "tags": []
+    },
+    {
+      "category": "ai",
+      "name": "ml-expert",
+      "path": "ai/ml-expert/SKILL.md",
+      "tags": [
+        "machine-learning",
+        "deep-learning",
+        "neural-networks",
+        "mlops",
+        "data-science"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "mongodb-expert",
+      "path": "data/mongodb-expert/SKILL.md",
+      "tags": ["mongodb", "nosql", "database", "aggregation", "performance"]
+    },
+    {
+      "category": "devops",
+      "name": "monitoring-expert",
+      "path": "devops/monitoring-expert/SKILL.md",
+      "tags": [
+        "monitoring",
+        "observability",
+        "prometheus",
+        "grafana",
+        "logging",
+        "metrics",
+        "alerting",
+        "traces"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "nextjs-expert",
+      "path": "frameworks/nextjs-expert.md",
+      "tags": [
+        "nextjs",
+        "react",
+        "ssr",
+        "ssg",
+        "app-router",
+        "server-components",
+        "full-stack",
+        "vercel"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "nginx-expert",
+      "path": "devops/nginx-expert/SKILL.md",
+      "tags": ["nginx", "web-server", "reverse-proxy", "load-balancer", "ssl"]
+    },
+    {
+      "category": "languages",
+      "name": "nim-expert",
+      "path": "languages/nim-expert.md",
+      "tags": [
+        "nim",
+        "metaprogramming",
+        "async",
+        "macros",
+        "python-interop",
+        "c-interop",
+        "compiled"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "nodejs-expert",
+      "path": "languages/nodejs-expert/SKILL.md",
+      "tags": ["nodejs", "node", "javascript", "backend", "express", "async"]
+    },
+    {
+      "category": "api",
+      "name": "openapi-expert",
+      "path": "api/openapi-expert/SKILL.md",
+      "tags": [
+        "openapi",
+        "swagger",
+        "api-spec",
+        "rest",
+        "api-design",
+        "documentation"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "oracle-expert",
+      "path": "domains/oracle-expert.md",
+      "tags": []
+    },
+    {
+      "category": "security",
+      "name": "penetration-testing-expert",
+      "path": "security/penetration-testing-expert.md",
+      "tags": [
+        "pentesting",
+        "ethical-hacking",
+        "owasp",
+        "vulnerability-assessment",
+        "exploitation",
+        "security-testing",
+        "metasploit"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "performance-expert",
+      "path": "devops/performance-expert/SKILL.md",
+      "tags": [
+        "performance",
+        "optimization",
+        "profiling",
+        "benchmarking",
+        "scalability"
+      ]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "pharmaceutical-expert",
+      "path": "domains/pharmaceutical-expert.md",
+      "tags": [
+        "pharmaceutical",
+        "clinical-trials",
+        "fda",
+        "gxp",
+        "pharmacovigilance",
+        "regulatory",
+        "drug-development"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "php-expert",
+      "path": "languages/php-expert/SKILL.md",
+      "tags": ["php", "laravel", "composer", "symfony", "phpunit", "psr"]
+    },
+    {
+      "category": "qa",
+      "name": "playwright-expert",
+      "path": "qa/playwright-expert.md",
+      "tags": []
+    },
+    {
+      "category": "data",
+      "name": "postgresql-expert",
+      "path": "data/postgresql-expert/SKILL.md",
+      "tags": ["postgresql", "postgres", "database", "sql", "performance"]
+    },
+    {
+      "category": "data",
+      "name": "powerbi-expert",
+      "path": "data/powerbi-expert/SKILL.md",
+      "tags": [
+        "powerbi",
+        "dax",
+        "power-query",
+        "bi",
+        "microsoft",
+        "analytics",
+        "data-modeling"
+      ]
+    },
+    {
+      "category": "devops",
+      "name": "prometheus-expert",
+      "path": "devops/prometheus-expert/SKILL.md",
+      "tags": [
+        "prometheus",
+        "monitoring",
+        "metrics",
+        "observability",
+        "alerting",
+        "promql"
+      ]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "proptech-expert",
+      "path": "domains/proptech-expert.md",
+      "tags": [
+        "proptech",
+        "real-estate",
+        "smart-buildings",
+        "iot",
+        "property-management",
+        "virtual-tours",
+        "tenant-portals"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "python-expert",
+      "path": "languages/python-expert/SKILL.md",
+      "tags": ["python", "python3", "async", "type-hints", "fastapi", "django"]
+    },
+    {
+      "category": "qa",
+      "name": "qa-expert",
+      "path": "qa/qa-expert/SKILL.md",
+      "tags": [
+        "qa",
+        "testing",
+        "test-automation",
+        "quality-assurance",
+        "selenium"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "quality-management-expert",
+      "path": "domains/quality-management-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "quantum-algorithms-expert",
+      "path": "domains/quantum-algorithms-expert.md",
+      "tags": []
+    },
+    {
+      "category": "scientific",
+      "name": "quantum-expert",
+      "path": "scientific/quantum-expert/SKILL.md",
+      "tags": [
+        "quantum-computing",
+        "qiskit",
+        "quantum-algorithms",
+        "quantum-information"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "r-expert",
+      "path": "languages/r-expert/SKILL.md",
+      "tags": ["r", "statistics", "data-analysis", "ggplot2", "tidyverse"]
+    },
+    {
+      "category": "frameworks",
+      "name": "react-expert",
+      "path": "frameworks/react-expert/SKILL.md",
+      "tags": ["react", "frontend", "hooks", "jsx", "typescript", "nextjs"]
+    },
+    {
+      "category": "frameworks",
+      "name": "react-native-expert",
+      "path": "frameworks/react-native-expert.md",
+      "tags": [
+        "mobile",
+        "react-native",
+        "javascript",
+        "typescript",
+        "cross-platform",
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "real-estate-expert",
+      "path": "domains/real-estate-expert/SKILL.md",
+      "tags": ["real-estate", "property", "mls", "crm", "proptech", "listings"]
+    },
+    {
+      "category": "data",
+      "name": "redis-expert",
+      "path": "data/redis-expert/SKILL.md",
+      "tags": ["redis", "cache", "pubsub", "inmemory", "keyvalue", "nosql"]
+    },
+    {
+      "category": "industry-specializations",
+      "name": "regtech-expert",
+      "path": "domains/regtech-expert.md",
+      "tags": [
+        "regtech",
+        "compliance",
+        "kyc",
+        "aml",
+        "transaction-monitoring",
+        "risk-assessment",
+        "regulatory-reporting"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "remix-expert",
+      "path": "frameworks/remix-expert.md",
+      "tags": [
+        "remix",
+        "react",
+        "nested-routing",
+        "loaders",
+        "actions",
+        "progressive-enhancement",
+        "full-stack",
+        "web-standards"
+      ]
+    },
+    {
+      "category": "scientific",
+      "name": "research-expert",
+      "path": "scientific/research-expert/SKILL.md",
+      "tags": [
+        "research",
+        "methodology",
+        "statistics",
+        "academic-writing",
+        "experimental-design"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "retail-expert",
+      "path": "domains/retail-expert/SKILL.md",
+      "tags": ["retail", "pos", "ecommerce", "inventory", "crm", "omnichannel"]
+    },
+    {
+      "category": "domains",
+      "name": "robotics-expert",
+      "path": "domains/robotics-expert.md",
+      "tags": []
+    },
+    {
+      "category": "languages",
+      "name": "ruby-expert",
+      "path": "languages/ruby-expert/SKILL.md",
+      "tags": ["ruby", "rails", "rspec", "gem", "sinatra", "metaprogramming"]
+    },
+    {
+      "category": "languages",
+      "name": "rust-expert",
+      "path": "languages/rust-expert/SKILL.md",
+      "tags": [
+        "rust",
+        "systems-programming",
+        "memory-safety",
+        "concurrency",
+        "cargo"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "sales-expert",
+      "path": "domains/sales-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "salesforce-expert",
+      "path": "domains/salesforce-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "sap-expert",
+      "path": "domains/sap-expert.md",
+      "tags": []
+    },
+    {
+      "category": "languages",
+      "name": "scala-expert",
+      "path": "languages/scala-expert/SKILL.md",
+      "tags": ["scala", "functional-programming", "akka", "cats", "zio"]
+    },
+    {
+      "category": "security",
+      "name": "security-expert",
+      "path": "security/security-expert/SKILL.md",
+      "tags": [
+        "security",
+        "owasp",
+        "pentest",
+        "appsec",
+        "vulnerability",
+        "encryption",
+        "authentication"
+      ]
+    },
+    {
+      "category": "qa",
+      "name": "selenium-expert",
+      "path": "qa/selenium-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "serverless-expert",
+      "path": "domains/serverless-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "servicenow-expert",
+      "path": "domains/servicenow-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "sharepoint-expert",
+      "path": "domains/sharepoint-expert.md",
+      "tags": []
+    },
+    {
+      "category": "tools",
+      "name": "slack-expert",
+      "path": "tools/slack-expert.md",
+      "tags": []
+    },
+    {
+      "category": "data",
+      "name": "snowflake-expert",
+      "path": "data/snowflake-expert/SKILL.md",
+      "tags": ["snowflake", "data-warehouse", "sql", "analytics", "cloud"]
+    },
+    {
+      "category": "security",
+      "name": "soc2-expert",
+      "path": "security/soc2-expert.md",
+      "tags": [
+        "soc2",
+        "compliance",
+        "audit",
+        "trust-services",
+        "aicpa",
+        "controls",
+        "security-framework"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "social-media-expert",
+      "path": "domains/social-media-expert.md",
+      "tags": []
+    },
+    {
+      "category": "frameworks",
+      "name": "spring-boot-expert",
+      "path": "frameworks/spring-boot-expert/SKILL.md",
+      "tags": [
+        "spring-boot",
+        "java",
+        "spring-framework",
+        "rest-api",
+        "microservices"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "sql-expert",
+      "path": "data/sql-expert/SKILL.md",
+      "tags": ["sql", "database", "postgresql", "mysql", "query-optimization"]
+    },
+    {
+      "category": "devops",
+      "name": "sre-expert",
+      "path": "devops/sre-expert/SKILL.md",
+      "tags": [
+        "sre",
+        "reliability",
+        "monitoring",
+        "incident-management",
+        "slo",
+        "observability"
+      ]
+    },
+    {
+      "category": "professional",
+      "name": "standards-expert",
+      "path": "professional/standards-expert/SKILL.md",
+      "tags": [
+        "iso",
+        "standards",
+        "quality-management",
+        "compliance",
+        "certification"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "stockbreeder-expert",
+      "path": "domains/stockbreeder/SKILL.md",
+      "tags": [
+        "livestock",
+        "animal-husbandry",
+        "breeding",
+        "ranch-management",
+        "veterinary"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "supply-chain-expert",
+      "path": "domains/supply-chain-expert.md",
+      "tags": []
+    },
+    {
+      "category": "frameworks",
+      "name": "svelte-expert",
+      "path": "frameworks/svelte-expert.md",
+      "tags": [
+        "svelte",
+        "sveltekit",
+        "reactivity",
+        "compiler",
+        "frontend",
+        "performance",
+        "javascript"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "swift-expert",
+      "path": "languages/swift-expert/SKILL.md",
+      "tags": [
+        "swift",
+        "ios",
+        "macos",
+        "swiftui",
+        "combine",
+        "async-await",
+        "apple"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "tableau-expert",
+      "path": "data/tableau-expert/SKILL.md",
+      "tags": [
+        "tableau",
+        "bi",
+        "visualization",
+        "dashboards",
+        "lod",
+        "analytics"
+      ]
+    },
+    {
+      "category": "frameworks",
+      "name": "tauri-expert",
+      "path": "frameworks/tauri-expert.md",
+      "tags": [
+        "desktop",
+        "tauri",
+        "rust",
+        "web",
+        "cross-platform",
+        "performance"
+      ]
+    },
+    {
+      "category": "tools",
+      "name": "teams-expert",
+      "path": "tools/teams-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "telecommunications-expert",
+      "path": "domains/telecommunications-expert/SKILL.md",
+      "tags": ["telecom", "networking", "5g", "billing", "oss", "bss"]
+    },
+    {
+      "category": "devops",
+      "name": "terraform-expert",
+      "path": "devops/terraform-expert/SKILL.md",
+      "tags": [
+        "terraform",
+        "infrastructure-as-code",
+        "iac",
+        "devops",
+        "automation"
+      ]
+    },
+    {
+      "category": "tools",
+      "name": "testing-expert",
+      "path": "tools/testing-expert/SKILL.md",
+      "tags": [
+        "testing",
+        "tdd",
+        "bdd",
+        "unit-tests",
+        "integration-tests",
+        "e2e"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "trading-expert",
+      "path": "domains/trading-expert/SKILL.md",
+      "tags": [
+        "trading",
+        "algorithmic-trading",
+        "quant",
+        "markets",
+        "finance",
+        "hft"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "typescript-expert",
+      "path": "languages/typescript-expert/SKILL.md",
+      "tags": []
+    },
+    {
+      "category": "tools",
+      "name": "video-streaming-expert",
+      "path": "tools/video-streaming-expert.md",
+      "tags": []
+    },
+    {
+      "category": "frameworks",
+      "name": "vue-expert",
+      "path": "frameworks/vue-expert.md",
+      "tags": [
+        "vue",
+        "vue3",
+        "composition-api",
+        "pinia",
+        "nuxt",
+        "reactive",
+        "frontend",
+        "javascript"
+      ]
+    },
+    {
+      "category": "domains",
+      "name": "web3-expert",
+      "path": "domains/web3-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "webassembly-expert",
+      "path": "domains/webassembly-expert.md",
+      "tags": []
+    },
+    {
+      "category": "tools",
+      "name": "webrtc-expert",
+      "path": "tools/webrtc-expert.md",
+      "tags": []
+    },
+    {
+      "category": "domains",
+      "name": "workday-expert",
+      "path": "domains/workday-expert.md",
+      "tags": []
+    },
+    {
+      "category": "security",
+      "name": "zero-trust-expert",
+      "path": "security/zero-trust-expert.md",
+      "tags": [
+        "zero-trust",
+        "identity",
+        "authentication",
+        "micro-segmentation",
+        "least-privilege",
+        "security-architecture"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "zig-expert",
+      "path": "languages/zig-expert.md",
+      "tags": [
+        "zig",
+        "systems-programming",
+        "comptime",
+        "memory-management",
+        "c-interop",
+        "low-level",
+        "performance"
+      ]
+    }
+  ],
+  "total_skills": 173,
+  "version": "2.0.0"
+}

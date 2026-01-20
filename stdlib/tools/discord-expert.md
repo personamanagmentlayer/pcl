@@ -1,6 +1,24 @@
 ---
 description: Expert in Discord bot development using discord.js and discord.py, slash commands, embeds, voice channels, moderation, and bot deployment
-keywords: [discord, discord-bot, discordjs, discordpy, slash-commands, discord-embeds, voice-bot, discord-moderation]
+tags: ['discord', 'communication', 'community', 'bots', 'api']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - Grep
+  - Glob
+  - WebSearch
+keywords:
+  [
+    discord,
+    discord-bot,
+    discordjs,
+    discordpy,
+    slash-commands,
+    discord-embeds,
+    voice-bot,
+    discord-moderation,
+  ]
 category: tools
 expertise_level: expert
 ---
@@ -10,6 +28,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### Discord Platform
+
 - **Bots** - Automated Discord applications
 - **Slash Commands** - Modern command interface
 - **Interactions** - Buttons, select menus, modals
@@ -18,6 +37,7 @@ expertise_level: expert
 - **Permissions** - Role-based access control
 
 ### Bot Development
+
 - **discord.js** - Node.js Discord library
 - **discord.py** - Python Discord library
 - **Gateway** - WebSocket real-time events
@@ -26,6 +46,7 @@ expertise_level: expert
 - **Sharding** - Scaling for large bots
 
 ### Key Features
+
 - **Application Commands** - Slash commands, context menus
 - **Components** - Buttons, selects, modals
 - **Voice** - Audio playback and recording
@@ -39,239 +60,260 @@ expertise_level: expert
 
 ```javascript
 // index.js
-const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  Client,
+  GatewayIntentBits,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
 require('dotenv').config();
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildVoiceStates
-    ]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildVoiceStates,
+  ],
 });
 
 // Register slash commands
 const commands = [
-    {
-        name: 'ping',
-        description: 'Replies with Pong!'
-    },
-    {
-        name: 'user',
-        description: 'Get user information',
-        options: [
-            {
-                name: 'target',
-                description: 'The user to get info about',
-                type: 6, // USER type
-                required: false
-            }
-        ]
-    },
-    {
-        name: 'poll',
-        description: 'Create a poll',
-        options: [
-            {
-                name: 'question',
-                description: 'Poll question',
-                type: 3, // STRING type
-                required: true
-            },
-            {
-                name: 'options',
-                description: 'Poll options (comma separated)',
-                type: 3,
-                required: true
-            }
-        ]
-    }
+  {
+    name: 'ping',
+    description: 'Replies with Pong!',
+  },
+  {
+    name: 'user',
+    description: 'Get user information',
+    options: [
+      {
+        name: 'target',
+        description: 'The user to get info about',
+        type: 6, // USER type
+        required: false,
+      },
+    ],
+  },
+  {
+    name: 'poll',
+    description: 'Create a poll',
+    options: [
+      {
+        name: 'question',
+        description: 'Poll question',
+        type: 3, // STRING type
+        required: true,
+      },
+      {
+        name: 'options',
+        description: 'Poll options (comma separated)',
+        type: 3,
+        required: true,
+      },
+    ],
+  },
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
-    try {
-        console.log('Registering slash commands...');
+  try {
+    console.log('Registering slash commands...');
 
-        await rest.put(
-            Routes.applicationGuildCommands(
-                process.env.CLIENT_ID,
-                process.env.GUILD_ID
-            ),
-            { body: commands }
-        );
+    await rest.put(
+      Routes.applicationGuildCommands(
+        process.env.CLIENT_ID,
+        process.env.GUILD_ID
+      ),
+      { body: commands }
+    );
 
-        console.log('Successfully registered commands');
-    } catch (error) {
-        console.error(error);
-    }
+    console.log('Successfully registered commands');
+  } catch (error) {
+    console.error(error);
+  }
 })();
 
 // Event handlers
 client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}`);
-    client.user.setActivity('with Discord.js', { type: 'PLAYING' });
+  console.log(`Logged in as ${client.user.tag}`);
+  client.user.setActivity('with Discord.js', { type: 'PLAYING' });
 });
 
 // Handle slash commands
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return;
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
 
-    const { commandName } = interaction;
+  const { commandName } = interaction;
 
-    if (commandName === 'ping') {
-        await interaction.reply('Pong!');
-    }
-    else if (commandName === 'user') {
-        const user = interaction.options.getUser('target') || interaction.user;
-        const member = interaction.guild.members.cache.get(user.id);
+  if (commandName === 'ping') {
+    await interaction.reply('Pong!');
+  } else if (commandName === 'user') {
+    const user = interaction.options.getUser('target') || interaction.user;
+    const member = interaction.guild.members.cache.get(user.id);
 
-        const embed = new EmbedBuilder()
-            .setColor(0x0099FF)
-            .setTitle(`User Information: ${user.tag}`)
-            .setThumbnail(user.displayAvatarURL())
-            .addFields(
-                { name: 'ID', value: user.id, inline: true },
-                { name: 'Created', value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`, inline: true },
-                { name: 'Joined', value: member ? `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>` : 'N/A', inline: true }
-            )
-            .setTimestamp();
-
-        await interaction.reply({ embeds: [embed] });
-    }
-    else if (commandName === 'poll') {
-        const question = interaction.options.getString('question');
-        const options = interaction.options.getString('options').split(',').map(o => o.trim());
-
-        if (options.length < 2 || options.length > 10) {
-            return await interaction.reply({
-                content: 'Please provide 2-10 options',
-                ephemeral: true
-            });
+    const embed = new EmbedBuilder()
+      .setColor(0x0099ff)
+      .setTitle(`User Information: ${user.tag}`)
+      .setThumbnail(user.displayAvatarURL())
+      .addFields(
+        { name: 'ID', value: user.id, inline: true },
+        {
+          name: 'Created',
+          value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+          inline: true,
+        },
+        {
+          name: 'Joined',
+          value: member
+            ? `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`
+            : 'N/A',
+          inline: true,
         }
+      )
+      .setTimestamp();
 
-        const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+    await interaction.reply({ embeds: [embed] });
+  } else if (commandName === 'poll') {
+    const question = interaction.options.getString('question');
+    const options = interaction.options
+      .getString('options')
+      .split(',')
+      .map((o) => o.trim());
 
-        const embed = new EmbedBuilder()
-            .setColor(0x00FF00)
-            .setTitle('📊 Poll')
-            .setDescription(question)
-            .addFields(
-                options.map((option, i) => ({
-                    name: `${emoji[i]} Option ${i + 1}`,
-                    value: option,
-                    inline: false
-                }))
-            )
-            .setFooter({ text: `Poll by ${interaction.user.tag}` })
-            .setTimestamp();
-
-        const message = await interaction.reply({
-            embeds: [embed],
-            fetchReply: true
-        });
-
-        // Add reactions
-        for (let i = 0; i < options.length; i++) {
-            await message.react(emoji[i]);
-        }
+    if (options.length < 2 || options.length > 10) {
+      return await interaction.reply({
+        content: 'Please provide 2-10 options',
+        ephemeral: true,
+      });
     }
+
+    const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+
+    const embed = new EmbedBuilder()
+      .setColor(0x00ff00)
+      .setTitle('📊 Poll')
+      .setDescription(question)
+      .addFields(
+        options.map((option, i) => ({
+          name: `${emoji[i]} Option ${i + 1}`,
+          value: option,
+          inline: false,
+        }))
+      )
+      .setFooter({ text: `Poll by ${interaction.user.tag}` })
+      .setTimestamp();
+
+    const message = await interaction.reply({
+      embeds: [embed],
+      fetchReply: true,
+    });
+
+    // Add reactions
+    for (let i = 0; i < options.length; i++) {
+      await message.react(emoji[i]);
+    }
+  }
 });
 
 // Handle button interactions
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isButton()) return;
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isButton()) return;
 
-    const { customId } = interaction;
+  const { customId } = interaction;
 
-    if (customId === 'approve') {
-        await interaction.reply({ content: '✅ Approved!', ephemeral: true });
-    }
-    else if (customId === 'deny') {
-        await interaction.reply({ content: '❌ Denied!', ephemeral: true });
-    }
+  if (customId === 'approve') {
+    await interaction.reply({ content: '✅ Approved!', ephemeral: true });
+  } else if (customId === 'deny') {
+    await interaction.reply({ content: '❌ Denied!', ephemeral: true });
+  }
 });
 
 // Message with buttons
 async function sendApprovalMessage(channel) {
-    const embed = new EmbedBuilder()
-        .setColor(0xFFAA00)
-        .setTitle('Approval Request')
-        .setDescription('Please approve or deny this request');
+  const embed = new EmbedBuilder()
+    .setColor(0xffaa00)
+    .setTitle('Approval Request')
+    .setDescription('Please approve or deny this request');
 
-    const row = new ActionRowBuilder()
-        .addComponents(
-            new ButtonBuilder()
-                .setCustomId('approve')
-                .setLabel('Approve')
-                .setStyle(ButtonStyle.Success),
-            new ButtonBuilder()
-                .setCustomId('deny')
-                .setLabel('Deny')
-                .setStyle(ButtonStyle.Danger)
-        );
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId('approve')
+      .setLabel('Approve')
+      .setStyle(ButtonStyle.Success),
+    new ButtonBuilder()
+      .setCustomId('deny')
+      .setLabel('Deny')
+      .setStyle(ButtonStyle.Danger)
+  );
 
-    await channel.send({
-        embeds: [embed],
-        components: [row]
-    });
+  await channel.send({
+    embeds: [embed],
+    components: [row],
+  });
 }
 
 // Moderation: Auto-delete spam
-client.on('messageCreate', async message => {
-    if (message.author.bot) return;
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
 
-    // Simple spam detection
-    const spamWords = ['spam', 'scam', 'free nitro'];
-    const content = message.content.toLowerCase();
+  // Simple spam detection
+  const spamWords = ['spam', 'scam', 'free nitro'];
+  const content = message.content.toLowerCase();
 
-    if (spamWords.some(word => content.includes(word))) {
-        await message.delete();
-        await message.channel.send({
-            content: `${message.author}, your message was deleted for spam.`,
-            ephemeral: true
-        });
+  if (spamWords.some((word) => content.includes(word))) {
+    await message.delete();
+    await message.channel.send({
+      content: `${message.author}, your message was deleted for spam.`,
+      ephemeral: true,
+    });
 
-        // Log to mod channel
-        const modChannel = message.guild.channels.cache.find(c => c.name === 'mod-logs');
-        if (modChannel) {
-            const logEmbed = new EmbedBuilder()
-                .setColor(0xFF0000)
-                .setTitle('Message Deleted - Spam')
-                .addFields(
-                    { name: 'User', value: message.author.tag },
-                    { name: 'Channel', value: message.channel.name },
-                    { name: 'Content', value: message.content }
-                )
-                .setTimestamp();
+    // Log to mod channel
+    const modChannel = message.guild.channels.cache.find(
+      (c) => c.name === 'mod-logs'
+    );
+    if (modChannel) {
+      const logEmbed = new EmbedBuilder()
+        .setColor(0xff0000)
+        .setTitle('Message Deleted - Spam')
+        .addFields(
+          { name: 'User', value: message.author.tag },
+          { name: 'Channel', value: message.channel.name },
+          { name: 'Content', value: message.content }
+        )
+        .setTimestamp();
 
-            await modChannel.send({ embeds: [logEmbed] });
-        }
+      await modChannel.send({ embeds: [logEmbed] });
     }
+  }
 });
 
 // Welcome new members
-client.on('guildMemberAdd', async member => {
-    const welcomeChannel = member.guild.channels.cache.find(c => c.name === 'welcome');
+client.on('guildMemberAdd', async (member) => {
+  const welcomeChannel = member.guild.channels.cache.find(
+    (c) => c.name === 'welcome'
+  );
 
-    if (welcomeChannel) {
-        const embed = new EmbedBuilder()
-            .setColor(0x00FF00)
-            .setTitle('Welcome!')
-            .setDescription(`Welcome to the server, ${member}!`)
-            .setThumbnail(member.user.displayAvatarURL())
-            .addFields(
-                { name: 'Member Count', value: member.guild.memberCount.toString() }
-            )
-            .setTimestamp();
+  if (welcomeChannel) {
+    const embed = new EmbedBuilder()
+      .setColor(0x00ff00)
+      .setTitle('Welcome!')
+      .setDescription(`Welcome to the server, ${member}!`)
+      .setThumbnail(member.user.displayAvatarURL())
+      .addFields({
+        name: 'Member Count',
+        value: member.guild.memberCount.toString(),
+      })
+      .setTimestamp();
 
-        await welcomeChannel.send({ embeds: [embed] });
-    }
+    await welcomeChannel.send({ embeds: [embed] });
+  }
 });
 
 client.login(process.env.DISCORD_TOKEN);
@@ -437,6 +479,7 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 ## Best Practices
 
 ### Bot Design
+
 - Use slash commands over prefix commands
 - Implement proper error handling
 - Provide helpful feedback
@@ -445,6 +488,7 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 - Cache data when possible
 
 ### UI/UX
+
 - Use embeds for rich content
 - Implement interactive components
 - Provide clear button labels
@@ -453,6 +497,7 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 - Add helpful footers
 
 ### Moderation
+
 - Implement logging system
 - Use permission checks
 - Provide audit trails
@@ -461,6 +506,7 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 - Monitor bot actions
 
 ### Performance
+
 - Use intents efficiently
 - Implement sharding for large bots
 - Cache frequently accessed data
@@ -471,6 +517,7 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 ## Anti-Patterns
 
 ### Common Mistakes
+
 - Missing intent permissions
 - Not handling rate limits
 - Overly complex commands
@@ -479,6 +526,7 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 - Missing permission checks
 
 ### Design Issues
+
 - Too many commands
 - Unclear command names
 - No help documentation
@@ -487,6 +535,7 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 - Missing loading indicators
 
 ### Security Problems
+
 - Exposing bot token
 - Missing input validation
 - Overly permissive roles
@@ -497,24 +546,28 @@ bot.run(os.getenv('DISCORD_TOKEN'))
 ## Resources
 
 ### Official Documentation
+
 - [Discord Developer Portal](https://discord.com/developers/docs) - API reference
 - [discord.js Guide](https://discordjs.guide/) - JS guide
 - [discord.py Documentation](https://discordpy.readthedocs.io/) - Python docs
 - [Discord Best Practices](https://discord.com/developers/docs/topics/best-practices) - Guidelines
 
 ### Learning Resources
+
 - [Discord.js Tutorial](https://www.youtube.com/watch?v=YSZcyz2-twQ) - Video series
 - [discord.py Examples](https://github.com/Rapptz/discord.py/tree/master/examples) - Code samples
 - [Discord Bot List](https://top.gg/) - Popular bots
 - [Awesome Discord](https://github.com/jagrosh/awesome-discord) - Curated resources
 
 ### Tools & Libraries
+
 - [discord.js](https://discord.js.org/) - Node.js library
 - [discord.py](https://github.com/Rapptz/discord.py) - Python library
 - [Discord Bot Studio](https://botghost.com/) - No-code builder
 - [Top.gg](https://top.gg/) - Bot discovery
 
 ### Community Resources
+
 - [Discord Developers Server](https://discord.gg/discord-developers) - Official server
 - [discord.js Server](https://discord.gg/djs) - Library support
 - [discord.py Server](https://discord.gg/dpy) - Python support

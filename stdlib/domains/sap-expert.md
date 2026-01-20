@@ -1,6 +1,25 @@
 ---
 description: Expert in SAP ERP systems, ABAP programming, SAP HANA, S/4HANA, Fiori applications, and SAP integration patterns including OData, RFC, and IDoc
-keywords: [sap, erp, abap, hana, s4hana, fiori, odata, rfc, idoc, sap-integration, enterprise-software]
+tags: ['sap', 'erp', 'enterprise', 'business-apps']
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - WebSearch
+keywords:
+  [
+    sap,
+    erp,
+    abap,
+    hana,
+    s4hana,
+    fiori,
+    odata,
+    rfc,
+    idoc,
+    sap-integration,
+    enterprise-software,
+  ]
 category: domains
 expertise_level: expert
 ---
@@ -10,6 +29,7 @@ expertise_level: expert
 ## Core Concepts
 
 ### SAP Ecosystem
+
 - **SAP ERP** - Enterprise Resource Planning suite (ECC, S/4HANA)
 - **SAP HANA** - In-memory database platform
 - **SAP Fiori** - Modern UX layer with responsive apps
@@ -17,6 +37,7 @@ expertise_level: expert
 - **SAP BTP** - Business Technology Platform (cloud services)
 
 ### ABAP Development
+
 - **ABAP Objects** - Object-oriented programming in ABAP
 - **CDS Views** - Core Data Services for data modeling
 - **AMDP** - ABAP Managed Database Procedures
@@ -25,6 +46,7 @@ expertise_level: expert
 - **RFCs** - Remote Function Calls for integration
 
 ### Integration Technologies
+
 - **OData Services** - RESTful APIs for SAP data
 - **IDoc** - Intermediate Documents for data exchange
 - **SOAP/RFC** - Web services and remote function calls
@@ -208,77 +230,79 @@ ENDCLASS.
 ### SAP Fiori App (SAPUI5)
 
 ```javascript
-sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel",
-    "sap/m/MessageToast"
-], function (Controller, JSONModel, MessageToast) {
-    "use strict";
+sap.ui.define(
+  [
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageToast',
+  ],
+  function (Controller, JSONModel, MessageToast) {
+    'use strict';
 
-    return Controller.extend("com.example.employee.controller.Main", {
+    return Controller.extend('com.example.employee.controller.Main', {
+      onInit: function () {
+        // Initialize model
+        var oModel = new JSONModel();
+        this.getView().setModel(oModel);
 
-        onInit: function () {
-            // Initialize model
-            var oModel = new JSONModel();
-            this.getView().setModel(oModel);
+        // Load employee data
+        this._loadEmployees();
+      },
 
-            // Load employee data
+      _loadEmployees: function () {
+        var that = this;
+        var oDataModel = this.getView().getModel('odata');
+
+        oDataModel.read('/EmployeeSet', {
+          success: function (oData) {
+            that.getView().getModel().setProperty('/employees', oData.results);
+          },
+          error: function (oError) {
+            MessageToast.show('Failed to load employees');
+          },
+        });
+      },
+
+      onEmployeeSelect: function (oEvent) {
+        var oItem = oEvent.getParameter('listItem');
+        var oContext = oItem.getBindingContext();
+        var sEmployeeId = oContext.getProperty('Pernr');
+
+        // Navigate to detail view
+        this.getOwnerComponent().getRouter().navTo('detail', {
+          employeeId: sEmployeeId,
+        });
+      },
+
+      onCreateEmployee: function () {
+        var oDialog = this.byId('createDialog');
+        oDialog.open();
+      },
+
+      onSaveEmployee: function () {
+        var oView = this.getView();
+        var oModel = oView.getModel('odata');
+
+        var oEntry = {
+          Pernr: oView.byId('pernrInput').getValue(),
+          Ename: oView.byId('enameInput').getValue(),
+          Orgeh: oView.byId('orgehInput').getValue(),
+        };
+
+        oModel.create('/EmployeeSet', oEntry, {
+          success: function () {
+            MessageToast.show('Employee created successfully');
             this._loadEmployees();
-        },
-
-        _loadEmployees: function () {
-            var that = this;
-            var oDataModel = this.getView().getModel("odata");
-
-            oDataModel.read("/EmployeeSet", {
-                success: function (oData) {
-                    that.getView().getModel().setProperty("/employees", oData.results);
-                },
-                error: function (oError) {
-                    MessageToast.show("Failed to load employees");
-                }
-            });
-        },
-
-        onEmployeeSelect: function (oEvent) {
-            var oItem = oEvent.getParameter("listItem");
-            var oContext = oItem.getBindingContext();
-            var sEmployeeId = oContext.getProperty("Pernr");
-
-            // Navigate to detail view
-            this.getOwnerComponent().getRouter().navTo("detail", {
-                employeeId: sEmployeeId
-            });
-        },
-
-        onCreateEmployee: function () {
-            var oDialog = this.byId("createDialog");
-            oDialog.open();
-        },
-
-        onSaveEmployee: function () {
-            var oView = this.getView();
-            var oModel = oView.getModel("odata");
-
-            var oEntry = {
-                Pernr: oView.byId("pernrInput").getValue(),
-                Ename: oView.byId("enameInput").getValue(),
-                Orgeh: oView.byId("orgehInput").getValue()
-            };
-
-            oModel.create("/EmployeeSet", oEntry, {
-                success: function () {
-                    MessageToast.show("Employee created successfully");
-                    this._loadEmployees();
-                    this.byId("createDialog").close();
-                }.bind(this),
-                error: function () {
-                    MessageToast.show("Failed to create employee");
-                }
-            });
-        }
+            this.byId('createDialog').close();
+          }.bind(this),
+          error: function () {
+            MessageToast.show('Failed to create employee');
+          },
+        });
+      },
     });
-});
+  }
+);
 ```
 
 ### RFC Function Module
@@ -319,6 +343,7 @@ ENDFUNCTION.
 ## Best Practices
 
 ### Development Standards
+
 - Use naming conventions (Z*/Y* for custom objects)
 - Implement proper error handling with exceptions
 - Follow ABAP coding guidelines (clean code)
@@ -327,6 +352,7 @@ ENDFUNCTION.
 - Document code with proper comments
 
 ### Performance Optimization
+
 - Use database views instead of nested SELECTs
 - Implement buffering for frequently accessed tables
 - Use SAP HANA-specific features (AMDP, CDS)
@@ -335,6 +361,7 @@ ENDFUNCTION.
 - Use parallel processing for batch jobs
 
 ### Integration Patterns
+
 - Prefer OData services for modern integrations
 - Use IDoc for asynchronous batch processing
 - Implement RFC for synchronous real-time calls
@@ -343,6 +370,7 @@ ENDFUNCTION.
 - Use SAP Gateway for REST APIs
 
 ### Security Best Practices
+
 - Implement authorization objects properly
 - Use secure network communication (SNC)
 - Encrypt sensitive data at rest and in transit
@@ -353,14 +381,16 @@ ENDFUNCTION.
 ## Anti-Patterns
 
 ### Code Smells
+
 - Hard-coded values instead of customizing
 - Missing error handling and exceptions
-- SELECT * statements without field list
+- SELECT \* statements without field list
 - Nested loops with database access
 - Missing authorization checks
 - Modifications to standard SAP objects
 
 ### Design Issues
+
 - Tight coupling between modules
 - God objects with too many responsibilities
 - Direct table access instead of BAPIs
@@ -369,6 +399,7 @@ ENDFUNCTION.
 - No separation of concerns
 
 ### Integration Mistakes
+
 - Point-to-point integrations without middleware
 - Missing idempotency in service calls
 - No versioning for APIs
@@ -379,24 +410,28 @@ ENDFUNCTION.
 ## Resources
 
 ### Official Documentation
+
 - [SAP Help Portal](https://help.sap.com/) - Comprehensive documentation
 - [SAP API Business Hub](https://api.sap.com/) - API references
 - [ABAP Keyword Documentation](https://help.sap.com/doc/abapdocu_latest/) - Language reference
 - [SAP Fiori Design Guidelines](https://experience.sap.com/fiori-design/) - UX patterns
 
 ### Learning Platforms
+
 - [SAP Learning Hub](https://learning.sap.com/) - Official training
 - [openSAP](https://open.sap.com/) - Free online courses
 - [SAP Community](https://community.sap.com/) - Forums and blogs
 - [SAP Press](https://www.sap-press.com/) - Technical books
 
 ### Tools & Extensions
+
 - [ABAP Development Tools (ADT)](https://tools.hana.ondemand.com/) - Eclipse-based IDE
 - [SAP GUI](https://support.sap.com/en/product/connectors/sapgui.html) - Classic interface
 - [SAP Business Application Studio](https://www.sap.com/products/business-application-studio.html) - Cloud IDE
 - [SAP Cloud Connector](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681) - On-premise connectivity
 
 ### Community Resources
+
 - [ABAP Forums](https://answers.sap.com/tags/833755570260738661924709785639) - Q&A
 - [SAP Blogs](https://blogs.sap.com/) - Technical articles
 - [GitHub SAP Samples](https://github.com/SAP-samples) - Code examples

@@ -12,16 +12,17 @@
 
 1. [Project Personas](#project-personas)
 2. [Core Architectural Principles](#core-architectural-principles)
-3. [Power Through Precision](#power-through-precision)
-4. [Development Workflow](#development-workflow)
-5. [Quality Gates & Standards](#quality-gates--standards)
-6. [Feature Priority Matrix](#feature-priority-matrix)
-7. [Anti-Patterns & Red Flags](#anti-patterns--red-flags)
-8. [Decision-Making Framework](#decision-making-framework)
-9. [Success Metrics](#success-metrics)
-10. [Continuous Improvement](#continuous-improvement)
-11. [Persona Integration Checklist](#persona-integration-checklist)
-12. [Advanced Capabilities Roadmap](#advanced-capabilities-roadmap)
+3. [File Organization & Repository Structure](#file-organization--repository-structure)
+4. [Power Through Precision](#power-through-precision)
+5. [Development Workflow](#development-workflow)
+6. [Quality Gates & Standards](#quality-gates--standards)
+7. [Feature Priority Matrix](#feature-priority-matrix)
+8. [Anti-Patterns & Red Flags](#anti-patterns--red-flags)
+9. [Decision-Making Framework](#decision-making-framework)
+10. [Success Metrics](#success-metrics)
+11. [Continuous Improvement](#continuous-improvement)
+12. [Persona Integration Checklist](#persona-integration-checklist)
+13. [Advanced Capabilities Roadmap](#advanced-capabilities-roadmap)
 
 ---
 
@@ -324,6 +325,250 @@ Every major decision, feature, and implementation must be evaluated through thes
 - Step-through debugging support
 - Performance profiling built-in
 - Audit trails for compliance
+
+---
+
+## File Organization & Repository Structure
+
+### Critical Policy: Public Repository Considerations
+
+**IMPORTANT:** The PCL GitHub repository is **PUBLIC**. All project management, internal documentation, security audit reports, and development artifacts MUST be organized appropriately to maintain professionalism while protecting sensitive information.
+
+---
+
+### Directory Structure Rules
+
+#### ✅ **docs/** - User-Facing Documentation Only
+
+**Purpose:** Public-facing documentation for end users and contributors
+
+**Allowed Content:**
+
+- API documentation
+- User guides and tutorials
+- Language reference
+- Code examples
+- Getting started guides
+- Integration guides
+- VS Code setup instructions
+
+**Examples:**
+
+```
+docs/
+├── api/              # API reference documentation
+├── guides/           # User guides and tutorials
+├── reference/        # Language specifications
+├── examples/         # Code examples for documentation
+├── skills/           # Skills documentation
+├── GOVERNANCE_MODEL.md
+├── PERSONA_BUILDING_GUIDE.md
+├── SKILLS_INTEGRATION_GUIDE.md
+└── README.md         # Documentation index
+```
+
+**NOT Allowed:**
+
+- ❌ Session summaries
+- ❌ Implementation status reports
+- ❌ Security audit reports
+- ❌ TODO lists
+- ❌ Progress tracking
+- ❌ Internal planning documents
+
+---
+
+#### ✅ **.roadmap/** - Project Management & Internal Documentation
+
+**Purpose:** Internal project management, hidden from casual repository browsing (gitignored)
+
+**Reason:** Public repository requires separation of internal development artifacts from user-facing documentation. The .roadmap/ folder is gitignored to keep internal planning private while maintaining professional public documentation.
+
+**Required Content:**
+
+- ✅ Security audit reports
+- ✅ Implementation status reports
+- ✅ Session summaries
+- ✅ Progress tracking documents
+- ✅ TODO lists and planning
+- ✅ Architecture decision records (ADRs)
+- ✅ Internal status updates
+- ✅ Development milestones
+- ✅ Retrospectives and post-mortems
+
+**Structure:**
+
+```
+.roadmap/
+├── security/             # Security audits, vulnerability reports
+│   ├── SECURITY_AUDIT_REPORT.md
+│   ├── SECURITY_FIXES_SUMMARY.md
+│   └── CODE_QUALITY_COMPLETE.md
+├── implementation/       # Implementation reports and status
+│   └── IMPLEMENTATION_COMPLETE.md
+├── sessions/            # Development session summaries
+│   ├── SESSION-2026-01-18-FINAL.md
+│   └── SESSION-2026-01-19-SUMMARY.md
+├── status/              # Status tracking
+├── decisions/           # Architecture Decision Records (ADRs)
+├── bootstrap/           # Bootstrap and setup documentation
+├── ROADMAP.md           # Development roadmap
+├── STATUS.md            # Current status
+├── TODO.md              # Task tracking
+├── PROJECT_CLEANUP_COMPLETE.md
+└── COMPREHENSIVE_SKILLS_PLAN.md
+```
+
+**Gitignore Status:**
+
+```gitignore
+# .gitignore includes:
+.roadmap/
+.claude/settings.local.json
+```
+
+---
+
+#### ✅ **Root Folder** - Essential Project Files Only
+
+**Purpose:** Professional, clean repository root
+
+**Allowed Files:**
+
+- Core documentation: `README.md`, `CHANGELOG.md`, `SECURITY.md`, `CONTRIBUTING.md`
+- Legal: `LICENSE`, `LICENSE-DOCS`, `NOTICE`
+- Configuration: `package.json`, `tsconfig.json`, `.eslintrc.json`, `.prettierrc`, etc.
+- Claude integration: `CLAUDE.md` (visible - documents AI-first development approach)
+
+**NOT Allowed:**
+
+- ❌ Implementation reports
+- ❌ Security audit documents
+- ❌ Session summaries
+- ❌ Temporary files (nul, _.log, _.tmp)
+- ❌ Status tracking files
+
+**See:** `.github/ROOT_FOLDER_POLICY.md` for complete policy
+
+---
+
+### File Placement Guidelines
+
+#### When Creating New Files
+
+**Ask yourself:**
+
+1. **Is this for end users?**
+   - YES → Place in `docs/` with appropriate subdirectory
+   - NO → Continue to question 2
+
+2. **Is this project management or internal?**
+   - YES → Place in `.roadmap/` with appropriate subdirectory
+   - NO → Continue to question 3
+
+3. **Is this source code, tests, or build configuration?**
+   - Source code → `src/`
+   - Tests → `tests/`
+   - Build scripts → `scripts/`
+   - Examples → `examples/`
+   - Skills → `stdlib/`
+   - Configuration → Root (only if essential)
+
+4. **Is this temporary or generated?**
+   - YES → Ensure it's in `.gitignore`
+   - Should NEVER be committed
+
+---
+
+#### Examples of Correct Placement
+
+**Security Documentation:**
+
+```bash
+# ❌ WRONG
+docs/SECURITY_AUDIT_REPORT.md
+./SECURITY_FIXES_SUMMARY.md
+
+# ✅ CORRECT
+.roadmap/security/SECURITY_AUDIT_REPORT.md
+.roadmap/security/SECURITY_FIXES_SUMMARY.md
+```
+
+**Implementation Reports:**
+
+```bash
+# ❌ WRONG
+docs/IMPLEMENTATION_COMPLETE.md
+./PROJECT_STATUS.md
+
+# ✅ CORRECT
+.roadmap/implementation/IMPLEMENTATION_COMPLETE.md
+.roadmap/STATUS.md
+```
+
+**User Guides:**
+
+```bash
+# ❌ WRONG
+./GETTING_STARTED.md
+examples/SKILLS_GUIDE.md
+
+# ✅ CORRECT
+docs/guides/GETTING-STARTED.md
+docs/SKILLS_INTEGRATION_GUIDE.md
+```
+
+**Session Summaries:**
+
+```bash
+# ❌ WRONG
+docs/SESSION-2026-01-20.md
+./SUMMARY.md
+
+# ✅ CORRECT
+.roadmap/sessions/SESSION-2026-01-20.md
+.roadmap/SUMMARY.md
+```
+
+---
+
+### Enforcement
+
+**Pre-commit Hook:** See `.github/ROOT_FOLDER_POLICY.md`
+
+**Manual Check Before Committing:**
+
+```bash
+# Check for files in wrong locations
+ls -1 *.md | grep -v -E "^(README|CHANGELOG|SECURITY|CONTRIBUTING|CLAUDE)\.md$"
+# Should return nothing
+
+# Check docs for project management files
+find docs -name "*STATUS*.md" -o -name "*SESSION*.md" -o -name "*AUDIT*.md"
+# Should return nothing
+```
+
+**CI/CD Validation:** Automated checks prevent merging PRs with files in wrong locations
+
+---
+
+### Rationale
+
+**Why separate .roadmap/ from docs/?**
+
+1. **Public Repository:** PCL is open-source and publicly visible
+2. **Professional Appearance:** Users see clean, relevant documentation
+3. **Internal Privacy:** Security audits and planning stay private (gitignored)
+4. **Clear Separation:** Users vs. Developers have different documentation needs
+5. **Maintainability:** Easy to find relevant information for each audience
+
+**Why gitignore .roadmap/?**
+
+- Keeps development artifacts private
+- Prevents information overload for casual contributors
+- Maintains professional public image
+- Allows frank internal discussion
+- Security audits may contain sensitive details
 
 ---
 
