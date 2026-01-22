@@ -24,6 +24,7 @@ import { createRuntime } from '../runtime';
 const analyze = (program: any) =>
   ({ ok: true, value: { symbols: {}, errors: [], warnings: [] } }) as any;
 import type { PCLError } from '../types';
+import { format as formatCode, isFormatted } from '../formatter';
 import {
   createCommand,
   searchCommand,
@@ -43,6 +44,7 @@ import {
 import { initCommand as projectInitCommand } from './commands/init';
 import { buildCommand as projectBuildCommand } from './commands/build';
 import { installCommand as projectInstallCommand } from './commands/install';
+import { completionCommand } from './commands/completion';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CLI CONFIGURATION
@@ -69,7 +71,7 @@ Commands:
   parse <file>       Parse a PCL file and show AST
   lex <file>         Tokenize a PCL file
   check <file>       Type check a PCL file (semantic analysis)
-  fmt <file>         Format a PCL file
+  fmt <file>         Format a PCL file (auto-formatting with standard style)
   gen <file>         Generate code from a PCL file
   run <file>         Load and run a PCL file
   repl               Start interactive REPL
@@ -95,6 +97,10 @@ Commands:
   skill list                 List all discovered skills
   skill info <name|path>     Show detailed skill information
 
+  Shell Commands:
+  completion                 Generate shell completion script
+  completion --shell <type>  Generate for specific shell (bash, zsh, fish, powershell)
+
   version            Show version information
   help               Show this help message
 
@@ -118,6 +124,9 @@ Options:
   --spec <spec>          Specification to validate against (agentskills, claude-code)
   --recursive            Recursively process directories
   --format <format>      Output format (agentskills, claude-code, pcl)
+
+  Completion Options:
+  --shell <type>         Shell type (bash, zsh, fish, powershell)
 
   Project Options:
   --config <path>        Path to pcl.json (default: ./pcl.json)
@@ -157,6 +166,11 @@ Examples:
   pcl skill validate ./skills/python-expert/SKILL.md --spec agentskills
   pcl skill list --verbose
   pcl skill info python-expert
+
+  pcl completion --shell bash
+  pcl completion --shell zsh > ~/.zshrc
+  pcl completion --shell fish > ~/.config/fish/completions/pcl.fish
+  pcl completion --shell powershell | Out-String | Invoke-Expression
 `;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -268,6 +282,8 @@ interface CommandOptions {
   save?: boolean;
   saveDev?: boolean;
   production?: boolean;
+  // Completion options
+  shell?: 'bash' | 'zsh' | 'fish' | 'powershell';
 }
 
 /**
@@ -559,6 +575,8 @@ function commandFmt(file: string, options: CommandOptions): number {
   }
 
   const source = readFileSync(file, 'utf-8');
+
+  // Parse to check for errors
   const result = parse(source, { source: file });
 
   if (!result.ok) {
@@ -568,9 +586,44 @@ function commandFmt(file: string, options: CommandOptions): number {
     return 1;
   }
 
-  // TODO: Implement pretty printer
-  console.log(color('yellow', '⚠ Formatter not yet implemented'));
-  return 0;
+  // Format the source
+  try {
+    const formatted = formatCode(source, {
+      tabSize: 2,
+      insertSpaces: true,
+      maxLineLength: 100,
+      trailingComma: true,
+      spaceAfterColon: true,
+    });
+
+    // Check if already formatted
+    if (formatted === source || formatted === source + '\n') {
+      if (!options.quiet) {
+        console.log(color('dim', `File already formatted: ${file}`));
+      }
+      return 0;
+    }
+
+    // Write formatted output
+    if (options.output) {
+      writeFileSync(options.output, formatted);
+      console.log(color('green', `✓ Formatted output written to ${options.output}`));
+    } else {
+      // In-place formatting
+      writeFileSync(file, formatted);
+      console.log(color('green', `✓ Formatted ${file}`));
+    }
+
+    return 0;
+  } catch (error) {
+    console.error(
+      color(
+        'red',
+        `Formatting error: ${error instanceof Error ? error.message : String(error)}`
+      )
+    );
+    return 1;
+  }
 }
 
 /**
@@ -797,6 +850,8 @@ async function main(): Promise<number> {
       options.saveDev = true;
     } else if (arg === '--production') {
       options.production = true;
+    } else if (arg === '--shell') {
+      options.shell = args[++i] as any;
     } else if (!arg.startsWith('-')) {
       positional.push(arg);
     }
@@ -1042,6 +1097,15 @@ async function main(): Promise<number> {
           );
           return 1;
       }
+    }
+
+    case 'completion': {
+      const completionOptions: any = {};
+      if (options.shell) completionOptions.shell = options.shell;
+      if (options.verbose) completionOptions.verbose = options.verbose;
+
+      await completionCommand(completionOptions);
+      return 0;
     }
 
     case 'version':

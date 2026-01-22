@@ -445,8 +445,9 @@ docs/
 - ❌ Implementation reports
 - ❌ Security audit documents
 - ❌ Session summaries
-- ❌ Temporary files (nul, _.log, _.tmp)
+- ❌ Temporary files (nul, _.log,_.tmp)
 - ❌ Status tracking files
+- ❌ create non root file
 
 **See:** `.github/ROOT_FOLDER_POLICY.md` for complete policy
 
