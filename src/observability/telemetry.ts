@@ -50,6 +50,15 @@ export interface TelemetryConfig {
   readonly enableMetrics: boolean;
   readonly metrics?: {
     enabled: boolean;
+    port?: number;
+  };
+  readonly tracing?: {
+    enabled: boolean;
+    endpoint?: string;
+  };
+  readonly logging?: {
+    enabled: boolean;
+    level?: 'debug' | 'info' | 'warn' | 'error';
   };
   readonly exporters: {
     readonly prometheus?: PrometheusConfig;
