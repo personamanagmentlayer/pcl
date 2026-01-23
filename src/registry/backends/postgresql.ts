@@ -235,7 +235,6 @@ export class PostgreSQLBackend implements IBackend {
 
     try {
       // Lazy-load pg to avoid requiring it as a dependency
-      // @ts-expect-error - pg is an optional dependency
       const { Pool } = await import('pg');
 
       this.pool = new Pool({

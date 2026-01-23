@@ -95,7 +95,7 @@ export const KNOWN_MODEL_PRICING: Record<string, ModelPricing> = {
   },
 
   // Ollama (local - free)
-  'ollama': {
+  ollama: {
     modelId: 'ollama',
     provider: 'ollama',
     inputCostPer1M: 0,
@@ -123,7 +123,9 @@ export interface UsageRecord {
 export class CostCalculator {
   private readonly pricing: Map<string, ModelPricing> = new Map();
 
-  constructor(knownPricing: Record<string, ModelPricing> = KNOWN_MODEL_PRICING) {
+  constructor(
+    knownPricing: Record<string, ModelPricing> = KNOWN_MODEL_PRICING
+  ) {
     // Load known pricing
     for (const [key, value] of Object.entries(knownPricing)) {
       this.pricing.set(key, value);
@@ -142,7 +144,8 @@ export class CostCalculator {
     }
 
     const inputCost = (usage.promptTokens / 1_000_000) * pricing.inputCostPer1M;
-    const outputCost = (usage.completionTokens / 1_000_000) * pricing.outputCostPer1M;
+    const outputCost =
+      (usage.completionTokens / 1_000_000) * pricing.outputCostPer1M;
 
     return inputCost + outputCost;
   }
@@ -284,7 +287,10 @@ export class CostTracker {
     // Group by provider
     const byProvider = new Map<string, { cost: number; tokens: number }>();
     for (const record of this.records) {
-      const existing = byProvider.get(record.provider) || { cost: 0, tokens: 0 };
+      const existing = byProvider.get(record.provider) || {
+        cost: 0,
+        tokens: 0,
+      };
       byProvider.set(record.provider, {
         cost: existing.cost + record.cost,
         tokens: existing.tokens + record.usage.totalTokens,
@@ -388,7 +394,9 @@ export class CostTrackerRegistry {
    */
   register(providerName: string): CostTracker {
     if (this.trackers.has(providerName)) {
-      throw new Error(`Cost tracker already exists for provider: ${providerName}`);
+      throw new Error(
+        `Cost tracker already exists for provider: ${providerName}`
+      );
     }
 
     const tracker = new CostTracker();
@@ -423,7 +431,10 @@ export class CostTrackerRegistry {
    */
   getAggregatedStats() {
     const stats = this.globalTracker.getStats();
-    const providerStats = new Map<string, ReturnType<CostTracker['getStats']>>();
+    const providerStats = new Map<
+      string,
+      ReturnType<CostTracker['getStats']>
+    >();
 
     for (const [name, tracker] of this.trackers.entries()) {
       providerStats.set(name, tracker.getStats());
@@ -433,6 +444,86 @@ export class CostTrackerRegistry {
       global: stats,
       byProvider: Object.fromEntries(providerStats),
     };
+  }
+
+  /**
+   * Get statistics (alias for getAggregatedStats for HTTP API compatibility)
+   */
+  getStats() {
+    return this.getAggregatedStats();
+  }
+
+  /**
+   * Get cost for a specific provider
+   */
+  getProviderCost(providerName: string): number {
+    const tracker = this.trackers.get(providerName);
+    return tracker ? tracker.getStats().totalCost : 0;
+  }
+
+  /**
+   * Get cost for a specific model (across all providers)
+   */
+  getModelCost(modelName: string): number {
+    let totalCost = 0;
+
+    for (const tracker of this.trackers.values()) {
+      const stats = tracker.getStats();
+      if (stats.byModel && stats.byModel[modelName]) {
+        totalCost += stats.byModel[modelName].cost;
+      }
+    }
+
+    return totalCost;
+  }
+
+  /**
+   * Export cost data as CSV
+   */
+  exportCSV(): string {
+    const stats = this.getAggregatedStats();
+    const lines: string[] = [];
+
+    // Header
+    lines.push('Provider,Model,Requests,Tokens,Cost');
+
+    // Global stats
+    lines.push(
+      `Global,All,${stats.global.requestCount},${stats.global.totalTokens},${stats.global.totalCost}`
+    );
+
+    // Per-provider stats
+    for (const [provider, providerStats] of Object.entries(stats.byProvider)) {
+      if (providerStats.byModel) {
+        for (const [model, modelStats] of Object.entries(
+          providerStats.byModel
+        )) {
+          lines.push(
+            `${provider},${model},${modelStats.requests},${modelStats.tokens},${modelStats.cost}`
+          );
+        }
+      } else {
+        lines.push(
+          `${provider},All,${providerStats.requestCount},${providerStats.totalTokens},${providerStats.totalCost}`
+        );
+      }
+    }
+
+    return lines.join('\n');
+  }
+
+  /**
+   * Export cost data as JSON
+   */
+  exportJSON(): string {
+    return JSON.stringify(this.getAggregatedStats(), null, 2);
+  }
+
+  /**
+   * Reset all cost trackers (alias for resetAll for HTTP API compatibility)
+   */
+  reset(): void {
+    this.resetAll();
   }
 
   /**

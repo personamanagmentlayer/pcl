@@ -9,7 +9,10 @@ import { ArtifactResponseSchema } from './artifact.schema.js';
  * Search query schema
  */
 export const SearchQuerySchema = z.object({
-  q: z.string().min(1, 'Query is required').max(200, 'Query must be at most 200 characters'),
+  q: z
+    .string()
+    .min(1, 'Query is required')
+    .max(200, 'Query must be at most 200 characters'),
   type: z.enum(['persona', 'skill', 'workflow', 'team']).optional(),
   fuzzy: z
     .string()
@@ -17,18 +20,18 @@ export const SearchQuerySchema = z.object({
     .optional(),
   highlight: z
     .string()
-    .transform((val) => val === 'true')
-    .default('true'),
+    .default('true')
+    .transform((val) => val === 'true'),
   limit: z
     .string()
+    .default('20')
     .transform((val) => parseInt(val, 10))
-    .pipe(z.number().int().min(1).max(50))
-    .default('20'),
+    .pipe(z.number().int().min(1).max(50)),
   offset: z
     .string()
+    .default('0')
     .transform((val) => parseInt(val, 10))
-    .pipe(z.number().int().min(0))
-    .default('0'),
+    .pipe(z.number().int().min(0)),
 });
 
 export type SearchQuery = z.infer<typeof SearchQuerySchema>;
@@ -36,7 +39,7 @@ export type SearchQuery = z.infer<typeof SearchQuerySchema>;
 /**
  * Search highlight schema
  */
-export const SearchHighlightSchema = z.record(z.array(z.string()));
+export const SearchHighlightSchema = z.record(z.string(), z.array(z.string()));
 
 export type SearchHighlight = z.infer<typeof SearchHighlightSchema>;
 

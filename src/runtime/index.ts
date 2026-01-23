@@ -1226,6 +1226,7 @@ export class WorkflowExecutor {
   private aborted = false;
   private readonly evaluator = new ExpressionEvaluator();
   private context: Record<string, unknown> = {};
+  private abortController: AbortController | null = null;
 
   /**
    * Execute a workflow
@@ -1234,7 +1235,8 @@ export class WorkflowExecutor {
     workflow: AST.WorkflowDeclaration,
     input: unknown,
     personas: Map<string, PersonaInstance>,
-    teams: Map<string, TeamInstance>
+    teams: Map<string, TeamInstance>,
+    options?: { signal?: AbortSignal }
   ): Promise<Result<unknown, Error>> {
     const id = generateId();
 
@@ -1251,6 +1253,14 @@ export class WorkflowExecutor {
     };
 
     this.aborted = false;
+    this.abortController = new AbortController();
+
+    // Listen to external abort signal if provided
+    if (options?.signal) {
+      options.signal.addEventListener('abort', () => {
+        this.abort();
+      });
+    }
 
     try {
       this.updateStatus('running');
@@ -1307,9 +1317,17 @@ export class WorkflowExecutor {
    */
   abort(): void {
     this.aborted = true;
+    this.abortController?.abort();
     if (this.state) {
       this.updateStatus('cancelled');
     }
+  }
+
+  /**
+   * Get the AbortSignal for this workflow
+   */
+  getSignal(): AbortSignal | null {
+    return this.abortController?.signal ?? null;
   }
 
   /**
@@ -1452,9 +1470,168 @@ export class WorkflowExecutor {
           teams
         );
 
+      case 'WorkflowAsyncPipeExpr':
+        return this.executeAsyncPipe(
+          expr as AST.WorkflowAsyncPipeExpr,
+          input,
+          personas,
+          teams
+        );
+
+      case 'WorkflowBidirectionalExpr':
+        return this.executeBidirectional(
+          expr as AST.WorkflowBidirectionalExpr,
+          input,
+          personas,
+          teams
+        );
+
+      case 'WorkflowAccumulateExpr':
+        return this.executeAccumulate(
+          expr as AST.WorkflowAccumulateExpr,
+          input,
+          personas,
+          teams
+        );
+
+      case 'WorkflowComposeExpr':
+        return this.executeCompose(
+          expr as AST.WorkflowComposeExpr,
+          input,
+          personas,
+          teams
+        );
+
       default:
         throw new Error(`Unknown workflow expression: ${expr.kind}`);
     }
+  }
+
+  /**
+   * Execute async pipe (~>) - fire-and-forget execution
+   * Left side executes and returns immediately, right side runs in background
+   */
+  private async executeAsyncPipe(
+    expr: AST.WorkflowAsyncPipeExpr,
+    input: unknown,
+    personas: Map<string, PersonaInstance>,
+    teams: Map<string, TeamInstance>
+  ): Promise<unknown> {
+    // Execute left side first
+    const leftResult = await this.executeExpression(
+      expr.left,
+      input,
+      personas,
+      teams
+    );
+
+    // Fire right side asynchronously (don't await)
+    this.executeExpression(expr.right, leftResult, personas, teams).catch(
+      (error) => {
+        // Emit error event but don't block
+        this.emit({
+          type: 'error',
+          error:
+            error instanceof Error
+              ? error
+              : new Error(`Async pipe error: ${String(error)}`),
+        });
+      }
+    );
+
+    // Return left result immediately
+    return leftResult;
+  }
+
+  /**
+   * Execute bidirectional (<->) - feedback loop with iterations
+   * Left and right exchange results iteratively
+   */
+  private async executeBidirectional(
+    expr: AST.WorkflowBidirectionalExpr,
+    input: unknown,
+    personas: Map<string, PersonaInstance>,
+    teams: Map<string, TeamInstance>
+  ): Promise<unknown> {
+    const maxIterations = expr.maxIterations?.value ?? 3;
+    let leftResult = input;
+    let rightResult: unknown = null;
+
+    for (let i = 0; i < maxIterations && !this.aborted; i++) {
+      // Execute left with current input
+      leftResult = await this.executeExpression(
+        expr.left,
+        i === 0 ? input : rightResult,
+        personas,
+        teams
+      );
+
+      // Execute right with left's output
+      rightResult = await this.executeExpression(
+        expr.right,
+        leftResult,
+        personas,
+        teams
+      );
+
+      // Check for convergence (simple check - results unchanged)
+      if (i > 0 && leftResult === rightResult) {
+        break;
+      }
+    }
+
+    return rightResult ?? leftResult;
+  }
+
+  /**
+   * Execute accumulate (>>>) - collect and aggregate results
+   * All steps execute with same input, results are accumulated
+   */
+  private async executeAccumulate(
+    expr: AST.WorkflowAccumulateExpr,
+    input: unknown,
+    personas: Map<string, PersonaInstance>,
+    teams: Map<string, TeamInstance>
+  ): Promise<unknown[]> {
+    const results: unknown[] = [];
+
+    for (const step of expr.steps) {
+      const result = await this.executeExpression(step, input, personas, teams);
+      results.push(result);
+    }
+
+    return results;
+  }
+
+  /**
+   * Execute compose (::) - workflow composition
+   * Compose multiple workflows into a sequential chain
+   */
+  private async executeCompose(
+    expr: AST.WorkflowComposeExpr,
+    input: unknown,
+    personas: Map<string, PersonaInstance>,
+    teams: Map<string, TeamInstance>
+  ): Promise<unknown> {
+    let current = input;
+
+    for (const workflow of expr.workflows) {
+      if (workflow.kind === 'Identifier') {
+        // TODO: Look up workflow by name from context
+        // For now, just pass through
+        continue;
+      } else {
+        // Execute workflow expression
+        current = await this.executeExpression(
+          workflow as AST.WorkflowExpression,
+          current,
+          personas,
+          teams
+        );
+      }
+    }
+
+    return current;
   }
 
   private async executeSequence(
@@ -2184,3 +2361,9 @@ export function createTeam(
 ): TeamInstance {
   return new TeamInstance(id, name, members, config);
 }
+
+// Export async & concurrency utilities
+export * from './scheduler.js';
+export * from './streams.js';
+export * from './backpressure.js';
+export * from './providers/connection-pool.js';

@@ -131,14 +131,14 @@ export const ListArtifactsQuerySchema = z.object({
     .optional(),
   limit: z
     .string()
+    .default('20')
     .transform((val) => parseInt(val, 10))
-    .pipe(z.number().int().min(1).max(100))
-    .default('20'),
+    .pipe(z.number().int().min(1).max(100)),
   offset: z
     .string()
+    .default('0')
     .transform((val) => parseInt(val, 10))
-    .pipe(z.number().int().min(0))
-    .default('0'),
+    .pipe(z.number().int().min(0)),
   sort: z
     .enum(['createdAt:asc', 'createdAt:desc', 'downloads:asc', 'downloads:desc', 'stars:asc', 'stars:desc'])
     .default('createdAt:desc')

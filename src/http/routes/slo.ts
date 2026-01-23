@@ -11,10 +11,10 @@
  * @version 1.0.0
  */
 
-import { Router, Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import {
-  getSLORegistry,
   CommonSLOs,
+  getSLORegistry,
   type SLOConfig,
 } from '../../observability/slo.js';
 
@@ -63,7 +63,8 @@ export function createSLORoute(): Router {
   router.get('/:name', (req: Request, res: Response) => {
     try {
       const { name } = req.params;
-      const tracker = registry.get(name);
+      const sloName = Array.isArray(name) ? name[0] : name;
+      const tracker = registry.get(sloName);
 
       if (!tracker) {
         return res.status(404).json({
@@ -149,7 +150,8 @@ export function createSLORoute(): Router {
   router.delete('/:name', (req: Request, res: Response) => {
     try {
       const { name } = req.params;
-      const deleted = registry.unregister(name);
+      const sloName = Array.isArray(name) ? name[0] : name;
+      const deleted = registry.unregister(sloName);
 
       if (!deleted) {
         return res.status(404).json({
@@ -185,6 +187,7 @@ export function createSLORoute(): Router {
   router.post('/:name/record', (req: Request, res: Response) => {
     try {
       const { name } = req.params;
+      const sloName = Array.isArray(name) ? name[0] : name;
       const { success } = req.body;
 
       if (typeof success !== 'boolean') {
@@ -197,13 +200,13 @@ export function createSLORoute(): Router {
         });
       }
 
-      const tracker = registry.get(name);
+      const tracker = registry.get(sloName);
 
       if (!tracker) {
         return res.status(404).json({
           success: false,
           error: {
-            message: `SLO '${name}' not found`,
+            message: `SLO '${sloName}' not found`,
             code: 'SLO_NOT_FOUND',
           },
         });

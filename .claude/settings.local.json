@@ -37,7 +37,8 @@
       "Bash(start /B node dist/http/server.js)",
       "Bash(timeout:*)",
       "Bash(curl:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(npm run test:*)"
     ]
   }
 }
