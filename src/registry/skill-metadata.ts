@@ -9,7 +9,7 @@
  * - Usage metrics and analytics
  */
 
-import type { Artifact, ArtifactMetadata } from './interfaces';
+import type { Artifact, ArtifactMetadata, ArtifactType } from './interfaces';
 
 /**
  * Skill category taxonomy
@@ -342,7 +342,12 @@ export interface SkillRecommendation {
   /** Relevance score (0-1) */
   relevance: number;
   /** Recommendation type */
-  type: 'based-on-usage' | 'similar-skills' | 'frequently-bundled' | 'trending' | 'curated';
+  type:
+    | 'based-on-usage'
+    | 'similar-skills'
+    | 'frequently-bundled'
+    | 'trending'
+    | 'curated';
 }
 
 /**
@@ -434,13 +439,19 @@ export function calculateCompatibilityScore(
   let score = 100;
 
   // Check for explicit conflicts
-  if (skill1.conflicts?.includes(skill2.name) || skill2.conflicts?.includes(skill1.name)) {
+  if (
+    skill1.conflicts?.includes(skill2.name) ||
+    skill2.conflicts?.includes(skill1.name)
+  ) {
     return 0;
   }
 
   // Check tool overlap (positive signal)
-  const toolOverlap = skill1.tools.filter((t) => skill2.tools.includes(t)).length;
-  const toolScore = (toolOverlap / Math.max(skill1.tools.length, skill2.tools.length, 1)) * 20;
+  const toolOverlap = skill1.tools.filter((t) =>
+    skill2.tools.includes(t)
+  ).length;
+  const toolScore =
+    (toolOverlap / Math.max(skill1.tools.length, skill2.tools.length, 1)) * 20;
   score += toolScore;
 
   // Check category match (positive signal)
@@ -466,7 +477,9 @@ export function calculateCompatibilityScore(
 /**
  * Helper: Determine skill quality tier
  */
-export function determineQualityTier(score: number): 'bronze' | 'silver' | 'gold' | 'platinum' {
+export function determineQualityTier(
+  score: number
+): 'bronze' | 'silver' | 'gold' | 'platinum' {
   if (score >= 90) return 'platinum';
   if (score >= 75) return 'gold';
   if (score >= 60) return 'silver';

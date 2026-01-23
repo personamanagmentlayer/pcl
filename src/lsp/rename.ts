@@ -640,7 +640,11 @@ export class RenameProvider {
     switch (node.kind) {
       case 'PersonaDeclaration': {
         const decl = node as AST.PersonaDeclaration;
-        if (decl.extends) visitor(decl.extends);
+        if (decl.extends && decl.extends.length > 0) {
+          for (const ext of decl.extends) {
+            visitor(ext);
+          }
+        }
         if (
           decl.body &&
           'fields' in decl.body &&

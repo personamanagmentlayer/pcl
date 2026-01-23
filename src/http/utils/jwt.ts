@@ -2,7 +2,7 @@
  * JWT token utilities
  */
 
-import jwt from 'jsonwebtoken';
+import jwt, { type Secret } from 'jsonwebtoken';
 
 /**
  * JWT payload structure
@@ -74,7 +74,9 @@ export function signToken(
   const secret = config?.secret || jwtConfig.secret;
   const expiresIn = config?.expiresIn || jwtConfig.expiresIn;
 
-  return jwt.sign({ ...payload, jti: generateJTI() }, secret, { expiresIn });
+  return jwt.sign({ ...payload, jti: generateJTI() }, secret as Secret, {
+    expiresIn,
+  });
 }
 
 /**
@@ -88,7 +90,9 @@ export function signRefreshToken(
   const secret = config?.secret || jwtConfig.secret;
   const expiresIn = config?.refreshExpiresIn || jwtConfig.refreshExpiresIn;
 
-  return jwt.sign({ ...payload, jti: generateJTI() }, secret, { expiresIn });
+  return jwt.sign({ ...payload, jti: generateJTI() }, secret as string, {
+    expiresIn,
+  });
 }
 
 /**
