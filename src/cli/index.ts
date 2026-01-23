@@ -47,6 +47,7 @@ import { initCommand as projectInitCommand } from './commands/init';
 import { buildCommand as projectBuildCommand } from './commands/build';
 import { installCommand as projectInstallCommand } from './commands/install';
 import { completionCommand } from './commands/completion';
+import { initTelemetry } from '../observability/telemetry.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CLI CONFIGURATION
@@ -797,6 +798,24 @@ function prettyPrintAST(node: unknown, indent: number = 0): string {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 async function main(): Promise<number> {
+  // Initialize observability for CLI
+  if (process.env.TELEMETRY_ENABLED === 'true') {
+    initTelemetry({
+      serviceName: 'pcl-cli',
+      environment: process.env.NODE_ENV || 'development',
+      metrics: {
+        enabled: false, // Disabled for CLI by default
+      },
+      tracing: {
+        enabled: false, // Disabled for CLI by default
+      },
+      logging: {
+        enabled: true,
+        level: (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') || 'warn',
+      },
+    });
+  }
+
   const args = process.argv.slice(2);
 
   // Parse options

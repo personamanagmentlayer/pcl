@@ -17,6 +17,7 @@ import { apiLimiter } from './middleware/rate-limit.js';
 import { routes } from './routes/index.js';
 import { openApiSpec } from './docs/openapi.js';
 import type { RegistryConfig } from './types/config.js';
+import { initTelemetry } from '../observability/telemetry.js';
 
 /**
  * HTTP Registry Server
@@ -37,10 +38,49 @@ export class HTTPRegistryServer {
       ...config,
     };
 
+    // Initialize observability
+    this.initializeObservability();
+
     this.app = express();
     this.setupMiddleware();
     this.setupRoutes();
     this.setupErrorHandling();
+  }
+
+  /**
+   * Initialize observability (telemetry, metrics, tracing)
+   */
+  private initializeObservability(): void {
+    const telemetryEnabled = process.env.TELEMETRY_ENABLED !== 'false';
+
+    if (telemetryEnabled) {
+      initTelemetry({
+        serviceName: process.env.SERVICE_NAME || 'pcl-http-server',
+        environment: process.env.NODE_ENV || 'development',
+        metrics: {
+          enabled: process.env.METRICS_ENABLED !== 'false',
+          port: parseInt(process.env.METRICS_PORT || '9464', 10),
+        },
+        tracing: {
+          enabled: process.env.TRACING_ENABLED === 'true',
+          endpoint: process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces',
+        },
+        logging: {
+          enabled: process.env.LOGGING_ENABLED !== 'false',
+          level: (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') || 'info',
+        },
+      });
+
+      console.log('[Observability] Telemetry initialized');
+      if (process.env.METRICS_ENABLED !== 'false') {
+        console.log(`[Observability] Metrics available at http://localhost:${process.env.METRICS_PORT || '9464'}/metrics`);
+      }
+      if (process.env.TRACING_ENABLED === 'true') {
+        console.log(`[Observability] Tracing enabled - exporting to ${process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces'}`);
+      }
+    } else {
+      console.log('[Observability] Telemetry disabled (set TELEMETRY_ENABLED=true to enable)');
+    }
   }
 
   /**
