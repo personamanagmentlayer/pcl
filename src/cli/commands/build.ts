@@ -4,19 +4,19 @@
  */
 
 import { existsSync, readFileSync } from 'fs';
-import { readFile, writeFile, mkdir } from 'fs/promises';
-import { join, dirname, basename, relative } from 'path';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { glob } from 'glob';
-import type { PCLPackage, BuildTarget } from '../../build/package-format';
-import { validatePackage } from '../../build/package-format';
-import { parse } from '../../parser';
-import {
-  generatePrompt,
-  generateJSON,
-  generateTypeScript,
-  generateMarkdown,
-} from '../../codegen';
+import { basename, dirname, join, relative } from 'path';
 import type { PersonaDeclaration } from '../../ast';
+import type { BuildTarget, PCLPackage } from '../../build/package-format';
+import { validatePackage } from '../../build/package-format';
+import {
+  generateJSON,
+  generateMarkdown,
+  generatePrompt,
+  generateTypeScript,
+} from '../../codegen';
+import { parse } from '../../parser';
 
 // Color utilities
 const colors = {
@@ -80,10 +80,10 @@ export async function buildCommand(options: BuildOptions = {}): Promise<void> {
   // Convert include to a single pattern string
   const pattern = Array.isArray(include) ? include[0] : include;
 
-  const files = await glob(pattern, {
-    cwd: join(cwd, srcDir),
+  const files: string[] = await glob(pattern, {
     ignore: exclude,
     absolute: false,
+    cwd: join(cwd, srcDir),
   });
 
   if (files.length === 0) {
