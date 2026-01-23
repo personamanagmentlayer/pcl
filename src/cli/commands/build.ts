@@ -80,8 +80,9 @@ export async function buildCommand(options: BuildOptions = {}): Promise<void> {
   // Convert include to a single pattern string
   const pattern = Array.isArray(include) ? include[0] : include;
 
-  const files: string[] = await glob(pattern, {
-    ignore: exclude,
+  // glob returns an array of matched files
+  const files = await glob(pattern, {
+    ignore: exclude as string | string[],
     absolute: false,
     cwd: join(cwd, srcDir),
   });

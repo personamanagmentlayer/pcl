@@ -46,6 +46,8 @@ export interface PCLSkill {
   }>;
   tools?: string[];
   dependencies?: string[];
+  complexity?: 'low' | 'medium' | 'high';
+  conflicts?: string[];
   metadata?: {
     author?: string;
     license?: string;

@@ -303,7 +303,7 @@ export class RenameProvider {
       case 'TeamDecl':
       case 'WorkflowDecl':
       case 'SkillDecl':
-        const decl = node as AST.PersonaDecl;
+        const decl = node as AST.PersonaDeclaration;
         if (this.offsetInNode(decl.name, offset)) {
           return {
             name: decl.name.name,
@@ -641,7 +641,7 @@ export class RenameProvider {
       case 'PersonaDeclaration': {
         const decl = node as AST.PersonaDeclaration;
         if (decl.extends) visitor(decl.extends);
-        if (decl.body) {
+        if (decl.body && 'fields' in decl.body) {
           for (const field of decl.body.fields) {
             if (field.value) visitor(field.value);
           }
@@ -651,7 +651,7 @@ export class RenameProvider {
 
       case 'TeamDeclaration': {
         const team = node as AST.TeamDeclaration;
-        if (team.body) {
+        if (team.body && 'fields' in team.body) {
           for (const field of team.body.fields) {
             if (field.value) visitor(field.value);
           }
