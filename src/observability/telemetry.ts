@@ -11,16 +11,15 @@
  * @version 1.0.0
  */
 
+import { DiagConsoleLogger, DiagLogLevel, diag } from '@opentelemetry/api';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { Resource } from '@opentelemetry/resources';
 import {
   ATTR_SERVICE_NAME,
   ATTR_SERVICE_VERSION,
 } from '@opentelemetry/semantic-conventions';
-import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
-import { DiagConsoleLogger, DiagLogLevel, diag } from '@opentelemetry/api';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPES
@@ -49,6 +48,9 @@ export interface TelemetryConfig {
   readonly environment: string;
   readonly enableTracing: boolean;
   readonly enableMetrics: boolean;
+  readonly metrics?: {
+    enabled: boolean;
+  };
   readonly exporters: {
     readonly prometheus?: PrometheusConfig;
     readonly jaeger?: JaegerConfig;

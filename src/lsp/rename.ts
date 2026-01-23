@@ -641,7 +641,11 @@ export class RenameProvider {
       case 'PersonaDeclaration': {
         const decl = node as AST.PersonaDeclaration;
         if (decl.extends) visitor(decl.extends);
-        if (decl.body && 'fields' in decl.body) {
+        if (
+          decl.body &&
+          'fields' in decl.body &&
+          Array.isArray(decl.body.fields)
+        ) {
           for (const field of decl.body.fields) {
             if (field.value) visitor(field.value);
           }
@@ -651,7 +655,11 @@ export class RenameProvider {
 
       case 'TeamDeclaration': {
         const team = node as AST.TeamDeclaration;
-        if (team.body && 'fields' in team.body) {
+        if (
+          team.body &&
+          'fields' in team.body &&
+          Array.isArray(team.body.fields)
+        ) {
           for (const field of team.body.fields) {
             if (field.value) visitor(field.value);
           }
