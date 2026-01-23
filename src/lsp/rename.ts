@@ -304,10 +304,10 @@ export class RenameProvider {
       case 'WorkflowDecl':
       case 'SkillDecl':
         const decl = node as AST.PersonaDeclaration;
-        if (this.offsetInNode(decl.name, offset)) {
+        if (this.offsetInNode(decl.id, offset)) {
           return {
-            name: decl.name.name,
-            node: decl.name,
+            name: decl.id.name,
+            node: decl.id,
             kind: 'declaration',
             type: node.kind,
           };
