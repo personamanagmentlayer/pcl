@@ -1,9 +1,10 @@
 /**
- * Global error handling middleware
+ * Global error handling middleware (RFC 7807 compliant)
  */
 
 import type { Request, Response, NextFunction } from 'express';
 import type { APIError } from '../types/response.js';
+import { trace, context } from '@opentelemetry/api';
 
 /**
  * Custom API error class
@@ -21,7 +22,26 @@ export class APIException extends Error {
 }
 
 /**
- * Global error handler middleware
+ * Get trace context from OpenTelemetry
+ */
+function getTraceContext(): { traceId?: string; spanId?: string } {
+  try {
+    const span = trace.getSpan(context.active());
+    if (span) {
+      const spanContext = span.spanContext();
+      return {
+        traceId: spanContext.traceId,
+        spanId: spanContext.spanId,
+      };
+    }
+  } catch {
+    // OpenTelemetry not initialized, ignore
+  }
+  return {};
+}
+
+/**
+ * Global error handler middleware (RFC 7807 compliant)
  */
 export function errorHandler(
   error: Error,
@@ -35,15 +55,25 @@ export function errorHandler(
     console.error(error.stack);
   }
 
+  // Get trace context
+  const { traceId, spanId } = getTraceContext();
+
   // Handle APIException
   if (error instanceof APIException) {
     const response: APIError = {
       success: false,
       error: {
+        type: `/errors/${error.code.toLowerCase()}`,
+        title: error.name,
+        status: error.statusCode,
+        detail: error.message,
+        instance: req.path,
         code: error.code,
         message: error.message,
         details: error.details,
         timestamp: new Date().toISOString(),
+        traceId,
+        spanId,
       },
     };
 
@@ -57,6 +87,11 @@ export function errorHandler(
     const response: APIError = {
       success: false,
       error: {
+        type: '/errors/validation',
+        title: 'Validation Error',
+        status: 400,
+        detail: 'Invalid request data',
+        instance: req.path,
         code: 'VALIDATION_ERROR',
         message: 'Invalid request data',
         details: zodError.issues?.map((err: any) => ({
@@ -64,6 +99,8 @@ export function errorHandler(
           message: err.message,
         })),
         timestamp: new Date().toISOString(),
+        traceId,
+        spanId,
       },
     };
 
@@ -72,13 +109,23 @@ export function errorHandler(
   }
 
   // Handle JWT errors
-  if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+  if (
+    error.name === 'JsonWebTokenError' ||
+    error.name === 'TokenExpiredError'
+  ) {
     const response: APIError = {
       success: false,
       error: {
+        type: '/errors/unauthorized',
+        title: 'Unauthorized',
+        status: 401,
+        detail: error.message || 'Invalid or expired token',
+        instance: req.path,
         code: 'UNAUTHORIZED',
         message: error.message || 'Invalid or expired token',
         timestamp: new Date().toISOString(),
+        traceId,
+        spanId,
       },
     };
 
@@ -90,11 +137,22 @@ export function errorHandler(
   const response: APIError = {
     success: false,
     error: {
+      type: '/errors/internal',
+      title: 'Internal Server Error',
+      status: 500,
+      detail:
+        process.env.NODE_ENV === 'production'
+          ? 'An internal error occurred'
+          : error.message,
+      instance: req.path,
       code: 'INTERNAL_ERROR',
-      message: process.env.NODE_ENV === 'production'
-        ? 'An internal error occurred'
-        : error.message,
+      message:
+        process.env.NODE_ENV === 'production'
+          ? 'An internal error occurred'
+          : error.message,
       timestamp: new Date().toISOString(),
+      traceId,
+      spanId,
     },
   };
 
