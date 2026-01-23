@@ -60,20 +60,21 @@ export function createSLORoute(): Router {
    * GET /slo/:name
    * Get specific SLO status
    */
-  router.get('/:name', (req: Request, res: Response) => {
+  router.get('/:name', (req: Request, res: Response): void => {
     try {
       const { name } = req.params;
       const sloName = Array.isArray(name) ? name[0] : name;
       const tracker = registry.get(sloName);
 
       if (!tracker) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             message: `SLO '${name}' not found`,
             code: 'SLO_NOT_FOUND',
           },
         });
+        return;
       }
 
       const status = tracker.getStatus();
@@ -97,29 +98,31 @@ export function createSLORoute(): Router {
    * POST /slo
    * Register a new SLO
    */
-  router.post('/', (req: Request, res: Response) => {
+  router.post('/', (req: Request, res: Response): void => {
     try {
       const config = req.body as SLOConfig;
 
       // Validate config
       if (!config.name || !config.target || !config.windowSeconds) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             message: 'Missing required fields: name, target, windowSeconds',
             code: 'VALIDATION_ERROR',
           },
         });
+        return;
       }
 
       if (config.target < 0 || config.target > 1) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             message: 'Target must be between 0 and 1',
             code: 'VALIDATION_ERROR',
           },
         });
+        return;
       }
 
       const tracker = registry.register(config);
@@ -147,20 +150,21 @@ export function createSLORoute(): Router {
    * DELETE /slo/:name
    * Unregister an SLO
    */
-  router.delete('/:name', (req: Request, res: Response) => {
+  router.delete('/:name', (req: Request, res: Response): void => {
     try {
       const { name } = req.params;
       const sloName = Array.isArray(name) ? name[0] : name;
       const deleted = registry.unregister(sloName);
 
       if (!deleted) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             message: `SLO '${name}' not found`,
             code: 'SLO_NOT_FOUND',
           },
         });
+        return;
       }
 
       res.status(200).json({
@@ -184,32 +188,34 @@ export function createSLORoute(): Router {
    * POST /slo/:name/record
    * Record a request result for an SLO
    */
-  router.post('/:name/record', (req: Request, res: Response) => {
+  router.post('/:name/record', (req: Request, res: Response): void => {
     try {
       const { name } = req.params;
       const sloName = Array.isArray(name) ? name[0] : name;
       const { success } = req.body;
 
       if (typeof success !== 'boolean') {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: {
             message: 'Missing or invalid "success" field (must be boolean)',
             code: 'VALIDATION_ERROR',
           },
         });
+        return;
       }
 
       const tracker = registry.get(sloName);
 
       if (!tracker) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: {
             message: `SLO '${sloName}' not found`,
             code: 'SLO_NOT_FOUND',
           },
         });
+        return;
       }
 
       tracker.record(success);

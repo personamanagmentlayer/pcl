@@ -42,7 +42,10 @@ export interface JWTConfig {
 export function getJWTConfig(): JWTConfig {
   const secret = process.env.JWT_SECRET || 'dev-secret-change-in-production';
 
-  if (process.env.NODE_ENV === 'production' && secret === 'dev-secret-change-in-production') {
+  if (
+    process.env.NODE_ENV === 'production' &&
+    secret === 'dev-secret-change-in-production'
+  ) {
     throw new Error('JWT_SECRET must be set in production environment');
   }
 
@@ -63,37 +66,38 @@ function generateJTI(): string {
 /**
  * Sign a JWT token
  */
-export function signToken(payload: Omit<JWTPayload, 'iat' | 'exp' | 'jti'>, config?: Partial<JWTConfig>): string {
+export function signToken(
+  payload: Omit<JWTPayload, 'iat' | 'exp' | 'jti'>,
+  config?: Partial<JWTConfig>
+): string {
   const jwtConfig = getJWTConfig();
+  const secret = config?.secret || jwtConfig.secret;
+  const expiresIn = config?.expiresIn || jwtConfig.expiresIn;
 
-  return jwt.sign(
-    { ...payload, jti: generateJTI() },
-    config?.secret || jwtConfig.secret,
-    {
-      expiresIn: config?.expiresIn || jwtConfig.expiresIn,
-    }
-  );
+  return jwt.sign({ ...payload, jti: generateJTI() }, secret, { expiresIn });
 }
 
 /**
  * Sign a refresh token
  */
-export function signRefreshToken(payload: Omit<JWTPayload, 'iat' | 'exp' | 'jti'>, config?: Partial<JWTConfig>): string {
+export function signRefreshToken(
+  payload: Omit<JWTPayload, 'iat' | 'exp' | 'jti'>,
+  config?: Partial<JWTConfig>
+): string {
   const jwtConfig = getJWTConfig();
+  const secret = config?.secret || jwtConfig.secret;
+  const expiresIn = config?.refreshExpiresIn || jwtConfig.refreshExpiresIn;
 
-  return jwt.sign(
-    { ...payload, jti: generateJTI() },
-    config?.secret || jwtConfig.secret,
-    {
-      expiresIn: config?.refreshExpiresIn || jwtConfig.refreshExpiresIn,
-    }
-  );
+  return jwt.sign({ ...payload, jti: generateJTI() }, secret, { expiresIn });
 }
 
 /**
  * Verify and decode a JWT token
  */
-export function verifyToken(token: string, config?: Partial<JWTConfig>): JWTPayload {
+export function verifyToken(
+  token: string,
+  config?: Partial<JWTConfig>
+): JWTPayload {
   const jwtConfig = getJWTConfig();
 
   try {
@@ -136,10 +140,15 @@ export function getTokenExpirationSeconds(expiresIn: string): number {
   const unit = match[2];
 
   switch (unit) {
-    case 's': return value;
-    case 'm': return value * 60;
-    case 'h': return value * 60 * 60;
-    case 'd': return value * 60 * 60 * 24;
-    default: throw new Error(`Invalid time unit: ${unit}`);
+    case 's':
+      return value;
+    case 'm':
+      return value * 60;
+    case 'h':
+      return value * 60 * 60;
+    case 'd':
+      return value * 60 * 60 * 24;
+    default:
+      throw new Error(`Invalid time unit: ${unit}`);
   }
 }

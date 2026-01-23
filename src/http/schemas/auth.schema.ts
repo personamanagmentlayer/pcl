@@ -12,7 +12,10 @@ export const RegisterSchema = z.object({
     .string()
     .min(3, 'Username must be at least 3 characters')
     .max(50, 'Username must be at most 50 characters')
-    .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores, and hyphens'),
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      'Username can only contain letters, numbers, underscores, and hyphens'
+    ),
   email: z
     .string()
     .email('Invalid email address')
@@ -33,6 +36,7 @@ export const RegisterSchema = z.object({
 });
 
 export type RegisterRequest = z.infer<typeof RegisterSchema>;
+export type RegisterInput = RegisterRequest; // Alias for service layer compatibility
 
 /**
  * User login schema
@@ -43,6 +47,7 @@ export const LoginSchema = z.object({
 });
 
 export type LoginRequest = z.infer<typeof LoginSchema>;
+export type LoginInput = LoginRequest; // Alias for service layer compatibility
 
 /**
  * Refresh token schema

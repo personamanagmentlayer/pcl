@@ -69,13 +69,18 @@ export async function buildCommand(options: BuildOptions = {}): Promise<void> {
 
   const srcDir = pkg.build?.srcDir || 'src';
   const outDir = pkg.build?.outDir || 'dist';
-  const targets = options.target ? [options.target] : pkg.build?.targets || ['prompt', 'json'];
+  const targets = options.target
+    ? [options.target]
+    : pkg.build?.targets || ['prompt', 'json'];
 
   // Find all PCL files
   const include = pkg.build?.include || ['**/*.pcl'];
   const exclude = pkg.build?.exclude || ['node_modules/**', 'dist/**'];
 
-  const files = await glob(include, {
+  // Convert include to a single pattern string
+  const pattern = Array.isArray(include) ? include[0] : include;
+
+  const files = await glob(pattern, {
     cwd: join(cwd, srcDir),
     ignore: exclude,
     absolute: false,
@@ -118,21 +123,37 @@ export async function buildCommand(options: BuildOptions = {}): Promise<void> {
 
       // Build for each target
       for (const target of targets) {
-        await buildTarget(program, relativePath, target, cwd, srcDir, outDir, options);
+        await buildTarget(
+          program,
+          relativePath,
+          target,
+          cwd,
+          srcDir,
+          outDir,
+          options
+        );
       }
 
       console.log(color('green', `✓ ${relativePath}`));
       builtCount++;
     } catch (error) {
       console.error(
-        color('red', `✗ ${relativePath}: ${error instanceof Error ? error.message : String(error)}`)
+        color(
+          'red',
+          `✗ ${relativePath}: ${error instanceof Error ? error.message : String(error)}`
+        )
       );
       errorCount++;
     }
   }
 
   // Summary
-  console.log(color('cyan', `\nBuild complete: ${builtCount} succeeded, ${errorCount} failed`));
+  console.log(
+    color(
+      'cyan',
+      `\nBuild complete: ${builtCount} succeeded, ${errorCount} failed`
+    )
+  );
 
   if (errorCount > 0) {
     process.exit(1);
@@ -154,13 +175,15 @@ async function buildTarget(
   const baseName = basename(relativePath, '.pcl');
   const dirName = dirname(relativePath);
 
-  let output: string;
-  let extension: string;
+  let output: string = '';
+  let extension: string = '';
 
   switch (target) {
     case 'prompt': {
       // Generate prompt for each persona
-      const personas = program.statements.filter((s: any) => s.kind === 'PersonaDeclaration');
+      const personas = program.statements.filter(
+        (s: any) => s.kind === 'PersonaDeclaration'
+      );
 
       if (personas.length === 0) {
         if (options.verbose) {
@@ -173,8 +196,13 @@ async function buildTarget(
         output = generatePrompt(persona as PersonaDeclaration);
         extension = '.prompt.txt';
 
-        const personaName = (persona as PersonaDeclaration).name.value;
-        const outputPath = join(cwd, outDir, dirName, `${personaName}${extension}`);
+        const personaName = (persona as PersonaDeclaration).id.name;
+        const outputPath = join(
+          cwd,
+          outDir,
+          dirName,
+          `${personaName}${extension}`
+        );
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, output, 'utf-8');
 
