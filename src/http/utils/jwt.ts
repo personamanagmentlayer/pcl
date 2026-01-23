@@ -74,6 +74,7 @@ export function signToken(
   const secret = config?.secret || jwtConfig.secret;
   const expiresIn = config?.expiresIn || jwtConfig.expiresIn;
 
+  // @ts-expect-error - jwt.sign overload resolution issue with Secret type
   return jwt.sign({ ...payload, jti: generateJTI() }, secret as Secret, {
     expiresIn,
   });
@@ -90,6 +91,7 @@ export function signRefreshToken(
   const secret = config?.secret || jwtConfig.secret;
   const expiresIn = config?.refreshExpiresIn || jwtConfig.refreshExpiresIn;
 
+  // @ts-expect-error - jwt.sign overload resolution issue
   return jwt.sign({ ...payload, jti: generateJTI() }, secret as string, {
     expiresIn,
   });

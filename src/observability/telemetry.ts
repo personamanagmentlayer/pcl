@@ -126,9 +126,9 @@ export function initTelemetry(config: Partial<TelemetryConfig> = {}): void {
         ...config.exporters?.prometheus,
       },
       console: {
-        ...DEFAULT_CONFIG.exporters.console,
-        ...config.exporters?.console,
-      },
+        enabled: config.exporters?.console?.enabled ?? DEFAULT_CONFIG.exporters.console?.enabled ?? false,
+        logLevel: config.exporters?.console?.logLevel || DEFAULT_CONFIG.exporters.console?.logLevel,
+      } as ConsoleConfig,
     },
   };
 
