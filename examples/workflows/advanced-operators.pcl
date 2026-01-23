@@ -1,0 +1,418 @@
+/**
+ * PCL Phase 1.2 Advanced Workflow Operators Examples
+ *
+ * This file demonstrates all the new workflow operators:
+ * - Async Pipe (~>)
+ * - Bidirectional (<->)
+ * - Accumulate (>>>)
+ * - Composition (::)
+ * - Break/Continue statements
+ * - Enhanced Retry Configuration
+ */
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 1. ASYNC PIPE OPERATOR (~>)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Async pipe allows non-blocking workflow chains
+ * Each step runs asynchronously without waiting for previous steps to complete
+ */
+workflow DataIngestionPipeline {
+  input: RawData
+  output: ProcessedData
+  timeout: 10m
+
+  // Each step runs asynchronously - don't wait for completion
+  steps: FetchData ~> ValidateSchema ~> TransformData ~> LoadDatabase
+
+  /**
+   * Execution flow:
+   * 1. FetchData starts immediately
+   * 2. ValidateSchema starts when data arrives (doesn't wait for FetchData to complete)
+   * 3. TransformData starts when validated data arrives
+   * 4. LoadDatabase starts when transformed data arrives
+   *
+   * All steps can overlap in execution
+   */
+}
+
+workflow AsyncEventProcessing {
+  // Fire-and-forget pattern
+  steps: ReceiveEvent ~> LogEvent ~> ProcessEvent ~> NotifySubscribers
+
+  // Each step completes independently
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 2. BIDIRECTIONAL OPERATOR (<->)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Bidirectional operator enables feedback loops between workflow steps
+ * Useful for negotiation, iterative refinement, and collaborative processes
+ */
+workflow PriceNegotiation {
+  input: InitialOffer
+  output: FinalPrice
+  timeout: 5m
+
+  // Bidirectional communication with max 10 iterations
+  steps: BuyerAgent <-> SellerAgent (10)
+
+  /**
+   * Execution flow:
+   * 1. BuyerAgent makes offer
+   * 2. SellerAgent counters
+   * 3. Back to BuyerAgent
+   * ... (up to 10 rounds)
+   */
+}
+
+workflow IterativeCodeReview {
+  input: CodeChanges
+  output: ApprovedCode
+
+  // Feedback loop without limit (until consensus)
+  steps: Developer <-> Reviewer
+
+  /**
+   * Continues until both agree or timeout
+   */
+}
+
+workflow CollaborativeDesign {
+  // Three-way negotiation
+  steps: Designer <-> ProductManager (5)
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 3. ACCUMULATE OPERATOR (>>>)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Accumulate operator aggregates results through the pipeline
+ * Each step receives accumulated results from all previous steps
+ */
+workflow DataAnalysisPipeline {
+  input: Dataset
+  output: AnalysisReport
+  timeout: 30m
+
+  // Accumulate results through each stage
+  steps: CollectSamples >>> AggregateStatistics >>> GenerateInsights >>> CreateReport
+
+  /**
+   * Execution flow:
+   * 1. CollectSamples gathers data → [samples]
+   * 2. AggregateStatistics receives [samples] → [samples, stats]
+   * 3. GenerateInsights receives [samples, stats] → [samples, stats, insights]
+   * 4. CreateReport receives [samples, stats, insights] → final report
+   */
+}
+
+workflow MultiSourceAggregation {
+  // Gather data from multiple sources and aggregate
+  steps: FetchAPI1 >>> FetchAPI2 >>> FetchAPI3 >>> MergeResults
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 4. COMPOSITION OPERATOR (::)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Composition operator reuses workflows as building blocks
+ * Create complex workflows from simpler ones
+ */
+workflow ETLPipeline {
+  input: SourceData
+  output: LoadedData
+
+  // Compose three separate workflows
+  steps: Extract :: Transform :: Load
+
+  /**
+   * Each :: component is a complete workflow that can be reused
+   */
+}
+
+workflow CompleteDataPipeline {
+  // Multi-stage composition
+  steps: Ingestion :: Validation :: Processing :: Storage :: Notification
+}
+
+workflow ComprehensiveReview {
+  // Compose review stages
+  steps: SecurityReview :: PerformanceReview :: CodeQualityReview
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 5. BREAK AND CONTINUE STATEMENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Loop control with break and continue
+ * Enables early exit and skipping iterations
+ */
+workflow DataProcessingWithEarlyExit {
+  input: Items
+  output: ProcessedItems
+
+  steps: loop ProcessItem times 1000
+
+  /**
+   * Inside ProcessItem, can use:
+   * - break: Exit the loop immediately
+   * - continue: Skip to next iteration
+   */
+}
+
+workflow SearchWithBreak {
+  input: SearchQuery
+  output: Result
+
+  // Workflow that uses break internally
+  steps: loop SearchNextBatch while has_more
+
+  /**
+   * Search implementation can call 'break' when result found
+   */
+}
+
+workflow FilterWithContinue {
+  input: RawItems
+  output: FilteredItems
+
+  // Skip invalid items
+  steps: loop FilterItem for item in items
+
+  /**
+   * FilterItem can call 'continue' to skip invalid items
+   */
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 6. ENHANCED RETRY CONFIGURATION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Exponential backoff retry strategy
+ * Delays: 1s, 2s, 4s, 8s, 16s
+ */
+workflow ResilientAPICall {
+  retry: {
+    count: 5,
+    delay: 1s,
+    backoff: exponential,
+    maxDelay: 30s,
+    jitter: true
+  }
+
+  steps: CallExternalAPI -> ProcessResponse
+}
+
+/**
+ * Fibonacci backoff strategy
+ * Delays: 1s, 1s, 2s, 3s, 5s, 8s, 13s
+ */
+workflow FibonacciRetry {
+  retry: {
+    count: 7,
+    delay: 1s,
+    backoff: fibonacci
+  }
+
+  steps: AttemptConnection
+}
+
+/**
+ * Random backoff with jitter
+ * Prevents thundering herd problem
+ */
+workflow DistributedRetry {
+  retry: {
+    count: 10,
+    delay: 500ms,
+    backoff: random,
+    maxDelay: 10s,
+    jitter: true
+  }
+
+  steps: DistributedLockAcquire
+}
+
+/**
+ * Linear backoff strategy
+ * Delays: 2s, 2s, 2s
+ */
+workflow LinearRetry {
+  retry: {
+    count: 3,
+    delay: 2s,
+    backoff: linear
+  }
+
+  steps: SimpleOperation
+}
+
+/**
+ * Complete retry configuration with all options
+ */
+workflow ProductionAPICall {
+  retry: {
+    count: 8,
+    delay: 1s,
+    backoff: exponential,
+    maxDelay: 1m,
+    jitter: true
+  }
+  timeout: 5m
+  fallback: CachedResponse
+
+  steps: PrimaryAPI -> ProcessData
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 7. COMPLEX COMBINATIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Combining multiple operators for sophisticated workflows
+ */
+workflow AdvancedDataPipeline {
+  input: Request
+  output: Response
+  timeout: 10m
+  retry: {
+    count: 5,
+    delay: 1s,
+    backoff: exponential,
+    maxDelay: 30s,
+    jitter: true
+  }
+
+  // Composition with async pipes and accumulation
+  steps: (Validate :: Authorize) ~> (Fetch >>> Transform >>> Aggregate) -> Store
+}
+
+workflow NegotiationWithFallback {
+  retry: {
+    count: 3,
+    delay: 2s,
+    backoff: fibonacci
+  }
+  fallback: DefaultAgreement
+  timeout: 15m
+
+  // Bidirectional negotiation with accumulation of history
+  steps: Prepare >>> (Buyer <-> Seller (20)) -> Finalize
+}
+
+workflow ParallelProcessingPipeline {
+  timeout: 30m
+
+  // Compose workflows, run in parallel branches, accumulate results
+  steps: (Preprocess :: Validate) -> (BranchA || BranchB || BranchC) >>> Merge
+}
+
+/**
+ * Enterprise-grade workflow with all features
+ */
+workflow EnterpriseDataProcessing {
+  input: DataSource
+  output: ProcessedResult
+
+  // Full configuration
+  timeout: 1h
+  retry: {
+    count: 10,
+    delay: 1s,
+    backoff: exponential,
+    maxDelay: 5m,
+    jitter: true
+  }
+  fallback: EmergencyProcedure
+  when: is_business_hours
+
+  // Complex operator combination
+  steps:
+    SecurityCheck ::
+    (FetchData ~> ValidateSchema) >>>
+    (Transform <-> QualityReview (5)) ->
+    (ProcessBranchA || ProcessBranchB) >>>
+    AggregateResults ->
+    Store ~>
+    Notify
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 8. REAL-WORLD USE CASES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * E-commerce order processing
+ */
+workflow OrderProcessing {
+  input: Order
+  output: Confirmation
+
+  retry: {
+    count: 5,
+    delay: 2s,
+    backoff: exponential,
+    maxDelay: 1m
+  }
+  timeout: 10m
+  fallback: ManualReview
+
+  steps:
+    ValidateOrder ::
+    (CheckInventory ~> ReserveItems) >>>
+    (PaymentGateway <-> BankVerification (3)) ->
+    (PackageOrder || GenerateInvoice || NotifyCustomer) >>>
+    ShipOrder
+}
+
+/**
+ * Content moderation pipeline
+ */
+workflow ContentModeration {
+  input: UserContent
+  output: ModerationDecision
+
+  timeout: 30s
+  retry: {
+    count: 3,
+    delay: 1s,
+    backoff: fibonacci
+  }
+
+  steps:
+    PreprocessContent ::
+    (TextAnalysis ~> ImageAnalysis ~> VideoAnalysis) >>>
+    (AIModeration <-> HumanReview (2)) ->
+    FinalDecision
+}
+
+/**
+ * ML model training pipeline
+ */
+workflow MLTrainingPipeline {
+  input: TrainingData
+  output: TrainedModel
+
+  timeout: 24h
+  retry: {
+    count: 3,
+    delay: 10m,
+    backoff: linear
+  }
+
+  steps:
+    DataPreprocessing ::
+    (FeatureExtraction >>> DataAugmentation) ->
+    (Train <-> Validate (100)) ->
+    (EvaluateModel >>> TuneHyperparameters) ->
+    DeployModel ~>
+    Notify
+}

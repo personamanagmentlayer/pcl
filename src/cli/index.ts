@@ -41,6 +41,8 @@ import {
   listCommand as skillListCommand,
   infoCommand as skillInfoCommand,
 } from './commands/skills';
+import { skillWizardCommand } from './commands/skills/wizard';
+import { skillLintCommand } from './commands/skills/lint';
 import { initCommand as projectInitCommand } from './commands/init';
 import { buildCommand as projectBuildCommand } from './commands/build';
 import { installCommand as projectInstallCommand } from './commands/install';
@@ -96,6 +98,8 @@ Commands:
   skill validate <source>    Validate skill against specification
   skill list                 List all discovered skills
   skill info <name|path>     Show detailed skill information
+  skill wizard               Interactive skill creation wizard
+  skill lint <file>          Lint skill for best practices and quality
 
   Shell Commands:
   completion                 Generate shell completion script
@@ -1085,6 +1089,19 @@ async function main(): Promise<number> {
           await skillInfoCommand(skillArg, skillOptions);
           return 0;
 
+        case 'wizard':
+          await skillWizardCommand();
+          return 0;
+
+        case 'lint':
+          if (!skillArg) {
+            console.error(color('red', 'Error: No skill file specified'));
+            return 1;
+          }
+          if (options.strict) skillOptions.strict = options.strict;
+          await skillLintCommand(skillArg, skillOptions);
+          return 0;
+
         default:
           console.error(
             color(
@@ -1093,7 +1110,7 @@ async function main(): Promise<number> {
             )
           );
           console.log(
-            'Available skill commands: import, export, validate, list, info'
+            'Available skill commands: import, export, validate, list, info, wizard, lint'
           );
           return 1;
       }

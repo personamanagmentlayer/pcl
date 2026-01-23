@@ -6,25 +6,39 @@
 
 import { PclMcpServer, type McpServerConfig } from './server.js';
 import type {
-  McpTool,
   McpToolCallParams,
   McpToolCallResult,
   McpResource,
   McpResourceContent,
 } from '../types/mcp.js';
-import type { Runtime } from '../../runtime/runtime.js';
-import type { Persona } from '../../ast/persona.js';
-import type { Team } from '../../ast/team.js';
-import type { Workflow } from '../../ast/workflow.js';
+import type { Runtime, PersonaInstance, TeamInstance } from '../../runtime/index.js';
 
 /**
  * PCL MCP Server Configuration
  */
-export interface PclMcpServerConfig extends McpServerConfig {
+export interface PclServerConfig extends McpServerConfig {
   /**
    * PCL Runtime instance
    */
   readonly runtime: Runtime;
+}
+
+/**
+ * Arguments for persona/execute tool
+ */
+interface PersonaExecuteArgs {
+  persona: string;
+  input: string;
+  context?: Record<string, unknown>;
+}
+
+/**
+ * Arguments for team/execute tool
+ */
+interface TeamExecuteArgs {
+  team: string;
+  input: string;
+  context?: Record<string, unknown>;
 }
 
 /**
@@ -35,7 +49,7 @@ export interface PclMcpServerConfig extends McpServerConfig {
 export class PclServer extends PclMcpServer {
   private runtime: Runtime;
 
-  constructor(config: PclMcpServerConfig) {
+  constructor(config: PclServerConfig) {
     super({
       name: config.name,
       version: config.version,
@@ -80,7 +94,9 @@ export class PclServer extends PclMcpServer {
         },
       },
       async (params: McpToolCallParams) => {
-        return this.executePersona(params.arguments as PersonaExecuteArgs);
+        return this.executePersona(
+          params.arguments as unknown as PersonaExecuteArgs
+        );
       }
     );
 
@@ -102,8 +118,8 @@ export class PclServer extends PclMcpServer {
     // Tool: Get persona information
     this.registerTool(
       {
-        name: 'persona/info',
-        description: 'Get detailed information about a specific persona',
+        name: 'persona/get',
+        description: 'Get detailed information about a persona',
         inputSchema: {
           type: 'object',
           properties: {
@@ -116,7 +132,9 @@ export class PclServer extends PclMcpServer {
         },
       },
       async (params: McpToolCallParams) => {
-        return this.getPersonaInfo(params.arguments as { persona: string });
+        return this.getPersonaInfo(
+          params.arguments as unknown as { persona: string }
+        );
       }
     );
 
@@ -124,17 +142,17 @@ export class PclServer extends PclMcpServer {
     this.registerTool(
       {
         name: 'team/execute',
-        description: 'Execute a PCL team (multiple personas working together)',
+        description: 'Execute a PCL team workflow',
         inputSchema: {
           type: 'object',
           properties: {
             team: {
               type: 'string',
-              description: 'Name or ID of the team',
+              description: 'Name or ID of the team to execute',
             },
             input: {
               type: 'string',
-              description: 'Input for the team',
+              description: 'Input message or prompt for the team',
             },
             context: {
               type: 'object',
@@ -145,79 +163,47 @@ export class PclServer extends PclMcpServer {
         },
       },
       async (params: McpToolCallParams) => {
-        return this.executeTeam(params.arguments as TeamExecuteArgs);
+        return this.executeTeam(
+          params.arguments as unknown as TeamExecuteArgs
+        );
       }
     );
 
-    // Tool: Execute a workflow
+    // Tool: List all available teams
     this.registerTool(
       {
-        name: 'workflow/execute',
-        description: 'Execute a PCL workflow',
+        name: 'team/list',
+        description: 'List all available PCL teams',
+        inputSchema: {
+          type: 'object',
+          properties: {},
+        },
+      },
+      async () => {
+        return this.listTeams();
+      }
+    );
+
+    // Tool: Get team information
+    this.registerTool(
+      {
+        name: 'team/get',
+        description: 'Get detailed information about a team',
         inputSchema: {
           type: 'object',
           properties: {
-            workflow: {
+            team: {
               type: 'string',
-              description: 'Name or ID of the workflow',
-            },
-            input: {
-              type: 'object',
-              description: 'Input data for the workflow',
+              description: 'Name or ID of the team',
             },
           },
-          required: ['workflow', 'input'],
+          required: ['team'],
         },
       },
       async (params: McpToolCallParams) => {
-        return this.executeWorkflow(params.arguments as WorkflowExecuteArgs);
-      }
-    );
-  }
-
-  /**
-   * Register PCL resources (persona definitions, outputs, etc.)
-   */
-  private registerPclResources(): void {
-    // Resource: Get persona definition
-    this.registerResource(
-      {
-        uri: 'persona://definition/{name}',
-        name: 'Persona Definition',
-        description: 'PCL persona definition (source code)',
-        mimeType: 'text/x-pcl',
-      },
-      async (uri: string) => {
-        const name = uri.replace('persona://definition/', '');
-        return this.getPersonaDefinition(name);
-      }
-    );
-
-    // Resource: Get team definition
-    this.registerResource(
-      {
-        uri: 'team://definition/{name}',
-        name: 'Team Definition',
-        description: 'PCL team definition (source code)',
-        mimeType: 'text/x-pcl',
-      },
-      async (uri: string) => {
-        const name = uri.replace('team://definition/', '');
-        return this.getTeamDefinition(name);
-      }
-    );
-
-    // Resource: Get workflow definition
-    this.registerResource(
-      {
-        uri: 'workflow://definition/{name}',
-        name: 'Workflow Definition',
-        description: 'PCL workflow definition (source code)',
-        mimeType: 'text/x-pcl',
-      },
-      async (uri: string) => {
-        const name = uri.replace('workflow://definition/', '');
-        return this.getWorkflowDefinition(name);
+        return this.getTeamInfo(
+          params.arguments as unknown as { team: string }
+        );
       }
     );
   }
@@ -225,12 +211,13 @@ export class PclServer extends PclMcpServer {
   /**
    * Execute a persona
    */
-  private async executePersona(args: PersonaExecuteArgs): Promise<McpToolCallResult> {
+  private async executePersona(
+    args: PersonaExecuteArgs
+  ): Promise<McpToolCallResult> {
     try {
-      // Find persona in runtime
-      const persona = this.findPersona(args.persona);
-
-      if (!persona) {
+      // Activate persona if not already active
+      const activateResult = this.runtime.activate(args.persona);
+      if (!activateResult.ok) {
         return {
           content: [
             {
@@ -242,17 +229,30 @@ export class PclServer extends PclMcpServer {
         };
       }
 
-      // Execute persona
-      const result = await this.runtime.executePersona(persona, {
-        input: args.input,
-        context: args.context || {},
-      });
+      // Send message to persona
+      const result = await this.runtime.send(
+        args.persona,
+        args.input,
+        args.context || {}
+      );
+
+      if (!result.ok) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Error: ${result.error.message}`,
+            },
+          ],
+          isError: true,
+        };
+      }
 
       return {
         content: [
           {
             type: 'text',
-            text: result.output || 'No output',
+            text: result.value.content,
           },
         ],
       };
@@ -274,9 +274,24 @@ export class PclServer extends PclMcpServer {
    */
   private async listPersonas(): Promise<McpToolCallResult> {
     try {
-      const personas = this.runtime.getPersonas();
+      const personas = this.runtime.getAllPersonas();
+
+      if (personas.length === 0) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: 'No personas available. Load a PCL program first.',
+            },
+          ],
+        };
+      }
+
       const personaList = personas
-        .map((p) => `- ${p.name}: ${p.roleDefinition || 'No description'}`)
+        .map((p) => {
+          const state = p.getState();
+          return `- ${state.name} (${state.active ? 'active' : 'inactive'})`;
+        })
         .join('\n');
 
       return {
@@ -303,9 +318,11 @@ export class PclServer extends PclMcpServer {
   /**
    * Get detailed persona information
    */
-  private async getPersonaInfo(args: { persona: string }): Promise<McpToolCallResult> {
+  private async getPersonaInfo(args: {
+    persona: string;
+  }): Promise<McpToolCallResult> {
     try {
-      const persona = this.findPersona(args.persona);
+      const persona = this.runtime.getPersona(args.persona);
 
       if (!persona) {
         return {
@@ -319,12 +336,19 @@ export class PclServer extends PclMcpServer {
         };
       }
 
+      const state = persona.getState();
       const info = [
-        `**Persona**: ${persona.name}`,
-        `**Role**: ${persona.roleDefinition || 'N/A'}`,
-        `**Instructions**: ${persona.instructions || 'N/A'}`,
-        `**Skills**: ${persona.skills?.length || 0}`,
-        `**Capabilities**: ${persona.capabilities?.join(', ') || 'N/A'}`,
+        `**Persona**: ${state.name}`,
+        `**Status**: ${state.active ? 'Active' : 'Inactive'}`,
+        `**Intent**: ${state.config.intent || 'N/A'}`,
+        `**Tone**: ${state.config.tone}`,
+        `**Depth**: ${state.config.depth}`,
+        `**Verbosity**: ${state.config.verbosity}`,
+        `**Skills**: ${state.config.skills.join(', ') || 'None'}`,
+        `**Constraints**: ${state.config.constraints.length} constraint(s)`,
+        `**Tags**: ${state.config.tags.join(', ') || 'None'}`,
+        `**Messages Processed**: ${state.stats.messagesProcessed}`,
+        `**Tokens Used**: ${state.stats.tokensUsed}`,
       ].join('\n');
 
       return {
@@ -353,9 +377,9 @@ export class PclServer extends PclMcpServer {
    */
   private async executeTeam(args: TeamExecuteArgs): Promise<McpToolCallResult> {
     try {
-      const team = this.findTeam(args.team);
-
-      if (!team) {
+      // Activate team
+      const activateResult = this.runtime.activateTeam(args.team);
+      if (!activateResult.ok) {
         return {
           content: [
             {
@@ -367,16 +391,30 @@ export class PclServer extends PclMcpServer {
         };
       }
 
-      const result = await this.runtime.executeTeam(team, {
-        input: args.input,
-        context: args.context || {},
-      });
+      // Send message to team
+      const result = await this.runtime.sendToTeam(
+        args.team,
+        args.input,
+        args.context || {}
+      );
+
+      if (!result.ok) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Error: ${result.error.message}`,
+            },
+          ],
+          isError: true,
+        };
+      }
 
       return {
         content: [
           {
             type: 'text',
-            text: result.output || 'No output',
+            text: result.value.content,
           },
         ],
       };
@@ -394,31 +432,35 @@ export class PclServer extends PclMcpServer {
   }
 
   /**
-   * Execute a workflow
+   * List all available teams
    */
-  private async executeWorkflow(args: WorkflowExecuteArgs): Promise<McpToolCallResult> {
+  private async listTeams(): Promise<McpToolCallResult> {
     try {
-      const workflow = this.findWorkflow(args.workflow);
+      const teams = this.runtime.getAllTeams();
 
-      if (!workflow) {
+      if (teams.length === 0) {
         return {
           content: [
             {
               type: 'text',
-              text: `Workflow not found: ${args.workflow}`,
+              text: 'No teams available. Load a PCL program first.',
             },
           ],
-          isError: true,
         };
       }
 
-      const result = await this.runtime.executeWorkflow(workflow, args.input);
+      const teamList = teams
+        .map((t) => {
+          const state = t.getState();
+          return `- ${state.name} (${state.members.length} members, merge: ${state.config.mergeMode})`;
+        })
+        .join('\n');
 
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify(result, null, 2),
+            text: `Available Teams:\n${teamList}`,
           },
         ],
       };
@@ -427,7 +469,7 @@ export class PclServer extends PclMcpServer {
         content: [
           {
             type: 'text',
-            text: `Error executing workflow: ${error instanceof Error ? error.message : String(error)}`,
+            text: `Error listing teams: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
         isError: true,
@@ -436,108 +478,134 @@ export class PclServer extends PclMcpServer {
   }
 
   /**
-   * Get persona definition (source code)
+   * Get detailed team information
    */
-  private async getPersonaDefinition(name: string): Promise<McpResourceContent> {
-    const persona = this.findPersona(name);
+  private async getTeamInfo(args: { team: string }): Promise<McpToolCallResult> {
+    try {
+      const team = this.runtime.getTeam(args.team);
 
-    if (!persona) {
-      throw new Error(`Persona not found: ${name}`);
+      if (!team) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Team not found: ${args.team}`,
+            },
+          ],
+          isError: true,
+        };
+      }
+
+      const state = team.getState();
+      const memberNames = state.members.map((m) => m.name).join(', ');
+      const info = [
+        `**Team**: ${state.name}`,
+        `**Members**: ${memberNames}`,
+        `**Merge Mode**: ${state.config.mergeMode}`,
+        `**Primary**: ${state.primary?.name || 'None'}`,
+        `**Requests Processed**: ${state.stats.requestsProcessed}`,
+        `**Consensus Reached**: ${state.stats.consensusReached}`,
+        `**Conflicts Resolved**: ${state.stats.conflictsResolved}`,
+      ].join('\n');
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: info,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Error getting team info: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+        isError: true,
+      };
     }
-
-    // Generate PCL source code for the persona
-    const source = this.generatePersonaSource(persona);
-
-    return {
-      uri: `persona://definition/${name}`,
-      mimeType: 'text/x-pcl',
-      text: source,
-    };
   }
 
   /**
-   * Get team definition (source code)
+   * Register PCL resources (persona definitions, team definitions, etc.)
    */
-  private async getTeamDefinition(name: string): Promise<McpResourceContent> {
-    const team = this.findTeam(name);
+  private registerPclResources(): void {
+    // Resource: Persona definitions
+    this.registerResource(
+      {
+        uri: 'pcl://persona/{id}',
+        name: 'Persona Definition',
+        description: 'PCL persona definition',
+        mimeType: 'application/json',
+      },
+      async (uri: string) => {
+        const match = uri.match(/^pcl:\/\/persona\/(.+)$/);
+        if (!match) {
+          throw new Error('Invalid persona URI');
+        }
 
-    if (!team) {
-      throw new Error(`Team not found: ${name}`);
-    }
+        const personaId = match[1];
+        const persona = this.runtime.getPersona(personaId);
 
-    const source = this.generateTeamSource(team);
+        if (!persona) {
+          throw new Error(`Persona not found: ${personaId}`);
+        }
 
-    return {
-      uri: `team://definition/${name}`,
-      mimeType: 'text/x-pcl',
-      text: source,
-    };
+        const state = persona.getState();
+
+        return {
+          uri,
+          mimeType: 'application/json',
+          json: {
+            id: state.id,
+            name: state.name,
+            active: state.active,
+            config: state.config,
+            stats: state.stats,
+          },
+        };
+      }
+    );
+
+    // Resource: Team definitions
+    this.registerResource(
+      {
+        uri: 'pcl://team/{id}',
+        name: 'Team Definition',
+        description: 'PCL team definition',
+        mimeType: 'application/json',
+      },
+      async (uri: string) => {
+        const match = uri.match(/^pcl:\/\/team\/(.+)$/);
+        if (!match) {
+          throw new Error('Invalid team URI');
+        }
+
+        const teamId = match[1];
+        const team = this.runtime.getTeam(teamId);
+
+        if (!team) {
+          throw new Error(`Team not found: ${teamId}`);
+        }
+
+        const state = team.getState();
+
+        return {
+          uri,
+          mimeType: 'application/json',
+          json: {
+            id: state.id,
+            name: state.name,
+            members: state.members.map((m) => m.name),
+            primary: state.primary?.name,
+            config: state.config,
+            stats: state.stats,
+          },
+        };
+      }
+    );
   }
-
-  /**
-   * Get workflow definition (source code)
-   */
-  private async getWorkflowDefinition(name: string): Promise<McpResourceContent> {
-    const workflow = this.findWorkflow(name);
-
-    if (!workflow) {
-      throw new Error(`Workflow not found: ${name}`);
-    }
-
-    const source = this.generateWorkflowSource(workflow);
-
-    return {
-      uri: `workflow://definition/${name}`,
-      mimeType: 'text/x-pcl',
-      text: source,
-    };
-  }
-
-  // Helper methods
-
-  private findPersona(nameOrId: string): Persona | null {
-    const personas = this.runtime.getPersonas();
-    return personas.find((p) => p.name === nameOrId || p.id === nameOrId) || null;
-  }
-
-  private findTeam(nameOrId: string): Team | null {
-    const teams = this.runtime.getTeams();
-    return teams.find((t) => t.name === nameOrId) || null;
-  }
-
-  private findWorkflow(nameOrId: string): Workflow | null {
-    const workflows = this.runtime.getWorkflows();
-    return workflows.find((w) => w.name === nameOrId) || null;
-  }
-
-  private generatePersonaSource(persona: Persona): string {
-    return `persona ${persona.name} {\n  role: "${persona.roleDefinition || ''}"\n  instructions: "${persona.instructions || ''}"\n}`;
-  }
-
-  private generateTeamSource(team: Team): string {
-    return `team ${team.name} {\n  members: [${team.members?.join(', ') || ''}]\n}`;
-  }
-
-  private generateWorkflowSource(workflow: Workflow): string {
-    return `workflow ${workflow.name} {\n  // Workflow definition\n}`;
-  }
-}
-
-// Types for tool arguments
-
-interface PersonaExecuteArgs {
-  persona: string;
-  input: string;
-  context?: Record<string, unknown>;
-}
-
-interface TeamExecuteArgs {
-  team: string;
-  input: string;
-  context?: Record<string, unknown>;
-}
-
-interface WorkflowExecuteArgs {
-  workflow: string;
-  input: Record<string, unknown>;
 }

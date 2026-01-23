@@ -23,6 +23,8 @@ import { DefinitionProvider } from './definition';
 import { ReferencesProvider } from './references';
 import { DocumentSymbolsProvider } from './document-symbols';
 import { FormattingProvider } from './formatting';
+import { CodeActionProvider } from './code-actions';
+import { RenameProvider } from './rename';
 
 /**
  * PCL Language Server
@@ -42,6 +44,8 @@ export class PCLLanguageServer {
   private readonly referencesProvider: ReferencesProvider;
   private readonly documentSymbolsProvider: DocumentSymbolsProvider;
   private readonly formattingProvider: FormattingProvider;
+  private readonly codeActionProvider: CodeActionProvider;
+  private readonly renameProvider: RenameProvider;
 
   constructor(private connection = createLSPConnection()) {
     this.documentManager = new DocumentManager(
@@ -85,6 +89,10 @@ export class PCLLanguageServer {
       this.documentManager
     );
 
+    this.codeActionProvider = new CodeActionProvider();
+
+    this.renameProvider = new RenameProvider();
+
     // Set up diagnostics callback
     this.documentManager.onDiagnosticsNeeded((uri) => {
       this.diagnosticsProvider.publishDiagnostics(uri);
@@ -120,6 +128,30 @@ export class PCLLanguageServer {
 
     // Formatting
     this.connection.onDocumentFormatting(this.formattingProvider.provideFormatting.bind(this.formattingProvider));
+
+    // Code Actions
+    this.connection.onCodeAction(async (params) => {
+      return this.codeActionProvider.provideCodeActions(params);
+    });
+
+    // Prepare Rename
+    this.connection.onPrepareRename(async (params) => {
+      const document = this.documentManager.getDocument(params.textDocument.uri);
+      if (!document) return null;
+      return this.renameProvider.prepareRename(params, document.getText());
+    });
+
+    // Rename
+    this.connection.onRenameRequest(async (params) => {
+      const document = this.documentManager.getDocument(params.textDocument.uri);
+      if (!document) return null;
+
+      // Get all workspace files (simplified - would use workspace folders in real implementation)
+      const workspaceFiles = new Map<string, string>();
+      // TODO: Populate with actual workspace files
+
+      return this.renameProvider.rename(params, document.getText(), workspaceFiles);
+    });
 
     // Shutdown
     this.connection.onShutdown(this.onShutdown.bind(this));

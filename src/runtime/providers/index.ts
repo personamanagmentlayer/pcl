@@ -503,7 +503,12 @@ export const providers = new ProviderRegistry();
 // Provider Implementations
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Legacy providers (kept for backwards compatibility)
 export { MockProvider } from './mock';
+export type { MockProviderConfig } from './mock';
+
+// DEPRECATED: Old provider implementations
+// Use the new integrated providers instead (see integrated-providers.ts)
 export { AnthropicProvider } from './anthropic';
 export { OpenAIProvider } from './openai';
 export { GeminiProvider } from './gemini';
@@ -512,7 +517,6 @@ export { OllamaProvider } from './ollama';
 export { AzureOpenAIProvider } from './azure';
 export { BedrockProvider } from './bedrock';
 
-export type { MockProviderConfig } from './mock';
 export type { AnthropicProviderConfig } from './anthropic';
 export type { OpenAIProviderConfig } from './openai';
 export type { GeminiProviderConfig } from './gemini';
@@ -520,6 +524,28 @@ export type { DeepSeekProviderConfig } from './deepseek';
 export type { OllamaProviderConfig } from './ollama';
 export type { AzureOpenAIProviderConfig } from './azure';
 export type { BedrockProviderConfig } from './bedrock';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// New Integrated Provider System (8 Providers)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { createProviderAdapter } from './provider-adapter';
+export {
+  registerAnthropicProvider,
+  registerOpenAIProvider,
+  registerGoogleProvider,
+  registerDeepSeekProvider,
+  registerOllamaProvider,
+  registerMistralProvider,
+  registerGroqProvider,
+  registerCohereProvider,
+  registerAllProviders,
+  getProvider as getRuntimeProvider,
+  listProviders as listRuntimeProviders,
+  getDefaultProvider,
+  setDefaultProvider,
+  type RuntimeProviderConfig,
+} from './integrated-providers';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Registry Enhancements

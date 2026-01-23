@@ -126,39 +126,42 @@ export class PclMcpServer implements McpServer {
   public async handleRequest(request: McpRequest): Promise<McpResponse> {
     const { method, params, id } = request;
 
+    // Ensure we have an ID (required for responses, not for notifications)
+    const requestId: JsonRpcId = id !== undefined ? id : null;
+
     try {
       // Route request to appropriate handler
       switch (method) {
         case McpMethod.Initialize:
-          return this.handleInitialize(params as McpInitializeParams, id);
+          return this.handleInitialize(params as unknown as McpInitializeParams, requestId);
 
         case McpMethod.ToolsList:
-          return this.handleToolsList(id);
+          return this.handleToolsList(requestId);
 
         case McpMethod.ToolsCall:
-          return this.handleToolsCall(params as McpToolCallParams, id);
+          return this.handleToolsCall(params as unknown as McpToolCallParams, requestId);
 
         case McpMethod.ResourcesList:
-          return this.handleResourcesList(id);
+          return this.handleResourcesList(requestId);
 
         case McpMethod.ResourcesRead:
-          return this.handleResourcesRead(params as { uri: string }, id);
+          return this.handleResourcesRead(params as unknown as { uri: string }, requestId);
 
         case McpMethod.Shutdown:
-          return this.handleShutdown(id);
+          return this.handleShutdown(requestId);
 
         default:
           return createJsonRpcErrorResponse(
             JsonRpcErrorCode.MethodNotFound,
             `Method not found: ${method}`,
-            id
+            requestId
           );
       }
     } catch (error) {
       return createJsonRpcErrorResponse(
         JsonRpcErrorCode.InternalError,
         error instanceof Error ? error.message : 'Internal error',
-        id,
+        requestId,
         error instanceof Error ? { stack: error.stack } : undefined
       );
     }

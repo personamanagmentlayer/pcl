@@ -11,5 +11,8 @@ export * from './types/index.js';
 // Server
 export * from './server/index.js';
 
+// Client
+export * from './client/index.js';
+
 // Transports
 export * from './transports/index.js';
