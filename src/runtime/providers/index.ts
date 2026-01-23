@@ -4,6 +4,10 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import type { Message } from '../index';
+import { ProviderHealthMonitor, HealthMonitorRegistry } from './health';
+import { FallbackChain, FallbackChainBuilder } from './fallback';
+import { RateLimiter, RateLimiterRegistry, type RateLimiterConfig } from './rate-limiter';
+import { CostTracker, CostTrackerRegistry } from './cost-tracker';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Provider Capabilities
@@ -174,18 +178,32 @@ export class ProviderRegistry {
   private readonly providers = new Map<string, AIProvider>();
   private defaultProvider: string | null = null;
 
+  // Registry enhancements
+  private readonly healthMonitors = new HealthMonitorRegistry();
+  private readonly rateLimiters = new RateLimiterRegistry();
+  private readonly costTrackers = new CostTrackerRegistry();
+
   /**
-   * Register a provider
+   * Register a provider with automatic health monitoring and rate limiting
    */
-  register(provider: AIProvider): void {
+  register(provider: AIProvider, config?: { rateLimiter?: Partial<RateLimiterConfig> }): void {
     this.providers.set(provider.name, provider);
 
     // Set first provider as default
     this.defaultProvider ??= provider.name;
+
+    // Automatically create health monitor
+    this.healthMonitors.register(provider.name, provider);
+
+    // Automatically create rate limiter
+    this.rateLimiters.getOrCreate(provider.name, config?.rateLimiter);
+
+    // Automatically create cost tracker
+    this.costTrackers.getOrCreate(provider.name);
   }
 
   /**
-   * Unregister a provider
+   * Unregister a provider and clean up resources
    */
   unregister(name: string): boolean {
     const result = this.providers.delete(name);
@@ -194,6 +212,9 @@ export class ProviderRegistry {
     if (this.defaultProvider === name) {
       this.defaultProvider = this.providers.keys().next().value || null;
     }
+
+    // Clean up health monitor
+    this.healthMonitors.unregister(name);
 
     return result;
   }
@@ -249,11 +270,226 @@ export class ProviderRegistry {
   }
 
   /**
-   * Clear all providers
+   * Clear all providers and reset all registries
    */
   clear(): void {
     this.providers.clear();
     this.defaultProvider = null;
+
+    // Clear all enhancement registries
+    this.healthMonitors.clear();
+    this.rateLimiters.clear();
+    this.costTrackers.clear();
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Health Monitoring
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get health monitor for a provider
+   */
+  getHealthMonitor(name: string): ProviderHealthMonitor | undefined {
+    return this.healthMonitors.get(name);
+  }
+
+  /**
+   * Check if a provider is healthy and available
+   */
+  isProviderHealthy(name: string): boolean {
+    const monitor = this.healthMonitors.get(name);
+    return monitor?.isAvailable() ?? false;
+  }
+
+  /**
+   * Get health status for all providers
+   */
+  getHealthStatus() {
+    return this.healthMonitors.getStatus();
+  }
+
+  /**
+   * Start health monitoring for all providers
+   */
+  startHealthMonitoring(intervalMs = 300_000): void {
+    this.healthMonitors.startMonitoring(intervalMs);
+  }
+
+  /**
+   * Stop health monitoring
+   */
+  stopHealthMonitoring(): void {
+    this.healthMonitors.stopMonitoring();
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Rate Limiting
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get rate limiter for a provider
+   */
+  getRateLimiter(name: string): RateLimiter | undefined {
+    return this.rateLimiters.get(name);
+  }
+
+  /**
+   * Get rate limit statistics for a provider
+   */
+  getRateLimitStats(name: string) {
+    const limiter = this.rateLimiters.get(name);
+    return limiter?.getStats();
+  }
+
+  /**
+   * Get rate limit statistics for all providers
+   */
+  getAllRateLimitStats() {
+    return this.rateLimiters.getStats();
+  }
+
+  /**
+   * Reset rate limiter for a provider
+   */
+  resetRateLimiter(name: string): void {
+    const limiter = this.rateLimiters.get(name);
+    limiter?.reset();
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Cost Tracking
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get cost tracker for a provider
+   */
+  getCostTracker(name: string): CostTracker | undefined {
+    return this.costTrackers.get(name);
+  }
+
+  /**
+   * Get global cost tracker
+   */
+  getGlobalCostTracker(): CostTracker {
+    return this.costTrackers.getGlobal();
+  }
+
+  /**
+   * Get cost statistics for a provider
+   */
+  getProviderCost(name: string): number {
+    const tracker = this.costTrackers.get(name);
+    return tracker?.getTotalCost() ?? 0;
+  }
+
+  /**
+   * Get aggregated cost statistics
+   */
+  getCostStats() {
+    return this.costTrackers.getAggregatedStats();
+  }
+
+  /**
+   * Reset cost tracking for all providers
+   */
+  resetCostTracking(): void {
+    this.costTrackers.resetAll();
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Fallback Chains
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Create a fallback chain builder
+   */
+  createFallbackChain(): FallbackChainBuilder {
+    return new FallbackChainBuilder();
+  }
+
+  /**
+   * Build a fallback chain with health-aware provider selection
+   */
+  buildFallbackChain(builder: FallbackChainBuilder): FallbackChain {
+    return builder.build(this.providers, this.healthMonitors.getMonitorsMap());
+  }
+
+  /**
+   * Create a simple sequential fallback chain
+   */
+  createSequentialFallback(...providerNames: string[]): FallbackChain {
+    return this.createFallbackChain()
+      .withProviders(...providerNames)
+      .withStrategy('sequential')
+      .build(this.providers, this.healthMonitors.getMonitorsMap());
+  }
+
+  /**
+   * Create a health-based fallback chain (tries healthiest providers first)
+   */
+  createHealthBasedFallback(...providerNames: string[]): FallbackChain {
+    return this.createFallbackChain()
+      .withProviders(...providerNames)
+      .withStrategy('health-based')
+      .build(this.providers, this.healthMonitors.getMonitorsMap());
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Enhanced Provider Operations
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Generate response with rate limiting and cost tracking
+   */
+  async generateWithTracking(
+    providerName: string,
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
+    const provider = this.get(providerName);
+    if (!provider) {
+      throw new Error(`Provider '${providerName}' not found`);
+    }
+
+    // Check health
+    if (!this.isProviderHealthy(providerName)) {
+      throw new Error(`Provider '${providerName}' is unhealthy`);
+    }
+
+    // Rate limiting
+    const rateLimiter = this.getRateLimiter(providerName);
+    if (rateLimiter) {
+      await rateLimiter.acquire();
+    }
+
+    try {
+      // Generate response
+      const response = await provider.generateResponse(request);
+
+      // Track cost
+      const costTracker = this.getCostTracker(providerName);
+      const globalTracker = this.getGlobalCostTracker();
+      const model = request.model || 'default';
+
+      if (costTracker) {
+        costTracker.record(providerName, model, response.usage);
+      }
+      globalTracker.record(providerName, model, response.usage);
+
+      return response;
+    } catch (error) {
+      // Record health failure
+      const monitor = this.getHealthMonitor(providerName);
+      monitor?.recordFailure(error as Error);
+
+      throw error;
+    }
+  }
+
+  /**
+   * Get available (healthy) providers
+   */
+  getAvailableProviders(): string[] {
+    return this.list().filter((name) => this.isProviderHealthy(name));
   }
 }
 
@@ -267,10 +503,84 @@ export const providers = new ProviderRegistry();
 // Provider Implementations
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Legacy providers (kept for backwards compatibility)
 export { MockProvider } from './mock';
+export type { MockProviderConfig } from './mock';
+
+// DEPRECATED: Old provider implementations
+// Use the new integrated providers instead (see integrated-providers.ts)
 export { AnthropicProvider } from './anthropic';
 export { OpenAIProvider } from './openai';
+export { GeminiProvider } from './gemini';
+export { DeepSeekProvider } from './deepseek';
+export { OllamaProvider } from './ollama';
+export { AzureOpenAIProvider } from './azure';
+export { BedrockProvider } from './bedrock';
 
-export type { MockProviderConfig } from './mock';
 export type { AnthropicProviderConfig } from './anthropic';
 export type { OpenAIProviderConfig } from './openai';
+export type { GeminiProviderConfig } from './gemini';
+export type { DeepSeekProviderConfig } from './deepseek';
+export type { OllamaProviderConfig } from './ollama';
+export type { AzureOpenAIProviderConfig } from './azure';
+export type { BedrockProviderConfig } from './bedrock';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// New Integrated Provider System (8 Providers)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { createProviderAdapter } from './provider-adapter';
+export {
+  registerAnthropicProvider,
+  registerOpenAIProvider,
+  registerGoogleProvider,
+  registerDeepSeekProvider,
+  registerOllamaProvider,
+  registerMistralProvider,
+  registerGroqProvider,
+  registerCohereProvider,
+  registerAllProviders,
+  getProvider as getRuntimeProvider,
+  listProviders as listRuntimeProviders,
+  getDefaultProvider,
+  setDefaultProvider,
+  type RuntimeProviderConfig,
+} from './integrated-providers';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Registry Enhancements
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Health Monitoring
+export {
+  ProviderHealthMonitor,
+  HealthMonitorRegistry,
+  type HealthStatus,
+  type HealthCheckResult,
+} from './health';
+
+// Fallback Chains
+export {
+  FallbackChain,
+  FallbackChainBuilder,
+  type FallbackStrategy,
+  type FallbackConfig,
+  type FallbackResult,
+} from './fallback';
+
+// Rate Limiting
+export {
+  RateLimiter,
+  RateLimiterRegistry,
+  type RateLimiterConfig,
+} from './rate-limiter';
+
+// Cost Tracking
+export {
+  CostCalculator,
+  CostTracker,
+  CostTrackerRegistry,
+  KNOWN_MODEL_PRICING,
+  type ModelPricing,
+  type UsageRecord,
+} from './cost-tracker';

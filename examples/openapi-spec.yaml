@@ -1,0 +1,216 @@
+openapi: 3.0.0
+info:
+  title: PCL API
+  description: REST API for PCL (Persona Control Language) - Compatible with ChatGPT Actions
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+paths:
+  /api/personas:
+    get:
+      summary: List all available personas
+      description: Returns a list of all PCL personas that can be executed
+      operationId: listPersonas
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  personas:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Persona ID
+                        name:
+                          type: string
+                          description: Persona name
+                        active:
+                          type: boolean
+                          description: Whether persona is active
+                        skills:
+                          type: array
+                          items:
+                            type: string
+                          description: List of persona skills
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                          description: List of persona tags
+
+  /api/personas/{id}/execute:
+    post:
+      summary: Execute a persona
+      description: Send input to a persona and get a response
+      operationId: executePersona
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The persona ID to execute
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - input
+              properties:
+                input:
+                  type: string
+                  description: The input message or prompt for the persona
+                context:
+                  type: object
+                  description: Optional context variables
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  persona:
+                    type: string
+                    description: The persona ID that was executed
+                  response:
+                    type: string
+                    description: The persona's response
+                  confidence:
+                    type: number
+                    description: Confidence score (0-1)
+                  metadata:
+                    type: object
+                    description: Response metadata
+        '404':
+          description: Persona not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Execution error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/teams:
+    get:
+      summary: List all available teams
+      description: Returns a list of all PCL teams that can be executed
+      operationId: listTeams
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  teams:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Team ID
+                        name:
+                          type: string
+                          description: Team name
+                        members:
+                          type: array
+                          items:
+                            type: string
+                          description: List of team member names
+                        mergeMode:
+                          type: string
+                          description: How team responses are merged
+
+  /api/teams/{id}/execute:
+    post:
+      summary: Execute a team workflow
+      description: Send input to a team and get a merged response
+      operationId: executeTeam
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The team ID to execute
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - input
+              properties:
+                input:
+                  type: string
+                  description: The input message or prompt for the team
+                context:
+                  type: object
+                  description: Optional context variables
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  team:
+                    type: string
+                    description: The team ID that was executed
+                  response:
+                    type: string
+                    description: The merged team response
+                  metadata:
+                    type: object
+                    description: Response metadata
+        '404':
+          description: Team not found
+        '500':
+          description: Execution error
+
+  /health:
+    get:
+      summary: Health check
+      description: Check if the PCL API is running
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  personas:
+                    type: number
+                    description: Number of loaded personas

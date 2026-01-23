@@ -69,7 +69,8 @@ Traditional AI development lacks:
 
 - ✅ Parse PCL files to AST
 - ✅ Type checking and semantic analysis
-- ✅ Runtime with 3 LLM providers (Mock, Claude, OpenAI)
+- ✅ Runtime with **8 LLM providers** (Mock, Claude, OpenAI, Gemini, DeepSeek, Ollama, Azure, Bedrock)
+- ✅ Enterprise provider features: health monitoring, fallback chains, rate limiting, cost tracking
 - ✅ Registry system with 4 backends (Memory, JSON File, SQLite, PostgreSQL)
 - ✅ Full-text search with filters
 - ✅ CLI with 7 registry commands
@@ -87,7 +88,7 @@ Traditional AI development lacks:
 - ✅ Document outline/symbols
 - ✅ Auto-formatting
 
-### Skills Ecosystem (Phase 2.2) ✅ **NEW!**
+### Skills Ecosystem (Phase 2.2) ✅
 
 - ✅ **100% compatible** with [Agent Skills](https://agentskills.io) specification
 - ✅ **95% compatible** with [Claude Code](https://code.claude.com/docs/en/skills) SKILL.md format
@@ -96,6 +97,17 @@ Traditional AI development lacks:
 - ✅ Skill loader for YAML frontmatter + Markdown
 - ✅ Progressive disclosure pattern
 - ✅ Multi-file skills support
+
+### Model Context Protocol (Phase 3.3) ✅ **NEW!**
+
+- ✅ **Full MCP implementation** - Expose personas as standardized AI services
+- ✅ **Claude Code integration** - Zero-config persona discovery
+- ✅ **5 built-in tools** - persona/execute, persona/list, persona/info, team/execute, workflow/execute
+- ✅ **Stdio transport** - CLI tool compatibility
+- ✅ **HTTP/SSE transport** - Web application support
+- ✅ **Resource access** - persona://, team://, workflow:// definitions
+- ✅ **Type-safe protocol** - Complete JSON-RPC 2.0 + MCP types
+- ✅ **Production-ready** - Full error handling, graceful shutdown
 
 ### Example Persona (Current Syntax)
 
@@ -209,6 +221,32 @@ PCL is built on international standards for enterprise-grade security and AI gov
 - [PCL_GOVERNANCE.md](PCL_GOVERNANCE.md) – ISO 38500 governance framework
 - [ROADMAP.md](ROADMAP.md) – Standards compliance roadmap
 
+## 🤖 Supported AI Providers
+
+PCL supports **8 AI providers** with automatic health monitoring, cost tracking, and fallback chains:
+
+| Provider | Models | Context | Cost (1M tokens) | Features |
+|----------|--------|---------|------------------|----------|
+| **Anthropic** | Claude 3.5 Sonnet, Opus, Haiku | 200K | $3-$75 | ✅ Streaming, Tool calling |
+| **OpenAI** | GPT-4 Turbo, GPT-4, GPT-3.5 | 128K | $0.5-$60 | ✅ Streaming, Tool calling, Vision |
+| **Google Gemini** | 1.5 Pro, Flash, 1.0 Pro | **1M** | $0.075-$10.50 | ✅ Streaming, Tool calling, Vision |
+| **DeepSeek** | Chat, Coder | 64K | **$0.14-$0.28** | ✅ Streaming, Tool calling |
+| **Ollama** | Llama, Mistral, CodeLlama | 8K+ | **FREE** | ✅ Streaming, Local, Privacy |
+| **Azure OpenAI** | GPT-4, GPT-3.5 | 128K | Same as OpenAI | ✅ Enterprise, Compliance |
+| **AWS Bedrock** | Claude, Titan, Llama | 200K | Varies | ✅ Multi-model, AWS native |
+| **Mock** | Test Provider | - | FREE | ✅ Testing, Development |
+
+**Enterprise Features:**
+- ✅ Automatic health monitoring with circuit breakers
+- ✅ Fallback chains with 3 strategies (sequential, health-based, fastest)
+- ✅ Rate limiting with token bucket algorithm
+- ✅ Cost tracking with pre-configured pricing
+- ✅ Support for local LLMs (Ollama) with zero cost
+
+**📖 [Complete Provider Guide](docs/providers/README.md)** | **💡 [Provider Examples](docs/providers/examples.md)**
+
+---
+
 ## Installation
 
 ```bash
@@ -243,6 +281,100 @@ node dist/cli/index.js registry info <id|slug>       # View details
 node dist/cli/index.js registry publish <id|slug>    # Publish persona
 node dist/cli/index.js registry delete <id|slug>     # Delete persona
 ```
+
+## Development
+
+### Watch Mode for Active Development
+
+PCL includes watch mode for automatic rebuilding during development, providing immediate feedback as you modify source files:
+
+```bash
+# Watch mode - automatically rebuilds on source file changes
+npm run build:watch
+
+# The watch mode monitors:
+# - src/ directory for all TypeScript changes
+# - Rebuilds compiler, CLI, and LSP components
+# - Provides immediate feedback (typically <1s)
+```
+
+**When to use watch mode:**
+
+- ✅ Active feature development
+- ✅ Debugging compiler or runtime issues
+- ✅ Rapid prototyping and testing
+- ✅ Integration development
+
+**Development workflow:**
+
+```bash
+# Terminal 1: Start watch mode
+npm run build:watch
+
+# Terminal 2: Run tests or CLI commands
+npm test
+# or
+node dist/cli/index.js parse examples/my-persona.pcl
+```
+
+Watch mode uses [tsup](https://tsup.egoist.dev/) for fast, incremental TypeScript compilation with automatic rebuilds on file changes.
+
+### Source Maps
+
+PCL builds include source maps for better debugging experience:
+
+```bash
+# Source maps are automatically generated during build
+npm run build
+
+# Enable source maps in Node.js for better stack traces
+node --enable-source-maps dist/cli/index.js parse example.pcl
+```
+
+**Benefits:**
+
+- ✅ **Better Error Messages**: Stack traces show original TypeScript source locations
+- ✅ **Debugging Support**: Step through original source code in debuggers
+- ✅ **Development Experience**: Faster issue resolution
+- ✅ **Production Ready**: Source maps help diagnose issues in deployed code
+
+All builds include `.js.map` files that map compiled JavaScript back to the original TypeScript source. When using Node.js with `--enable-source-maps`, errors will automatically reference the TypeScript source files.
+
+### Shell Completions
+
+PCL provides tab completion support for bash, zsh, fish, and PowerShell shells:
+
+```bash
+# Generate completion for your shell
+pcl completion --shell bash    # Bash
+pcl completion --shell zsh     # Zsh
+pcl completion --shell fish    # Fish
+pcl completion --shell powershell  # PowerShell
+```
+
+**Installation:**
+
+```bash
+# Bash (add to ~/.bashrc or ~/.bash_profile)
+source <(pcl completion --shell bash)
+
+# Zsh (add to ~/.zshrc)
+source <(pcl completion --shell zsh)
+
+# Fish (save to completions directory)
+pcl completion --shell fish > ~/.config/fish/completions/pcl.fish
+
+# PowerShell (add to your profile: $PROFILE)
+pcl completion --shell powershell | Out-String | Invoke-Expression
+```
+
+**Features:**
+
+- ✅ Command completion (`pcl <TAB>` shows all commands)
+- ✅ Subcommand completion (`pcl registry <TAB>` shows registry commands)
+- ✅ Option completion (`pcl parse --<TAB>` shows available options)
+- ✅ File completion (automatically completes `.pcl` files)
+- ✅ Smart context-aware suggestions
 
 ## 🎉 Database-Free Registry
 

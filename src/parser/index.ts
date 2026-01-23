@@ -17,7 +17,7 @@ import {
   getOperatorPrecedence,
   isAssignmentOperator,
 } from '../lexer';
-import type { PCLError, Position, Result, Span } from '../types';
+import type { PCLError, Position, Result, Span, BackoffStrategy } from '../types';
 import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -942,7 +942,9 @@ export class Parser {
 
     let count: AST.NumberLiteral | null = null;
     let delay: AST.DurationLiteral | null = null;
-    let backoff: 'linear' | 'exponential' | 'constant' | null = null;
+    let backoff: BackoffStrategy | null = null;
+    let maxDelay: AST.DurationLiteral | null = null;
+    let jitter = false;
 
     while (!this.check(TokenType.RBRACE) && !this.isAtEnd()) {
       const key = this.parseIdentifier();
@@ -957,7 +959,24 @@ export class Parser {
           break;
         case 'backoff':
           const backoffToken = this.advance();
-          backoff = backoffToken.value as 'linear' | 'exponential' | 'constant';
+          const backoffValue = backoffToken.value;
+          if (
+            backoffValue === 'linear' ||
+            backoffValue === 'exponential' ||
+            backoffValue === 'fibonacci' ||
+            backoffValue === 'random'
+          ) {
+            backoff = backoffValue;
+          } else {
+            this.error(`Invalid backoff strategy: ${backoffValue}. Expected: linear, exponential, fibonacci, or random`);
+          }
+          break;
+        case 'maxDelay':
+          maxDelay = this.parseDurationLiteral();
+          break;
+        case 'jitter':
+          const jitterToken = this.advance();
+          jitter = jitterToken.value === 'true';
           break;
       }
 
@@ -975,6 +994,8 @@ export class Parser {
       count: count!,
       delay,
       backoff,
+      maxDelay,
+      jitter,
       span: this.makeSpan(start, this.previous().span.end),
     };
   }
@@ -1012,7 +1033,96 @@ export class Parser {
   // ─────────────────────────────────────────────────────────────────────────────
 
   private parseWorkflowExpression(): AST.WorkflowExpression {
-    return this.parseWorkflowSequence();
+    return this.parseWorkflowCompose();
+  }
+
+  // Composition operator (::) - highest precedence
+  private parseWorkflowCompose(): AST.WorkflowExpression {
+    const workflows: (AST.Identifier | AST.WorkflowExpression)[] = [];
+    const start = this.peek().span.start;
+
+    workflows.push(this.parseWorkflowAccumulate());
+
+    while (this.match(TokenType.COLON_COLON)) {
+      workflows.push(this.parseWorkflowAccumulate());
+    }
+
+    if (workflows.length === 1) {
+      return workflows[0] as AST.WorkflowExpression;
+    }
+
+    return {
+      kind: 'WorkflowComposeExpr',
+      workflows,
+      span: this.makeSpan(start, this.previous().span.end),
+    };
+  }
+
+  // Accumulate operator (>>>)
+  private parseWorkflowAccumulate(): AST.WorkflowExpression {
+    const steps: AST.WorkflowExpression[] = [];
+    const start = this.peek().span.start;
+
+    steps.push(this.parseWorkflowBidirectional());
+
+    while (this.match(TokenType.GT_GT_GT)) {
+      steps.push(this.parseWorkflowBidirectional());
+    }
+
+    if (steps.length === 1) {
+      return steps[0];
+    }
+
+    return {
+      kind: 'WorkflowAccumulateExpr',
+      steps,
+      span: this.makeSpan(start, this.previous().span.end),
+    };
+  }
+
+  // Bidirectional operator (<->)
+  private parseWorkflowBidirectional(): AST.WorkflowExpression {
+    let left = this.parseWorkflowAsyncPipe();
+
+    if (this.match(TokenType.LT_MINUS_GT)) {
+      const right = this.parseWorkflowAsyncPipe();
+
+      // Optional max iterations: <-> (5)
+      let maxIterations: AST.NumberLiteral | null = null;
+      if (this.match(TokenType.LPAREN)) {
+        if (this.check(TokenType.NUMBER_INT) || this.check(TokenType.NUMBER_FLOAT)) {
+          maxIterations = this.parseNumberLiteral();
+        }
+        this.expect(TokenType.RPAREN, 'Expected ")" after max iterations');
+      }
+
+      return {
+        kind: 'WorkflowBidirectionalExpr',
+        left,
+        right,
+        maxIterations,
+        span: this.makeSpan(left.span.start, this.previous().span.end),
+      };
+    }
+
+    return left;
+  }
+
+  // Async pipe operator (~>)
+  private parseWorkflowAsyncPipe(): AST.WorkflowExpression {
+    let left = this.parseWorkflowSequence();
+
+    while (this.match(TokenType.TILDE_GT)) {
+      const right = this.parseWorkflowSequence();
+      left = {
+        kind: 'WorkflowAsyncPipeExpr',
+        left,
+        right,
+        span: this.makeSpan(left.span.start, right.span.end),
+      };
+    }
+
+    return left;
   }
 
   private parseWorkflowSequence(): AST.WorkflowExpression {
@@ -1063,6 +1173,32 @@ export class Parser {
 
   private parseWorkflowPrimary(): AST.WorkflowExpression {
     const start = this.peek().span.start;
+
+    // Break statement
+    if (this.matchKeyword('break')) {
+      let label: AST.Identifier | null = null;
+      if (this.check(TokenType.IDENTIFIER)) {
+        label = this.parseIdentifier();
+      }
+      return {
+        kind: 'WorkflowBreakStmt',
+        label,
+        span: this.makeSpan(start, this.previous().span.end),
+      };
+    }
+
+    // Continue statement
+    if (this.matchKeyword('continue')) {
+      let label: AST.Identifier | null = null;
+      if (this.check(TokenType.IDENTIFIER)) {
+        label = this.parseIdentifier();
+      }
+      return {
+        kind: 'WorkflowContinueStmt',
+        label,
+        span: this.makeSpan(start, this.previous().span.end),
+      };
+    }
 
     // Grouped expression
     if (this.match(TokenType.LPAREN)) {

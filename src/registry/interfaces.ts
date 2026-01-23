@@ -207,12 +207,40 @@ export interface SearchCriteria {
  * Search result with highlights
  */
 export interface SearchResult {
+  /** Result ID */
+  id?: string;
   /** Matched artifact */
-  artifact: Artifact;
+  artifact?: Artifact;
   /** Relevance score (0-1) */
   score: number;
   /** Highlighted snippets */
   highlights?: Record<string, string[]>;
+}
+
+/**
+ * Search options (Phase 1.2C)
+ */
+export interface SearchOptions {
+  /** Offset for pagination */
+  offset?: number;
+  /** Limit for pagination */
+  limit?: number;
+  /** Sort field */
+  sortBy?: string;
+  /** Sort order */
+  sortOrder?: 'asc' | 'desc';
+  /** Filter by tags */
+  tags?: string[];
+  /** Filter by kind/type */
+  kind?: string;
+  /** Filter by author */
+  author?: string;
+  /** Enable fuzzy matching */
+  fuzzy?: boolean;
+  /** Boost popular results */
+  boostPopular?: boolean;
+  /** Facets to return */
+  facets?: string[];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -332,7 +360,78 @@ export interface IBackend {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Cache interface
+ * Cache backend interface (Phase 1.2C)
+ */
+export interface CacheBackend {
+  /**
+   * Get a value from cache
+   */
+  get<T>(key: string): Promise<T | null>;
+
+  /**
+   * Set a value in cache with optional TTL (in seconds)
+   */
+  set<T>(key: string, value: T, ttl?: number): Promise<void>;
+
+  /**
+   * Delete a value from cache
+   */
+  delete(key: string): Promise<void>;
+
+  /**
+   * Check if key exists in cache
+   */
+  has(key: string): Promise<boolean>;
+
+  /**
+   * Get remaining TTL for a key (in seconds)
+   * Returns -1 for no expiry, -2 for key not found
+   */
+  ttl(key: string): Promise<number>;
+
+  /**
+   * Clear all cache entries
+   */
+  clear(): Promise<void>;
+
+  /**
+   * Get cache statistics
+   */
+  getStats(): CacheStats;
+
+  /**
+   * Reset statistics
+   */
+  resetStats(): void;
+
+  /**
+   * Get cache size (number of entries)
+   */
+  size(): Promise<number>;
+
+  /**
+   * Get keys matching a pattern
+   */
+  keys(pattern: string): Promise<string[]>;
+
+  /**
+   * Invalidate cache entries matching a pattern
+   */
+  invalidatePattern(pattern: string): Promise<number>;
+
+  /**
+   * Get multiple values at once
+   */
+  mget<T>(keys: string[]): Promise<Map<string, T>>;
+
+  /**
+   * Set multiple values at once
+   */
+  mset<T>(entries: Map<string, T>, ttl?: number): Promise<void>;
+}
+
+/**
+ * Cache interface (legacy, wraps CacheBackend)
  */
 export interface ICache {
   /**
@@ -374,12 +473,38 @@ export interface CacheStats {
   hits: number;
   /** Miss count */
   misses: number;
-  /** Hit rate (hits / total) */
-  hitRate: number;
+  /** Set count */
+  sets: number;
+  /** Delete count */
+  deletes: number;
+  /** Error count */
+  errors: number;
+  /** Average latency (ms) */
+  avgLatency: number;
+  /** Evictions (LRU) */
+  evictions?: number;
+  /** Hit rate (hits / total) percentage */
+  hitRate?: number;
   /** Total entries */
-  entries: number;
+  size?: number;
+  /** Max size */
+  maxSize?: number;
   /** Total memory usage (bytes) */
   memoryUsage?: number;
+  /** Layer-specific stats */
+  layers?: CacheStats[];
+  /** L1 hit count */
+  l1Hits?: number;
+  /** L2 hit count */
+  l2Hits?: number;
+  /** L3 hit count */
+  l3Hits?: number;
+  /** L1 hit rate */
+  l1HitRate?: number;
+  /** L2 hit rate */
+  l2HitRate?: number;
+  /** L3 hit rate */
+  l3HitRate?: number;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -387,7 +512,42 @@ export interface CacheStats {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Search engine interface
+ * Search backend interface (Phase 1.2C)
+ */
+export interface SearchBackend {
+  /**
+   * Initialize search backend
+   */
+  initialize(): Promise<void>;
+
+  /**
+   * Index a document
+   */
+  index(id: string, document: Record<string, unknown>): Promise<void>;
+
+  /**
+   * Search documents
+   */
+  search(query: string, options?: SearchOptions): Promise<SearchResult[]>;
+
+  /**
+   * Get autocomplete suggestions
+   */
+  suggest(prefix: string, limit?: number): Promise<string[]>;
+
+  /**
+   * Delete document from index
+   */
+  delete(id: string): Promise<void>;
+
+  /**
+   * Clear all indexed documents
+   */
+  clear(): Promise<void>;
+}
+
+/**
+ * Search engine interface (legacy)
  */
 export interface ISearchEngine {
   /**

@@ -9,6 +9,7 @@ PCL is a domain-specific language for defining, managing, and deploying AI perso
 ## Quick Links
 
 - 🚀 **[Getting Started](./guides/GETTING-STARTED.md)** - Your first PCL persona in 5 minutes
+- 🤖 **[Provider Guide](./providers/README.md)** - Complete guide to all 8 AI providers
 - 🌍 **[Multi-Language Integration](./guides/MULTI-LANGUAGE.md)** - Use PCL with Python, Go, Rust, and more
 - 📚 **[API Reference](#api-reference)** - Complete API documentation
 - 💡 **[Examples](../examples/)** - Real-world examples and templates

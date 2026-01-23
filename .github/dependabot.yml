@@ -14,7 +14,7 @@ updates:
       interval: 'weekly'
       day: 'monday'
       time: '09:00'
-      timezone: 'UTC'
+      timezone: 'Europe/Paris'
     open-pull-requests-limit: 10
     reviewers:
       - 'personamanagmentlayer'

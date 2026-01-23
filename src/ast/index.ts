@@ -353,6 +353,8 @@ export interface RetryConfigNode extends ASTNode {
   readonly count: NumberLiteral;
   readonly delay: DurationLiteral | null;
   readonly backoff: BackoffStrategy | null;
+  readonly maxDelay: DurationLiteral | null;
+  readonly jitter: boolean;
 }
 
 export interface WorkflowFallbackDeclaration extends ASTNode {
@@ -379,7 +381,13 @@ export type WorkflowExpression =
   | WorkflowConditionalExpr
   | WorkflowLoopExpr
   | WorkflowCallExpr
-  | WorkflowMergeExpr;
+  | WorkflowMergeExpr
+  | WorkflowAsyncPipeExpr
+  | WorkflowBidirectionalExpr
+  | WorkflowAccumulateExpr
+  | WorkflowComposeExpr
+  | WorkflowBreakStmt
+  | WorkflowContinueStmt;
 
 export interface WorkflowPersonaRef extends ASTNode {
   readonly kind: 'WorkflowPersonaRef';
@@ -439,6 +447,63 @@ export interface WorkflowCallExpr extends ASTNode {
 export interface WorkflowMergeExpr extends ASTNode {
   readonly kind: 'WorkflowMergeExpr';
   readonly mode: MergeModeNode;
+}
+
+/**
+ * Async pipe operator (~>) for non-blocking workflow chains
+ * Allows workflows to continue without waiting for completion
+ */
+export interface WorkflowAsyncPipeExpr extends ASTNode {
+  readonly kind: 'WorkflowAsyncPipeExpr';
+  readonly left: WorkflowExpression;
+  readonly right: WorkflowExpression;
+}
+
+/**
+ * Bidirectional operator (<->) for feedback loops
+ * Allows bidirectional communication between workflow steps
+ */
+export interface WorkflowBidirectionalExpr extends ASTNode {
+  readonly kind: 'WorkflowBidirectionalExpr';
+  readonly left: WorkflowExpression;
+  readonly right: WorkflowExpression;
+  readonly maxIterations: NumberLiteral | null;
+}
+
+/**
+ * Accumulate operator (>>>) for result aggregation
+ * Collects and aggregates results from multiple workflow executions
+ */
+export interface WorkflowAccumulateExpr extends ASTNode {
+  readonly kind: 'WorkflowAccumulateExpr';
+  readonly steps: readonly WorkflowExpression[];
+}
+
+/**
+ * Composition operator (::) for workflow reuse
+ * Composes workflows into reusable units
+ */
+export interface WorkflowComposeExpr extends ASTNode {
+  readonly kind: 'WorkflowComposeExpr';
+  readonly workflows: readonly (Identifier | WorkflowExpression)[];
+}
+
+/**
+ * Break statement for loop control
+ * Exits the current loop immediately
+ */
+export interface WorkflowBreakStmt extends ASTNode {
+  readonly kind: 'WorkflowBreakStmt';
+  readonly label: Identifier | null;
+}
+
+/**
+ * Continue statement for loop control
+ * Skips to the next iteration of the loop
+ */
+export interface WorkflowContinueStmt extends ASTNode {
+  readonly kind: 'WorkflowContinueStmt';
+  readonly label: Identifier | null;
 }
 
 export type MergeModeNode =
