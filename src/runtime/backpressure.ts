@@ -275,6 +275,7 @@ export class RateLimiter {
    * Acquire a token, waiting if necessary
    */
   async acquire(count: number = 1): Promise<void> {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       this.refill();
 

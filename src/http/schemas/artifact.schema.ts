@@ -31,7 +31,7 @@ export const ArtifactMetadataSchema = z.object({
     .string()
     .min(1, 'Slug is required')
     .max(100, 'Slug must be at most 100 characters')
-    .regex(/^[a-z0-9\-]+$/, 'Slug must be lowercase with hyphens only')
+    .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with hyphens only')
     .optional(),
   description: z
     .string()

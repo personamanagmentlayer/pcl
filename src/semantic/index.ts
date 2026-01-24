@@ -11,7 +11,7 @@
 
 import * as AST from '../ast';
 import type { ComparisonOp, PCLError, Result, Span } from '../types';
-import { ErrorCode, Ok, Err, PCLError as createError } from '../types';
+import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE SYSTEM
@@ -500,6 +500,7 @@ export class PersonaType implements Type {
     if (other instanceof AnyType) return true;
     if (other instanceof PersonaType) {
       // Check if this extends other
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
       let current: PersonaType | undefined = this;
       while (current) {
         if (current.name === other.name) return true;
@@ -2288,7 +2289,7 @@ export class SemanticAnalyzer {
         if (loop.condition) this.checkExpression(loop.condition);
         break;
       }
-      case 'WorkflowPersonaRef':
+      case 'WorkflowPersonaRef': {
         const personaName = this.getPersonaRefName(
           (expr as AST.WorkflowPersonaRef).ref
         );
@@ -2302,6 +2303,7 @@ export class SemanticAnalyzer {
           this.error(`${personaName} is not a persona or team`, expr.span);
         }
         break;
+      }
     }
   }
 
@@ -2635,13 +2637,14 @@ export class SemanticAnalyzer {
           BuiltinTypes.String
         );
 
-      case 'NumberLiteral':
+      case 'NumberLiteral': {
         const num = expr as AST.NumberLiteral;
         const isInt = Number.isInteger(num.value);
         return new LiteralType(
           num.value,
           isInt ? BuiltinTypes.Int : BuiltinTypes.Float
         );
+      }
 
       case 'BooleanLiteral':
         return new LiteralType(
@@ -3094,17 +3097,19 @@ export class SemanticAnalyzer {
       case 'TypeReference':
         return this.resolveTypeReference(node as AST.TypeReference);
 
-      case 'UnionType':
+      case 'UnionType': {
         const unionTypes = (node as AST.UnionType).types.map((t) =>
           this.resolveTypeNode(t)
         );
         return UnionType.create(unionTypes);
+      }
 
-      case 'IntersectionType':
+      case 'IntersectionType': {
         const intersectionTypes = (node as AST.IntersectionType).types.map(
           (t) => this.resolveTypeNode(t)
         );
         return IntersectionType.create(intersectionTypes);
+      }
 
       case 'ArrayType':
         return new ArrayType(
@@ -3116,7 +3121,7 @@ export class SemanticAnalyzer {
           (node as AST.TupleType).elements.map((e) => this.resolveTypeNode(e))
         );
 
-      case 'FunctionType':
+      case 'FunctionType': {
         const funcNode = node as AST.FunctionType;
         const params: FunctionParameter[] = funcNode.parameters.map((p) => ({
           name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
@@ -3128,8 +3133,9 @@ export class SemanticAnalyzer {
           params,
           this.resolveTypeNode(funcNode.returnType)
         );
+      }
 
-      case 'ObjectType':
+      case 'ObjectType': {
         const members = new Map<string, ObjectTypeMember>();
         for (const member of (node as AST.ObjectType).members) {
           if (member.kind === 'PropertySignature') {
@@ -3149,8 +3155,9 @@ export class SemanticAnalyzer {
           }
         }
         return new ObjectType(members);
+      }
 
-      case 'LiteralType':
+      case 'LiteralType': {
         const lit = node as AST.LiteralType;
         if (lit.literal.kind === 'StringLiteral') {
           return new LiteralType(lit.literal.value, BuiltinTypes.String);
@@ -3160,6 +3167,7 @@ export class SemanticAnalyzer {
           return new LiteralType(lit.literal.value, BuiltinTypes.Bool);
         }
         return BuiltinTypes.Any;
+      }
 
       case 'ParenthesizedType':
         return this.resolveTypeNode((node as AST.ParenthesizedType).type);
@@ -3487,19 +3495,21 @@ export class SemanticAnalyzer {
    */
   private applyTypeNarrowing(expr: AST.Expression, truthy: boolean): void {
     switch (expr.kind) {
-      case 'BinaryExpression':
+      case 'BinaryExpression': {
         const binExpr = expr as AST.BinaryExpression;
         this.narrowTypeByTypeofCheck(binExpr, truthy);
         this.narrowTypeByNullCheck(binExpr, truthy);
         break;
+      }
 
-      case 'UnaryExpression':
+      case 'UnaryExpression': {
         // Handle negation - flip truthiness
         const unExpr = expr as AST.UnaryExpression;
         if (unExpr.operator === '!') {
           this.applyTypeNarrowing(unExpr.argument, !truthy);
         }
         break;
+      }
 
       // Could add more narrowing patterns here:
       // - Identifier (truthiness narrowing)

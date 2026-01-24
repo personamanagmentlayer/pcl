@@ -4,14 +4,14 @@
 
 import { APIException } from '../middleware/error-handler.js';
 import type {
+  ArtifactMetadata,
+  ArtifactResponse,
+  ArtifactStats,
   ArtifactType,
   CreateArtifactInput,
-  UpdateArtifactInput,
-  ArtifactResponse,
   ListArtifactsQuery,
   ListArtifactsResponse,
-  ArtifactStats,
-  ArtifactMetadata,
+  UpdateArtifactInput,
 } from '../schemas/artifact.schema.js';
 
 /**
@@ -257,7 +257,7 @@ function generateArtifactId(): string {
 function generateSlug(name: string): string {
   return name
     .toLowerCase()
-    .replace(/[^a-z0-9\s\-]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .substring(0, 100);

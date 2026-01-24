@@ -963,7 +963,7 @@ export class Parser {
         case 'delay':
           delay = this.parseDurationLiteral();
           break;
-        case 'backoff':
+        case 'backoff': {
           const backoffToken = this.advance();
           const backoffValue = backoffToken.value;
           if (
@@ -979,13 +979,15 @@ export class Parser {
             );
           }
           break;
+        }
         case 'maxDelay':
           maxDelay = this.parseDurationLiteral();
           break;
-        case 'jitter':
+        case 'jitter': {
           const jitterToken = this.advance();
           jitter = jitterToken.value === 'true';
           break;
+        }
       }
 
       this.match(TokenType.COMMA);
@@ -1412,6 +1414,7 @@ export class Parser {
   private parseBinary(minPrecedence: number): AST.Expression {
     let left = this.parseUnary();
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const precedence = getOperatorPrecedence(this.peek());
       if (precedence <= minPrecedence) break;
@@ -1461,6 +1464,7 @@ export class Parser {
   private parsePostfix(): AST.Expression {
     let expr = this.parsePrimary();
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       if (this.match(TokenType.DOT)) {
         const property = this.parseIdentifier();
@@ -2102,6 +2106,7 @@ export class Parser {
   private parseModifiers(): AST.Modifier[] {
     const modifiers: AST.Modifier[] = [];
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const token = this.peek();
       if (token.type !== TokenType.KEYWORD) break;

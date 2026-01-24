@@ -977,7 +977,7 @@ class JSONGenerator {
             (e): e is AST.Expression => e !== null && e.kind !== 'SpreadElement'
           )
           .map((e) => this.extractValue(e));
-      case 'ObjectExpression':
+      case 'ObjectExpression': {
         const obj: any = {};
         for (const prop of (expr as AST.ObjectExpression).properties) {
           if (prop.kind === 'ObjectKeyValueProperty') {
@@ -992,6 +992,7 @@ class JSONGenerator {
           }
         }
         return obj;
+      }
       default:
         return undefined;
     }
@@ -1605,7 +1606,7 @@ class YAMLGenerator {
             (e): e is AST.Expression => e !== null && e.kind !== 'SpreadElement'
           )
           .map((e) => this.extractValue(e));
-      case 'ObjectExpression':
+      case 'ObjectExpression': {
         const obj: any = {};
         for (const prop of (expr as AST.ObjectExpression).properties) {
           if (prop.kind === 'ObjectKeyValueProperty') {
@@ -1620,6 +1621,7 @@ class YAMLGenerator {
           }
         }
         return obj;
+      }
       default:
         return undefined;
     }
@@ -3225,7 +3227,7 @@ export function generate(
   options: GeneratorOptions
 ): string {
   switch (options.target) {
-    case 'prompt':
+    case 'prompt': {
       // For prompt, generate for first persona
       const personas = program.statements.filter(
         (s) => s.kind === 'PersonaDeclaration'
@@ -3234,6 +3236,7 @@ export function generate(
         return generatePrompt(personas[0] as AST.PersonaDeclaration, options);
       }
       return '';
+    }
     case 'json':
       return generateJSON(program, options);
     case 'typescript':

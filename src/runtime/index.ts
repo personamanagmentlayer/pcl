@@ -222,6 +222,7 @@ const DEFAULT_PERSONA_CONFIG: PersonaConfig = {
  */
 export class PersonaInstance {
   private state: PersonaState;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   private readonly handlers: Map<string, Function> = new Map();
   private readonly eventHandlers: Set<RuntimeEventHandler> = new Set();
   private provider: AIProvider | null = null;
@@ -467,6 +468,7 @@ export class PersonaInstance {
   /**
    * Register a hook handler
    */
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   registerHook(hook: string, handler: Function): void {
     this.handlers.set(hook, handler);
   }
@@ -2384,7 +2386,7 @@ export function createTeam(
 }
 
 // Export async & concurrency utilities
-export * from './scheduler.js';
-export * from './streams.js';
 export * from './backpressure.js';
 export * from './providers/connection-pool.js';
+export * from './scheduler.js';
+export * from './streams.js';

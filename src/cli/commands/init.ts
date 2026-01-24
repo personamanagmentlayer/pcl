@@ -4,7 +4,7 @@
  */
 
 import { existsSync } from 'fs';
-import { writeFile, mkdir } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import type { PCLPackage } from '../../build/package-format';
 import { DEFAULT_PACKAGE, validatePackage } from '../../build/package-format';
@@ -108,6 +108,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
  * Infer package name from directory
  */
 function inferPackageName(cwd: string): string {
+  // eslint-disable-next-line no-useless-escape
   const parts = cwd.split(/[\/\\]/);
   const dirName = parts[parts.length - 1];
 

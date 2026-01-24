@@ -9,8 +9,8 @@
  * @version 1.0.0
  */
 
-import type { Position, Span, Result, PCLError } from '../types';
-import { Ok, Err, ErrorCode, PCLError as createError } from '../types';
+import type { PCLError, Position, Result, Span } from '../types';
+import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TOKEN TYPES
@@ -885,7 +885,7 @@ export class Lexer {
         return { value: '`' };
       case '$':
         return { value: '$' };
-      case 'x':
+      case 'x': {
         // Hex escape \xHH
         const hex = this.input.slice(this.pos, this.pos + 2);
         if (!/^[0-9a-fA-F]{2}$/.test(hex)) {
@@ -894,6 +894,7 @@ export class Lexer {
         this.pos += 2;
         this.column += 2;
         return { value: String.fromCharCode(parseInt(hex, 16)) };
+      }
       case 'u':
         // Unicode escape \uHHHH or \u{H...}
         if (this.peek() === '{') {

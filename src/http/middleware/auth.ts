@@ -2,14 +2,15 @@
  * Authentication middleware
  */
 
-import type { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { verifyToken, type JWTPayload } from '../utils/jwt.js';
-import { sendUnauthorized, sendForbidden } from '../utils/response.js';
+import { sendForbidden, sendUnauthorized } from '../utils/response.js';
 
 /**
  * Extend Express Request to include user payload
  */
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: JWTPayload;

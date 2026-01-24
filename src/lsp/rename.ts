@@ -302,7 +302,7 @@ export class RenameProvider {
       case 'PersonaDecl':
       case 'TeamDecl':
       case 'WorkflowDecl':
-      case 'SkillDecl':
+      case 'SkillDecl': {
         const decl = node as AST.PersonaDeclaration;
         if (this.offsetInNode(decl.id, offset)) {
           return {
@@ -313,8 +313,9 @@ export class RenameProvider {
           };
         }
         break;
+      }
 
-      case 'Identifier':
+      case 'Identifier': {
         const ident = node as AST.Identifier;
         if (this.offsetInNode(ident, offset)) {
           return {
@@ -325,6 +326,7 @@ export class RenameProvider {
           };
         }
         break;
+      }
 
       // Add more node types as needed
     }
