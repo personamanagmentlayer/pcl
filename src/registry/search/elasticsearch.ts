@@ -268,7 +268,6 @@ export class ElasticsearchBackend implements SearchBackend {
    */
   async suggest(prefix: string, limit: number = 10): Promise<string[]> {
     try {
-      // @ts-expect-error - Elasticsearch client type overload mismatch
       const response = await this.client.search({
         index: this.config.indexName,
         body: {
@@ -283,11 +282,12 @@ export class ElasticsearchBackend implements SearchBackend {
             },
           },
         },
-      });
+      } as any);
 
       const suggestions = response.suggest?.name_suggestion?.[0]?.options || [];
-      // @ts-expect-error - Elasticsearch suggest options type mismatch
-      return suggestions.map((opt: any) => opt.text);
+      return Array.isArray(suggestions)
+        ? suggestions.map((opt: any) => opt.text)
+        : [];
     } catch (error) {
       console.error('Elasticsearch suggest error:', error);
       return [];
@@ -309,7 +309,6 @@ export class ElasticsearchBackend implements SearchBackend {
    * Clear all indexed artifacts
    */
   async clear(): Promise<void> {
-    // @ts-expect-error - Elasticsearch client type overload mismatch
     await this.client.deleteByQuery({
       index: this.config.indexName,
       body: {
@@ -318,7 +317,7 @@ export class ElasticsearchBackend implements SearchBackend {
         },
       },
       refresh: true,
-    });
+    } as any);
   }
 
   /**

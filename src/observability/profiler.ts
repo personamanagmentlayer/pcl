@@ -154,13 +154,12 @@ export class PerformanceProfiler {
     const cpu = process.cpuUsage();
     const eventLoopLag = await this.getEventLoopLag();
 
-    // @ts-expect-error - _getActiveHandles and _getActiveRequests are internal Node.js APIs
-    const activeHandles = process._getActiveHandles
-      ? process._getActiveHandles().length
+    // Internal Node.js APIs - not in TypeScript definitions
+    const activeHandles = (process as any)._getActiveHandles
+      ? (process as any)._getActiveHandles().length
       : 0;
-    // @ts-expect-error - _getActiveRequests is internal Node.js API
-    const activeRequests = process._getActiveRequests
-      ? process._getActiveRequests().length
+    const activeRequests = (process as any)._getActiveRequests
+      ? (process as any)._getActiveRequests().length
       : 0;
 
     return {
