@@ -38,7 +38,9 @@
       "Bash(timeout:*)",
       "Bash(curl:*)",
       "Bash(taskkill:*)",
-      "Bash(npm run test:*)"
+      "Bash(npm run test:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm outdated:*)"
     ]
   }
 }
