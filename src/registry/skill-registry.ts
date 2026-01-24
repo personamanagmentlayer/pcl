@@ -139,7 +139,7 @@ export interface SkillRegistry {
  * Skill Registry Implementation
  */
 export class SkillRegistryImpl implements SkillRegistry {
-  constructor(private backend: any) {}
+  constructor(private backend: unknown) {}
 
   /**
    * Search for skills with advanced filters
@@ -570,6 +570,6 @@ export class SkillRegistryImpl implements SkillRegistry {
 /**
  * Create skill registry instance
  */
-export function createSkillRegistry(backend: any): SkillRegistry {
+export function createSkillRegistry(backend: unknown): SkillRegistry {
   return new SkillRegistryImpl(backend);
 }

@@ -62,7 +62,7 @@ export type RefreshTokenRequest = z.infer<typeof RefreshTokenSchema>;
  * User response schema (public user data)
  */
 export const UserResponseSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().min(1),
   username: z.string(),
   email: z.string().email(),
   fullName: z.string().optional(),

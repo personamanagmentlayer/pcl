@@ -71,7 +71,7 @@ export class FormattingProvider {
       ? ' '.repeat(options.tabSize || 2)
       : '\t';
 
-    for (let line of lines) {
+    for (const line of lines) {
       const trimmed = line.trim();
 
       // Skip empty lines

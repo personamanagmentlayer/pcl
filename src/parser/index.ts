@@ -1090,7 +1090,7 @@ export class Parser {
 
   // Bidirectional operator (<->)
   private parseWorkflowBidirectional(): AST.WorkflowExpression {
-    let left = this.parseWorkflowAsyncPipe();
+    const left = this.parseWorkflowAsyncPipe();
 
     if (this.match(TokenType.LT_MINUS_GT)) {
       const right = this.parseWorkflowAsyncPipe();

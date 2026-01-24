@@ -146,7 +146,6 @@ export function initTelemetry(config: Partial<TelemetryConfig> = {}): void {
   }
 
   // Create resource identifying this service
-  // @ts-expect-error - Resource import issue
   const resource = new Resource({
     [ATTR_SERVICE_NAME]: fullConfig.serviceName,
     [ATTR_SERVICE_VERSION]: fullConfig.serviceVersion || '1.0.0',
