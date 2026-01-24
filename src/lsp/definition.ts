@@ -8,7 +8,6 @@ import {
   Connection,
   Definition,
   DefinitionParams,
-  Location,
 } from 'vscode-languageserver/node';
 
 import { DocumentManager } from './document-manager';

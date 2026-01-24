@@ -8,9 +8,7 @@ import {
   Connection,
   Diagnostic,
   DiagnosticSeverity,
-  TextDocuments,
 } from 'vscode-languageserver/node';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import { DocumentManager } from './document-manager';
 import {

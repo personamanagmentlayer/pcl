@@ -8,7 +8,6 @@ import {
   TextDocuments,
   Connection,
   TextDocumentChangeEvent,
-  TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 

@@ -709,7 +709,6 @@ export class Lexer {
   }
 
   private scanBlockComment(): Token {
-    const startLine = this.line;
     let depth = 1;
 
     while (depth > 0 && !this.isAtEnd()) {

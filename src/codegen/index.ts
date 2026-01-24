@@ -3060,7 +3060,6 @@ class MarkdownGenerator {
       case 'WorkflowLoopExpr': {
         const loop = expr as AST.WorkflowLoopExpr;
         const loopId = `${id}_loop`;
-        const bodyId = `${id}_body`;
         const exitId = `${id}_exit`;
 
         const loopType = loop.loopType === 'while' ? 'While' : 'Until';

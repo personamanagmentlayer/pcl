@@ -316,7 +316,6 @@ export class SQLiteBackend implements IBackend {
 
     try {
       const id = randomUUID();
-      const now = new Date().toISOString();
 
       // Insert artifact
       this.stmts.insertArtifact!.run(

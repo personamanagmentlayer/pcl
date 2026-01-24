@@ -33,7 +33,6 @@ import type {
   SearchCriteria,
   SearchResult,
 } from '../interfaces';
-import { NotFoundError, DuplicateError } from '../errors';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPES

@@ -8,7 +8,6 @@ import {
   Connection,
   CompletionItem,
   CompletionParams,
-  TextDocumentPositionParams,
 } from 'vscode-languageserver/node';
 
 import { DocumentManager } from './document-manager';

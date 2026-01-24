@@ -23,7 +23,6 @@ import type {
   Transaction,
   Version,
 } from '../interfaces';
-import { ConnectionError, NotFoundError, DuplicateError } from '../errors';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPES

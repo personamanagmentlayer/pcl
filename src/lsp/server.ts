@@ -6,11 +6,7 @@
  * @shebang #!/usr/bin/env node
  */
 
-import {
-  InitializeParams,
-  InitializeResult,
-  TextDocumentSyncKind,
-} from 'vscode-languageserver/node';
+import { InitializeParams, InitializeResult } from 'vscode-languageserver/node';
 
 import { createLSPConnection } from './connection';
 import { getServerCapabilities } from './capabilities';
