@@ -40,7 +40,8 @@
       "Bash(taskkill:*)",
       "Bash(npm run test:*)",
       "Bash(npm audit:*)",
-      "Bash(npm outdated:*)"
+      "Bash(npm outdated:*)",
+      "Bash(npm run:*)"
     ]
   }
 }
