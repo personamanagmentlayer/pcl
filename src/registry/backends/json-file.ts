@@ -12,26 +12,25 @@
  * @version 1.0.0
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
-import { dirname } from 'node:path';
 import {
-  randomUUID,
   createCipheriv,
   createDecipheriv,
+  randomUUID,
   scryptSync,
 } from 'node:crypto';
-import { gzipSync, gunzipSync } from 'node:zlib';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
+import { gunzipSync, gzipSync } from 'node:zlib';
 import type { Result } from '../../types';
-import { Ok, Err } from '../../types';
+import { Err, Ok } from '../../types';
 import type {
   Artifact,
-  ArtifactType,
   IBackend,
   Query,
-  Transaction,
-  Version,
   SearchCriteria,
   SearchResult,
+  Transaction,
+  Version,
 } from '../interfaces';
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -112,11 +112,14 @@ class RefreshTokenStore {
 
 const refreshTokenStore = new RefreshTokenStore();
 
+import { randomBytes } from 'crypto';
+
 /**
- * Generate unique user ID
+ * Generate unique user ID using cryptographically secure random
  */
 function generateUserId(): string {
-  return `user_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+  const randomPart = randomBytes(8).toString('hex');
+  return `user_${Date.now()}_${randomPart}`;
 }
 
 /**

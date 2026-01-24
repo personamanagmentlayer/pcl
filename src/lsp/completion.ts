@@ -5,20 +5,20 @@
  */
 
 import {
-  Connection,
   CompletionItem,
   CompletionParams,
+  Connection,
 } from 'vscode-languageserver/node';
 
-import { DocumentManager } from './document-manager';
-import { CompletionContext, SymbolInfo } from './completion-types';
 import {
   generateKeywordCompletions,
-  generateSnippetCompletions,
   generatePropertyCompletions,
+  generateSnippetCompletions,
   generateSymbolCompletions,
   getPropertyValueCompletions,
 } from './completion-items';
+import { CompletionContext, SymbolInfo } from './completion-types';
+import { DocumentManager } from './document-manager';
 
 /**
  * Completion provider handles textDocument/completion requests

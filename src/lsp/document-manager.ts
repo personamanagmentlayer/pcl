@@ -4,17 +4,17 @@
  * Manages document lifecycle and synchronization
  */
 
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
-  TextDocuments,
   Connection,
   TextDocumentChangeEvent,
+  TextDocuments,
 } from 'vscode-languageserver/node';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import { parse } from '../parser';
 import { analyze } from '../semantic';
-import { DocumentInfo } from './types';
 import { DocumentCache } from './document-cache';
+import { DocumentInfo } from './types';
 
 /**
  * Document manager handles document lifecycle and parsing

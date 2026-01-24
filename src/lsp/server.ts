@@ -8,19 +8,19 @@
 
 import { InitializeParams, InitializeResult } from 'vscode-languageserver/node';
 
-import { createLSPConnection } from './connection';
 import { getServerCapabilities } from './capabilities';
-import { ServerConfig } from './types';
-import { DocumentManager } from './document-manager';
-import { DiagnosticsProvider } from './diagnostics';
+import { CodeActionProvider } from './code-actions';
 import { CompletionProvider } from './completion';
-import { HoverProvider } from './hover';
+import { createLSPConnection } from './connection';
 import { DefinitionProvider } from './definition';
-import { ReferencesProvider } from './references';
+import { DiagnosticsProvider } from './diagnostics';
+import { DocumentManager } from './document-manager';
 import { DocumentSymbolsProvider } from './document-symbols';
 import { FormattingProvider } from './formatting';
-import { CodeActionProvider } from './code-actions';
+import { HoverProvider } from './hover';
+import { ReferencesProvider } from './references';
 import { RenameProvider } from './rename';
+import { ServerConfig } from './types';
 
 /**
  * PCL Language Server

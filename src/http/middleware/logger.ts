@@ -5,7 +5,7 @@
 import type { Request, Response, NextFunction } from 'express';
 
 /**
- * Simple request logger middleware
+ * Simple request logger middleware with input sanitization
  */
 export function requestLogger(
   req: Request,
@@ -14,8 +14,13 @@ export function requestLogger(
 ): void {
   const start = Date.now();
 
+  // Sanitize user input to prevent log injection
+  const sanitize = (str: string) => str.replace(/[\r\n]/g, '');
+  const method = sanitize(req.method);
+  const path = sanitize(req.path);
+
   // Log request
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  console.log(`[${new Date().toISOString()}] ${method} ${path}`);
 
   // Log response on finish
   res.on('finish', () => {
@@ -24,7 +29,7 @@ export function requestLogger(
     const reset = '\x1b[0m';
 
     console.log(
-      `[${new Date().toISOString()}] ${req.method} ${req.path} ${statusColor}${res.statusCode}${reset} ${duration}ms`
+      `[${new Date().toISOString()}] ${method} ${path} ${statusColor}${res.statusCode}${reset} ${duration}ms`
     );
   });
 

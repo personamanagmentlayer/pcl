@@ -96,16 +96,38 @@ export class HTTPRegistryServer {
    * Setup middleware chain
    */
   private setupMiddleware(): void {
-    // Security headers
+    // Security headers with CSP enabled
     this.app.use(
       helmet({
-        contentSecurityPolicy: false, // Disable for API
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"], // Needed for Swagger UI
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            imgSrc: ["'self'", 'data:', 'https:'],
+            connectSrc: ["'self'"],
+          },
+        },
         crossOriginEmbedderPolicy: false,
       })
     );
 
-    // CORS
-    this.app.use(cors(this.config.cors));
+    // CORS with restricted origins (use ALLOWED_ORIGINS env var in production)
+    const allowedOrigins = process.env.ALLOWED_ORIGINS
+      ? process.env.ALLOWED_ORIGINS.split(',')
+      : this.config.cors.origin === '*'
+        ? ['http://localhost:3000', 'http://localhost:5173'] // Dev defaults
+        : this.config.cors.origin;
+
+    this.app.use(
+      cors({
+        origin:
+          process.env.NODE_ENV === 'production'
+            ? allowedOrigins
+            : this.config.cors.origin,
+        credentials: this.config.cors.credentials,
+      })
+    );
 
     // Compression
     this.app.use(compression());

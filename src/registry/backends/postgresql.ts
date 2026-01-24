@@ -14,7 +14,7 @@
 
 import { randomUUID } from 'node:crypto';
 import type { Result } from '../../types';
-import { Ok, Err } from '../../types';
+import { Err, Ok } from '../../types';
 import type {
   Artifact,
   ArtifactType,
