@@ -3,7 +3,6 @@
  * Tests complete workflows: auth, artifact CRUD, versioning, search
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { Express } from 'express';
 import request from 'supertest';
 import { HTTPRegistryServer } from '../../src/http/server.js';

@@ -3,7 +3,6 @@
 // Tests for health monitoring, fallback chains, rate limiting, and cost tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { ProviderRegistry } from '../../src/runtime/providers/index';
 import { MockProvider } from '../../src/runtime/providers/mock';
 import type { GenerationRequest } from '../../src/runtime/providers/index';

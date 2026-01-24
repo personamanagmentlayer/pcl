@@ -2,7 +2,6 @@
  * SemverManager Tests - Phase 1.2C
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { SemverManager } from '../../../src/registry/version/semver-manager';
 
 describe('SemverManager', () => {

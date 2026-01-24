@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 
 describe('Import test', () => {
   it('should import without error', async () => {

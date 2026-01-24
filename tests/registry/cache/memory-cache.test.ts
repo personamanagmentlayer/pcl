@@ -2,7 +2,6 @@
  * Memory Cache Tests - Phase 1.2C
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { MemoryCache } from '../../../src/registry/cache/memory-cache';
 
 describe('MemoryCache', () => {

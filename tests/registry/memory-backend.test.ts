@@ -11,7 +11,6 @@
  * @module tests/registry/memory-backend
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryBackend } from '../../src/registry/backends/memory';
 import { ArtifactType } from '../../src/registry/interfaces';
 import type { Artifact } from '../../src/registry/interfaces';

@@ -18,12 +18,6 @@ export default defineConfig({
       exclude: ['src/cli/**'],
     },
     testTimeout: 10000,
-    pool: 'forks',
-    poolOptions: {
-      forks: {
-        singleFork: true,
-      },
-    },
   },
   resolve: {
     alias: {

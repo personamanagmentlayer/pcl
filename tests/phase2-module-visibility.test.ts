@@ -11,7 +11,6 @@
  * @since 2026-01-16
  */
 
-import { describe, expect, it } from 'vitest';
 import { parse } from '../src/parser';
 import { analyze } from '../src/semantic';
 

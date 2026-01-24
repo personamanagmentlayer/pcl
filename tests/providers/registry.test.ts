@@ -3,7 +3,6 @@
 // Comprehensive tests for ProviderRegistry
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { ProviderRegistry } from '../../src/runtime/providers/index';
 import { MockProvider } from '../../src/runtime/providers/mock';
 

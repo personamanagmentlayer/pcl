@@ -2,7 +2,6 @@
  * Integration tests for complete skill pipeline
  */
 
-import { describe, it, expect } from 'vitest';
 import { parseSkillMd } from '../../src/skills/skill-loader';
 import { SkillCompiler } from '../../src/skills/skill-compiler';
 import { SkillMerger, ConflictStrategy, ProviderFormat } from '../../src/skills/skill-merger';

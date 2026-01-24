@@ -2,7 +2,6 @@
  * Tests for Skill Merger
  */
 
-import { describe, it, expect } from 'vitest';
 import { SkillMerger, ConflictStrategy, ProviderFormat } from '../../src/skills/skill-merger';
 import { SkillCompiler } from '../../src/skills/skill-compiler';
 import type { PCLSkill } from '../../src/skills/skill-loader';

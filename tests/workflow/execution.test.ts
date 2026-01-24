@@ -3,7 +3,6 @@
 // Tests for WorkflowExecutor with sequential, parallel, and conditional workflows
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { WorkflowExecutor, createPersona, createRuntime } from '../../src/runtime/index';
 import { MockProvider } from '../../src/runtime/providers/mock';
 import type * as AST from '../../src/types/ast';

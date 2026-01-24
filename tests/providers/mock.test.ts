@@ -3,7 +3,6 @@
 // Comprehensive tests for MockProvider
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { MockProvider } from '../../src/runtime/providers/mock';
 import type { GenerationRequest } from '../../src/runtime/providers/index';
 

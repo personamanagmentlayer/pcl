@@ -2,7 +2,6 @@
  * Code Actions Tests - Phase 3
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { CodeActionProvider } from '../../src/lsp/code-actions';
 import type { CodeActionParams, Diagnostic, Range } from 'vscode-languageserver';
 

@@ -5,7 +5,6 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { RegistryManager } from '../../src/registry/manager';
 import { MemoryBackend } from '../../src/registry/backends/memory';
 import { ArtifactType } from '../../src/registry/interfaces';

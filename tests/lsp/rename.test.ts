@@ -2,7 +2,6 @@
  * Rename Symbol Tests - Phase 3
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { RenameProvider } from '../../src/lsp/rename';
 import type { PrepareRenameParams, RenameParams } from 'vscode-languageserver';
 
