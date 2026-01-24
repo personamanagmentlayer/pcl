@@ -33,6 +33,8 @@ import {
   publishCommand,
   deleteCommand,
   initCommand,
+  exportCommand as registryExportCommand,
+  importCommand as registryImportCommand,
 } from './commands/registry';
 import {
   importCommand as skillImportCommand,
@@ -92,6 +94,8 @@ Commands:
   registry info <id|slug>    Show artifact details
   registry publish <id|slug> Publish an artifact
   registry delete <id|slug>  Delete an artifact
+  registry export <file>     Export registry data to file
+  registry import <file>     Import registry data from file
 
   Skill Commands:
   skill import <source>      Import skill(s) from SKILL.md format
@@ -164,6 +168,8 @@ Examples:
   pcl registry info code-reviewer
   pcl registry publish code-reviewer
   pcl registry delete old-persona --purge
+  pcl registry export backup.json --compress
+  pcl registry import backup.json --merge
 
   pcl skill import ~/.claude/skills/python-expert/SKILL.md -o ./skills/
   pcl skill import ~/.claude/skills/ -o ./skills/ --recursive
@@ -262,7 +268,15 @@ function formatError(
 
 interface CommandOptions {
   output?: string;
-  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list' | 'agentskills' | 'claude-code' | 'pcl';
+  format?:
+    | 'json'
+    | 'yaml'
+    | 'pretty'
+    | 'table'
+    | 'list'
+    | 'agentskills'
+    | 'claude-code'
+    | 'pcl';
   target?: GeneratorTarget;
   quiet?: boolean;
   verbose?: boolean;
@@ -271,6 +285,15 @@ interface CommandOptions {
   backend?: 'memory' | 'json-file' | 'sqlite' | 'postgres';
   publish?: boolean;
   force?: boolean;
+  registry?: string;
+  // Import/Export options
+  compress?: boolean;
+  pretty?: boolean;
+  includeVersions?: boolean;
+  includeDeleted?: boolean;
+  merge?: boolean;
+  skipDuplicates?: boolean;
+  compressed?: boolean;
   purge?: boolean;
   db?: string;
   host?: string;
@@ -612,7 +635,9 @@ function commandFmt(file: string, options: CommandOptions): number {
     // Write formatted output
     if (options.output) {
       writeFileSync(options.output, formatted);
-      console.log(color('green', `✓ Formatted output written to ${options.output}`));
+      console.log(
+        color('green', `✓ Formatted output written to ${options.output}`)
+      );
     } else {
       // In-place formatting
       writeFileSync(file, formatted);
@@ -729,10 +754,21 @@ Enter PCL code to parse and evaluate.
 
 function formatAST(
   program: Program,
-  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list' | 'agentskills' | 'claude-code' | 'pcl'
+  format?:
+    | 'json'
+    | 'yaml'
+    | 'pretty'
+    | 'table'
+    | 'list'
+    | 'agentskills'
+    | 'claude-code'
+    | 'pcl'
 ): string {
   // Default to pretty format for non-AST formats
-  if (!format || !['json', 'yaml', 'pretty', 'table', 'list'].includes(format)) {
+  if (
+    !format ||
+    !['json', 'yaml', 'pretty', 'table', 'list'].includes(format)
+  ) {
     format = 'pretty';
   }
   if (format === 'json') {
@@ -811,7 +847,9 @@ async function main(): Promise<number> {
       },
       logging: {
         enabled: true,
-        level: (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') || 'warn',
+        level:
+          (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') ||
+          'warn',
       },
     });
   }
@@ -1044,6 +1082,40 @@ async function main(): Promise<number> {
           await deleteCommand(registryArg, registryOptions);
           return 0;
 
+        case 'export':
+          if (!registryArg) {
+            console.error(color('red', 'Error: No output file specified'));
+            return 1;
+          }
+          registryOptions.output = registryArg;
+          if (options.compress !== undefined)
+            registryOptions.compress = options.compress;
+          if (options.pretty !== undefined)
+            registryOptions.pretty = options.pretty;
+          if (options.includeVersions !== undefined)
+            registryOptions.includeVersions = options.includeVersions;
+          if (options.includeDeleted !== undefined)
+            registryOptions.includeDeleted = options.includeDeleted;
+          if (options.registry) registryOptions.registry = options.registry;
+          await registryExportCommand.handler(registryOptions as any);
+          return 0;
+
+        case 'import':
+          if (!registryArg) {
+            console.error(color('red', 'Error: No input file specified'));
+            return 1;
+          }
+          registryOptions.input = registryArg;
+          if (options.merge !== undefined)
+            registryOptions.merge = options.merge;
+          if (options.skipDuplicates !== undefined)
+            registryOptions.skipDuplicates = options.skipDuplicates;
+          if (options.compressed !== undefined)
+            registryOptions.compressed = options.compressed;
+          if (options.registry) registryOptions.registry = options.registry;
+          await registryImportCommand.handler(registryOptions as any);
+          return 0;
+
         default:
           console.error(
             color(
@@ -1052,7 +1124,7 @@ async function main(): Promise<number> {
             )
           );
           console.log(
-            'Available registry commands: init, create, search, list, info, publish, delete'
+            'Available registry commands: init, create, search, list, info, publish, delete, export, import'
           );
           return 1;
       }
@@ -1102,7 +1174,9 @@ async function main(): Promise<number> {
 
         case 'info':
           if (!skillArg) {
-            console.error(color('red', 'Error: No skill name or path specified'));
+            console.error(
+              color('red', 'Error: No skill name or path specified')
+            );
             return 1;
           }
           await skillInfoCommand(skillArg, skillOptions);
