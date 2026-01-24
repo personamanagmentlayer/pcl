@@ -2,7 +2,12 @@
  * Search Service
  */
 
-import type { SearchQuery, SearchResponse, SearchResult, SearchSuggestions } from '../schemas/search.schema.js';
+import type {
+  SearchQuery,
+  SearchResponse,
+  SearchResult,
+  SearchSuggestions,
+} from '../schemas/search.schema.js';
 import { listArtifacts } from './artifact.service.js';
 
 /**
@@ -67,7 +72,9 @@ function highlightText(text: string, query: string): string {
 /**
  * Search artifacts with full-text search
  */
-export async function searchArtifacts(query: SearchQuery): Promise<SearchResponse> {
+export async function searchArtifacts(
+  query: SearchQuery
+): Promise<SearchResponse> {
   const startTime = Date.now();
 
   // Get all published artifacts
@@ -77,7 +84,10 @@ export async function searchArtifacts(query: SearchQuery): Promise<SearchRespons
     offset: '0' as any,
   });
 
-  const searchTerms = query.q.toLowerCase().split(/\s+/).filter((t) => t.length > 0);
+  const searchTerms = query.q
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((t) => t.length > 0);
   const fuzzyThreshold = 0.7;
 
   // Score and filter artifacts
@@ -89,7 +99,10 @@ export async function searchArtifacts(query: SearchQuery): Promise<SearchRespons
       // Search in name (highest weight)
       const nameScore = searchTerms.reduce((acc, term) => {
         const similarity = calculateSimilarity(artifact.metadata.name, term);
-        if (!query.fuzzy && artifact.metadata.name.toLowerCase().includes(term)) {
+        if (
+          !query.fuzzy &&
+          artifact.metadata.name.toLowerCase().includes(term)
+        ) {
           return acc + 0.5;
         } else if (query.fuzzy && similarity >= fuzzyThreshold) {
           return acc + 0.5 * similarity;
@@ -106,8 +119,14 @@ export async function searchArtifacts(query: SearchQuery): Promise<SearchRespons
 
       // Search in description (medium weight)
       const descScore = searchTerms.reduce((acc, term) => {
-        const similarity = calculateSimilarity(artifact.metadata.description, term);
-        if (!query.fuzzy && artifact.metadata.description.toLowerCase().includes(term)) {
+        const similarity = calculateSimilarity(
+          artifact.metadata.description,
+          term
+        );
+        if (
+          !query.fuzzy &&
+          artifact.metadata.description.toLowerCase().includes(term)
+        ) {
           return acc + 0.3;
         } else if (query.fuzzy && similarity >= fuzzyThreshold) {
           return acc + 0.3 * similarity;
@@ -118,7 +137,9 @@ export async function searchArtifacts(query: SearchQuery): Promise<SearchRespons
       if (descScore > 0) {
         score += descScore * 2;
         if (query.highlight) {
-          highlights.description = [highlightText(artifact.metadata.description, query.q)];
+          highlights.description = [
+            highlightText(artifact.metadata.description, query.q),
+          ];
         }
       }
 
@@ -136,7 +157,9 @@ export async function searchArtifacts(query: SearchQuery): Promise<SearchRespons
       if (tagMatches.length > 0) {
         score += tagMatches.length * 0.4;
         if (query.highlight) {
-          highlights.tags = tagMatches.map((tag) => highlightText(tag, query.q));
+          highlights.tags = tagMatches.map((tag) =>
+            highlightText(tag, query.q)
+          );
         }
       }
 
@@ -198,7 +221,9 @@ export async function searchArtifacts(query: SearchQuery): Promise<SearchRespons
 /**
  * Get search suggestions based on existing artifacts
  */
-export async function getSearchSuggestions(query: string): Promise<SearchSuggestions> {
+export async function getSearchSuggestions(
+  query: string
+): Promise<SearchSuggestions> {
   const { artifacts } = await listArtifacts({
     published: 'true' as any,
     limit: '100' as any,

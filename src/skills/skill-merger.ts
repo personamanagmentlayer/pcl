@@ -86,7 +86,10 @@ export class SkillMerger {
   /**
    * Merge multiple compiled skills into a unified prompt
    */
-  merge(skills: CompiledSkill[], options: SkillMergeOptions): MergedSkillResult {
+  merge(
+    skills: CompiledSkill[],
+    options: SkillMergeOptions
+  ): MergedSkillResult {
     const warnings: string[] = [];
     const includedSkills: string[] = [];
     const skippedSkills: string[] = [];
@@ -101,12 +104,12 @@ export class SkillMerger {
 
     // Track which skills were excluded by progressive disclosure
     if (options.progressiveDisclosure) {
-      const excluded = skills.filter(
-        (s) => !skillsToMerge.includes(s)
-      );
+      const excluded = skills.filter((s) => !skillsToMerge.includes(s));
       excluded.forEach((s) => {
         skippedSkills.push(s.skill.name);
-        warnings.push(`Skill "${s.skill.name}" excluded by progressive disclosure`);
+        warnings.push(
+          `Skill "${s.skill.name}" excluded by progressive disclosure`
+        );
       });
     }
 
@@ -126,17 +129,12 @@ export class SkillMerger {
       });
 
       if (handled.errors.length > 0) {
-        throw new Error(
-          `Skill merge conflicts:\n${handled.errors.join('\n')}`
-        );
+        throw new Error(`Skill merge conflicts:\n${handled.errors.join('\n')}`);
       }
     }
 
     // Merge instructions
-    const instructions = this.mergeInstructions(
-      skillsToMerge,
-      options.format
-    );
+    const instructions = this.mergeInstructions(skillsToMerge, options.format);
 
     // Merge examples
     const examples = options.includeExamples
@@ -144,19 +142,13 @@ export class SkillMerger {
       : [];
 
     // Merge tools
-    const tools = options.includeTools
-      ? this.mergeTools(skillsToMerge)
-      : [];
+    const tools = options.includeTools ? this.mergeTools(skillsToMerge) : [];
 
     // Track included skills
     skillsToMerge.forEach((s) => includedSkills.push(s.skill.name));
 
     // Estimate tokens
-    const estimatedTokens = this.estimateTokens(
-      instructions,
-      examples,
-      tools
-    );
+    const estimatedTokens = this.estimateTokens(instructions, examples, tools);
 
     // Check token budget
     if (options.maxTokens && estimatedTokens > options.maxTokens) {
@@ -233,9 +225,10 @@ export class SkillMerger {
   /**
    * Detect conflicts between skills
    */
-  private detectConflicts(
-    skills: CompiledSkill[]
-  ): { resolved: CompiledSkill[]; conflicts: string[] } {
+  private detectConflicts(skills: CompiledSkill[]): {
+    resolved: CompiledSkill[];
+    conflicts: string[];
+  } {
     const seen = new Set<string>();
     const conflicts: string[] = [];
 
@@ -468,7 +461,9 @@ export class SkillMerger {
     let total = Math.ceil(instructions.length / 4);
 
     for (const example of examples) {
-      total += Math.ceil((example.description.length + example.code.length) / 4);
+      total += Math.ceil(
+        (example.description.length + example.code.length) / 4
+      );
     }
 
     total += Math.ceil(tools.join(' ').length / 4);

@@ -29,7 +29,11 @@ export class RegistryError extends Error {
    */
   public readonly context?: Record<string, unknown>;
 
-  constructor(message: string, code: string, context?: Record<string, unknown>) {
+  constructor(
+    message: string,
+    code: string,
+    context?: Record<string, unknown>
+  ) {
     super(message);
     this.name = 'RegistryError';
     this.code = code;

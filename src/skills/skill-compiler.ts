@@ -92,7 +92,10 @@ export class SkillCompiler {
   /**
    * Validate skill structure
    */
-  private validateSkill(skill: PCLSkill): { errors: string[]; warnings: string[] } {
+  private validateSkill(skill: PCLSkill): {
+    errors: string[];
+    warnings: string[];
+  } {
     const errors: string[] = [];
     const warnings: string[] = [];
 
@@ -121,15 +124,21 @@ export class SkillCompiler {
 
     // Content quality checks
     if (skill.instructions && skill.instructions.length < 50) {
-      warnings.push('Instructions are very short (<50 chars). Consider adding more detail.');
+      warnings.push(
+        'Instructions are very short (<50 chars). Consider adding more detail.'
+      );
     }
 
     if (!skill.examples || skill.examples.length === 0) {
-      warnings.push('No examples provided. Examples help users understand usage.');
+      warnings.push(
+        'No examples provided. Examples help users understand usage.'
+      );
     }
 
     if (!skill.tools || skill.tools.length === 0) {
-      warnings.push('No tools specified. Consider restricting tool access for security.');
+      warnings.push(
+        'No tools specified. Consider restricting tool access for security.'
+      );
     }
 
     return { errors, warnings };

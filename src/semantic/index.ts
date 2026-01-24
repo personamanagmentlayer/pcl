@@ -1988,7 +1988,10 @@ export class SemanticAnalyzer {
               ErrorCode.TYPE_UNKNOWN,
               `Define the persona '${personaName}' before using it in the team, or check for typos`
             );
-          } else if (!(persona.type instanceof PersonaType) && !(persona.type instanceof TeamType)) {
+          } else if (
+            !(persona.type instanceof PersonaType) &&
+            !(persona.type instanceof TeamType)
+          ) {
             this.error(
               `${personaName} is not a persona or team`,
               ref.span,
@@ -2144,7 +2147,9 @@ export class SemanticAnalyzer {
     for (const member of teamSymbol.type.members) {
       const memberSymbol = this.currentScope.lookup(member.name);
       if (memberSymbol?.type instanceof TeamType) {
-        if (this.detectCircularTeamReferences(member.name, new Set(visited), span)) {
+        if (
+          this.detectCircularTeamReferences(member.name, new Set(visited), span)
+        ) {
           return true;
         }
       }

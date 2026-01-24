@@ -67,7 +67,7 @@ const COHERE_MODELS: ModelInfo[] = [
       chatHistory: true,
     },
     inputTokenCost: 0.15 / 1000000, // $0.15 per million
-    outputTokenCost: 0.60 / 1000000, // $0.60 per million
+    outputTokenCost: 0.6 / 1000000, // $0.60 per million
     version: '1.0',
   },
   {
@@ -88,8 +88,8 @@ const COHERE_MODELS: ModelInfo[] = [
       stopSequences: true,
       chatHistory: true,
     },
-    inputTokenCost: 0.30 / 1000000, // $0.30 per million
-    outputTokenCost: 0.60 / 1000000, // $0.60 per million
+    inputTokenCost: 0.3 / 1000000, // $0.30 per million
+    outputTokenCost: 0.6 / 1000000, // $0.60 per million
     version: '1.0',
   },
 ];
@@ -146,7 +146,9 @@ export class CohereProvider extends BaseProvider {
     };
   }
 
-  protected async doComplete(request: CompletionRequest): Promise<CompletionResponse> {
+  protected async doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse> {
     const cohereRequest = this.convertRequest(request);
 
     const response = await this.fetch(`${this.baseUrl}/chat`, {
@@ -181,7 +183,9 @@ export class CohereProvider extends BaseProvider {
     return this.convertResponse(cohereResponse, request.model);
   }
 
-  protected async *doStream(request: CompletionRequest): AsyncIterable<StreamChunk> {
+  protected async *doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk> {
     const cohereRequest = this.convertRequest(request);
     cohereRequest.stream = true;
 
@@ -257,7 +261,9 @@ export class CohereProvider extends BaseProvider {
               yield {
                 content: '',
                 done: true,
-                finishReason: this.convertFinishReason(event.finish_reason || 'COMPLETE'),
+                finishReason: this.convertFinishReason(
+                  event.finish_reason || 'COMPLETE'
+                ),
                 usage: {
                   inputTokens,
                   outputTokens,
@@ -293,7 +299,10 @@ export class CohereProvider extends BaseProvider {
     // Build chat history from messages
     for (let i = 0; i < request.messages.length; i++) {
       const msg = request.messages[i];
-      const content = typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content);
+      const content =
+        typeof msg.content === 'string'
+          ? msg.content
+          : JSON.stringify(msg.content);
 
       if (i === request.messages.length - 1) {
         // Last message is the current message
@@ -355,8 +364,13 @@ export class CohereProvider extends BaseProvider {
   /**
    * Convert JSON schema to Cohere parameter definitions
    */
-  private convertToolSchema(schema: Record<string, unknown>): Record<string, unknown> {
-    const properties = schema.properties as Record<string, Record<string, unknown>>;
+  private convertToolSchema(
+    schema: Record<string, unknown>
+  ): Record<string, unknown> {
+    const properties = schema.properties as Record<
+      string,
+      Record<string, unknown>
+    >;
     const required = (schema.required as string[]) || [];
     const paramDefs: Record<string, unknown> = {};
 
@@ -398,7 +412,8 @@ export class CohereProvider extends BaseProvider {
         inputTokens: response.meta.tokens?.input_tokens || 0,
         outputTokens: response.meta.tokens?.output_tokens || 0,
         totalTokens:
-          (response.meta.tokens?.input_tokens || 0) + (response.meta.tokens?.output_tokens || 0),
+          (response.meta.tokens?.input_tokens || 0) +
+          (response.meta.tokens?.output_tokens || 0),
       },
       model,
     };
@@ -417,7 +432,9 @@ export class CohereProvider extends BaseProvider {
   /**
    * Convert Cohere finish reason to PCL format
    */
-  private convertFinishReason(reason: string): 'stop' | 'length' | 'function_call' | 'content_filter' | 'error' {
+  private convertFinishReason(
+    reason: string
+  ): 'stop' | 'length' | 'function_call' | 'content_filter' | 'error' {
     switch (reason) {
       case 'COMPLETE':
         return 'stop';

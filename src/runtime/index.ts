@@ -429,7 +429,11 @@ export class PersonaInstance {
           // Update stats
           this.updateStats(duration);
 
-          this.emit({ type: 'persona:response', persona: this.state, response });
+          this.emit({
+            type: 'persona:response',
+            persona: this.state,
+            response,
+          });
 
           yield { chunk: chunk.content, done: true, response };
         } else {
@@ -536,7 +540,9 @@ export class PersonaInstance {
 
     // Add intent
     if (config.intent) {
-      parts.push(`You are a persona with the following intent: ${config.intent}`);
+      parts.push(
+        `You are a persona with the following intent: ${config.intent}`
+      );
     }
 
     // Add tone guidance
@@ -565,9 +571,7 @@ export class PersonaInstance {
 
     // Add skills
     if (config.skills.length > 0) {
-      parts.push(
-        `Your expertise includes: ${config.skills.join(', ')}`
-      );
+      parts.push(`Your expertise includes: ${config.skills.join(', ')}`);
     }
 
     // Add constraints
@@ -1387,7 +1391,10 @@ export class WorkflowExecutor {
     return Promise.race([
       operation(),
       new Promise<T>((_, reject) =>
-        setTimeout(() => reject(new Error(`Operation timed out after ${timeoutMs}ms`)), timeoutMs)
+        setTimeout(
+          () => reject(new Error(`Operation timed out after ${timeoutMs}ms`)),
+          timeoutMs
+        )
       ),
     ]);
   }
@@ -1696,7 +1703,10 @@ export class WorkflowExecutor {
     };
 
     // Evaluate condition using expression evaluator
-    const conditionResult = this.evaluator.evaluate(expr.condition, evalContext);
+    const conditionResult = this.evaluator.evaluate(
+      expr.condition,
+      evalContext
+    );
     const condition = Boolean(conditionResult);
 
     if (condition) {
@@ -1739,7 +1749,10 @@ export class WorkflowExecutor {
         case 'while':
           // Evaluate condition - continue while it's true
           if (expr.condition) {
-            const conditionResult = this.evaluator.evaluate(expr.condition, evalContext);
+            const conditionResult = this.evaluator.evaluate(
+              expr.condition,
+              evalContext
+            );
             shouldContinue = Boolean(conditionResult);
           } else {
             shouldContinue = false;
@@ -1749,7 +1762,10 @@ export class WorkflowExecutor {
         case 'until':
           // Evaluate condition - continue until it's true
           if (expr.condition) {
-            const conditionResult = this.evaluator.evaluate(expr.condition, evalContext);
+            const conditionResult = this.evaluator.evaluate(
+              expr.condition,
+              evalContext
+            );
             shouldContinue = !conditionResult;
           } else {
             shouldContinue = false;
@@ -2149,7 +2165,12 @@ export class Runtime {
     // Get provider for this persona (specific or default)
     const provider = this.providerMap.get(name) ?? this.defaultProvider;
 
-    const instance = new PersonaInstance(name, name, config, provider ?? undefined);
+    const instance = new PersonaInstance(
+      name,
+      name,
+      config,
+      provider ?? undefined
+    );
 
     // Forward events
     instance.on((event) => this.emit(event));

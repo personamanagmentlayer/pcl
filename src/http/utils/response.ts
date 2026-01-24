@@ -8,7 +8,11 @@ import type { APISuccess, APIError } from '../types/response.js';
 /**
  * Send a success response
  */
-export function sendSuccess<T>(res: Response, data: T, statusCode: number = 200): void {
+export function sendSuccess<T>(
+  res: Response,
+  data: T,
+  statusCode: number = 200
+): void {
   const response: APISuccess<T> = {
     success: true,
     data,
@@ -51,21 +55,30 @@ export function sendValidationError(
 /**
  * Send an unauthorized error response
  */
-export function sendUnauthorized(res: Response, message: string = 'Unauthorized'): void {
+export function sendUnauthorized(
+  res: Response,
+  message: string = 'Unauthorized'
+): void {
   sendError(res, 'UNAUTHORIZED', message, 401);
 }
 
 /**
  * Send a forbidden error response
  */
-export function sendForbidden(res: Response, message: string = 'Forbidden'): void {
+export function sendForbidden(
+  res: Response,
+  message: string = 'Forbidden'
+): void {
   sendError(res, 'FORBIDDEN', message, 403);
 }
 
 /**
  * Send a not found error response
  */
-export function sendNotFound(res: Response, message: string = 'Resource not found'): void {
+export function sendNotFound(
+  res: Response,
+  message: string = 'Resource not found'
+): void {
   sendError(res, 'NOT_FOUND', message, 404);
 }
 

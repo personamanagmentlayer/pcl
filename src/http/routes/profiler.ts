@@ -12,7 +12,11 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { getProfiler, formatBytes, formatDuration } from '../../observability/profiler.js';
+import {
+  getProfiler,
+  formatBytes,
+  formatDuration,
+} from '../../observability/profiler.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              STATE

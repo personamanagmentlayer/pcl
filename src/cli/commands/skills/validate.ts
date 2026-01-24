@@ -70,7 +70,9 @@ export async function skillValidateCommand(
       });
 
       if (strict) {
-        console.error('\n✗ Validation failed in strict mode (warnings treated as errors)');
+        console.error(
+          '\n✗ Validation failed in strict mode (warnings treated as errors)'
+        );
         process.exit(1);
       }
     }
@@ -80,11 +82,17 @@ export async function skillValidateCommand(
       console.log('\nMetadata:');
       console.log(`  Hash: ${result.skill.hash}`);
       console.log(`  Token Count: ${result.skill.metadata.tokenCount}`);
-      console.log(`  Instructions Length: ${result.skill.metadata.instructionsLength} chars`);
+      console.log(
+        `  Instructions Length: ${result.skill.metadata.instructionsLength} chars`
+      );
       console.log(`  Example Count: ${result.skill.metadata.exampleCount}`);
       console.log(`  Tool Count: ${result.skill.metadata.toolCount}`);
-      console.log(`  Dependency Count: ${result.skill.metadata.dependencyCount}`);
-      console.log(`  Compiled At: ${result.skill.metadata.compiledAt.toISOString()}`);
+      console.log(
+        `  Dependency Count: ${result.skill.metadata.dependencyCount}`
+      );
+      console.log(
+        `  Compiled At: ${result.skill.metadata.compiledAt.toISOString()}`
+      );
     }
 
     // Success

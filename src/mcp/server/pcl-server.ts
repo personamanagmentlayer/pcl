@@ -11,7 +11,11 @@ import type {
   McpResource,
   McpResourceContent,
 } from '../types/mcp.js';
-import type { Runtime, PersonaInstance, TeamInstance } from '../../runtime/index.js';
+import type {
+  Runtime,
+  PersonaInstance,
+  TeamInstance,
+} from '../../runtime/index.js';
 
 /**
  * PCL MCP Server Configuration
@@ -163,9 +167,7 @@ export class PclServer extends PclMcpServer {
         },
       },
       async (params: McpToolCallParams) => {
-        return this.executeTeam(
-          params.arguments as unknown as TeamExecuteArgs
-        );
+        return this.executeTeam(params.arguments as unknown as TeamExecuteArgs);
       }
     );
 
@@ -480,7 +482,9 @@ export class PclServer extends PclMcpServer {
   /**
    * Get detailed team information
    */
-  private async getTeamInfo(args: { team: string }): Promise<McpToolCallResult> {
+  private async getTeamInfo(args: {
+    team: string;
+  }): Promise<McpToolCallResult> {
     try {
       const team = this.runtime.getTeam(args.team);
 

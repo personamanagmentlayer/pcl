@@ -3,7 +3,13 @@
  */
 
 import { Router } from 'express';
-import { register, login, refresh, logout, me } from '../controllers/auth.controller.js';
+import {
+  register,
+  login,
+  refresh,
+  logout,
+  me,
+} from '../controllers/auth.controller.js';
 import { authenticate } from '../middleware/auth.js';
 import { authLimiter } from '../middleware/rate-limit.js';
 

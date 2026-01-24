@@ -433,7 +433,12 @@ export type Visibility = 'pub' | 'priv';
 /**
  * Backoff strategies for retries
  */
-export type BackoffStrategy = 'linear' | 'exponential' | 'constant' | 'fibonacci' | 'random';
+export type BackoffStrategy =
+  | 'linear'
+  | 'exponential'
+  | 'constant'
+  | 'fibonacci'
+  | 'random';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              SKILL DEFINITIONS

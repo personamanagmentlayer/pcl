@@ -74,20 +74,26 @@ export class BedrockProvider implements AIProvider {
 
     this.client = new BedrockRuntimeClient({
       region: config.region,
-      credentials: config.accessKeyId && config.secretAccessKey
-        ? {
-            accessKeyId: config.accessKeyId,
-            secretAccessKey: config.secretAccessKey,
-          }
-        : undefined,
+      credentials:
+        config.accessKeyId && config.secretAccessKey
+          ? {
+              accessKeyId: config.accessKeyId,
+              secretAccessKey: config.secretAccessKey,
+            }
+          : undefined,
     });
   }
 
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
-    const modelId = request.model || this.config.defaultModel || 'anthropic.claude-3-haiku-20240307-v1:0';
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
+    const modelId =
+      request.model ||
+      this.config.defaultModel ||
+      'anthropic.claude-3-haiku-20240307-v1:0';
 
     // Build request payload (format varies by model)
     const payload = this.buildPayload(request, modelId);
@@ -104,7 +110,10 @@ export class BedrockProvider implements AIProvider {
       const responseBody = JSON.parse(new TextDecoder().decode(response.body));
 
       // Parse response based on model type
-      const { content, finishReason, usage } = this.parseResponse(responseBody, modelId);
+      const { content, finishReason, usage } = this.parseResponse(
+        responseBody,
+        modelId
+      );
 
       return {
         content,
@@ -116,15 +125,22 @@ export class BedrockProvider implements AIProvider {
         },
       };
     } catch (error) {
-      throw new Error(`AWS Bedrock generation failed: ${(error as Error).message}`);
+      throw new Error(
+        `AWS Bedrock generation failed: ${(error as Error).message}`
+      );
     }
   }
 
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
-    const modelId = request.model || this.config.defaultModel || 'anthropic.claude-3-haiku-20240307-v1:0';
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
+    const modelId =
+      request.model ||
+      this.config.defaultModel ||
+      'anthropic.claude-3-haiku-20240307-v1:0';
 
     // Build request payload
     const payload = this.buildPayload(request, modelId);
@@ -145,10 +161,15 @@ export class BedrockProvider implements AIProvider {
 
       for await (const event of response.body) {
         if (event.chunk) {
-          const chunkBody = JSON.parse(new TextDecoder().decode(event.chunk.bytes));
+          const chunkBody = JSON.parse(
+            new TextDecoder().decode(event.chunk.bytes)
+          );
 
           // Parse chunk based on model type
-          const { content, done, finishReason } = this.parseChunk(chunkBody, modelId);
+          const { content, done, finishReason } = this.parseChunk(
+            chunkBody,
+            modelId
+          );
 
           yield {
             content,
@@ -158,7 +179,9 @@ export class BedrockProvider implements AIProvider {
         }
       }
     } catch (error) {
-      throw new Error(`AWS Bedrock streaming failed: ${(error as Error).message}`);
+      throw new Error(
+        `AWS Bedrock streaming failed: ${(error as Error).message}`
+      );
     }
   }
 
@@ -274,7 +297,10 @@ export class BedrockProvider implements AIProvider {
     };
   }
 
-  private parseResponse(responseBody: any, modelId: string): {
+  private parseResponse(
+    responseBody: any,
+    modelId: string
+  ): {
     content: string;
     finishReason: FinishReason;
     usage: TokenUsage;
@@ -286,7 +312,9 @@ export class BedrockProvider implements AIProvider {
         usage: {
           promptTokens: responseBody.usage?.input_tokens || 0,
           completionTokens: responseBody.usage?.output_tokens || 0,
-          totalTokens: (responseBody.usage?.input_tokens || 0) + (responseBody.usage?.output_tokens || 0),
+          totalTokens:
+            (responseBody.usage?.input_tokens || 0) +
+            (responseBody.usage?.output_tokens || 0),
         },
       };
     } else if (modelId.startsWith('amazon.titan')) {
@@ -297,7 +325,9 @@ export class BedrockProvider implements AIProvider {
         usage: {
           promptTokens: responseBody.inputTextTokenCount || 0,
           completionTokens: responseBody.results?.[0]?.tokenCount || 0,
-          totalTokens: (responseBody.inputTextTokenCount || 0) + (responseBody.results?.[0]?.tokenCount || 0),
+          totalTokens:
+            (responseBody.inputTextTokenCount || 0) +
+            (responseBody.results?.[0]?.tokenCount || 0),
         },
       };
     } else if (modelId.startsWith('meta.llama')) {
@@ -307,7 +337,9 @@ export class BedrockProvider implements AIProvider {
         usage: {
           promptTokens: responseBody.prompt_token_count || 0,
           completionTokens: responseBody.generation_token_count || 0,
-          totalTokens: (responseBody.prompt_token_count || 0) + (responseBody.generation_token_count || 0),
+          totalTokens:
+            (responseBody.prompt_token_count || 0) +
+            (responseBody.generation_token_count || 0),
         },
       };
     }
@@ -320,7 +352,10 @@ export class BedrockProvider implements AIProvider {
     };
   }
 
-  private parseChunk(chunkBody: any, modelId: string): {
+  private parseChunk(
+    chunkBody: any,
+    modelId: string
+  ): {
     content: string;
     done: boolean;
     finishReason?: FinishReason;

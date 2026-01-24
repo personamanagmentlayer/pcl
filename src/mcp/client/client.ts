@@ -19,7 +19,10 @@ import type {
   McpResponse,
 } from '../types/mcp.js';
 import { MCP_VERSION, McpMethod } from '../types/mcp.js';
-import { createJsonRpcRequest, isJsonRpcSuccessResponse } from '../types/jsonrpc.js';
+import {
+  createJsonRpcRequest,
+  isJsonRpcSuccessResponse,
+} from '../types/jsonrpc.js';
 
 /**
  * MCP Client Configuration
@@ -64,11 +67,14 @@ export class PclMcpClient implements McpClient {
     });
 
     // Send initialize request
-    const result = await this.sendRequest<McpInitializeResult>(McpMethod.Initialize, {
-      protocolVersion: MCP_VERSION,
-      capabilities: [],
-      clientInfo: this.info,
-    });
+    const result = await this.sendRequest<McpInitializeResult>(
+      McpMethod.Initialize,
+      {
+        protocolVersion: MCP_VERSION,
+        capabilities: [],
+        clientInfo: this.info,
+      }
+    );
 
     this.serverInfo = result;
 
@@ -103,7 +109,9 @@ export class PclMcpClient implements McpClient {
   public async listTools(): Promise<McpTool[]> {
     this.ensureConnected();
 
-    const result = await this.sendRequest<{ tools: McpTool[] }>(McpMethod.ToolsList);
+    const result = await this.sendRequest<{ tools: McpTool[] }>(
+      McpMethod.ToolsList
+    );
 
     return result.tools;
   }
@@ -111,13 +119,19 @@ export class PclMcpClient implements McpClient {
   /**
    * Call a tool
    */
-  public async callTool(name: string, args: Record<string, unknown>): Promise<McpToolCallResult> {
+  public async callTool(
+    name: string,
+    args: Record<string, unknown>
+  ): Promise<McpToolCallResult> {
     this.ensureConnected();
 
-    const result = await this.sendRequest<McpToolCallResult>(McpMethod.ToolsCall, {
-      name,
-      arguments: args,
-    });
+    const result = await this.sendRequest<McpToolCallResult>(
+      McpMethod.ToolsCall,
+      {
+        name,
+        arguments: args,
+      }
+    );
 
     return result;
   }
@@ -128,7 +142,9 @@ export class PclMcpClient implements McpClient {
   public async listResources(): Promise<McpResource[]> {
     this.ensureConnected();
 
-    const result = await this.sendRequest<{ resources: McpResource[] }>(McpMethod.ResourcesList);
+    const result = await this.sendRequest<{ resources: McpResource[] }>(
+      McpMethod.ResourcesList
+    );
 
     return result.resources;
   }
@@ -139,9 +155,12 @@ export class PclMcpClient implements McpClient {
   public async readResource(uri: string): Promise<McpResourceContent> {
     this.ensureConnected();
 
-    const result = await this.sendRequest<McpResourceContent>(McpMethod.ResourcesRead, {
-      uri,
-    });
+    const result = await this.sendRequest<McpResourceContent>(
+      McpMethod.ResourcesRead,
+      {
+        uri,
+      }
+    );
 
     return result;
   }
@@ -152,7 +171,9 @@ export class PclMcpClient implements McpClient {
   public async listPrompts(): Promise<McpPrompt[]> {
     this.ensureConnected();
 
-    const result = await this.sendRequest<{ prompts: McpPrompt[] }>(McpMethod.PromptsList);
+    const result = await this.sendRequest<{ prompts: McpPrompt[] }>(
+      McpMethod.PromptsList
+    );
 
     return result.prompts;
   }
@@ -166,10 +187,13 @@ export class PclMcpClient implements McpClient {
   ): Promise<McpPromptResult> {
     this.ensureConnected();
 
-    const result = await this.sendRequest<McpPromptResult>(McpMethod.PromptsGet, {
-      name,
-      arguments: args,
-    });
+    const result = await this.sendRequest<McpPromptResult>(
+      McpMethod.PromptsGet,
+      {
+        name,
+        arguments: args,
+      }
+    );
 
     return result;
   }
@@ -184,7 +208,11 @@ export class PclMcpClient implements McpClient {
 
     const id = ++this.requestId;
 
-    const request = createJsonRpcRequest(method, params as Record<string, unknown>, id);
+    const request = createJsonRpcRequest(
+      method,
+      params as Record<string, unknown>,
+      id
+    );
 
     // Create promise for response
     const responsePromise = new Promise<McpResponse>((resolve) => {
@@ -208,12 +236,18 @@ export class PclMcpClient implements McpClient {
   /**
    * Send a JSON-RPC notification (no response expected)
    */
-  private async sendNotification(method: string, params?: unknown): Promise<void> {
+  private async sendNotification(
+    method: string,
+    params?: unknown
+  ): Promise<void> {
     if (!this.transport) {
       throw new Error('Not connected');
     }
 
-    const notification = createJsonRpcRequest(method, params as Record<string, unknown>);
+    const notification = createJsonRpcRequest(
+      method,
+      params as Record<string, unknown>
+    );
 
     await this.transport.send(notification as McpRequest);
   }

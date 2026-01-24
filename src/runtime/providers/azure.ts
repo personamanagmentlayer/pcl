@@ -91,7 +91,9 @@ export class AzureOpenAIProvider implements AIProvider {
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     // For Azure, we use the deployment which is already in the base URL
     const model = this.config.deployment;
 
@@ -141,14 +143,18 @@ export class AzureOpenAIProvider implements AIProvider {
         },
       };
     } catch (error) {
-      throw new Error(`Azure OpenAI generation failed: ${(error as Error).message}`);
+      throw new Error(
+        `Azure OpenAI generation failed: ${(error as Error).message}`
+      );
     }
   }
 
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     // For Azure, we use the deployment which is already in the base URL
     const model = this.config.deployment;
 
@@ -177,11 +183,15 @@ export class AzureOpenAIProvider implements AIProvider {
         yield {
           content,
           done: finishReason !== null && finishReason !== undefined,
-          finishReason: finishReason ? this.mapFinishReason(finishReason) : undefined,
+          finishReason: finishReason
+            ? this.mapFinishReason(finishReason)
+            : undefined,
         };
       }
     } catch (error) {
-      throw new Error(`Azure OpenAI streaming failed: ${(error as Error).message}`);
+      throw new Error(
+        `Azure OpenAI streaming failed: ${(error as Error).message}`
+      );
     }
   }
 

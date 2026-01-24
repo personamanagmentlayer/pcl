@@ -14,7 +14,8 @@ export const PCL_KEYWORDS: PCLKeyword[] = [
   {
     keyword: 'persona',
     category: PCLKeywordCategory.Declaration,
-    documentation: 'Define a persona (AI agent with specific behavior and configuration)',
+    documentation:
+      'Define a persona (AI agent with specific behavior and configuration)',
     detail: 'Declaration',
   },
   {

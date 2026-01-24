@@ -4,11 +4,7 @@
  * Provides go-to-definition and find-references for skills
  */
 
-import {
-  Location,
-  Position,
-  Range,
-} from 'vscode-languageserver/node';
+import { Location, Position, Range } from 'vscode-languageserver/node';
 import { readdir, readFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { existsSync } from 'fs';
@@ -58,7 +54,7 @@ export class SkillNavigationProvider {
 
       try {
         const files = await readdir(dir);
-        const skillFiles = files.filter(f => f.endsWith('.md'));
+        const skillFiles = files.filter((f) => f.endsWith('.md'));
 
         for (const file of skillFiles) {
           const filePath = join(dir, file);
@@ -72,7 +68,10 @@ export class SkillNavigationProvider {
               // Find the line where the dependency is mentioned
               const lines = content.split('\n');
               for (let i = 0; i < lines.length; i++) {
-                if (lines[i].includes(skillName) && lines[i].includes('dependencies')) {
+                if (
+                  lines[i].includes(skillName) &&
+                  lines[i].includes('dependencies')
+                ) {
                   locations.push({
                     uri: URI.file(filePath).toString(),
                     range: {
@@ -112,7 +111,7 @@ export class SkillNavigationProvider {
 
       try {
         const files = await readdir(dir);
-        const mdFiles = files.filter(f => f.endsWith('.md'));
+        const mdFiles = files.filter((f) => f.endsWith('.md'));
 
         for (const file of mdFiles) {
           const filePath = join(dir, file);
@@ -200,7 +199,11 @@ export class SkillNavigationProvider {
 
       if (skill.dependencies && skill.dependencies.length > 0) {
         for (const dep of skill.dependencies) {
-          const depNode = await this.getSkillDependencyTree(dep, documentPath, visited);
+          const depNode = await this.getSkillDependencyTree(
+            dep,
+            documentPath,
+            visited
+          );
           dependencies.push(depNode);
         }
       }

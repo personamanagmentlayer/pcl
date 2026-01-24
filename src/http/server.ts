@@ -63,23 +63,32 @@ export class HTTPRegistryServer {
         },
         tracing: {
           enabled: process.env.TRACING_ENABLED === 'true',
-          endpoint: process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces',
+          endpoint:
+            process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces',
         },
         logging: {
           enabled: process.env.LOGGING_ENABLED !== 'false',
-          level: (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') || 'info',
+          level:
+            (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') ||
+            'info',
         },
       });
 
       console.log('[Observability] Telemetry initialized');
       if (process.env.METRICS_ENABLED !== 'false') {
-        console.log(`[Observability] Metrics available at http://localhost:${process.env.METRICS_PORT || '9464'}/metrics`);
+        console.log(
+          `[Observability] Metrics available at http://localhost:${process.env.METRICS_PORT || '9464'}/metrics`
+        );
       }
       if (process.env.TRACING_ENABLED === 'true') {
-        console.log(`[Observability] Tracing enabled - exporting to ${process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces'}`);
+        console.log(
+          `[Observability] Tracing enabled - exporting to ${process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces'}`
+        );
       }
     } else {
-      console.log('[Observability] Telemetry disabled (set TELEMETRY_ENABLED=true to enable)');
+      console.log(
+        '[Observability] Telemetry disabled (set TELEMETRY_ENABLED=true to enable)'
+      );
     }
   }
 
@@ -88,10 +97,12 @@ export class HTTPRegistryServer {
    */
   private setupMiddleware(): void {
     // Security headers
-    this.app.use(helmet({
-      contentSecurityPolicy: false, // Disable for API
-      crossOriginEmbedderPolicy: false,
-    }));
+    this.app.use(
+      helmet({
+        contentSecurityPolicy: false, // Disable for API
+        crossOriginEmbedderPolicy: false,
+      })
+    );
 
     // CORS
     this.app.use(cors(this.config.cors));
@@ -141,10 +152,13 @@ export class HTTPRegistryServer {
 
     // Swagger/OpenAPI documentation
     this.app.use('/docs', swaggerUi.serve);
-    this.app.get('/docs', swaggerUi.setup(openApiSpec, {
-      customCss: '.swagger-ui .topbar { display: none }',
-      customSiteTitle: 'PCL Registry API Documentation',
-    }));
+    this.app.get(
+      '/docs',
+      swaggerUi.setup(openApiSpec, {
+        customCss: '.swagger-ui .topbar { display: none }',
+        customSiteTitle: 'PCL Registry API Documentation',
+      })
+    );
 
     // OpenAPI spec JSON endpoint
     this.app.get('/openapi.json', (req: Request, res: Response) => {

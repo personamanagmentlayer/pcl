@@ -4,7 +4,10 @@
  * Type definitions for IntelliSense/auto-complete functionality
  */
 
-import { CompletionItemKind, InsertTextFormat } from 'vscode-languageserver/node';
+import {
+  CompletionItemKind,
+  InsertTextFormat,
+} from 'vscode-languageserver/node';
 
 /**
  * PCL keyword categories

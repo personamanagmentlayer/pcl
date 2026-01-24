@@ -103,9 +103,7 @@ export class ConnectionPool {
 
       // Set timeout
       setTimeout(() => {
-        const index = this.pending.findIndex(
-          (p) => p.resolve === resolve
-        );
+        const index = this.pending.findIndex((p) => p.resolve === resolve);
         if (index !== -1) {
           this.pending.splice(index, 1);
           reject(
@@ -234,10 +232,7 @@ export class ConnectionPool {
 
     // Check per-host limit
     const hostConns = this.byHost.get(host);
-    if (
-      hostConns &&
-      hostConns.size >= this.options.maxConnectionsPerHost
-    ) {
+    if (hostConns && hostConns.size >= this.options.maxConnectionsPerHost) {
       return false;
     }
 
@@ -292,9 +287,7 @@ export class PooledRequest<T = unknown> {
   /**
    * Execute a request using a pooled connection
    */
-  async execute(
-    operation: (connection: Connection) => Promise<T>
-  ): Promise<T> {
+  async execute(operation: (connection: Connection) => Promise<T>): Promise<T> {
     let connection: Connection | null = null;
 
     try {

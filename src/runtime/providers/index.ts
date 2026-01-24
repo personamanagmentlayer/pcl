@@ -6,7 +6,11 @@
 import type { Message } from '../index';
 import { ProviderHealthMonitor, HealthMonitorRegistry } from './health';
 import { FallbackChain, FallbackChainBuilder } from './fallback';
-import { RateLimiter, RateLimiterRegistry, type RateLimiterConfig } from './rate-limiter';
+import {
+  RateLimiter,
+  RateLimiterRegistry,
+  type RateLimiterConfig,
+} from './rate-limiter';
 import { CostTracker, CostTrackerRegistry } from './cost-tracker';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -102,7 +106,12 @@ export interface GenerationRequest {
   readonly presencePenalty?: number;
 }
 
-export type FinishReason = 'stop' | 'length' | 'tool_use' | 'error' | 'cancelled';
+export type FinishReason =
+  | 'stop'
+  | 'length'
+  | 'tool_use'
+  | 'error'
+  | 'cancelled';
 
 export interface TokenUsage {
   /** Tokens in the prompt */
@@ -186,7 +195,10 @@ export class ProviderRegistry {
   /**
    * Register a provider with automatic health monitoring and rate limiting
    */
-  register(provider: AIProvider, config?: { rateLimiter?: Partial<RateLimiterConfig> }): void {
+  register(
+    provider: AIProvider,
+    config?: { rateLimiter?: Partial<RateLimiterConfig> }
+  ): void {
     this.providers.set(provider.name, provider);
 
     // Set first provider as default
@@ -230,7 +242,10 @@ export class ProviderRegistry {
    * Get the default provider
    */
   getDefault(): AIProvider {
-    if (this.defaultProvider === null || !this.providers.has(this.defaultProvider)) {
+    if (
+      this.defaultProvider === null ||
+      !this.providers.has(this.defaultProvider)
+    ) {
       throw new Error('No default provider available');
     }
 

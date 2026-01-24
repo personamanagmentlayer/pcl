@@ -52,7 +52,10 @@ class VersionStore {
     return this.versions.get(id) || null;
   }
 
-  async findByArtifactAndVersion(artifactId: string, version: string): Promise<Version | null> {
+  async findByArtifactAndVersion(
+    artifactId: string,
+    version: string
+  ): Promise<Version | null> {
     const key = `${artifactId}:${version}`;
     const id = this.versionIndex.get(key);
     return id ? this.versions.get(id) || null : null;
@@ -98,10 +101,15 @@ class VersionStore {
     return true;
   }
 
-  async getLatestVersion(artifactId: string, publishedOnly: boolean = true): Promise<Version | null> {
+  async getLatestVersion(
+    artifactId: string,
+    publishedOnly: boolean = true
+  ): Promise<Version | null> {
     const versions = await this.listByArtifact(artifactId);
 
-    const filtered = publishedOnly ? versions.filter((v) => v.published) : versions;
+    const filtered = publishedOnly
+      ? versions.filter((v) => v.published)
+      : versions;
 
     return filtered.length > 0 ? filtered[0] : null;
   }
@@ -126,7 +134,11 @@ function generateVersionId(): string {
 /**
  * Parse semver string into components
  */
-function parseSemver(version: string): { major: number; minor: number; patch: number } {
+function parseSemver(version: string): {
+  major: number;
+  minor: number;
+  patch: number;
+} {
   const parts = version.split('.').map((p) => parseInt(p, 10));
   return {
     major: parts[0],
@@ -151,7 +163,10 @@ function compareVersions(v1: string, v2: string): number {
 /**
  * Compare version with another and get detailed comparison
  */
-export function compareVersionDetails(newVersion: string, oldVersion: string): VersionComparison {
+export function compareVersionDetails(
+  newVersion: string,
+  oldVersion: string
+): VersionComparison {
   const newParts = parseSemver(newVersion);
   const oldParts = parseSemver(oldVersion);
 
@@ -198,7 +213,10 @@ export async function createVersion(
   userId: string
 ): Promise<VersionResponse> {
   // Check if version already exists for this artifact
-  const existing = await versionStore.findByArtifactAndVersion(artifactId, input.version);
+  const existing = await versionStore.findByArtifactAndVersion(
+    artifactId,
+    input.version
+  );
   if (existing) {
     throw new APIException(
       409,
@@ -244,7 +262,9 @@ export async function createVersion(
 /**
  * Get version by ID
  */
-export async function getVersionById(versionId: string): Promise<VersionResponse> {
+export async function getVersionById(
+  versionId: string
+): Promise<VersionResponse> {
   const version = await versionStore.findById(versionId);
   if (!version) {
     throw new APIException(404, 'VERSION_NOT_FOUND', 'Version not found');
@@ -256,20 +276,34 @@ export async function getVersionById(versionId: string): Promise<VersionResponse
 /**
  * Get specific version of an artifact
  */
-export async function getArtifactVersion(artifactId: string, versionString: string): Promise<VersionResponse> {
+export async function getArtifactVersion(
+  artifactId: string,
+  versionString: string
+): Promise<VersionResponse> {
   // Handle "latest" keyword
   if (versionString === 'latest') {
     const latest = await versionStore.getLatestVersion(artifactId, true);
     if (!latest) {
-      throw new APIException(404, 'VERSION_NOT_FOUND', 'No published versions found');
+      throw new APIException(
+        404,
+        'VERSION_NOT_FOUND',
+        'No published versions found'
+      );
     }
     return toVersionResponse(latest);
   }
 
   // Get specific version
-  const version = await versionStore.findByArtifactAndVersion(artifactId, versionString);
+  const version = await versionStore.findByArtifactAndVersion(
+    artifactId,
+    versionString
+  );
   if (!version) {
-    throw new APIException(404, 'VERSION_NOT_FOUND', `Version ${versionString} not found`);
+    throw new APIException(
+      404,
+      'VERSION_NOT_FOUND',
+      `Version ${versionString} not found`
+    );
   }
 
   return toVersionResponse(version);
@@ -278,7 +312,9 @@ export async function getArtifactVersion(artifactId: string, versionString: stri
 /**
  * List all versions of an artifact
  */
-export async function listArtifactVersions(artifactId: string): Promise<ListVersionsResponse> {
+export async function listArtifactVersions(
+  artifactId: string
+): Promise<ListVersionsResponse> {
   const versions = await versionStore.listByArtifact(artifactId);
 
   return {
@@ -323,7 +359,10 @@ export async function updateVersion(
 /**
  * Delete version
  */
-export async function deleteVersion(versionId: string, userId: string): Promise<void> {
+export async function deleteVersion(
+  versionId: string,
+  userId: string
+): Promise<void> {
   const version = await versionStore.findById(versionId);
   if (!version) {
     throw new APIException(404, 'VERSION_NOT_FOUND', 'Version not found');
@@ -347,7 +386,10 @@ export async function trackVersionDownload(versionId: string): Promise<void> {
 /**
  * Get latest version of an artifact
  */
-export async function getLatestVersion(artifactId: string, publishedOnly: boolean = true): Promise<VersionResponse> {
+export async function getLatestVersion(
+  artifactId: string,
+  publishedOnly: boolean = true
+): Promise<VersionResponse> {
   const latest = await versionStore.getLatestVersion(artifactId, publishedOnly);
   if (!latest) {
     throw new APIException(

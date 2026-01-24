@@ -70,7 +70,10 @@ export type JsonRpcResponse = JsonRpcSuccessResponse | JsonRpcErrorResponse;
 /**
  * JSON-RPC 2.0 Message (request, notification, or response)
  */
-export type JsonRpcMessage = JsonRpcRequest | JsonRpcNotification | JsonRpcResponse;
+export type JsonRpcMessage =
+  | JsonRpcRequest
+  | JsonRpcNotification
+  | JsonRpcResponse;
 
 /**
  * Standard JSON-RPC 2.0 Error Codes
@@ -89,21 +92,27 @@ export enum JsonRpcErrorCode {
 /**
  * Type guard to check if a message is a request
  */
-export function isJsonRpcRequest(message: JsonRpcMessage): message is JsonRpcRequest {
+export function isJsonRpcRequest(
+  message: JsonRpcMessage
+): message is JsonRpcRequest {
   return 'method' in message && 'id' in message;
 }
 
 /**
  * Type guard to check if a message is a notification
  */
-export function isJsonRpcNotification(message: JsonRpcMessage): message is JsonRpcNotification {
+export function isJsonRpcNotification(
+  message: JsonRpcMessage
+): message is JsonRpcNotification {
   return 'method' in message && !('id' in message);
 }
 
 /**
  * Type guard to check if a message is a response
  */
-export function isJsonRpcResponse(message: JsonRpcMessage): message is JsonRpcResponse {
+export function isJsonRpcResponse(
+  message: JsonRpcMessage
+): message is JsonRpcResponse {
   return 'result' in message || 'error' in message;
 }
 

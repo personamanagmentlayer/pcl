@@ -1543,9 +1543,7 @@ class YAMLGenerator {
         const merge = expr as AST.WorkflowMergeExpr;
         lines.push(`${indent}type: merge`);
         const mode =
-          merge.mode.kind === 'SimpleMergeMode'
-            ? merge.mode.mode
-            : 'custom';
+          merge.mode.kind === 'SimpleMergeMode' ? merge.mode.mode : 'custom';
         lines.push(`${indent}mode: ${mode}`);
         break;
       }
@@ -1801,9 +1799,7 @@ class TypeScriptGenerator {
     // Extract parent if extends
     if (decl.extends.length > 0) {
       const firstExtends = decl.extends[0];
-      parentName = firstExtends.typeName.parts
-        .map((p) => p.name)
-        .join('.');
+      parentName = firstExtends.typeName.parts.map((p) => p.name).join('.');
     }
 
     for (const member of decl.body.members) {
@@ -2011,7 +2007,9 @@ class TypeScriptGenerator {
     // Generate custom methods
     for (const method of methods) {
       this.blank();
-      this.line(`/** ${method.name.name} method (custom implementation needed) */`);
+      this.line(
+        `/** ${method.name.name} method (custom implementation needed) */`
+      );
       const params = method.parameters
         .map((p) => {
           const pName =
@@ -2032,7 +2030,9 @@ class TypeScriptGenerator {
       this.line(`${async}${method.name.name}(${params}): ${returnType} {`);
       this.indent();
       this.line(`// TODO: Implement custom ${method.name.name} logic`);
-      this.line(`throw new Error("Method ${method.name.name} not implemented");`);
+      this.line(
+        `throw new Error("Method ${method.name.name} not implemented");`
+      );
       this.dedent();
       this.line('}');
     }
@@ -2257,7 +2257,9 @@ class TypeScriptGenerator {
     // Generate workflow class
     this.line(`export class ${name}Workflow {`);
     this.indent();
-    this.line(`private status: 'pending' | 'running' | 'completed' | 'failed' = 'pending';`);
+    this.line(
+      `private status: 'pending' | 'running' | 'completed' | 'failed' = 'pending';`
+    );
     this.line(`private currentStep = 0;`);
     this.line(`private result: ${outputType} | null = null;`);
     this.line(`private error: Error | null = null;`);
@@ -3091,9 +3093,7 @@ class MarkdownGenerator {
         const merge = expr as AST.WorkflowMergeExpr;
         const mergeId = `${id}_merge`;
         const mode =
-          merge.mode.kind === 'SimpleMergeMode'
-            ? merge.mode.mode
-            : 'custom';
+          merge.mode.kind === 'SimpleMergeMode' ? merge.mode.mode : 'custom';
 
         nodes.push(`    ${mergeId}[Merge: ${mode}]`);
 

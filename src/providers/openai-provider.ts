@@ -75,7 +75,12 @@ interface OpenAICompletionResponse {
         arguments: string;
       };
     };
-    finish_reason: 'stop' | 'length' | 'function_call' | 'content_filter' | null;
+    finish_reason:
+      | 'stop'
+      | 'length'
+      | 'function_call'
+      | 'content_filter'
+      | null;
   }>;
   usage: {
     prompt_tokens: number;
@@ -254,7 +259,9 @@ export class OpenAIProvider extends BaseProvider {
     };
   }
 
-  protected async doComplete(request: CompletionRequest): Promise<CompletionResponse> {
+  protected async doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse> {
     const openaiRequest = this.convertRequest(request);
 
     const headers: Record<string, string> = {
@@ -276,11 +283,14 @@ export class OpenAIProvider extends BaseProvider {
       await this.handleErrorResponse(response);
     }
 
-    const openaiResponse = await this.parseJsonResponse<OpenAICompletionResponse>(response);
+    const openaiResponse =
+      await this.parseJsonResponse<OpenAICompletionResponse>(response);
     return this.convertResponse(openaiResponse);
   }
 
-  protected async *doStream(request: CompletionRequest): AsyncIterable<StreamChunk> {
+  protected async *doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk> {
     const openaiRequest = this.convertRequest(request);
     openaiRequest.stream = true;
 
@@ -418,7 +428,10 @@ export class OpenAIProvider extends BaseProvider {
       } else if (message.role === 'user' || message.role === 'assistant') {
         messages.push({
           role: message.role,
-          content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+          content:
+            typeof message.content === 'string'
+              ? message.content
+              : JSON.stringify(message.content),
         });
       } else if (message.role === 'function' && message.functionResponse) {
         messages.push({
@@ -465,7 +478,9 @@ export class OpenAIProvider extends BaseProvider {
   /**
    * Convert OpenAI response to PCL format
    */
-  private convertResponse(response: OpenAICompletionResponse): CompletionResponse {
+  private convertResponse(
+    response: OpenAICompletionResponse
+  ): CompletionResponse {
     const choice = response.choices[0];
 
     const result: CompletionResponse = {

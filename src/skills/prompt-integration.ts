@@ -433,7 +433,8 @@ export class PromptIntegration {
     // If still over budget, truncate content
     const truncateLength = targetTokens * 4;
     if (optimized.length > truncateLength) {
-      optimized = optimized.substring(0, truncateLength) + '\n\n[Content truncated]';
+      optimized =
+        optimized.substring(0, truncateLength) + '\n\n[Content truncated]';
       removed.push('truncated-content');
     }
 

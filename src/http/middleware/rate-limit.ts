@@ -30,7 +30,8 @@ export const authLimiter = rateLimit({
   max: 5, // Limit each IP to 5 requests per windowMs
   message: {
     success: false,
-    error: 'Too many authentication attempts from this IP, please try again later.',
+    error:
+      'Too many authentication attempts from this IP, please try again later.',
     code: 'AUTH_RATE_LIMIT_EXCEEDED',
   },
   standardHeaders: true,

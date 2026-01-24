@@ -209,9 +209,9 @@ export class MultiLayerCache implements CacheBackend {
       ...this.stats,
       hitRate: this.calculateHitRate(),
       layers: layerStats,
-      l1HitRate: (this.stats.l1Hits || 0) / (this.stats.hits || 1) * 100,
-      l2HitRate: (this.stats.l2Hits || 0) / (this.stats.hits || 1) * 100,
-      l3HitRate: (this.stats.l3Hits || 0) / (this.stats.hits || 1) * 100,
+      l1HitRate: ((this.stats.l1Hits || 0) / (this.stats.hits || 1)) * 100,
+      l2HitRate: ((this.stats.l2Hits || 0) / (this.stats.hits || 1)) * 100,
+      l3HitRate: ((this.stats.l3Hits || 0) / (this.stats.hits || 1)) * 100,
     };
   }
 
@@ -240,9 +240,7 @@ export class MultiLayerCache implements CacheBackend {
    * Get total size across all layers
    */
   async size(): Promise<number> {
-    const sizes = await Promise.all(
-      this.layers.map((layer) => layer.size())
-    );
+    const sizes = await Promise.all(this.layers.map((layer) => layer.size()));
     // Return size of L1 (most restrictive layer)
     return sizes[0] || 0;
   }
@@ -305,9 +303,7 @@ export class MultiLayerCache implements CacheBackend {
    */
   async mset<T>(entries: Map<string, T>, ttl?: number): Promise<void> {
     if (this.config.propagateSets) {
-      await Promise.all(
-        this.layers.map((layer) => layer.mset(entries, ttl))
-      );
+      await Promise.all(this.layers.map((layer) => layer.mset(entries, ttl)));
     } else {
       await this.layers[0].mset(entries, ttl);
     }
@@ -332,7 +328,10 @@ export class MultiLayerCache implements CacheBackend {
       await Promise.all(promises);
     } catch (error) {
       // Non-critical error - log but don't throw
-      console.warn(`Failed to populate upper cache layers for key "${key}":`, error);
+      console.warn(
+        `Failed to populate upper cache layers for key "${key}":`,
+        error
+      );
     }
   }
 

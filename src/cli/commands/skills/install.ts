@@ -51,8 +51,7 @@ export async function skillInstallCommand(
     const { skill, source } = result.value;
 
     // Determine installation directory
-    const installDir =
-      directory || join(process.cwd(), '.claude', 'skills');
+    const installDir = directory || join(process.cwd(), '.claude', 'skills');
 
     // Ensure directory exists
     if (!existsSync(installDir)) {

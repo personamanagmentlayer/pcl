@@ -54,7 +54,9 @@ export async function skillWizardCommand(): Promise<void> {
       name = await question('Skill name (lowercase, hyphens allowed): ');
       const namePattern = /^[a-z][a-z0-9-]*$/;
       if (!namePattern.test(name)) {
-        console.log('❌ Invalid name. Must start with lowercase letter and contain only lowercase letters, numbers, and hyphens.');
+        console.log(
+          '❌ Invalid name. Must start with lowercase letter and contain only lowercase letters, numbers, and hyphens.'
+        );
         name = '';
       }
     }
@@ -72,17 +74,28 @@ export async function skillWizardCommand(): Promise<void> {
     let template: WizardAnswers['template'] = 'basic';
     const templateChoice = await question('Choose template (1-5) [5]: ');
     switch (templateChoice || '5') {
-      case '1': template = 'language'; break;
-      case '2': template = 'framework'; break;
-      case '3': template = 'tool'; break;
-      case '4': template = 'domain'; break;
-      default: template = 'basic'; break;
+      case '1':
+        template = 'language';
+        break;
+      case '2':
+        template = 'framework';
+        break;
+      case '3':
+        template = 'tool';
+        break;
+      case '4':
+        template = 'domain';
+        break;
+      default:
+        template = 'basic';
+        break;
     }
 
     // Step 3: Description
     console.log('\nStep 3: Description');
     console.log('───────────────────────────────────────────────────');
-    const description = await question('Brief description: ') || `${name} skill`;
+    const description =
+      (await question('Brief description: ')) || `${name} skill`;
 
     // Step 4: Category
     console.log('\nStep 4: Category');
@@ -90,7 +103,7 @@ export async function skillWizardCommand(): Promise<void> {
     console.log('Common categories:');
     console.log('  - language, framework, devops, domain, data');
     console.log('  - security, qa, api, cloud, ai, tools');
-    const category = await question('Category [general]: ') || 'general';
+    const category = (await question('Category [general]: ')) || 'general';
 
     // Step 5: Complexity
     console.log('\nStep 5: Complexity Level');
@@ -103,23 +116,38 @@ export async function skillWizardCommand(): Promise<void> {
     let complexity: WizardAnswers['complexity'] = 'intermediate';
     const complexityChoice = await question('Choose complexity (1-4) [2]: ');
     switch (complexityChoice || '2') {
-      case '1': complexity = 'beginner'; break;
-      case '2': complexity = 'intermediate'; break;
-      case '3': complexity = 'advanced'; break;
-      case '4': complexity = 'expert'; break;
+      case '1':
+        complexity = 'beginner';
+        break;
+      case '2':
+        complexity = 'intermediate';
+        break;
+      case '3':
+        complexity = 'advanced';
+        break;
+      case '4':
+        complexity = 'expert';
+        break;
     }
 
     // Step 6: Tools
     console.log('\nStep 6: Required Tools');
     console.log('───────────────────────────────────────────────────');
     console.log('Common tools: Read, Write, Edit, Bash, Grep, WebSearch');
-    const toolsInput = await question('Tools (comma-separated) [Read,Write]: ') || 'Read,Write';
-    const tools = toolsInput.split(',').map(t => t.trim()).filter(t => t);
+    const toolsInput =
+      (await question('Tools (comma-separated) [Read,Write]: ')) ||
+      'Read,Write';
+    const tools = toolsInput
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t);
 
     // Step 7: Examples
     console.log('\nStep 7: Examples');
     console.log('───────────────────────────────────────────────────');
-    const includeExamplesInput = await question('Include example templates? (y/n) [y]: ');
+    const includeExamplesInput = await question(
+      'Include example templates? (y/n) [y]: '
+    );
     const includeExamples = includeExamplesInput.toLowerCase() !== 'n';
 
     let exampleCount = 2;
@@ -131,9 +159,9 @@ export async function skillWizardCommand(): Promise<void> {
     // Step 8: Metadata (Optional)
     console.log('\nStep 8: Metadata (Optional)');
     console.log('───────────────────────────────────────────────────');
-    const author = await question('Author name [skip]: ') || undefined;
-    const license = await question('License [MIT]: ') || 'MIT';
-    const version = await question('Version [1.0.0]: ') || '1.0.0';
+    const author = (await question('Author name [skip]: ')) || undefined;
+    const license = (await question('License [MIT]: ')) || 'MIT';
+    const version = (await question('Version [1.0.0]: ')) || '1.0.0';
 
     // Summary
     console.log('\n╔════════════════════════════════════════════════════╗');
@@ -189,7 +217,6 @@ export async function skillWizardCommand(): Promise<void> {
     console.log(`  2. Validate: pcl skill validate ${filePath}`);
     console.log(`  3. Test: pcl skill test ${filePath}`);
     console.log(`  4. Publish: pcl skill publish ${filePath}`);
-
   } catch (error) {
     console.error(
       formatError(
@@ -220,9 +247,10 @@ function generateSkillContent(answers: WizardAnswers): string {
     version,
   } = answers;
 
-  const titleCase = name.split('-').map(w =>
-    w.charAt(0).toUpperCase() + w.slice(1)
-  ).join(' ');
+  const titleCase = name
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
 
   // Build YAML frontmatter
   let frontmatter = `---
@@ -233,7 +261,7 @@ complexity: ${complexity}
 version: ${version}
 license: ${license}
 allowed-tools:
-${tools.map(t => `  - ${t}`).join('\n')}
+${tools.map((t) => `  - ${t}`).join('\n')}
 user-invocable: true`;
 
   if (author) {

@@ -17,7 +17,13 @@ import {
   getOperatorPrecedence,
   isAssignmentOperator,
 } from '../lexer';
-import type { PCLError, Position, Result, Span, BackoffStrategy } from '../types';
+import type {
+  PCLError,
+  Position,
+  Result,
+  Span,
+  BackoffStrategy,
+} from '../types';
 import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -968,7 +974,9 @@ export class Parser {
           ) {
             backoff = backoffValue;
           } else {
-            this.error(`Invalid backoff strategy: ${backoffValue}. Expected: linear, exponential, fibonacci, or random`);
+            this.error(
+              `Invalid backoff strategy: ${backoffValue}. Expected: linear, exponential, fibonacci, or random`
+            );
           }
           break;
         case 'maxDelay':
@@ -1090,7 +1098,10 @@ export class Parser {
       // Optional max iterations: <-> (5)
       let maxIterations: AST.NumberLiteral | null = null;
       if (this.match(TokenType.LPAREN)) {
-        if (this.check(TokenType.NUMBER_INT) || this.check(TokenType.NUMBER_FLOAT)) {
+        if (
+          this.check(TokenType.NUMBER_INT) ||
+          this.check(TokenType.NUMBER_FLOAT)
+        ) {
           maxIterations = this.parseNumberLiteral();
         }
         this.expect(TokenType.RPAREN, 'Expected ")" after max iterations');

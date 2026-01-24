@@ -5,14 +5,21 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { SearchQuerySchema } from '../schemas/search.schema.js';
-import { searchArtifacts, getSearchSuggestions } from '../services/search.service.js';
+import {
+  searchArtifacts,
+  getSearchSuggestions,
+} from '../services/search.service.js';
 import { sendSuccess, sendValidationError } from '../utils/response.js';
 
 /**
  * Search artifacts
  * GET /search
  */
-export async function search(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function search(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
   try {
     // Validate query parameters
     const query = SearchQuerySchema.parse(req.query);
@@ -24,10 +31,13 @@ export async function search(req: Request, res: Response, next: NextFunction): P
     sendSuccess(res, results, 200);
   } catch (error) {
     if (error instanceof ZodError) {
-      sendValidationError(res, error.issues.map((err) => ({
-        field: err.path.join('.'),
-        message: err.message,
-      })));
+      sendValidationError(
+        res,
+        error.issues.map((err) => ({
+          field: err.path.join('.'),
+          message: err.message,
+        }))
+      );
       return;
     }
     next(error);
@@ -38,7 +48,11 @@ export async function search(req: Request, res: Response, next: NextFunction): P
  * Get search suggestions
  * GET /search/suggestions
  */
-export async function suggestions(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function suggestions(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
   try {
     const query = req.query.q as string;
 

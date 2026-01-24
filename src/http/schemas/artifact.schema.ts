@@ -7,7 +7,12 @@ import { z } from 'zod';
 /**
  * Artifact type enumeration
  */
-export const ArtifactTypeSchema = z.enum(['persona', 'skill', 'workflow', 'team']);
+export const ArtifactTypeSchema = z.enum([
+  'persona',
+  'skill',
+  'workflow',
+  'team',
+]);
 export type ArtifactType = z.infer<typeof ArtifactTypeSchema>;
 
 /**
@@ -18,7 +23,10 @@ export const ArtifactMetadataSchema = z.object({
     .string()
     .min(1, 'Name is required')
     .max(100, 'Name must be at most 100 characters')
-    .regex(/^[a-zA-Z0-9\s\-_]+$/, 'Name can only contain letters, numbers, spaces, hyphens, and underscores'),
+    .regex(
+      /^[a-zA-Z0-9\s\-_]+$/,
+      'Name can only contain letters, numbers, spaces, hyphens, and underscores'
+    ),
   slug: z
     .string()
     .min(1, 'Slug is required')
@@ -36,19 +44,9 @@ export const ArtifactMetadataSchema = z.object({
     .array(z.string().min(1).max(50))
     .max(10, 'Maximum 10 tags allowed')
     .default([]),
-  license: z
-    .string()
-    .max(50)
-    .default('MIT')
-    .optional(),
-  repository: z
-    .string()
-    .url('Repository must be a valid URL')
-    .optional(),
-  homepage: z
-    .string()
-    .url('Homepage must be a valid URL')
-    .optional(),
+  license: z.string().max(50).default('MIT').optional(),
+  repository: z.string().url('Repository must be a valid URL').optional(),
+  homepage: z.string().url('Homepage must be a valid URL').optional(),
   keywords: z
     .array(z.string().min(1).max(30))
     .max(20, 'Maximum 20 keywords allowed')
@@ -140,7 +138,14 @@ export const ListArtifactsQuerySchema = z.object({
     .transform((val) => parseInt(val, 10))
     .pipe(z.number().int().min(0)),
   sort: z
-    .enum(['createdAt:asc', 'createdAt:desc', 'downloads:asc', 'downloads:desc', 'stars:asc', 'stars:desc'])
+    .enum([
+      'createdAt:asc',
+      'createdAt:desc',
+      'downloads:asc',
+      'downloads:desc',
+      'stars:asc',
+      'stars:desc',
+    ])
     .default('createdAt:desc')
     .optional(),
 });

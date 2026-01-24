@@ -380,11 +380,15 @@ Register-ArgumentCompleter -Native -CommandName pcl -ScriptBlock {
 /**
  * Generate shell completion script
  */
-export async function completionCommand(options: CompletionOptions): Promise<void> {
+export async function completionCommand(
+  options: CompletionOptions
+): Promise<void> {
   const shell = options.shell || detectShell();
 
   if (!shell) {
-    console.error('Error: Could not detect shell. Please specify with --shell <bash|zsh|fish|powershell>');
+    console.error(
+      'Error: Could not detect shell. Please specify with --shell <bash|zsh|fish|powershell>'
+    );
     process.exit(1);
   }
 
@@ -423,11 +427,15 @@ export async function completionCommand(options: CompletionOptions): Promise<voi
         break;
       case 'fish':
         console.error('  Save to ~/.config/fish/completions/pcl.fish:');
-        console.error('  pcl completion --shell fish > ~/.config/fish/completions/pcl.fish');
+        console.error(
+          '  pcl completion --shell fish > ~/.config/fish/completions/pcl.fish'
+        );
         break;
       case 'powershell':
         console.error('  Add to your PowerShell profile ($PROFILE):');
-        console.error('  pcl completion --shell powershell | Out-String | Invoke-Expression');
+        console.error(
+          '  pcl completion --shell powershell | Out-String | Invoke-Expression'
+        );
         break;
     }
   }
@@ -442,7 +450,8 @@ function detectShell(): 'bash' | 'zsh' | 'fish' | 'powershell' | null {
   if (shell.includes('bash')) return 'bash';
   if (shell.includes('zsh')) return 'zsh';
   if (shell.includes('fish')) return 'fish';
-  if (process.platform === 'win32' || process.env.PSModulePath) return 'powershell';
+  if (process.platform === 'win32' || process.env.PSModulePath)
+    return 'powershell';
 
   return null;
 }

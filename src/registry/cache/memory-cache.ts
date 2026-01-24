@@ -300,7 +300,8 @@ export class MemoryCache implements CacheBackend {
     if (total === 0) {
       this.stats.avgLatency = latency;
     } else {
-      this.stats.avgLatency = (this.stats.avgLatency * (total - 1) + latency) / total;
+      this.stats.avgLatency =
+        (this.stats.avgLatency * (total - 1) + latency) / total;
     }
   }
 

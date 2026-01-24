@@ -91,7 +91,9 @@ export class ProviderRegistry {
     const entry = this.providers.get(name);
 
     if (!entry) {
-      throw new Error(`Provider "${name}" not found. Available: ${this.listNames().join(', ')}`);
+      throw new Error(
+        `Provider "${name}" not found. Available: ${this.listNames().join(', ')}`
+      );
     }
 
     const provider = entry.factory(config);
@@ -121,10 +123,11 @@ export class ProviderRegistry {
    * Shutdown all active providers
    */
   async shutdownAll(): Promise<void> {
-    const shutdownPromises = Array.from(this.activeProviders.values()).map((provider) =>
-      provider.shutdown().catch(() => {
-        // Ignore shutdown errors
-      })
+    const shutdownPromises = Array.from(this.activeProviders.values()).map(
+      (provider) =>
+        provider.shutdown().catch(() => {
+          // Ignore shutdown errors
+        })
     );
 
     await Promise.all(shutdownPromises);
@@ -167,7 +170,10 @@ export function registerProvider(entry: ProviderRegistryEntry): void {
 /**
  * Get or create provider instance (convenience function)
  */
-export async function getProvider(name: string, config: ProviderConfig): Promise<Provider> {
+export async function getProvider(
+  name: string,
+  config: ProviderConfig
+): Promise<Provider> {
   return getProviderRegistry().get(name, config);
 }
 

@@ -4,7 +4,12 @@
 
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { signToken, signRefreshToken, verifyToken } from '../utils/jwt.js';
-import type { RegisterInput, LoginInput, AuthResponse, UserResponse } from '../schemas/auth.schema.js';
+import type {
+  RegisterInput,
+  LoginInput,
+  AuthResponse,
+  UserResponse,
+} from '../schemas/auth.schema.js';
 import { APIException } from '../middleware/error-handler.js';
 
 /**
@@ -70,7 +75,11 @@ interface RefreshTokenData {
 class RefreshTokenStore {
   private tokens: Map<string, RefreshTokenData> = new Map();
 
-  async save(userId: string, token: string, expiresInSeconds: number): Promise<void> {
+  async save(
+    userId: string,
+    token: string,
+    expiresInSeconds: number
+  ): Promise<void> {
     const expiresAt = new Date(Date.now() + expiresInSeconds * 1000);
     this.tokens.set(token, { userId, token, expiresAt });
   }
@@ -128,7 +137,9 @@ function toUserResponse(user: User): UserResponse {
 /**
  * Register a new user
  */
-export async function registerUser(input: RegisterInput): Promise<AuthResponse> {
+export async function registerUser(
+  input: RegisterInput
+): Promise<AuthResponse> {
   // Check if username already exists
   if (await userStore.existsByUsername(input.username)) {
     throw new APIException(409, 'USERNAME_TAKEN', 'Username is already taken');
@@ -193,13 +204,21 @@ export async function loginUser(input: LoginInput): Promise<AuthResponse> {
     : await userStore.findByUsername(input.username);
 
   if (!user) {
-    throw new APIException(401, 'INVALID_CREDENTIALS', 'Invalid username or password');
+    throw new APIException(
+      401,
+      'INVALID_CREDENTIALS',
+      'Invalid username or password'
+    );
   }
 
   // Verify password
   const isValidPassword = await verifyPassword(input.password, user.password);
   if (!isValidPassword) {
-    throw new APIException(401, 'INVALID_CREDENTIALS', 'Invalid username or password');
+    throw new APIException(
+      401,
+      'INVALID_CREDENTIALS',
+      'Invalid username or password'
+    );
   }
 
   // Generate tokens
@@ -232,19 +251,29 @@ export async function loginUser(input: LoginInput): Promise<AuthResponse> {
 /**
  * Refresh access token
  */
-export async function refreshAccessToken(refreshToken: string): Promise<AuthResponse> {
+export async function refreshAccessToken(
+  refreshToken: string
+): Promise<AuthResponse> {
   // Verify refresh token
   let payload;
   try {
     payload = verifyToken(refreshToken);
   } catch (error) {
-    throw new APIException(401, 'INVALID_REFRESH_TOKEN', 'Invalid or expired refresh token');
+    throw new APIException(
+      401,
+      'INVALID_REFRESH_TOKEN',
+      'Invalid or expired refresh token'
+    );
   }
 
   // Check if refresh token exists in store
   const storedToken = await refreshTokenStore.findByToken(refreshToken);
   if (!storedToken) {
-    throw new APIException(401, 'INVALID_REFRESH_TOKEN', 'Refresh token not found or expired');
+    throw new APIException(
+      401,
+      'INVALID_REFRESH_TOKEN',
+      'Refresh token not found or expired'
+    );
   }
 
   // Get user

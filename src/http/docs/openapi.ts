@@ -7,7 +7,8 @@ export const openApiSpec = {
   info: {
     title: 'PCL HTTP Registry API',
     version: '1.0.0',
-    description: 'REST API for remote PCL artifact registry - personas, skills, workflows, and teams',
+    description:
+      'REST API for remote PCL artifact registry - personas, skills, workflows, and teams',
     contact: {
       name: 'PCL Team',
       url: 'https://github.com/personalayer/pcl',
@@ -50,7 +51,8 @@ export const openApiSpec = {
       post: {
         tags: ['Authentication'],
         summary: 'Register a new user',
-        description: 'Create a new user account. Rate limited to 5 requests per 15 minutes.',
+        description:
+          'Create a new user account. Rate limited to 5 requests per 15 minutes.',
         requestBody: {
           required: true,
           content: {
@@ -120,7 +122,8 @@ export const openApiSpec = {
       post: {
         tags: ['Authentication'],
         summary: 'Login user',
-        description: 'Authenticate user and receive access token. Rate limited to 5 requests per 15 minutes.',
+        description:
+          'Authenticate user and receive access token. Rate limited to 5 requests per 15 minutes.',
         requestBody: {
           required: true,
           content: {
@@ -203,7 +206,8 @@ export const openApiSpec = {
       get: {
         tags: ['Artifacts'],
         summary: 'List artifacts',
-        description: 'Get paginated list of artifacts with filtering and sorting. Rate limited to 100 requests per 15 minutes.',
+        description:
+          'Get paginated list of artifacts with filtering and sorting. Rate limited to 100 requests per 15 minutes.',
         parameters: [
           {
             name: 'type',
@@ -271,7 +275,14 @@ export const openApiSpec = {
             in: 'query',
             schema: {
               type: 'string',
-              enum: ['createdAt:asc', 'createdAt:desc', 'downloads:asc', 'downloads:desc', 'stars:asc', 'stars:desc'],
+              enum: [
+                'createdAt:asc',
+                'createdAt:desc',
+                'downloads:asc',
+                'downloads:desc',
+                'stars:asc',
+                'stars:desc',
+              ],
               default: 'createdAt:desc',
             },
           },
@@ -309,7 +320,8 @@ export const openApiSpec = {
       post: {
         tags: ['Artifacts'],
         summary: 'Create artifact',
-        description: 'Create a new artifact. Rate limited to 10 creates per hour.',
+        description:
+          'Create a new artifact. Rate limited to 10 creates per hour.',
         security: [{ bearerAuth: [] }],
         requestBody: {
           required: true,
@@ -484,7 +496,10 @@ export const openApiSpec = {
                     data: {
                       type: 'object',
                       properties: {
-                        message: { type: 'string', example: 'Artifact deleted successfully' },
+                        message: {
+                          type: 'string',
+                          example: 'Artifact deleted successfully',
+                        },
                       },
                     },
                   },
@@ -508,7 +523,8 @@ export const openApiSpec = {
       get: {
         tags: ['Search'],
         summary: 'Search artifacts',
-        description: 'Full-text search with fuzzy matching and highlighting. Rate limited to 30 requests per minute.',
+        description:
+          'Full-text search with fuzzy matching and highlighting. Rate limited to 30 requests per minute.',
         parameters: [
           {
             name: 'q',
@@ -609,7 +625,11 @@ export const openApiSpec = {
                         },
                         total: { type: 'integer', example: 42 },
                         query: { type: 'string', example: 'python developer' },
-                        took: { type: 'integer', description: 'Search time in milliseconds', example: 15 },
+                        took: {
+                          type: 'integer',
+                          description: 'Search time in milliseconds',
+                          example: 15,
+                        },
                         pagination: {
                           $ref: '#/components/schemas/Pagination',
                         },
@@ -645,9 +665,17 @@ export const openApiSpec = {
         properties: {
           id: { type: 'string', example: 'user_1234567890_abcdef' },
           username: { type: 'string', example: 'johndoe' },
-          email: { type: 'string', format: 'email', example: 'john@example.com' },
+          email: {
+            type: 'string',
+            format: 'email',
+            example: 'john@example.com',
+          },
           fullName: { type: 'string', example: 'John Doe' },
-          roles: { type: 'array', items: { type: 'string' }, example: ['user'] },
+          roles: {
+            type: 'array',
+            items: { type: 'string' },
+            example: ['user'],
+          },
           createdAt: { type: 'string', format: 'date-time' },
           updatedAt: { type: 'string', format: 'date-time' },
         },
@@ -662,9 +690,20 @@ export const openApiSpec = {
               user: {
                 $ref: '#/components/schemas/User',
               },
-              token: { type: 'string', description: 'JWT access token', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
-              refreshToken: { type: 'string', description: 'JWT refresh token' },
-              expiresIn: { type: 'integer', description: 'Token expiry in seconds', example: 3600 },
+              token: {
+                type: 'string',
+                description: 'JWT access token',
+                example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+              },
+              refreshToken: {
+                type: 'string',
+                description: 'JWT refresh token',
+              },
+              expiresIn: {
+                type: 'integer',
+                description: 'Token expiry in seconds',
+                example: 3600,
+              },
             },
           },
         },
@@ -672,13 +711,40 @@ export const openApiSpec = {
       ArtifactMetadata: {
         type: 'object',
         properties: {
-          name: { type: 'string', minLength: 1, maxLength: 100, example: 'Python Expert' },
-          slug: { type: 'string', pattern: '^[a-z0-9\\-]+$', example: 'python-expert' },
-          description: { type: 'string', minLength: 10, maxLength: 500, example: 'Expert Python developer persona' },
-          version: { type: 'string', pattern: '^\\d+\\.\\d+\\.\\d+$', example: '1.0.0' },
-          tags: { type: 'array', items: { type: 'string' }, maxItems: 10, example: ['python', 'coding', 'expert'] },
+          name: {
+            type: 'string',
+            minLength: 1,
+            maxLength: 100,
+            example: 'Python Expert',
+          },
+          slug: {
+            type: 'string',
+            pattern: '^[a-z0-9\\-]+$',
+            example: 'python-expert',
+          },
+          description: {
+            type: 'string',
+            minLength: 10,
+            maxLength: 500,
+            example: 'Expert Python developer persona',
+          },
+          version: {
+            type: 'string',
+            pattern: '^\\d+\\.\\d+\\.\\d+$',
+            example: '1.0.0',
+          },
+          tags: {
+            type: 'array',
+            items: { type: 'string' },
+            maxItems: 10,
+            example: ['python', 'coding', 'expert'],
+          },
           license: { type: 'string', maxLength: 50, example: 'MIT' },
-          repository: { type: 'string', format: 'uri', example: 'https://github.com/user/repo' },
+          repository: {
+            type: 'string',
+            format: 'uri',
+            example: 'https://github.com/user/repo',
+          },
           homepage: { type: 'string', format: 'uri' },
           keywords: { type: 'array', items: { type: 'string' }, maxItems: 20 },
         },
@@ -688,11 +754,19 @@ export const openApiSpec = {
         type: 'object',
         properties: {
           id: { type: 'string', example: 'artifact_1234567890_abcdef' },
-          type: { type: 'string', enum: ['persona', 'skill', 'workflow', 'team'], example: 'persona' },
+          type: {
+            type: 'string',
+            enum: ['persona', 'skill', 'workflow', 'team'],
+            example: 'persona',
+          },
           metadata: {
             $ref: '#/components/schemas/ArtifactMetadata',
           },
-          source: { type: 'string', description: 'PCL source code', example: 'persona PythonExpert { ... }' },
+          source: {
+            type: 'string',
+            description: 'PCL source code',
+            example: 'persona PythonExpert { ... }',
+          },
           stats: {
             type: 'object',
             properties: {
@@ -712,7 +786,10 @@ export const openApiSpec = {
         type: 'object',
         required: ['type', 'metadata', 'source'],
         properties: {
-          type: { type: 'string', enum: ['persona', 'skill', 'workflow', 'team'] },
+          type: {
+            type: 'string',
+            enum: ['persona', 'skill', 'workflow', 'team'],
+          },
           metadata: {
             $ref: '#/components/schemas/ArtifactMetadata',
           },
@@ -842,7 +919,8 @@ export const openApiSpec = {
               success: false,
               error: {
                 code: 'RATE_LIMIT_EXCEEDED',
-                message: 'Too many requests from this IP, please try again later.',
+                message:
+                  'Too many requests from this IP, please try again later.',
                 timestamp: '2026-01-23T12:00:00Z',
               },
             },

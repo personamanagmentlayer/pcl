@@ -71,7 +71,9 @@ export class AnthropicProvider implements AIProvider {
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     const messages = this.buildMessages(request);
     const system = request.systemPrompt || undefined;
     const tools = request.tools ? this.convertTools(request.tools) : undefined;
@@ -85,7 +87,9 @@ export class AnthropicProvider implements AIProvider {
         system,
         messages,
         tools,
-        stop_sequences: request.stopSequences ? [...request.stopSequences] : undefined,
+        stop_sequences: request.stopSequences
+          ? [...request.stopSequences]
+          : undefined,
       });
 
       return this.parseResponse(response);
@@ -100,7 +104,9 @@ export class AnthropicProvider implements AIProvider {
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     const messages = this.buildMessages(request);
     const system = request.systemPrompt || undefined;
     const tools = request.tools ? this.convertTools(request.tools) : undefined;
@@ -114,13 +120,18 @@ export class AnthropicProvider implements AIProvider {
         system,
         messages,
         tools,
-        stop_sequences: request.stopSequences ? [...request.stopSequences] : undefined,
+        stop_sequences: request.stopSequences
+          ? [...request.stopSequences]
+          : undefined,
       });
 
       let fullContent = '';
 
       for await (const event of stream) {
-        if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+        if (
+          event.type === 'content_block_delta' &&
+          event.delta.type === 'text_delta'
+        ) {
           const content = event.delta.text;
           fullContent += content;
 

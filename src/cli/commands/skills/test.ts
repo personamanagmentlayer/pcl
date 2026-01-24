@@ -13,9 +13,9 @@ import { formatError } from '../../utils/output';
 export interface SkillTestOptions {
   example?: number;
   verbose?: boolean;
-  composition?: boolean;  // Test skill composition and dependencies
-  benchmark?: boolean;    // Run performance benchmarks
-  directory?: string;     // Directory to search for related skills
+  composition?: boolean; // Test skill composition and dependencies
+  benchmark?: boolean; // Run performance benchmarks
+  directory?: string; // Directory to search for related skills
 }
 
 /**
@@ -25,7 +25,12 @@ export async function skillTestCommand(
   filePath: string,
   options: SkillTestOptions = {}
 ): Promise<void> {
-  const { example, verbose = false, composition = false, benchmark = false } = options;
+  const {
+    example,
+    verbose = false,
+    composition = false,
+    benchmark = false,
+  } = options;
 
   try {
     console.log(`Testing skill: ${filePath}\n`);
@@ -65,7 +70,11 @@ export async function skillTestCommand(
       console.log('Composition Testing');
       console.log('═══════════════════════════════════════════════════\n');
 
-      const compositionResults = await testSkillComposition(filePath, skill, options);
+      const compositionResults = await testSkillComposition(
+        filePath,
+        skill,
+        options
+      );
       displayCompositionResults(compositionResults, verbose);
       console.log();
     }
@@ -88,9 +97,7 @@ export async function skillTestCommand(
 
     // Determine which examples to test
     const examplesToTest =
-      example !== undefined
-        ? [skill.examples[example - 1]]
-        : skill.examples;
+      example !== undefined ? [skill.examples[example - 1]] : skill.examples;
 
     if (example !== undefined && !examplesToTest[0]) {
       console.error(formatError(`Example ${example} not found`));
@@ -143,7 +150,9 @@ export async function skillTestCommand(
     console.log('Summary');
     console.log('═══════════════════════════════════════════════════');
     console.log(`Results: ${passed} passed, ${failed} failed`);
-    console.log(`Success Rate: ${((passed / (passed + failed)) * 100).toFixed(1)}%`);
+    console.log(
+      `Success Rate: ${((passed / (passed + failed)) * 100).toFixed(1)}%`
+    );
 
     // Benchmark results
     if (benchmark) {
@@ -182,7 +191,8 @@ function testExample(
   const checks = {
     'Has comments': /\/\/|\/\*|#/.test(code),
     'Has meaningful content': code.trim().length > 20,
-    'Has structure': code.includes('{') || code.includes('(') || code.includes('['),
+    'Has structure':
+      code.includes('{') || code.includes('(') || code.includes('['),
   };
 
   const passedChecks = Object.values(checks).filter(Boolean).length;
@@ -200,7 +210,10 @@ function testExample(
 
   return {
     success: passedChecks >= 2,
-    message: passedChecks < 2 ? `Only ${passedChecks}/${totalChecks} checks passed` : undefined,
+    message:
+      passedChecks < 2
+        ? `Only ${passedChecks}/${totalChecks} checks passed`
+        : undefined,
   };
 }
 
@@ -330,7 +343,10 @@ async function testSkillComposition(
 /**
  * Display composition test results
  */
-function displayCompositionResults(result: CompositionTestResult, verbose: boolean): void {
+function displayCompositionResults(
+  result: CompositionTestResult,
+  verbose: boolean
+): void {
   // Dependencies
   console.log('Dependencies:');
   if (result.dependencies.declared.length === 0) {
@@ -370,7 +386,9 @@ function displayCompositionResults(result: CompositionTestResult, verbose: boole
   // Tool overlap
   if (verbose && result.toolOverlap.overlapping.length > 0) {
     console.log('Tool Overlap:');
-    console.log(`  ℹ ${result.toolOverlap.overlapping.length} skill(s) with overlapping tools:`);
+    console.log(
+      `  ℹ ${result.toolOverlap.overlapping.length} skill(s) with overlapping tools:`
+    );
     result.toolOverlap.overlapping.forEach((overlap) => {
       console.log(`    • ${overlap}`);
     });
@@ -385,13 +403,18 @@ function displayCompositionResults(result: CompositionTestResult, verbose: boole
 /**
  * Display benchmark results
  */
-function displayBenchmarkResults(compileTime: number, exampleTime: number): void {
+function displayBenchmarkResults(
+  compileTime: number,
+  exampleTime: number
+): void {
   console.log('\n═══════════════════════════════════════════════════');
   console.log('Benchmark Results');
   console.log('═══════════════════════════════════════════════════');
   console.log(`Compilation Time:    ${compileTime.toFixed(2)}ms`);
   console.log(`Example Test Time:   ${exampleTime.toFixed(2)}ms`);
-  console.log(`Total Time:          ${(compileTime + exampleTime).toFixed(2)}ms`);
+  console.log(
+    `Total Time:          ${(compileTime + exampleTime).toFixed(2)}ms`
+  );
 
   // Performance rating
   const totalTime = compileTime + exampleTime;

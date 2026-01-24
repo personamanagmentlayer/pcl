@@ -24,7 +24,9 @@ export class FormattingProvider {
   /**
    * Provide document formatting
    */
-  async provideFormatting(params: DocumentFormattingParams): Promise<TextEdit[] | null> {
+  async provideFormatting(
+    params: DocumentFormattingParams
+  ): Promise<TextEdit[] | null> {
     const uri = params.textDocument.uri;
 
     try {

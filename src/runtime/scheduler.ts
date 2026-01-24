@@ -86,9 +86,7 @@ export class TaskScheduler {
   /**
    * Schedule a task for execution
    */
-  schedule<T>(
-    task: Omit<Task<T>, 'id'> & { id?: string }
-  ): Promise<T> {
+  schedule<T>(task: Omit<Task<T>, 'id'> & { id?: string }): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       const scheduledTask: ScheduledTask<T> = {
         id: task.id ?? generateTaskId(),
@@ -201,9 +199,7 @@ export class TaskScheduler {
       task.resolve(result);
     } catch (error) {
       this.stats.failed++;
-      task.reject(
-        error instanceof Error ? error : new Error(String(error))
-      );
+      task.reject(error instanceof Error ? error : new Error(String(error)));
     }
   }
 

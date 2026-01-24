@@ -67,7 +67,10 @@ class ArtifactStore {
     return id ? this.artifacts.get(id) || null : null;
   }
 
-  async update(id: string, updates: Partial<Artifact>): Promise<Artifact | null> {
+  async update(
+    id: string,
+    updates: Partial<Artifact>
+  ): Promise<Artifact | null> {
     const artifact = this.artifacts.get(id);
     if (!artifact) return null;
 
@@ -75,7 +78,10 @@ class ArtifactStore {
     this.artifacts.set(id, updated);
 
     // Update slug index if changed
-    if (updates.metadata?.slug && updates.metadata.slug !== artifact.metadata.slug) {
+    if (
+      updates.metadata?.slug &&
+      updates.metadata.slug !== artifact.metadata.slug
+    ) {
       if (artifact.metadata.slug) {
         this.slugIndex.delete(artifact.metadata.slug);
       }
@@ -111,7 +117,9 @@ class ArtifactStore {
     return true;
   }
 
-  async list(query: ListArtifactsQuery): Promise<{ artifacts: Artifact[]; total: number }> {
+  async list(
+    query: ListArtifactsQuery
+  ): Promise<{ artifacts: Artifact[]; total: number }> {
     let artifacts = Array.from(this.artifacts.values());
 
     // Filter by type
@@ -133,7 +141,9 @@ class ArtifactStore {
     if (query.tags) {
       const tags = query.tags.split(',').map((t) => t.trim().toLowerCase());
       artifacts = artifacts.filter((a) =>
-        tags.some((tag) => a.metadata.tags.map((t) => t.toLowerCase()).includes(tag))
+        tags.some((tag) =>
+          a.metadata.tags.map((t) => t.toLowerCase()).includes(tag)
+        )
       );
     }
 
@@ -285,7 +295,11 @@ export async function createArtifact(
   // Check if slug already exists
   const existing = await artifactStore.findBySlug(slug);
   if (existing) {
-    throw new APIException(409, 'SLUG_TAKEN', `Artifact with slug "${slug}" already exists`);
+    throw new APIException(
+      409,
+      'SLUG_TAKEN',
+      `Artifact with slug "${slug}" already exists`
+    );
   }
 
   // Create artifact
@@ -317,7 +331,10 @@ export async function createArtifact(
 /**
  * Get artifact by ID
  */
-export async function getArtifactById(id: string, userId?: string): Promise<ArtifactResponse> {
+export async function getArtifactById(
+  id: string,
+  userId?: string
+): Promise<ArtifactResponse> {
   const artifact = await artifactStore.findById(id);
   if (!artifact) {
     throw new APIException(404, 'ARTIFACT_NOT_FOUND', 'Artifact not found');
@@ -344,14 +361,22 @@ export async function updateArtifact(
 
   // Check ownership
   if (artifact.authorId !== userId) {
-    throw new APIException(403, 'FORBIDDEN', 'You do not have permission to update this artifact');
+    throw new APIException(
+      403,
+      'FORBIDDEN',
+      'You do not have permission to update this artifact'
+    );
   }
 
   // Check slug uniqueness if changed
   if (input.metadata?.slug && input.metadata.slug !== artifact.metadata.slug) {
     const existing = await artifactStore.findBySlug(input.metadata.slug);
     if (existing) {
-      throw new APIException(409, 'SLUG_TAKEN', `Artifact with slug "${input.metadata.slug}" already exists`);
+      throw new APIException(
+        409,
+        'SLUG_TAKEN',
+        `Artifact with slug "${input.metadata.slug}" already exists`
+      );
     }
   }
 
@@ -378,7 +403,10 @@ export async function updateArtifact(
 /**
  * Delete artifact
  */
-export async function deleteArtifact(id: string, userId: string): Promise<void> {
+export async function deleteArtifact(
+  id: string,
+  userId: string
+): Promise<void> {
   const artifact = await artifactStore.findById(id);
   if (!artifact) {
     throw new APIException(404, 'ARTIFACT_NOT_FOUND', 'Artifact not found');
@@ -386,7 +414,11 @@ export async function deleteArtifact(id: string, userId: string): Promise<void> 
 
   // Check ownership
   if (artifact.authorId !== userId) {
-    throw new APIException(403, 'FORBIDDEN', 'You do not have permission to delete this artifact');
+    throw new APIException(
+      403,
+      'FORBIDDEN',
+      'You do not have permission to delete this artifact'
+    );
   }
 
   await artifactStore.delete(id);
@@ -395,7 +427,9 @@ export async function deleteArtifact(id: string, userId: string): Promise<void> 
 /**
  * List artifacts
  */
-export async function listArtifacts(query: ListArtifactsQuery): Promise<ListArtifactsResponse> {
+export async function listArtifacts(
+  query: ListArtifactsQuery
+): Promise<ListArtifactsResponse> {
   const { artifacts, total } = await artifactStore.list(query);
 
   const limit = query.limit ? parseInt(query.limit as any, 10) : 20;
@@ -415,7 +449,10 @@ export async function listArtifacts(query: ListArtifactsQuery): Promise<ListArti
 /**
  * Star an artifact
  */
-export async function starArtifact(artifactId: string, userId: string): Promise<{ starred: boolean; totalStars: number }> {
+export async function starArtifact(
+  artifactId: string,
+  userId: string
+): Promise<{ starred: boolean; totalStars: number }> {
   const artifact = await artifactStore.findById(artifactId);
   if (!artifact) {
     throw new APIException(404, 'ARTIFACT_NOT_FOUND', 'Artifact not found');
@@ -432,7 +469,10 @@ export async function starArtifact(artifactId: string, userId: string): Promise<
 /**
  * Unstar an artifact
  */
-export async function unstarArtifact(artifactId: string, userId: string): Promise<{ starred: boolean; totalStars: number }> {
+export async function unstarArtifact(
+  artifactId: string,
+  userId: string
+): Promise<{ starred: boolean; totalStars: number }> {
   const artifact = await artifactStore.findById(artifactId);
   if (!artifact) {
     throw new APIException(404, 'ARTIFACT_NOT_FOUND', 'Artifact not found');

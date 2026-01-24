@@ -137,7 +137,6 @@ export class ProviderHealthMonitor {
         timestamp: new Date(),
         latency,
       };
-
     } catch (error) {
       // Failed health check
       this.recordFailure();
@@ -293,7 +292,9 @@ export class HealthMonitorRegistry {
     config?: Partial<CircuitBreakerConfig>
   ): ProviderHealthMonitor {
     if (this.monitors.has(providerName)) {
-      throw new Error(`Health monitor already exists for provider: ${providerName}`);
+      throw new Error(
+        `Health monitor already exists for provider: ${providerName}`
+      );
     }
 
     const monitor = new ProviderHealthMonitor(provider, config);

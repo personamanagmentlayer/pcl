@@ -15,9 +15,16 @@
 //                              TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type AsyncPredicate<T> = (value: T, index: number) => Promise<boolean> | boolean;
+export type AsyncPredicate<T> = (
+  value: T,
+  index: number
+) => Promise<boolean> | boolean;
 export type AsyncMapper<T, U> = (value: T, index: number) => Promise<U> | U;
-export type AsyncReducer<T, U> = (acc: U, value: T, index: number) => Promise<U> | U;
+export type AsyncReducer<T, U> = (
+  acc: U,
+  value: T,
+  index: number
+) => Promise<U> | U;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              STREAM OPERATORS
@@ -327,14 +334,19 @@ export async function* fromArray<T>(array: T[]): AsyncIterableIterator<T> {
 /**
  * Create a stream from a promise
  */
-export async function* fromPromise<T>(promise: Promise<T>): AsyncIterableIterator<T> {
+export async function* fromPromise<T>(
+  promise: Promise<T>
+): AsyncIterableIterator<T> {
   yield await promise;
 }
 
 /**
  * Create a stream from an interval
  */
-export async function* interval(periodMs: number, count?: number): AsyncIterableIterator<number> {
+export async function* interval(
+  periodMs: number,
+  count?: number
+): AsyncIterableIterator<number> {
   let i = 0;
   while (count === undefined || i < count) {
     await new Promise((resolve) => setTimeout(resolve, periodMs));
@@ -359,7 +371,11 @@ export async function* of<T>(value: T): AsyncIterableIterator<T> {
 /**
  * Create a range stream
  */
-export async function* range(start: number, end: number, step: number = 1): AsyncIterableIterator<number> {
+export async function* range(
+  start: number,
+  end: number,
+  step: number = 1
+): AsyncIterableIterator<number> {
   for (let i = start; i < end; i += step) {
     yield i;
   }

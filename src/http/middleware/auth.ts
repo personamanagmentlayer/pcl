@@ -36,7 +36,11 @@ function extractBearerToken(authHeader: string | undefined): string | null {
 /**
  * Middleware to authenticate requests using JWT
  */
-export function authenticate(req: Request, res: Response, next: NextFunction): void {
+export function authenticate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
   const token = extractBearerToken(req.headers.authorization);
 
   if (!token) {
@@ -107,7 +111,11 @@ export function requireAllRoles(...roles: string[]) {
  * Optional authentication middleware (doesn't fail if no token)
  * Useful for endpoints that work differently for authenticated users
  */
-export function optionalAuthenticate(req: Request, res: Response, next: NextFunction): void {
+export function optionalAuthenticate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
   const token = extractBearerToken(req.headers.authorization);
 
   if (!token) {

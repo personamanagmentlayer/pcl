@@ -74,7 +74,8 @@ export function format(source: string, options: FormatOptions = {}): string {
     }
 
     // Format the line
-    const indented = indentString.repeat(indentLevel) + formatLine(trimmed, opts);
+    const indented =
+      indentString.repeat(indentLevel) + formatLine(trimmed, opts);
     formatted.push(indented);
 
     // Increase indent after opening braces/brackets
@@ -140,7 +141,10 @@ function formatLine(line: string, options: Required<FormatOptions>): string {
 /**
  * Check if source code is already formatted
  */
-export function isFormatted(source: string, options: FormatOptions = {}): boolean {
+export function isFormatted(
+  source: string,
+  options: FormatOptions = {}
+): boolean {
   const formatted = format(source, options);
   return source === formatted || source === formatted.trimEnd();
 }

@@ -77,7 +77,9 @@ export class OpenAIProvider implements AIProvider {
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     const messages = this.buildMessages(request);
     const tools = request.tools ? this.convertTools(request.tools) : undefined;
 
@@ -106,7 +108,9 @@ export class OpenAIProvider implements AIProvider {
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     const messages = this.buildMessages(request);
     const tools = request.tools ? this.convertTools(request.tools) : undefined;
 
@@ -196,7 +200,9 @@ export class OpenAIProvider implements AIProvider {
     return messages;
   }
 
-  private convertTools(tools: readonly Tool[]): OpenAI.Chat.ChatCompletionTool[] {
+  private convertTools(
+    tools: readonly Tool[]
+  ): OpenAI.Chat.ChatCompletionTool[] {
     return tools.map((tool) => ({
       type: 'function' as const,
       function: {

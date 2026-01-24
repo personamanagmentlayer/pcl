@@ -87,7 +87,9 @@ function validateAgentSkillsSpec(skill: PCLSkill): ValidationResult {
   }
 
   if (!skill.examples || skill.examples.length === 0) {
-    warnings.push('No examples provided. Examples help users understand usage.');
+    warnings.push(
+      'No examples provided. Examples help users understand usage.'
+    );
   }
 
   return {
@@ -559,9 +561,7 @@ async function validateDirectory(
  *   pcl skill list
  *   pcl skill list --verbose
  */
-export async function listCommand(
-  options: SkillCommandOptions
-): Promise<void> {
+export async function listCommand(options: SkillCommandOptions): Promise<void> {
   console.log(color('cyan', 'Discovering skills...\n'));
 
   const skills = await discoverSkills();

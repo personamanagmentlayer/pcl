@@ -4,14 +4,10 @@
  */
 
 import { existsSync, readFileSync } from 'fs';
-import { readFile, writeFile, mkdir } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import type { PCLPackage, PCLLockFile } from '../../build/package-format';
+import type { PCLLockFile, PCLPackage } from '../../build/package-format';
 import { validatePackage } from '../../build/package-format';
-import {
-  resolveDependencies,
-  calculateInstallOrder,
-} from '../../build/dependency-resolver';
 
 // Color utilities
 const colors = {

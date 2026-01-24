@@ -41,7 +41,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 
   // Check if pcl.json already exists
   if (existsSync(packagePath) && !options.force) {
-    console.error(color('yellow', '⚠ pcl.json already exists. Use --force to overwrite.'));
+    console.error(
+      color('yellow', '⚠ pcl.json already exists. Use --force to overwrite.')
+    );
     process.exit(1);
   }
 
@@ -49,7 +51,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 
   // Interactive mode (future enhancement)
   if (options.interactive) {
-    console.log(color('yellow', 'Interactive mode not yet implemented. Using defaults.'));
+    console.log(
+      color('yellow', 'Interactive mode not yet implemented. Using defaults.')
+    );
   }
 
   // Create package object
@@ -94,7 +98,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   console.log(color('cyan', 'Next steps:'));
   console.log(color('dim', '  1. Edit src/index.pcl to define your personas'));
   console.log(color('dim', '  2. Run "pcl build" to build your project'));
-  console.log(color('dim', '  3. Run "pcl run src/index.pcl" to test your personas'));
+  console.log(
+    color('dim', '  3. Run "pcl run src/index.pcl" to test your personas')
+  );
   console.log();
 }
 
@@ -116,7 +122,10 @@ function inferPackageName(cwd: string): string {
 /**
  * Create project directory structure
  */
-async function createProjectStructure(cwd: string, pkg: PCLPackage): Promise<void> {
+async function createProjectStructure(
+  cwd: string,
+  pkg: PCLPackage
+): Promise<void> {
   const srcDir = join(cwd, pkg.build?.srcDir || 'src');
 
   // Create src directory

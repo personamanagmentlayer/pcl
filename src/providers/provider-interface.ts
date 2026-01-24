@@ -202,7 +202,12 @@ export interface CompletionResponse {
   content: string;
 
   /** Finish reason */
-  finishReason: 'stop' | 'length' | 'function_call' | 'content_filter' | 'error';
+  finishReason:
+    | 'stop'
+    | 'length'
+    | 'function_call'
+    | 'content_filter'
+    | 'error';
 
   /** Token usage */
   usage: TokenUsage;
@@ -231,7 +236,12 @@ export interface StreamChunk {
   done: boolean;
 
   /** Finish reason (only in final chunk) */
-  finishReason?: 'stop' | 'length' | 'function_call' | 'content_filter' | 'error';
+  finishReason?:
+    | 'stop'
+    | 'length'
+    | 'function_call'
+    | 'content_filter'
+    | 'error';
 
   /** Token usage (only in final chunk) */
   usage?: TokenUsage;

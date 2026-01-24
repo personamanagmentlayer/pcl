@@ -7,7 +7,11 @@ import type { Request, Response, NextFunction } from 'express';
 /**
  * Simple request logger middleware
  */
-export function requestLogger(req: Request, res: Response, next: NextFunction): void {
+export function requestLogger(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
   const start = Date.now();
 
   // Log request

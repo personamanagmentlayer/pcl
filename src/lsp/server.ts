@@ -112,22 +112,36 @@ export class PCLLanguageServer {
     this.connection.onInitialized(this.onInitialized.bind(this));
 
     // Completion
-    this.connection.onCompletion(this.completionProvider.provideCompletions.bind(this.completionProvider));
+    this.connection.onCompletion(
+      this.completionProvider.provideCompletions.bind(this.completionProvider)
+    );
 
     // Hover
-    this.connection.onHover(this.hoverProvider.provideHover.bind(this.hoverProvider));
+    this.connection.onHover(
+      this.hoverProvider.provideHover.bind(this.hoverProvider)
+    );
 
     // Definition
-    this.connection.onDefinition(this.definitionProvider.provideDefinition.bind(this.definitionProvider));
+    this.connection.onDefinition(
+      this.definitionProvider.provideDefinition.bind(this.definitionProvider)
+    );
 
     // References
-    this.connection.onReferences(this.referencesProvider.provideReferences.bind(this.referencesProvider));
+    this.connection.onReferences(
+      this.referencesProvider.provideReferences.bind(this.referencesProvider)
+    );
 
     // Document Symbols
-    this.connection.onDocumentSymbol(this.documentSymbolsProvider.provideDocumentSymbols.bind(this.documentSymbolsProvider));
+    this.connection.onDocumentSymbol(
+      this.documentSymbolsProvider.provideDocumentSymbols.bind(
+        this.documentSymbolsProvider
+      )
+    );
 
     // Formatting
-    this.connection.onDocumentFormatting(this.formattingProvider.provideFormatting.bind(this.formattingProvider));
+    this.connection.onDocumentFormatting(
+      this.formattingProvider.provideFormatting.bind(this.formattingProvider)
+    );
 
     // Code Actions
     this.connection.onCodeAction(async (params) => {
@@ -136,21 +150,29 @@ export class PCLLanguageServer {
 
     // Prepare Rename
     this.connection.onPrepareRename(async (params) => {
-      const document = this.documentManager.getDocument(params.textDocument.uri);
+      const document = this.documentManager.getDocument(
+        params.textDocument.uri
+      );
       if (!document) return null;
       return this.renameProvider.prepareRename(params, document.getText());
     });
 
     // Rename
     this.connection.onRenameRequest(async (params) => {
-      const document = this.documentManager.getDocument(params.textDocument.uri);
+      const document = this.documentManager.getDocument(
+        params.textDocument.uri
+      );
       if (!document) return null;
 
       // Get all workspace files (simplified - would use workspace folders in real implementation)
       const workspaceFiles = new Map<string, string>();
       // TODO: Populate with actual workspace files
 
-      return this.renameProvider.rename(params, document.getText(), workspaceFiles);
+      return this.renameProvider.rename(
+        params,
+        document.getText(),
+        workspaceFiles
+      );
     });
 
     // Shutdown
@@ -196,7 +218,9 @@ export class PCLLanguageServer {
    * Handle initialized notification
    */
   private onInitialized(): void {
-    this.connection.console.info('PCL Language Server initialized successfully');
+    this.connection.console.info(
+      'PCL Language Server initialized successfully'
+    );
 
     // Log cache configuration
     const stats = this.documentManager.getCacheStats();

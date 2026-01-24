@@ -6,7 +6,11 @@
 
 import { createRegistry } from '../../config/registry';
 import { createSkillRegistry } from '../../../registry/skill-registry';
-import type { SkillSearchFilters, SkillCategory, SkillComplexity } from '../../../registry/skill-metadata';
+import type {
+  SkillSearchFilters,
+  SkillCategory,
+  SkillComplexity,
+} from '../../../registry/skill-metadata';
 import {
   formatOutput,
   formatError,
@@ -84,7 +88,10 @@ export async function skillSearchCommand(
       console.log('Filters:', JSON.stringify(filters, null, 2));
     }
 
-    const result = await skillRegistry.searchSkills(query, filters, { limit, offset });
+    const result = await skillRegistry.searchSkills(query, filters, {
+      limit,
+      offset,
+    });
 
     if (!result.ok) {
       console.error(formatError('Search failed'));
@@ -105,7 +112,9 @@ export async function skillSearchCommand(
         name: r.metadata.name,
         category: r.metadata.category,
         complexity: r.metadata.complexity,
-        tools: r.metadata.tools.slice(0, 3).join(', ') + (r.metadata.tools.length > 3 ? '...' : ''),
+        tools:
+          r.metadata.tools.slice(0, 3).join(', ') +
+          (r.metadata.tools.length > 3 ? '...' : ''),
         rating: r.metadata.rating ? `${r.metadata.rating.toFixed(1)}/5` : 'N/A',
         relevance: `${(r.relevance * 100).toFixed(0)}%`,
       }));
