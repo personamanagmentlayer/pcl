@@ -14,6 +14,7 @@
 import { DiagConsoleLogger, DiagLogLevel, diag } from '@opentelemetry/api';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
+import { resourceFromAttributes } from '@opentelemetry/resources';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import {
@@ -146,7 +147,7 @@ export function initTelemetry(config: Partial<TelemetryConfig> = {}): void {
   }
 
   // Create resource identifying this service
-  const resource = new Resource({
+  const resource = resourceFromAttributes({
     [ATTR_SERVICE_NAME]: fullConfig.serviceName,
     [ATTR_SERVICE_VERSION]: fullConfig.serviceVersion || '1.0.0',
     'deployment.environment': fullConfig.environment,

@@ -165,7 +165,7 @@ export class SkillRegistryImpl implements SkillRegistry {
       };
 
       // Execute search
-      const searchResult = await this.backend.search(criteria);
+      const searchResult = await (this.backend as any).search(criteria);
 
       if (!searchResult.ok) {
         return err(searchResult.error);
@@ -190,7 +190,7 @@ export class SkillRegistryImpl implements SkillRegistry {
    */
   async getSkill(skillId: string): Promise<Result<SkillArtifact, Error>> {
     try {
-      const result = await this.backend.get(skillId);
+      const result = await (this.backend as any).get(skillId);
 
       if (!result.ok) {
         return err(result.error);
