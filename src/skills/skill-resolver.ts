@@ -8,14 +8,13 @@
  * - Remote skills (URLs)
  */
 
-import { join, resolve, dirname } from 'path';
 import { existsSync } from 'fs';
-import { readFile } from 'fs/promises';
-import type { PCLSkill } from './skill-loader';
-import { parseSkillMd, loadSkillFromFile } from './skill-loader';
+import { join, resolve } from 'path';
 import type { RegistryManager } from '../registry/manager';
 import type { Result } from '../types';
-import { Ok as ok, Err as err } from '../types';
+import { Err as err, Ok as ok } from '../types';
+import type { PCLSkill } from './skill-loader';
+import { loadSkillFromFile, parseSkillMd } from './skill-loader';
 
 /**
  * Skill reference types
@@ -105,7 +104,8 @@ export class SkillResolver {
   constructor(options: SkillResolverOptions = {}) {
     this.options = {
       baseDir: options.baseDir || process.cwd(),
-      claudeSkillsDir: options.claudeSkillsDir || join(process.cwd(), '.claude', 'skills'),
+      claudeSkillsDir:
+        options.claudeSkillsDir || join(process.cwd(), '.claude', 'skills'),
       stdlibDir: options.stdlibDir || join(__dirname, '../../stdlib/skills'),
       registry: options.registry || undefined!,
       cache: options.cache ?? true,
@@ -166,7 +166,9 @@ export class SkillResolver {
   /**
    * Resolve multiple skill references
    */
-  async resolveMany(refs: string[]): Promise<Map<string, Result<SkillResolutionResult, Error>>> {
+  async resolveMany(
+    refs: string[]
+  ): Promise<Map<string, Result<SkillResolutionResult, Error>>> {
     const results = new Map<string, Result<SkillResolutionResult, Error>>();
 
     // Resolve in parallel
@@ -269,12 +271,17 @@ export class SkillResolver {
   /**
    * Resolve local file reference
    */
-  private async resolveLocal(ref: SkillRef): Promise<Result<SkillResolutionResult, Error>> {
+  private async resolveLocal(
+    ref: SkillRef
+  ): Promise<Result<SkillResolutionResult, Error>> {
     const path = ref.parsed.path!;
 
     if (!existsSync(path)) {
       // Try .claude/skills directory
-      const claudePath = join(this.options.claudeSkillsDir, `${ref.parsed.name}.md`);
+      const claudePath = join(
+        this.options.claudeSkillsDir,
+        `${ref.parsed.name}.md`
+      );
 
       if (existsSync(claudePath)) {
         return this.loadSkillFromPath(claudePath, SkillRefType.LOCAL);
@@ -289,7 +296,9 @@ export class SkillResolver {
   /**
    * Resolve registry reference
    */
-  private async resolveRegistry(ref: SkillRef): Promise<Result<SkillResolutionResult, Error>> {
+  private async resolveRegistry(
+    ref: SkillRef
+  ): Promise<Result<SkillResolutionResult, Error>> {
     if (!this.options.registry) {
       return err(new Error('Registry not configured'));
     }
@@ -304,7 +313,7 @@ export class SkillResolver {
       // Query registry
       const searchResult = await this.options.registry.search({
         query: fullRef,
-        filter: { type: 'skill' },
+        filter: { type: 'skill' as any },
         pagination: { limit: 1, offset: 0 },
       });
 
@@ -313,9 +322,14 @@ export class SkillResolver {
       }
 
       const artifact = searchResult.value[0].artifact;
+      if (!artifact) {
+        return err(new Error(`Artifact not found for skill: ${fullRef}`));
+      }
 
       // Parse skill content
-      const content = JSON.stringify(artifact.payload);
+      const content = artifact.payload
+        ? JSON.stringify(artifact.payload)
+        : artifact.source;
       const skill = parseSkillMd(content);
 
       return ok({
@@ -336,11 +350,15 @@ export class SkillResolver {
   /**
    * Resolve standard library reference
    */
-  private async resolveStdlib(ref: SkillRef): Promise<Result<SkillResolutionResult, Error>> {
+  private async resolveStdlib(
+    ref: SkillRef
+  ): Promise<Result<SkillResolutionResult, Error>> {
     const path = join(this.options.stdlibDir, `${ref.parsed.name}.md`);
 
     if (!existsSync(path)) {
-      return err(new Error(`Standard library skill not found: ${ref.parsed.name}`));
+      return err(
+        new Error(`Standard library skill not found: ${ref.parsed.name}`)
+      );
     }
 
     return this.loadSkillFromPath(path, SkillRefType.STDLIB);
@@ -349,7 +367,9 @@ export class SkillResolver {
   /**
    * Resolve remote URL reference
    */
-  private async resolveRemote(ref: SkillRef): Promise<Result<SkillResolutionResult, Error>> {
+  private async resolveRemote(
+    ref: SkillRef
+  ): Promise<Result<SkillResolutionResult, Error>> {
     if (!this.options.allowRemote) {
       return err(new Error('Remote skill loading is disabled'));
     }
@@ -361,7 +381,9 @@ export class SkillResolver {
       const response = await fetch(url);
 
       if (!response.ok) {
-        return err(new Error(`Failed to fetch remote skill: ${response.statusText}`));
+        return err(
+          new Error(`Failed to fetch remote skill: ${response.statusText}`)
+        );
       }
 
       const content = await response.text();
@@ -400,7 +422,9 @@ export class SkillResolver {
       });
     } catch (error) {
       return err(
-        error instanceof Error ? error : new Error(`Failed to load skill: ${path}`)
+        error instanceof Error
+          ? error
+          : new Error(`Failed to load skill: ${path}`)
       );
     }
   }

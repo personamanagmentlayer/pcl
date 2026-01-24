@@ -57,11 +57,12 @@ export async function skillPublishCommand(
     const registry = await createRegistry(backend);
 
     // Prepare artifact
+    const artifactVersion = version || skill.version || '1.0.0';
     const artifact = {
       type: 'skill' as ArtifactType,
       metadata: {
         name: skill.name,
-        version: version || skill.version || '1.0.0',
+        version: artifactVersion,
         description: skill.description,
         author: author || skill.metadata?.author,
         license: license || skill.metadata?.license || 'MIT',
@@ -69,31 +70,52 @@ export async function skillPublishCommand(
         skills: skill.dependencies || [],
       },
       source: content,
-      payload: result.skill,
+      stats: {
+        downloads: 0,
+        stars: 0,
+        forks: 0,
+        views: 0,
+      },
+      published: isPublic,
+      deleted: false,
     };
 
-    // Publish to registry
-    console.log('\nPublishing to registry...');
-    const publishResult = await registry.publish(artifact);
+    // Create artifact in registry
+    console.log('\nCreating artifact in registry...');
+    const createResult = await registry.create(artifact);
 
-    if (!publishResult.ok) {
-      console.error(formatError('Publish failed!'));
-      console.error(publishResult.error.message);
+    if (!createResult.ok) {
+      console.error(formatError('Creation failed!'));
+      console.error(createResult.error.message);
       process.exit(1);
     }
 
-    const published = publishResult.value;
+    const created = createResult.value;
+
+    // Publish if public
+    if (isPublic) {
+      console.log('Publishing to public registry...');
+      const publishResult = await registry.publish(created.id, artifactVersion);
+
+      if (!publishResult.ok) {
+        console.error(formatError('Publish failed!'));
+        console.error(publishResult.error.message);
+        process.exit(1);
+      }
+    }
 
     console.log('\n✓ Skill published successfully!');
-    console.log(`  ID: ${published.id}`);
-    console.log(`  Name: ${published.metadata.name}`);
-    console.log(`  Version: ${published.metadata.version}`);
+    console.log(`  ID: ${created.id}`);
+    console.log(`  Name: ${created.metadata.name}`);
+    console.log(`  Version: ${created.metadata.version}`);
     console.log(`  Hash: ${result.skill!.hash}`);
     console.log(`  Public: ${isPublic ? 'Yes' : 'No'}`);
 
     if (isPublic) {
       console.log('\nSkill is now available for installation:');
-      console.log(`  pcl skill install ${published.metadata.name}@${published.metadata.version}`);
+      console.log(
+        `  pcl skill install ${created.metadata.name}@${created.metadata.version}`
+      );
     }
   } catch (error) {
     console.error(

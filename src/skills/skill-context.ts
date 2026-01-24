@@ -9,13 +9,11 @@
  * - Handles skill lifecycle events
  */
 
-import type { PCLSkill } from './skill-loader';
-import type { CompiledSkill, CompilationResult } from './skill-compiler';
-import { SkillCompiler } from './skill-compiler';
-import type { SkillRef, SkillResolutionResult } from './skill-resolver';
-import { SkillResolver } from './skill-resolver';
 import type { Result } from '../types';
-import { Ok as ok, Err as err } from '../types';
+import { Err as err, Ok as ok } from '../types';
+import type { CompiledSkill } from './skill-compiler';
+import { SkillCompiler } from './skill-compiler';
+import { SkillResolver } from './skill-resolver';
 
 /**
  * Skill loading strategy
@@ -96,6 +94,8 @@ export interface SkillContextStats {
 export interface SkillContextOptions {
   /** Loading strategy */
   loadingStrategy: LoadingStrategy;
+  /** Enable cache */
+  cache?: boolean;
   /** Maximum cache size (number of skills) */
   maxCacheSize?: number;
   /** Enable LRU eviction */
@@ -126,6 +126,7 @@ export class SkillContext {
 
     this.options = {
       loadingStrategy: options.loadingStrategy || LoadingStrategy.LAZY,
+      cache: options.cache ?? true,
       maxCacheSize: options.maxCacheSize || 100,
       enableLRU: options.enableLRU ?? true,
       compiler: this.compiler,
@@ -178,7 +179,9 @@ export class SkillContext {
         timestamp: new Date(),
         metadata: { errors: compileResult.errors },
       });
-      return err(new Error(`Failed to compile skill: ${compileResult.errors.join(', ')}`));
+      return err(
+        new Error(`Failed to compile skill: ${compileResult.errors.join(', ')}`)
+      );
     }
 
     const compiled = compileResult.skill!;
@@ -197,7 +200,10 @@ export class SkillContext {
       event: SkillEvent.COMPILED,
       skillName: compiled.skill.name,
       timestamp: new Date(),
-      metadata: { hash: compiled.hash, tokenCount: compiled.metadata.tokenCount },
+      metadata: {
+        hash: compiled.hash,
+        tokenCount: compiled.metadata.tokenCount,
+      },
     });
 
     return ok(compiled);
@@ -206,7 +212,9 @@ export class SkillContext {
   /**
    * Load multiple skills
    */
-  async loadMany(refs: string[]): Promise<Map<string, Result<CompiledSkill, Error>>> {
+  async loadMany(
+    refs: string[]
+  ): Promise<Map<string, Result<CompiledSkill, Error>>> {
     const results = new Map<string, Result<CompiledSkill, Error>>();
 
     // Load in parallel based on strategy
@@ -347,7 +355,10 @@ export class SkillContext {
    */
   private addToContext(ref: string, compiled: CompiledSkill): void {
     // Check cache size limit
-    if (this.options.maxCacheSize && this.skills.size >= this.options.maxCacheSize) {
+    if (
+      this.options.maxCacheSize &&
+      this.skills.size >= this.options.maxCacheSize
+    ) {
       this.evictLRU();
     }
 
@@ -393,7 +404,8 @@ export class SkillContext {
    */
   getStats(): SkillContextStats {
     const totalAccesses = this.stats.cacheHits + this.stats.cacheMisses;
-    const cacheHitRate = totalAccesses > 0 ? this.stats.cacheHits / totalAccesses : 0;
+    const cacheHitRate =
+      totalAccesses > 0 ? this.stats.cacheHits / totalAccesses : 0;
 
     const totalTokens = Array.from(this.skills.values()).reduce(
       (sum, entry) => sum + entry.compiled.metadata.tokenCount,
@@ -405,7 +417,8 @@ export class SkillContext {
 
     return {
       totalLoaded: this.skills.size,
-      activeSkills: Array.from(this.skills.values()).filter((e) => e.active).length,
+      activeSkills: Array.from(this.skills.values()).filter((e) => e.active)
+        .length,
       cachedSkills: this.skills.size,
       totalAccesses,
       cacheHitRate,
@@ -450,7 +463,9 @@ export class SkillContext {
     }
 
     if (errors.length > 0) {
-      return err(new Error(`Failed to load dependencies:\n${errors.join('\n')}`));
+      return err(
+        new Error(`Failed to load dependencies:\n${errors.join('\n')}`)
+      );
     }
 
     return ok(compiled);

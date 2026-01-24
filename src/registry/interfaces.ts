@@ -87,6 +87,8 @@ export interface Artifact {
   metadata: ArtifactMetadata;
   /** PCL source code */
   source: string;
+  /** Payload data (for serialized artifacts) */
+  payload?: any;
   /** Statistics */
   stats: ArtifactStats;
   /** Created timestamp */
@@ -285,7 +287,9 @@ export interface IBackend {
   /**
    * Create a new artifact
    */
-  create(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<Artifact>>;
+  create(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<Artifact>>;
 
   /**
    * Read an artifact by ID
@@ -343,7 +347,10 @@ export interface IBackend {
   /**
    * Get a specific version
    */
-  getVersion(artifactId: string, version: string): Promise<Result<Version | null>>;
+  getVersion(
+    artifactId: string,
+    version: string
+  ): Promise<Result<Version | null>>;
 
   // ═══════════════════════════════════════════════════════════════════════════
   //                              TRANSACTION OPERATIONS
@@ -596,7 +603,9 @@ export interface IRegistry {
   /**
    * Create a new artifact
    */
-  create(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<Artifact>>;
+  create(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<Artifact>>;
 
   /**
    * Read an artifact by ID
@@ -649,7 +658,10 @@ export interface IRegistry {
   /**
    * Get a specific version
    */
-  getVersion(artifactId: string, version: string): Promise<Result<Version | null>>;
+  getVersion(
+    artifactId: string,
+    version: string
+  ): Promise<Result<Version | null>>;
 
   /**
    * Publish a version

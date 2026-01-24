@@ -46,6 +46,8 @@ export interface PCLSkill {
   }>;
   tools?: string[];
   dependencies?: string[];
+  complexity?: 'low' | 'medium' | 'high';
+  conflicts?: string[];
   metadata?: {
     author?: string;
     license?: string;
@@ -84,7 +86,7 @@ export function parseSkillMd(content: string): PCLSkill {
   let tools: string[] | undefined;
   if (metadata['allowed-tools']) {
     if (typeof metadata['allowed-tools'] === 'string') {
-      tools = metadata['allowed-tools'].split(',').map(t => t.trim());
+      tools = metadata['allowed-tools'].split(',').map((t) => t.trim());
     } else {
       tools = metadata['allowed-tools'];
     }
@@ -184,14 +186,20 @@ export function toSkillMd(skill: PCLSkill): string {
   }
 
   // Add PCL metadata as comment (for round-trip compatibility)
-  if (skill.version || skill.category || skill.metadata?.author || skill.metadata?.license) {
+  if (
+    skill.version ||
+    skill.category ||
+    skill.metadata?.author ||
+    skill.metadata?.license
+  ) {
     parts.push('---');
     parts.push('');
     parts.push('<!-- PCL Metadata');
     if (skill.version) parts.push(`version: ${skill.version}`);
     if (skill.category) parts.push(`category: ${skill.category}`);
     if (skill.metadata?.author) parts.push(`author: ${skill.metadata.author}`);
-    if (skill.metadata?.license) parts.push(`license: ${skill.metadata.license}`);
+    if (skill.metadata?.license)
+      parts.push(`license: ${skill.metadata.license}`);
     if (skill.dependencies && skill.dependencies.length > 0) {
       parts.push(`dependencies: ${skill.dependencies.join(', ')}`);
     }
@@ -204,7 +212,9 @@ export function toSkillMd(skill: PCLSkill): string {
 /**
  * Extract code examples from markdown
  */
-function extractExamples(markdown: string): Array<{ description: string; code: string }> | undefined {
+function extractExamples(
+  markdown: string
+): Array<{ description: string; code: string }> | undefined {
   const examples: Array<{ description: string; code: string }> = [];
 
   // Match ### headings followed by code blocks
@@ -238,7 +248,10 @@ export async function loadSkillFromFile(filePath: string): Promise<PCLSkill> {
 /**
  * Save skill to file
  */
-export async function saveSkillToFile(skill: PCLSkill, filePath: string): Promise<void> {
+export async function saveSkillToFile(
+  skill: PCLSkill,
+  filePath: string
+): Promise<void> {
   const fs = await import('fs/promises');
   const content = toSkillMd(skill);
   await fs.writeFile(filePath, content, 'utf-8');

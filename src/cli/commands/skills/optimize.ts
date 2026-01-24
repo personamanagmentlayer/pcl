@@ -68,11 +68,17 @@ export async function skillOptimizeCommand(
     const tokenSavings = originalTokens - optimizedTokens;
     const tokenSavingsPct = ((tokenSavings / originalTokens) * 100).toFixed(1);
     const lengthSavings = originalLength - optimizedLength;
-    const lengthSavingsPct = ((lengthSavings / originalLength) * 100).toFixed(1);
+    const lengthSavingsPct = ((lengthSavings / originalLength) * 100).toFixed(
+      1
+    );
 
     console.log('\nOptimized Metrics:');
-    console.log(`  Token Count: ${optimizedTokens} (${tokenSavings >= 0 ? '-' : '+'}${Math.abs(tokenSavings)} tokens, ${tokenSavingsPct}%)`);
-    console.log(`  Instructions Length: ${optimizedLength} chars (${lengthSavings >= 0 ? '-' : '+'}${Math.abs(lengthSavings)} chars, ${lengthSavingsPct}%)`);
+    console.log(
+      `  Token Count: ${optimizedTokens} (${tokenSavings >= 0 ? '-' : '+'}${Math.abs(tokenSavings)} tokens, ${tokenSavingsPct}%)`
+    );
+    console.log(
+      `  Instructions Length: ${optimizedLength} chars (${lengthSavings >= 0 ? '-' : '+'}${Math.abs(lengthSavings)} chars, ${lengthSavingsPct}%)`
+    );
 
     if (optimizedResult.warnings.length > 0) {
       console.log('\n⚠ Warnings:');
@@ -127,16 +133,25 @@ function optimizeSkill(skill: any, aggressive: boolean): any {
   // Remove redundant sections in aggressive mode
   if (aggressive) {
     // Remove "Resources" section if present
-    instructions = instructions.replace(/## Resources\n\n[\s\S]*?(?=\n## |$)/g, '');
+    instructions = instructions.replace(
+      /## Resources\n\n[\s\S]*?(?=\n## |$)/g,
+      ''
+    );
 
     // Remove "Troubleshooting" section if minimal
-    instructions = instructions.replace(/## Troubleshooting\n\n[\s\S]{0,200}(?=\n## |$)/g, '');
+    instructions = instructions.replace(
+      /## Troubleshooting\n\n[\s\S]{0,200}(?=\n## |$)/g,
+      ''
+    );
 
     // Condense bullet points
-    instructions = instructions.replace(/\n- ([^\n]+)\n- ([^\n]+)\n- ([^\n]+)/g, (match) => {
-      if (match.length > 200) return match; // Keep long lists
-      return match; // For now, keep as is
-    });
+    instructions = instructions.replace(
+      /\n- ([^\n]+)\n- ([^\n]+)\n- ([^\n]+)/g,
+      (match: string) => {
+        if (match.length > 200) return match; // Keep long lists
+        return match; // For now, keep as is
+      }
+    );
   }
 
   optimized.instructions = instructions;

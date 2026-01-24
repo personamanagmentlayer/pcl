@@ -9,12 +9,11 @@ import type {
   PrepareRenameParams,
   Range,
   RenameParams,
-  TextDocumentPositionParams,
   TextEdit,
   WorkspaceEdit,
 } from 'vscode-languageserver';
-import { parse } from '../parser/index.js';
 import type * as AST from '../ast/index.js';
+import { parse } from '../parser/index.js';
 
 export interface RenameConflict {
   /** Conflicting symbol */
@@ -140,7 +139,13 @@ export class RenameProvider {
     }
 
     // Get preview with conflict detection
-    const preview = await this.getPreview(symbol, newName, textDocument.uri, source, workspaceFiles);
+    const preview = await this.getPreview(
+      symbol,
+      newName,
+      textDocument.uri,
+      source,
+      workspaceFiles
+    );
 
     // Check for conflicts
     if (preview.conflicts.length > 0) {
@@ -182,7 +187,11 @@ export class RenameProvider {
     const ast = parseResult.value.program;
 
     // Find all references in current file
-    const currentReferences = this.findAllReferences(ast, symbol.name, currentSource);
+    const currentReferences = this.findAllReferences(
+      ast,
+      symbol.name,
+      currentSource
+    );
     const currentEdits: TextEdit[] = [];
 
     for (const ref of currentReferences) {
@@ -198,7 +207,15 @@ export class RenameProvider {
     }
 
     // Check for conflicts in current file
-    conflicts.push(...this.detectConflicts(ast, symbol.name, newName, currentUri, currentSource));
+    conflicts.push(
+      ...this.detectConflicts(
+        ast,
+        symbol.name,
+        newName,
+        currentUri,
+        currentSource
+      )
+    );
 
     // Search in other workspace files
     for (const [uri, fileSource] of workspaceFiles) {
@@ -210,7 +227,11 @@ export class RenameProvider {
       const fileAst = fileParseResult.value.program;
 
       // Find references in this file
-      const fileReferences = this.findAllReferences(fileAst, symbol.name, fileSource);
+      const fileReferences = this.findAllReferences(
+        fileAst,
+        symbol.name,
+        fileSource
+      );
       const fileEdits: TextEdit[] = [];
 
       for (const ref of fileReferences) {
@@ -226,7 +247,9 @@ export class RenameProvider {
       }
 
       // Check for conflicts in this file
-      conflicts.push(...this.detectConflicts(fileAst, symbol.name, newName, uri, fileSource));
+      conflicts.push(
+        ...this.detectConflicts(fileAst, symbol.name, newName, uri, fileSource)
+      );
     }
 
     return {
@@ -265,7 +288,10 @@ export class RenameProvider {
   /**
    * Find symbol in AST node
    */
-  private findSymbolInNode(node: AST.ASTNode, offset: number): SymbolInfo | null {
+  private findSymbolInNode(
+    node: AST.ASTNode,
+    offset: number
+  ): SymbolInfo | null {
     // Check if offset is within this node
     if (offset < node.span.start.offset || offset > node.span.end.offset) {
       return null;
@@ -277,11 +303,11 @@ export class RenameProvider {
       case 'TeamDecl':
       case 'WorkflowDecl':
       case 'SkillDecl':
-        const decl = node as AST.PersonaDecl;
-        if (this.offsetInNode(decl.name, offset)) {
+        const decl = node as AST.PersonaDeclaration;
+        if (this.offsetInNode(decl.id, offset)) {
           return {
-            name: decl.name.name,
-            node: decl.name,
+            name: decl.id.name,
+            node: decl.id,
             kind: 'declaration',
             type: node.kind,
           };
@@ -309,12 +335,19 @@ export class RenameProvider {
   /**
    * Find all references to a symbol
    */
-  private findAllReferences(ast: AST.Program, symbolName: string, source: string): AST.ASTNode[] {
+  private findAllReferences(
+    ast: AST.Program,
+    symbolName: string,
+    source: string
+  ): AST.ASTNode[] {
     const references: AST.ASTNode[] = [];
 
     const visit = (node: AST.ASTNode) => {
       // Check if this node is a reference to the symbol
-      if (node.kind === 'Identifier' && (node as AST.Identifier).name === symbolName) {
+      if (
+        node.kind === 'Identifier' &&
+        (node as AST.Identifier).name === symbolName
+      ) {
         references.push(node);
       }
 
@@ -377,7 +410,10 @@ export class RenameProvider {
 
     // Check if valid identifier
     if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name)) {
-      return { valid: false, error: 'Name must be a valid identifier (letters, numbers, underscore)' };
+      return {
+        valid: false,
+        error: 'Name must be a valid identifier (letters, numbers, underscore)',
+      };
     }
 
     // Check length
@@ -417,7 +453,10 @@ export class RenameProvider {
     if (this.RESERVED_KEYWORDS.has(newName)) {
       conflicts.push({
         symbol: newName,
-        location: { start: { line: 0, character: 0 }, end: { line: 0, character: 0 } },
+        location: {
+          start: { line: 0, character: 0 },
+          end: { line: 0, character: 0 },
+        },
         uri,
         type: 'reserved',
         message: `'${newName}' is a reserved keyword and cannot be used as an identifier`,
@@ -452,7 +491,10 @@ export class RenameProvider {
     if (this.hasSyntaxConflict(newName)) {
       conflicts.push({
         symbol: newName,
-        location: { start: { line: 0, character: 0 }, end: { line: 0, character: 0 } },
+        location: {
+          start: { line: 0, character: 0 },
+          end: { line: 0, character: 0 },
+        },
         uri,
         type: 'syntax',
         message: `'${newName}' would cause syntax conflicts`,
@@ -470,10 +512,10 @@ export class RenameProvider {
 
     for (const stmt of ast.statements) {
       if (
-        (stmt.kind === 'PersonaDecl' ||
-          stmt.kind === 'TeamDecl' ||
-          stmt.kind === 'WorkflowDecl' ||
-          stmt.kind === 'SkillDecl') &&
+        (stmt.kind === 'PersonaDeclaration' ||
+          stmt.kind === 'TeamDeclaration' ||
+          stmt.kind === 'WorkflowDeclaration' ||
+          stmt.kind === 'SkillDeclaration') &&
         (stmt as any).name.name === name
       ) {
         declarations.push(stmt);
@@ -486,7 +528,11 @@ export class RenameProvider {
   /**
    * Detect shadowing conflicts
    */
-  private detectShadowing(ast: AST.Program, oldName: string, newName: string): AST.ASTNode[] {
+  private detectShadowing(
+    ast: AST.Program,
+    oldName: string,
+    newName: string
+  ): AST.ASTNode[] {
     // Look for cases where renaming would shadow another symbol
     const shadowing: AST.ASTNode[] = [];
 
@@ -495,10 +541,10 @@ export class RenameProvider {
 
     for (const stmt of ast.statements) {
       if (
-        stmt.kind === 'PersonaDecl' ||
-        stmt.kind === 'TeamDecl' ||
-        stmt.kind === 'WorkflowDecl' ||
-        stmt.kind === 'SkillDecl'
+        stmt.kind === 'PersonaDeclaration' ||
+        stmt.kind === 'TeamDeclaration' ||
+        stmt.kind === 'WorkflowDeclaration' ||
+        stmt.kind === 'SkillDeclaration'
       ) {
         const name = (stmt as any).name.name;
         if (name !== oldName) {
@@ -520,7 +566,21 @@ export class RenameProvider {
    */
   private hasSyntaxConflict(name: string): boolean {
     // Check if name contains operators or special characters
-    const operators = ['>', '<', '|', '-', '+', '*', '/', '=', '!', '&', '^', '%', '~'];
+    const operators = [
+      '>',
+      '<',
+      '|',
+      '-',
+      '+',
+      '*',
+      '/',
+      '=',
+      '!',
+      '&',
+      '^',
+      '%',
+      '~',
+    ];
     return operators.some((op) => name.includes(op));
   }
 
@@ -538,7 +598,10 @@ export class RenameProvider {
   /**
    * Convert position to offset
    */
-  private positionToOffset(position: { line: number; character: number }, source: string): number {
+  private positionToOffset(
+    position: { line: number; character: number },
+    source: string
+  ): number {
     const lines = source.split('\n');
     let offset = 0;
 
@@ -569,13 +632,24 @@ export class RenameProvider {
   /**
    * Visit child nodes recursively
    */
-  private visitChildren(node: AST.ASTNode, visitor: (node: AST.ASTNode) => void): void {
+  private visitChildren(
+    node: AST.ASTNode,
+    visitor: (node: AST.ASTNode) => void
+  ): void {
     // Visit children based on node type
     switch (node.kind) {
-      case 'PersonaDecl': {
-        const decl = node as AST.PersonaDecl;
-        if (decl.extends) visitor(decl.extends);
-        if (decl.body) {
+      case 'PersonaDeclaration': {
+        const decl = node as AST.PersonaDeclaration;
+        if (decl.extends && decl.extends.length > 0) {
+          for (const ext of decl.extends) {
+            visitor(ext);
+          }
+        }
+        if (
+          decl.body &&
+          'fields' in decl.body &&
+          Array.isArray(decl.body.fields)
+        ) {
           for (const field of decl.body.fields) {
             if (field.value) visitor(field.value);
           }
@@ -583,9 +657,13 @@ export class RenameProvider {
         break;
       }
 
-      case 'TeamDecl': {
-        const team = node as AST.TeamDecl;
-        if (team.body) {
+      case 'TeamDeclaration': {
+        const team = node as AST.TeamDeclaration;
+        if (
+          team.body &&
+          'fields' in team.body &&
+          Array.isArray(team.body.fields)
+        ) {
           for (const field of team.body.fields) {
             if (field.value) visitor(field.value);
           }
@@ -593,8 +671,8 @@ export class RenameProvider {
         break;
       }
 
-      case 'WorkflowDecl': {
-        const workflow = node as AST.WorkflowDecl;
+      case 'WorkflowDeclaration': {
+        const workflow = node as AST.WorkflowDeclaration;
         if (workflow.body) visitor(workflow.body);
         break;
       }
