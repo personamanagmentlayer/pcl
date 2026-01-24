@@ -298,12 +298,20 @@ export class CostTracker {
     }
 
     // Group by model
-    const byModel = new Map<string, { cost: number; tokens: number }>();
+    const byModel = new Map<
+      string,
+      { cost: number; tokens: number; requests: number }
+    >();
     for (const record of this.records) {
-      const existing = byModel.get(record.model) || { cost: 0, tokens: 0 };
+      const existing = byModel.get(record.model) || {
+        cost: 0,
+        tokens: 0,
+        requests: 0,
+      };
       byModel.set(record.model, {
         cost: existing.cost + record.cost,
         tokens: existing.tokens + record.usage.totalTokens,
+        requests: existing.requests + 1,
       });
     }
 

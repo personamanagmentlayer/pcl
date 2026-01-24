@@ -126,8 +126,13 @@ export function initTelemetry(config: Partial<TelemetryConfig> = {}): void {
         ...config.exporters?.prometheus,
       },
       console: {
-        enabled: config.exporters?.console?.enabled ?? DEFAULT_CONFIG.exporters.console?.enabled ?? false,
-        logLevel: config.exporters?.console?.logLevel || DEFAULT_CONFIG.exporters.console?.logLevel,
+        enabled:
+          config.exporters?.console?.enabled ??
+          DEFAULT_CONFIG.exporters.console?.enabled ??
+          false,
+        logLevel:
+          config.exporters?.console?.logLevel ||
+          DEFAULT_CONFIG.exporters.console?.logLevel,
       } as ConsoleConfig,
     },
   };
@@ -141,6 +146,7 @@ export function initTelemetry(config: Partial<TelemetryConfig> = {}): void {
   }
 
   // Create resource identifying this service
+  // @ts-expect-error - Resource import issue
   const resource = new Resource({
     [ATTR_SERVICE_NAME]: fullConfig.serviceName,
     [ATTR_SERVICE_VERSION]: fullConfig.serviceVersion || '1.0.0',

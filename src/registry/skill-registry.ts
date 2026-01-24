@@ -11,11 +11,7 @@
 
 import type { Result } from '../types';
 import { Err as err, Ok as ok } from '../types';
-import type {
-  ArtifactType,
-  SearchCriteria,
-  SearchResult,
-} from './interfaces';
+import type { ArtifactType, SearchCriteria, SearchResult } from './interfaces';
 import type {
   CuratedCollection,
   SkillArtifact,
