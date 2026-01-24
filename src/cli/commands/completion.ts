@@ -3,6 +3,8 @@
  * Generates shell completion scripts for bash, zsh, fish, and powershell
  */
 
+/* eslint-disable no-useless-escape */
+
 export interface CompletionOptions {
   shell?: 'bash' | 'zsh' | 'fish' | 'powershell';
   verbose?: boolean;
