@@ -6,6 +6,44 @@
  */
 
 import { parse } from '../src/parser';
+import { analyze } from '../src/semantic';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//                          HELPER FUNCTION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Parse and analyze PCL source, combining parse errors and analysis errors
+ */
+function parseAndAnalyze(source: string) {
+  const parseResult = parse(source);
+  if (!parseResult.ok) {
+    return parseResult;
+  }
+
+  const analysisResult = analyze(parseResult.value.program);
+
+  // Combine parse result with analysis errors
+  // Note: Result type uses 'error' (singular), not 'errors'
+  const analysisErrors = analysisResult.ok
+    ? []
+    : Array.isArray(analysisResult.error)
+      ? analysisResult.error
+      : [analysisResult.error];
+
+  const allErrors = [...parseResult.value.errors, ...analysisErrors];
+
+  // Return ok: true even if there are validation errors (they're in the errors array)
+  // Only return ok: false if parsing failed
+  return {
+    ok: true,
+    value: {
+      ...parseResult.value,
+      errors: allErrors,
+      warnings: parseResult.value.warnings,
+    },
+  };
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                          PHASE 1.0A: TEAM VALIDATION TESTS
@@ -32,7 +70,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -63,7 +101,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -88,7 +126,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -124,13 +162,15 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
       expect(result.value.errors.length).toBeGreaterThan(0);
-      const primaryError = result.value.errors.find((e) =>
-        e.message.includes('Primary persona') && e.message.includes('not a team member')
+      const primaryError = result.value.errors.find(
+        (e) =>
+          e.message.includes('Primary persona') &&
+          e.message.includes('not a team member')
       );
       expect(primaryError).toBeDefined();
     });
@@ -151,12 +191,14 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
-      const primaryError = result.value.errors.find((e) =>
-        e.message.includes('Primary persona') && e.message.includes('not a team member')
+      const primaryError = result.value.errors.find(
+        (e) =>
+          e.message.includes('Primary persona') &&
+          e.message.includes('not a team member')
       );
       expect(primaryError).toBeUndefined();
     });
@@ -183,13 +225,15 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
       expect(result.value.errors.length).toBeGreaterThan(0);
-      const quorumError = result.value.errors.find((e) =>
-        e.message.includes('Quorum') && e.message.includes('exceeds member count')
+      const quorumError = result.value.errors.find(
+        (e) =>
+          e.message.includes('Quorum') &&
+          e.message.includes('exceeds member count')
       );
       expect(quorumError).toBeDefined();
     });
@@ -210,12 +254,14 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
-      const quorumWarning = result.value.warnings.find((w) =>
-        w.message.includes('Quorum total') && w.message.includes('exceeds member count')
+      const quorumWarning = result.value.warnings.find(
+        (w) =>
+          w.message.includes('Quorum total') &&
+          w.message.includes('exceeds member count')
       );
       expect(quorumWarning).toBeDefined();
     });
@@ -240,12 +286,14 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
-      const quorumError = result.value.errors.find((e) =>
-        e.message.includes('Quorum required') && e.message.includes('cannot exceed total')
+      const quorumError = result.value.errors.find(
+        (e) =>
+          e.message.includes('Quorum required') &&
+          e.message.includes('cannot exceed total')
       );
       expect(quorumError).toBeDefined();
     });
@@ -270,7 +318,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -306,13 +354,14 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
-      const conflictWarning = result.value.warnings.find((w) =>
-        w.message.includes('Members not in conflict resolution order') &&
-        w.message.includes('Charlie')
+      const conflictWarning = result.value.warnings.find(
+        (w) =>
+          w.message.includes('Members not in conflict resolution order') &&
+          w.message.includes('Charlie')
       );
       expect(conflictWarning).toBeDefined();
     });
@@ -337,13 +386,15 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
-      const conflictError = result.value.errors.find((e) =>
-        e.message.includes('Conflict resolution order includes non-members') &&
-        e.message.includes('Charlie')
+      const conflictError = result.value.errors.find(
+        (e) =>
+          e.message.includes(
+            'Conflict resolution order includes non-members'
+          ) && e.message.includes('Charlie')
       );
       expect(conflictError).toBeDefined();
     });
@@ -368,7 +419,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -404,7 +455,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -433,7 +484,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -462,7 +513,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -500,7 +551,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
@@ -514,8 +565,10 @@ describe('Phase 1.0A: Team Validation', () => {
       expect(duplicateError).toBeDefined();
 
       // Primary not in members error
-      const primaryError = result.value.errors.find((e) =>
-        e.message.includes('Primary persona') && e.message.includes('not a team member')
+      const primaryError = result.value.errors.find(
+        (e) =>
+          e.message.includes('Primary persona') &&
+          e.message.includes('not a team member')
       );
       expect(primaryError).toBeDefined();
 
@@ -548,7 +601,7 @@ describe('Phase 1.0A: Team Validation', () => {
         }
       `;
 
-      const result = parse(source);
+      const result = parseAndAnalyze(source);
       expect(result.ok).toBe(true);
       if (!result.ok) return;
 
