@@ -281,4 +281,4 @@ async function demoMemoryAndContext() {
 }
 
 // Run the demo
-demoMemoryAndContext().catch(console.error);
+await demoMemoryAndContext();

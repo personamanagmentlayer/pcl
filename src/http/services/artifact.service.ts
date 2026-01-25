@@ -31,11 +31,11 @@ interface Artifact {
 }
 
 class ArtifactStore {
-  private artifacts: Map<string, Artifact> = new Map();
-  private slugIndex: Map<string, string> = new Map(); // slug -> id
-  private authorIndex: Map<string, Set<string>> = new Map(); // authorId -> Set<id>
-  private typeIndex: Map<ArtifactType, Set<string>> = new Map(); // type -> Set<id>
-  private stars: Map<string, Set<string>> = new Map(); // artifactId -> Set<userId>
+  private readonly artifacts: Map<string, Artifact> = new Map();
+  private readonly slugIndex: Map<string, string> = new Map(); // slug -> id
+  private readonly authorIndex: Map<string, Set<string>> = new Map(); // authorId -> Set<id>
+  private readonly typeIndex: Map<ArtifactType, Set<string>> = new Map(); // type -> Set<id>
+  private readonly stars: Map<string, Set<string>> = new Map(); // artifactId -> Set<userId>
 
   async create(artifact: Artifact): Promise<Artifact> {
     this.artifacts.set(artifact.id, artifact);
@@ -182,8 +182,8 @@ class ArtifactStore {
     }
 
     // Paginate
-    const limit = query.limit ? parseInt(query.limit as any, 10) : 20;
-    const offset = query.offset ? parseInt(query.offset as any, 10) : 0;
+    const limit = query.limit ? Number.parseInt(query.limit as any, 10) : 20;
+    const offset = query.offset ? Number.parseInt(query.offset as any, 10) : 0;
     artifacts = artifacts.slice(offset, offset + limit);
 
     return { artifacts, total };
@@ -257,9 +257,9 @@ function generateArtifactId(): string {
 function generateSlug(name: string): string {
   return name
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
+    .replaceAll(/[^a-z0-9\s-]/g, '')
+    .replaceAll(/\s+/g, '-')
+    .replaceAll(/-+/g, '-')
     .substring(0, 100);
 }
 
@@ -432,8 +432,8 @@ export async function listArtifacts(
 ): Promise<ListArtifactsResponse> {
   const { artifacts, total } = await artifactStore.list(query);
 
-  const limit = query.limit ? parseInt(query.limit as any, 10) : 20;
-  const offset = query.offset ? parseInt(query.offset as any, 10) : 0;
+  const limit = query.limit ? Number.parseInt(query.limit as any, 10) : 20;
+  const offset = query.offset ? Number.parseInt(query.offset as any, 10) : 0;
 
   return {
     artifacts: artifacts.map(toArtifactResponse),

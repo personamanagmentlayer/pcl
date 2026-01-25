@@ -15,7 +15,7 @@ export function requestLogger(
   const start = Date.now();
 
   // Sanitize user input to prevent log injection
-  const sanitize = (str: string) => str.replace(/[\r\n]/g, '');
+  const sanitize = (str: string) => str.replaceAll(/[\r\n]/g, '');
   const method = sanitize(req.method);
   const path = sanitize(req.path);
 

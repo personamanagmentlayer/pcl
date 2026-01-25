@@ -282,10 +282,7 @@ function flattenDependencyTree(
     // Add dependencies
     for (const [name, dep] of node.dependencies) {
       // Only add if not already present (deduplication)
-      if (!flattened.has(name)) {
-        flattened.set(name, dep);
-        traverse(dep);
-      } else {
+      if (flattened.has(name)) {
         // Check for version conflicts
         const existing = flattened.get(name)!;
         if (existing.version !== dep.version) {
@@ -293,6 +290,9 @@ function flattenDependencyTree(
             `Warning: Version conflict for ${name}: ${existing.version} vs ${dep.version}`
           );
         }
+      } else {
+        flattened.set(name, dep);
+        traverse(dep);
       }
     }
 
@@ -367,18 +367,18 @@ export function validateDependencyTree(tree: DependencyTree): {
     const currentPath = [...path, `${node.name}@${node.version}`];
 
     // Check for circular dependencies
-    if (path.some((p) => p === `${node.name}@${node.version}`)) {
+    if (path.includes(`${node.name}@${node.version}`)) {
       errors.push(`Circular dependency: ${currentPath.join(' -> ')}`);
       return;
     }
 
     // Validate dependencies
-    for (const [name, dep] of node.dependencies) {
+    for (const [, dep] of node.dependencies) {
       traverse(dep, currentPath);
     }
 
     // Validate dev dependencies
-    for (const [name, dep] of node.devDependencies) {
+    for (const [, dep] of node.devDependencies) {
       traverse(dep, currentPath);
     }
   }

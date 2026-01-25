@@ -4,9 +4,9 @@
  * Provides go-to-definition and find-references for skills
  */
 
-import { existsSync } from 'fs';
-import { readdir, readFile } from 'fs/promises';
-import { dirname, join } from 'path';
+import { existsSync } from 'node:fs';
+import { readdir, readFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import { Location } from 'vscode-languageserver/node';
 import { URI } from 'vscode-uri';
 import { parseSkillMd } from '../skills/skill-loader';

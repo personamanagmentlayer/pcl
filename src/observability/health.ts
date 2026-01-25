@@ -175,9 +175,7 @@ let defaultAggregator: HealthAggregator | null = null;
  * Get the default health aggregator instance
  */
 export function getHealthAggregator(): HealthAggregator {
-  if (!defaultAggregator) {
-    defaultAggregator = new HealthAggregator();
-  }
+  defaultAggregator ??= new HealthAggregator();
   return defaultAggregator;
 }
 
