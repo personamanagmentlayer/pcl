@@ -2,7 +2,7 @@
  * Request logging middleware
  */
 
-import type { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 /**
  * Simple request logger middleware with input sanitization

@@ -5,19 +5,19 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import express, { type Express, type Request, type Response } from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
 import compression from 'compression';
-import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
+import express, { type Express, type Request, type Response } from 'express';
+import helmet from 'helmet';
 import { createServer, type Server } from 'http';
+import swaggerUi from 'swagger-ui-express';
+import { initTelemetry } from '../observability/telemetry.js';
+import { openApiSpec } from './docs/openapi.js';
 import { errorHandler } from './middleware/error-handler.js';
 import { requestLogger } from './middleware/logger.js';
 import { apiLimiter } from './middleware/rate-limit.js';
 import { routes } from './routes/index.js';
-import { openApiSpec } from './docs/openapi.js';
 import type { RegistryConfig } from './types/config.js';
-import { initTelemetry } from '../observability/telemetry.js';
 
 /**
  * HTTP Registry Server

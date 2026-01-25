@@ -2,15 +2,15 @@
  * Authentication Service
  */
 
-import { hashPassword, verifyPassword } from '../utils/password.js';
-import { signToken, signRefreshToken, verifyToken } from '../utils/jwt.js';
+import { APIException } from '../middleware/error-handler.js';
 import type {
-  RegisterInput,
-  LoginInput,
   AuthResponse,
+  LoginInput,
+  RegisterInput,
   UserResponse,
 } from '../schemas/auth.schema.js';
-import { APIException } from '../middleware/error-handler.js';
+import { signRefreshToken, signToken, verifyToken } from '../utils/jwt.js';
+import { hashPassword, verifyPassword } from '../utils/password.js';
 
 /**
  * In-memory user store (temporary - will be replaced with database)
