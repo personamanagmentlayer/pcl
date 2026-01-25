@@ -2742,12 +2742,28 @@ export class SemanticAnalyzer {
         ) {
           return BuiltinTypes.String;
         }
+        // Return Int if both operands are Int, otherwise Float
+        if (
+          leftType.isAssignableTo(BuiltinTypes.Int) &&
+          rightType.isAssignableTo(BuiltinTypes.Int)
+        ) {
+          return BuiltinTypes.Int;
+        }
         return BuiltinTypes.Float;
       case '-':
       case '*':
-      case '/':
       case '%':
       case '**':
+        // Return Int if both operands are Int, otherwise Float
+        if (
+          leftType.isAssignableTo(BuiltinTypes.Int) &&
+          rightType.isAssignableTo(BuiltinTypes.Int)
+        ) {
+          return BuiltinTypes.Int;
+        }
+        return BuiltinTypes.Float;
+      case '/':
+        // Division always returns Float
         return BuiltinTypes.Float;
 
       // Comparison

@@ -195,7 +195,7 @@ export class JSONFileBackend implements IBackend {
       );
       if (existing) {
         return Err({
-          code: 'DUPLICATE_ERROR',
+          code: 'DUPLICATE',
           message: `Artifact with slug "${artifact.metadata.slug}" already exists`,
         });
       }
