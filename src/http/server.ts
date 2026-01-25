@@ -139,8 +139,10 @@ export class HTTPRegistryServer {
     // Request logging
     this.app.use(requestLogger);
 
-    // Global rate limiting (applied to all routes)
-    this.app.use('/api', apiLimiter);
+    // Global rate limiting (applied to all routes) - disabled in test mode
+    if (process.env.NODE_ENV !== 'test') {
+      this.app.use('/api', apiLimiter);
+    }
   }
 
   /**
