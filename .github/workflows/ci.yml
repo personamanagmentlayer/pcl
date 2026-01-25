@@ -118,13 +118,16 @@ jobs:
         run: npm audit --audit-level=moderate
         continue-on-error: true
 
-      - name: 🛡️ Run CodeQL analysis
-        uses: github/codeql-action/init@v3
+      - name: 🛡️ Initialize CodeQL
+        uses: github/codeql-action/init@v4
         with:
           languages: javascript
+          queries: security-and-quality
 
       - name: 🔍 Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: '/language:javascript'
 
   # ═══════════════════════════════════════════════════════════════════════════
   #                              PACKAGE VALIDATION

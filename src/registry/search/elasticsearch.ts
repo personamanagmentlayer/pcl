@@ -101,7 +101,7 @@ export class ElasticsearchBackend implements SearchBackend {
     });
 
     if (!indexExists) {
-      // @ts-expect-error - Elasticsearch client type overload mismatch
+      // Elasticsearch client type overload mismatch - using any cast
       await this.client.indices.create({
         index: this.config.indexName,
         body: {
@@ -172,7 +172,7 @@ export class ElasticsearchBackend implements SearchBackend {
             },
           },
         },
-      });
+      } as any);
     }
   }
 

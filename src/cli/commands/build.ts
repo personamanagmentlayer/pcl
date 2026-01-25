@@ -8,8 +8,8 @@ import { mkdir, readFile, writeFile } from 'fs/promises';
 import { glob } from 'glob';
 import { basename, dirname, join, relative } from 'path';
 import type { PersonaDeclaration } from '../../ast';
-import type { BuildTarget, PCLPackage } from '../../build/package-format';
-import { validatePackage } from '../../build/package-format';
+import type { BuildTarget, PCLPackage } from '../../build/package-format.js';
+import { validatePackage } from '../../build/package-format.js';
 import {
   generateJSON,
   generateMarkdown,

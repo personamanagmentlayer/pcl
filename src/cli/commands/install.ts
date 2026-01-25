@@ -6,8 +6,8 @@
 import { existsSync, readFileSync } from 'fs';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import type { PCLLockFile, PCLPackage } from '../../build/package-format';
-import { validatePackage } from '../../build/package-format';
+import type { PCLLockFile, PCLPackage } from '../../build/package-format.js';
+import { validatePackage } from '../../build/package-format.js';
 
 // Color utilities
 const colors = {
