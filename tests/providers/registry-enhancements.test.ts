@@ -3,9 +3,9 @@
 // Tests for health monitoring, fallback chains, rate limiting, and cost tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 
+import type { GenerationRequest } from '../../src/runtime/providers/index';
 import { ProviderRegistry } from '../../src/runtime/providers/index';
 import { MockProvider } from '../../src/runtime/providers/mock';
-import type { GenerationRequest } from '../../src/runtime/providers/index';
 
 describe('ProviderRegistry Enhancements', () => {
   let registry: ProviderRegistry;

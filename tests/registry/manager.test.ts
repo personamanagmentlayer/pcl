@@ -5,10 +5,10 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import { RegistryManager } from '../../src/registry/manager';
 import { MemoryBackend } from '../../src/registry/backends/memory';
-import { ArtifactType } from '../../src/registry/interfaces';
 import type { Artifact } from '../../src/registry/interfaces';
+import { ArtifactType } from '../../src/registry/interfaces';
+import { RegistryManager } from '../../src/registry/manager';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TEST HELPERS
