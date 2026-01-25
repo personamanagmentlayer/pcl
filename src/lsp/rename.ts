@@ -299,10 +299,10 @@ export class RenameProvider {
 
     // Handle different node types
     switch (node.kind) {
-      case 'PersonaDecl':
-      case 'TeamDecl':
-      case 'WorkflowDecl':
-      case 'SkillDecl': {
+      case 'PersonaDeclaration':
+      case 'TeamDeclaration':
+      case 'WorkflowDeclaration':
+      case 'SkillDeclaration': {
         const decl = node as AST.PersonaDeclaration;
         if (this.offsetInNode(decl.id, offset)) {
           return {
@@ -518,7 +518,7 @@ export class RenameProvider {
           stmt.kind === 'TeamDeclaration' ||
           stmt.kind === 'WorkflowDeclaration' ||
           stmt.kind === 'SkillDeclaration') &&
-        (stmt as any).name.name === name
+        (stmt as any).id.name === name
       ) {
         declarations.push(stmt);
       }
