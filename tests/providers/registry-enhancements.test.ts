@@ -308,7 +308,7 @@ describe('ProviderRegistry Enhancements', () => {
       registry.register(mockProvider1, {
         rateLimiter: {
           maxRequests: 1,
-          windowMs: 60000,
+          windowMs: 100,
         },
       });
 
