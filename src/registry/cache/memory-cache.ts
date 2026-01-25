@@ -168,7 +168,8 @@ export class MemoryCache implements CacheBackend {
       }
 
       const now = Date.now();
-      const ttlMs = ttl ? ttl * 1000 : this.config.defaultTTL;
+      // ttl === 0 means no expiry, undefined means use default
+      const ttlMs = ttl === undefined ? this.config.defaultTTL : ttl * 1000;
       const expiresAt = ttlMs > 0 ? now + ttlMs : 0; // 0 means no expiry
 
       this.cache.set(key, {

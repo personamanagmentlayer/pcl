@@ -77,7 +77,7 @@ describe('MemoryCache', () => {
       expect(result).toBe('value1');
 
       // Wait for expiration
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       result = await cache.get<string>('key1');
       expect(result).toBeNull();
@@ -109,11 +109,15 @@ describe('MemoryCache', () => {
       const smallCache = new MemoryCache({ maxSize: 3 });
 
       await smallCache.set('key1', 'value1');
+      await new Promise((resolve) => setTimeout(resolve, 5));
       await smallCache.set('key2', 'value2');
+      await new Promise((resolve) => setTimeout(resolve, 5));
       await smallCache.set('key3', 'value3');
+      await new Promise((resolve) => setTimeout(resolve, 5));
 
       // Access key1 to make it recently used
       await smallCache.get('key1');
+      await new Promise((resolve) => setTimeout(resolve, 5));
 
       // This should evict key2 (least recently used)
       await smallCache.set('key4', 'value4');
@@ -278,7 +282,7 @@ describe('MemoryCache', () => {
       await quickCache.set('key1', 'value1');
 
       // Wait for expiration and cleanup
-      await new Promise(resolve => setTimeout(resolve, 350));
+      await new Promise((resolve) => setTimeout(resolve, 350));
 
       const result = await quickCache.get<string>('key1');
       expect(result).toBeNull();

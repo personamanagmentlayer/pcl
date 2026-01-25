@@ -2,9 +2,13 @@
  * Tests for Skill Merger
  */
 
-import { SkillMerger, ConflictStrategy, ProviderFormat } from '../../src/skills/skill-merger';
 import { SkillCompiler } from '../../src/skills/skill-compiler';
 import type { PCLSkill } from '../../src/skills/skill-loader';
+import {
+  ConflictStrategy,
+  ProviderFormat,
+  SkillMerger,
+} from '../../src/skills/skill-merger';
 
 describe('SkillMerger', () => {
   const merger = new SkillMerger();
@@ -79,9 +83,7 @@ describe('SkillMerger', () => {
         name: 'test-skill',
         description: 'Test skill',
         instructions: 'Test instructions',
-        examples: [
-          { description: 'Example 1', code: 'console.log("test")' },
-        ],
+        examples: [{ description: 'Example 1', code: 'console.log("test")' }],
       };
 
       const compiled = compiler.compile(skill).skill!;
@@ -102,9 +104,7 @@ describe('SkillMerger', () => {
         name: 'test-skill',
         description: 'Test skill',
         instructions: 'Test instructions',
-        examples: [
-          { description: 'Example 1', code: 'console.log("test")' },
-        ],
+        examples: [{ description: 'Example 1', code: 'console.log("test")' }],
       };
 
       const compiled = compiler.compile(skill).skill!;
@@ -166,10 +166,12 @@ describe('SkillMerger', () => {
         priority: ['skill-2', 'skill-1'],
       });
 
-      // Higher priority skills should appear later
+      // Higher priority (earlier in priority array) should appear later in output
+      // Priority: ['skill-2', 'skill-1'] means skill-2 index=0, skill-1 index=1
+      // Lower index = higher priority = appears later
       const skill1Index = result.instructions.indexOf('skill-1');
       const skill2Index = result.instructions.indexOf('skill-2');
-      expect(skill2Index).toBeGreaterThan(skill1Index);
+      expect(skill1Index).toBeGreaterThan(skill2Index);
     });
 
     it('should enforce token budget with progressive disclosure', () => {
