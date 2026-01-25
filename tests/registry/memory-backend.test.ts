@@ -12,14 +12,16 @@
  */
 
 import { MemoryBackend } from '../../src/registry/backends/memory';
-import { ArtifactType } from '../../src/registry/interfaces';
 import type { Artifact } from '../../src/registry/interfaces';
+import { ArtifactType } from '../../src/registry/interfaces';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TEST HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function createTestArtifact(overrides?: Partial<Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>>): Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'> {
+function createTestArtifact(
+  overrides?: Partial<Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>>
+): Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'> {
   return {
     type: ArtifactType.PERSONA,
     metadata: {
@@ -124,8 +126,12 @@ describe('MemoryBackend - Create', () => {
   });
 
   it('should reject duplicate slugs', async () => {
-    const artifact1 = createTestArtifact({ metadata: { ...createTestArtifact().metadata, slug: 'unique-slug' } });
-    const artifact2 = createTestArtifact({ metadata: { ...createTestArtifact().metadata, slug: 'unique-slug' } });
+    const artifact1 = createTestArtifact({
+      metadata: { ...createTestArtifact().metadata, slug: 'unique-slug' },
+    });
+    const artifact2 = createTestArtifact({
+      metadata: { ...createTestArtifact().metadata, slug: 'unique-slug' },
+    });
 
     const result1 = await backend.create(artifact1);
     expect(result1.ok).toBe(true);
@@ -147,7 +153,9 @@ describe('MemoryBackend - Create', () => {
   });
 
   it('should allow same slug if original is deleted', async () => {
-    const artifact1 = createTestArtifact({ metadata: { ...createTestArtifact().metadata, slug: 'test-slug' } });
+    const artifact1 = createTestArtifact({
+      metadata: { ...createTestArtifact().metadata, slug: 'test-slug' },
+    });
 
     const createResult1 = await backend.create(artifact1);
     expect(createResult1.ok).toBe(true);
@@ -156,7 +164,9 @@ describe('MemoryBackend - Create', () => {
       const deleteResult = await backend.delete(createResult1.value.id);
       expect(deleteResult.ok).toBe(true);
 
-      const artifact2 = createTestArtifact({ metadata: { ...createTestArtifact().metadata, slug: 'test-slug' } });
+      const artifact2 = createTestArtifact({
+        metadata: { ...createTestArtifact().metadata, slug: 'test-slug' },
+      });
       const createResult2 = await backend.create(artifact2);
       expect(createResult2.ok).toBe(true);
     }
@@ -226,6 +236,9 @@ describe('MemoryBackend - Update', () => {
     expect(createResult.ok).toBe(true);
 
     if (createResult.ok) {
+      // Add small delay to ensure updatedAt > createdAt
+      await new Promise((resolve) => setTimeout(resolve, 5));
+
       const updateResult = await backend.update(createResult.value.id, {
         metadata: { ...createResult.value.metadata, name: 'Updated Name' },
       });
@@ -233,14 +246,20 @@ describe('MemoryBackend - Update', () => {
       expect(updateResult.ok).toBe(true);
       if (updateResult.ok) {
         expect(updateResult.value.metadata.name).toBe('Updated Name');
-        expect(updateResult.value.updatedAt.getTime()).toBeGreaterThan(createResult.value.createdAt.getTime());
-        expect(updateResult.value.createdAt).toEqual(createResult.value.createdAt);
+        expect(updateResult.value.updatedAt.getTime()).toBeGreaterThan(
+          createResult.value.createdAt.getTime()
+        );
+        expect(updateResult.value.createdAt).toEqual(
+          createResult.value.createdAt
+        );
       }
     }
   });
 
   it('should fail to update non-existent artifact', async () => {
-    const result = await backend.update('non-existent-id', { metadata: { name: 'Updated' } as any });
+    const result = await backend.update('non-existent-id', {
+      metadata: { name: 'Updated' } as any,
+    });
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.code).toBe('NOT_FOUND');
@@ -248,8 +267,12 @@ describe('MemoryBackend - Update', () => {
   });
 
   it('should reject duplicate slug on update', async () => {
-    const artifact1 = createTestArtifact({ metadata: { ...createTestArtifact().metadata, slug: 'slug-1' } });
-    const artifact2 = createTestArtifact({ metadata: { ...createTestArtifact().metadata, slug: 'slug-2' } });
+    const artifact1 = createTestArtifact({
+      metadata: { ...createTestArtifact().metadata, slug: 'slug-1' },
+    });
+    const artifact2 = createTestArtifact({
+      metadata: { ...createTestArtifact().metadata, slug: 'slug-2' },
+    });
 
     const create1 = await backend.create(artifact1);
     const create2 = await backend.create(artifact2);
@@ -269,7 +292,9 @@ describe('MemoryBackend - Update', () => {
   });
 
   it('should allow updating to same slug', async () => {
-    const artifact = createTestArtifact({ metadata: { ...createTestArtifact().metadata, slug: 'same-slug' } });
+    const artifact = createTestArtifact({
+      metadata: { ...createTestArtifact().metadata, slug: 'same-slug' },
+    });
     const createResult = await backend.create(artifact);
 
     expect(createResult.ok).toBe(true);
@@ -285,7 +310,9 @@ describe('MemoryBackend - Update', () => {
 
   it('should fail to update when not connected', async () => {
     await backend.disconnect();
-    const result = await backend.update('some-id', { metadata: { name: 'Updated' } as any });
+    const result = await backend.update('some-id', {
+      metadata: { name: 'Updated' } as any,
+    });
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.code).toBe('CONNECTION_ERROR');
@@ -404,19 +431,43 @@ describe('MemoryBackend - Query', () => {
     backend = new MemoryBackend();
     await backend.connect();
 
-    // Create test artifacts
-    await backend.create(createTestArtifact({
-      type: ArtifactType.PERSONA,
-      metadata: { ...createTestArtifact().metadata, name: 'Persona 1', tags: ['tag1'], author: 'Author A' },
-    }));
-    await backend.create(createTestArtifact({
-      type: ArtifactType.TEAM,
-      metadata: { ...createTestArtifact().metadata, name: 'Team 1', tags: ['tag2'], author: 'Author B' },
-    }));
-    await backend.create(createTestArtifact({
-      type: ArtifactType.WORKFLOW,
-      metadata: { ...createTestArtifact().metadata, name: 'Workflow 1', tags: ['tag1', 'tag2'], author: 'Author A' },
-    }));
+    // Create test artifacts with unique slugs
+    await backend.create(
+      createTestArtifact({
+        type: ArtifactType.PERSONA,
+        metadata: {
+          ...createTestArtifact().metadata,
+          name: 'Persona 1',
+          slug: 'persona-1',
+          tags: ['tag1'],
+          author: 'Author A',
+        },
+      })
+    );
+    await backend.create(
+      createTestArtifact({
+        type: ArtifactType.TEAM,
+        metadata: {
+          ...createTestArtifact().metadata,
+          name: 'Team 1',
+          slug: 'team-1',
+          tags: ['tag2'],
+          author: 'Author B',
+        },
+      })
+    );
+    await backend.create(
+      createTestArtifact({
+        type: ArtifactType.WORKFLOW,
+        metadata: {
+          ...createTestArtifact().metadata,
+          name: 'Workflow 1',
+          slug: 'workflow-1',
+          tags: ['tag1', 'tag2'],
+          author: 'Author A',
+        },
+      })
+    );
   });
 
   it('should find all artifacts', async () => {
@@ -701,7 +752,11 @@ describe('MemoryBackend - Transactions', () => {
 
     if (txResult.ok) {
       // Make changes
-      await backend.create(createTestArtifact({ metadata: { ...createTestArtifact().metadata, name: 'New Artifact' } }));
+      await backend.create(
+        createTestArtifact({
+          metadata: { ...createTestArtifact().metadata, name: 'New Artifact' },
+        })
+      );
 
       // Rollback
       const rollbackResult = await txResult.value.rollback();
@@ -767,7 +822,11 @@ describe('MemoryBackend - Clear', () => {
 
   it('should clear all data', async () => {
     await backend.create(createTestArtifact());
-    await backend.create(createTestArtifact({ metadata: { ...createTestArtifact().metadata, name: 'Artifact 2' } }));
+    await backend.create(
+      createTestArtifact({
+        metadata: { ...createTestArtifact().metadata, name: 'Artifact 2' },
+      })
+    );
 
     const clearResult = await backend.clear();
     expect(clearResult.ok).toBe(true);
