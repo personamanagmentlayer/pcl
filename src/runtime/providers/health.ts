@@ -291,10 +291,10 @@ export class HealthMonitorRegistry {
     provider: AIProvider,
     config?: Partial<CircuitBreakerConfig>
   ): ProviderHealthMonitor {
-    if (this.monitors.has(providerName)) {
-      throw new Error(
-        `Health monitor already exists for provider: ${providerName}`
-      );
+    // If health monitor already exists, return existing one or recreate
+    const existing = this.monitors.get(providerName);
+    if (existing) {
+      return existing;
     }
 
     const monitor = new ProviderHealthMonitor(provider, config);
