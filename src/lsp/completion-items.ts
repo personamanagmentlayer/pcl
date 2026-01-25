@@ -11,21 +11,16 @@ import {
   MarkupKind,
 } from 'vscode-languageserver/node';
 
+import { CompletionContext, PCLKeyword, SymbolInfo } from './completion-types';
 import {
-  PCL_KEYWORDS,
-  getPropertiesForType,
   MERGE_STRATEGIES,
   MODEL_NAMES,
-  THINKING_STYLES,
+  PCL_KEYWORDS,
   RESPONSE_FORMATS,
+  THINKING_STYLES,
+  getPropertiesForType,
 } from './keywords';
-import { PCL_SNIPPETS, getSnippetsForContext } from './snippets';
-import {
-  CompletionContext,
-  PCLKeyword,
-  SnippetDefinition,
-  SymbolInfo,
-} from './completion-types';
+import { getSnippetsForContext } from './snippets';
 
 /**
  * Generate completion items for keywords

@@ -4,10 +4,10 @@
  * Provides go-to-definition and find-references for skills
  */
 
-import { Location, Position, Range } from 'vscode-languageserver/node';
-import { readdir, readFile } from 'fs/promises';
-import { join, dirname } from 'path';
 import { existsSync } from 'fs';
+import { readdir, readFile } from 'fs/promises';
+import { dirname, join } from 'path';
+import { Location } from 'vscode-languageserver/node';
 import { URI } from 'vscode-uri';
 import { parseSkillMd } from '../skills/skill-loader';
 

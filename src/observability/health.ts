@@ -226,8 +226,18 @@ export async function eventLoopHealthCheck(): Promise<ComponentHealth> {
   await new Promise((resolve) => setImmediate(resolve));
   const lag = Date.now() - start;
 
+  // Determine status based on lag thresholds
+  let status: 'healthy' | 'degraded' | 'unhealthy';
+  if (lag > 500) {
+    status = 'unhealthy';
+  } else if (lag > 100) {
+    status = 'degraded';
+  } else {
+    status = 'healthy';
+  }
+
   return {
-    status: lag > 100 ? 'degraded' : lag > 500 ? 'unhealthy' : 'healthy',
+    status,
     metadata: {
       lagMs: lag,
     },

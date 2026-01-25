@@ -44,7 +44,7 @@ async function demoMemoryAndContext() {
   console.log('─'.repeat(60));
 
   // Store some memories
-  const memory1 = memoryManager.storeMemory({
+  memoryManager.storeMemory({
     personaId: 'assistant',
     type: 'preference',
     content: 'User prefers TypeScript over JavaScript',
@@ -53,7 +53,7 @@ async function demoMemoryAndContext() {
     metadata: { source: 'conversation' },
   });
 
-  const memory2 = memoryManager.storeMemory({
+  memoryManager.storeMemory({
     personaId: 'assistant',
     type: 'fact',
     content: 'User is working on PCL project',
@@ -139,7 +139,7 @@ async function demoMemoryAndContext() {
   console.log('─'.repeat(60));
 
   // Persona 1 shares knowledge
-  const knowledge1 = memoryManager.shareKnowledge({
+  memoryManager.shareKnowledge({
     sourcePersonaId: 'backend-expert',
     type: 'best-practice',
     content: 'Always use connection pooling for database efficiency',
@@ -150,7 +150,7 @@ async function demoMemoryAndContext() {
   });
 
   // Persona 2 shares knowledge
-  const knowledge2 = memoryManager.shareKnowledge({
+  memoryManager.shareKnowledge({
     sourcePersonaId: 'frontend-expert',
     type: 'pattern',
     content: 'Use React hooks for state management in functional components',

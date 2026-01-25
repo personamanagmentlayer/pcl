@@ -281,8 +281,6 @@ function flattenDependencyTree(
   function traverse(node: DependencyNode) {
     // Add dependencies
     for (const [name, dep] of node.dependencies) {
-      const key = `${name}@${dep.version}`;
-
       // Only add if not already present (deduplication)
       if (!flattened.has(name)) {
         flattened.set(name, dep);
@@ -300,8 +298,6 @@ function flattenDependencyTree(
 
     // Add dev dependencies
     for (const [name, dep] of node.devDependencies) {
-      const key = `${name}@${dep.version}`;
-
       if (!flattened.has(name)) {
         flattened.set(name, dep);
         traverse(dep);

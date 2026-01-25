@@ -15,7 +15,6 @@ import { DiagConsoleLogger, DiagLogLevel, diag } from '@opentelemetry/api';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { resourceFromAttributes } from '@opentelemetry/resources';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import {
   ATTR_SERVICE_NAME,
@@ -154,7 +153,6 @@ export function initTelemetry(config: Partial<TelemetryConfig> = {}): void {
   });
 
   // Setup metric reader (Prometheus)
-  let metricReader: PeriodicExportingMetricReader | undefined;
   if (fullConfig.enableMetrics && fullConfig.exporters.prometheus) {
     prometheusExporter = new PrometheusExporter(
       {
