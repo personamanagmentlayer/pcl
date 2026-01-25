@@ -78,15 +78,19 @@ export async function installCommand(
     await installAllDependencies(pkg, lockFile, cwd, options);
   }
 
-  // Save updated pcl.json if --save or --save-dev was used
+  // Save updated pcl.json if --save or --save-dev was used (atomic write)
   if ((options.save || options.saveDev) && packages.length > 0) {
-    await writeFile(configPath, JSON.stringify(pkg, null, 2), 'utf-8');
+    const tempConfig = `${configPath}.tmp`;
+    await writeFile(tempConfig, JSON.stringify(pkg, null, 2), 'utf-8');
+    await import('fs').then((fs) => fs.promises.rename(tempConfig, configPath));
     console.log(color('green', '\n✓ Updated pcl.json'));
   }
 
-  // Generate/update lock file
+  // Generate/update lock file (atomic write)
   const newLockFile = await generateLockFile(pkg, cwd, options);
-  await writeFile(lockPath, JSON.stringify(newLockFile, null, 2), 'utf-8');
+  const tempLock = `${lockPath}.tmp`;
+  await writeFile(tempLock, JSON.stringify(newLockFile, null, 2), 'utf-8');
+  await import('fs').then((fs) => fs.promises.rename(tempLock, lockPath));
   console.log(color('green', '✓ Updated pcl-lock.json'));
 
   console.log(color('cyan', '\n✨ Installation complete!\n'));

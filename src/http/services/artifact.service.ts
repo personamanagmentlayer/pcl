@@ -168,8 +168,8 @@ class ArtifactStore {
         let bVal: any;
 
         if (field === 'createdAt' || field === 'updatedAt') {
-          aVal = a[field as 'createdAt' | 'updatedAt'].getTime();
-          bVal = b[field as 'createdAt' | 'updatedAt'].getTime();
+          aVal = a[field].getTime();
+          bVal = b[field].getTime();
         } else if (field === 'downloads' || field === 'stars') {
           aVal = a.stats[field];
           bVal = b.stats[field];

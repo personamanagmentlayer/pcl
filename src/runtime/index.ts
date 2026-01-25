@@ -2082,8 +2082,7 @@ export class Runtime {
     }
 
     try {
-      const response = await team.process(message, members);
-      return Ok(response);
+      return Ok(await team.process(message, members));
     } catch (error) {
       return Err(error instanceof Error ? error : new Error(String(error)));
     }

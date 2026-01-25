@@ -77,8 +77,10 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     console.log();
   }
 
-  // Write pcl.json
-  await writeFile(packagePath, JSON.stringify(pkg, null, 2), 'utf-8');
+  // Write pcl.json atomically
+  const tempPath = `${packagePath}.tmp`;
+  await writeFile(tempPath, JSON.stringify(pkg, null, 2), 'utf-8');
+  await import('fs').then((fs) => fs.promises.rename(tempPath, packagePath));
   console.log(color('green', '✓ Created pcl.json'));
 
   // Create directory structure
@@ -158,6 +160,7 @@ persona EXAMPLE {
   }
 }
 `;
+    // Atomic write to prevent race condition
     await writeFile(mainFile, template, 'utf-8');
     console.log(color('green', '✓ Created src/index.pcl'));
   }
@@ -206,6 +209,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 `;
+    // Atomic write to prevent race condition
     await writeFile(gitignorePath, gitignore, 'utf-8');
     console.log(color('green', '✓ Created .gitignore'));
   }

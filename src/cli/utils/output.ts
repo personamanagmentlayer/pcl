@@ -7,7 +7,7 @@
 
 import type { Artifact } from '../../registry/interfaces';
 import { chalk } from './colors';
-import { formatTable, formatKeyValue, type TableColumn } from './table';
+import { formatKeyValue, formatTable, type TableColumn } from './table';
 
 export type OutputFormat = 'json' | 'yaml' | 'table' | 'list' | 'pretty';
 
@@ -54,7 +54,7 @@ function formatYAML(data: any, indent: number = 0): string {
   if (typeof data === 'string') {
     // Quote strings that contain special characters
     if (/[:\n{}[\]&*#?|<>=!%@`]/.test(data)) {
-      return `"${data.replace(/"/g, '\\"')}"`;
+      return `"${data.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t')}"`;
     }
     return data;
   }

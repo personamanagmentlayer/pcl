@@ -41,7 +41,7 @@ export type HealthCheck = () => Promise<ComponentHealth> | ComponentHealth;
  * Aggregates health checks from multiple components
  */
 export class HealthAggregator {
-  private checks: Map<string, HealthCheck> = new Map();
+  private readonly checks: Map<string, HealthCheck> = new Map();
   private readonly startTime: number = Date.now();
 
   /**
@@ -137,12 +137,12 @@ export class HealthAggregator {
     const statuses = Object.values(components).map((c) => c.status);
 
     // If any component is unhealthy, overall is unhealthy
-    if (statuses.some((s) => s === 'unhealthy')) {
+    if (statuses.includes('unhealthy')) {
       return 'unhealthy';
     }
 
     // If any component is degraded, overall is degraded
-    if (statuses.some((s) => s === 'degraded')) {
+    if (statuses.includes('degraded')) {
       return 'degraded';
     }
 

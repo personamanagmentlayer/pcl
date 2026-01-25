@@ -669,9 +669,9 @@ export class Lexer {
           return this.scanIdentifier();
         }
 
-        // Unknown character
-        return this.errorToken(`Unexpected character: '${c}'`);
+      // Unknown character - fall through to error
     }
+    return this.errorToken(`Unexpected character: '${this.peek()}'`);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

@@ -461,7 +461,7 @@ class PromptGenerator {
     for (const member of persona.body.members) {
       switch (member.kind) {
         case 'PropertyDeclaration': {
-          const prop = member as AST.PropertyDeclaration;
+          const prop = member;
           if (
             prop.name.name === 'intent' &&
             prop.initializer?.kind === 'StringLiteral'
@@ -472,25 +472,25 @@ class PromptGenerator {
             prop.name.name === 'tone' &&
             prop.initializer?.kind === 'Identifier'
           ) {
-            tone = (prop.initializer as AST.Identifier).name;
+            tone = prop.initializer.name;
           }
           if (
             prop.name.name === 'depth' &&
             prop.initializer?.kind === 'Identifier'
           ) {
-            depth = (prop.initializer as AST.Identifier).name;
+            depth = prop.initializer.name;
           }
           if (
             prop.name.name === 'verbosity' &&
             prop.initializer?.kind === 'Identifier'
           ) {
-            verbosity = (prop.initializer as AST.Identifier).name;
+            verbosity = prop.initializer.name;
           }
           break;
         }
 
         case 'SkillBlock': {
-          const block = member as AST.SkillBlock;
+          const block = member;
           for (const item of block.items) {
             if (item.kind === 'StringSkill') {
               skills.push((item as { value: string }).value);
@@ -502,7 +502,7 @@ class PromptGenerator {
         }
 
         case 'ConstraintBlock': {
-          const block = member as AST.ConstraintBlock;
+          const block = member;
           for (const item of block.items) {
             if (item.kind === 'StringConstraint') {
               constraints.push((item as { value: string }).value);
@@ -512,7 +512,7 @@ class PromptGenerator {
         }
 
         case 'TagBlock': {
-          const block = member as AST.TagBlock;
+          const block = member;
           for (const item of block.items) {
             if (item.kind === 'StringTag') {
               tags.push((item as { value: string }).value);
@@ -560,7 +560,7 @@ class PromptGenerator {
     for (const member of team.body.members) {
       switch (member.kind) {
         case 'TeamMembersDeclaration': {
-          const decl = member as AST.TeamMembersDeclaration;
+          const decl = member;
           for (const ref of decl.members) {
             const name = this.getPersonaRefName(ref);
             if (name) members.push(name);
@@ -569,13 +569,13 @@ class PromptGenerator {
         }
 
         case 'TeamPrimaryDeclaration': {
-          const decl = member as AST.TeamPrimaryDeclaration;
+          const decl = member;
           primary = this.getPersonaRefName(decl.primary);
           break;
         }
 
         case 'TeamMergeDeclaration': {
-          const decl = member as AST.TeamMergeDeclaration;
+          const decl = member;
           if (decl.mode.kind === 'SimpleMergeMode') {
             mergeMode = decl.mode.mode;
           }
@@ -583,7 +583,7 @@ class PromptGenerator {
         }
 
         case 'TeamQuorumDeclaration': {
-          const decl = member as AST.TeamQuorumDeclaration;
+          const decl = member;
           quorum = {
             required: decl.required.value,
             total: decl.total.value,
@@ -706,16 +706,16 @@ class JSONGenerator {
     for (const stmt of program.statements) {
       switch (stmt.kind) {
         case 'PersonaDeclaration':
-          this.addPersona(config.personas, stmt as AST.PersonaDeclaration);
+          this.addPersona(config.personas, stmt);
           break;
         case 'TeamDeclaration':
-          this.addTeam(config.teams, stmt as AST.TeamDeclaration);
+          this.addTeam(config.teams, stmt);
           break;
         case 'WorkflowDeclaration':
-          this.addWorkflow(config.workflows, stmt as AST.WorkflowDeclaration);
+          this.addWorkflow(config.workflows, stmt);
           break;
         case 'SkillDeclaration':
-          this.addSkill(config.skills, stmt as AST.SkillDeclaration);
+          this.addSkill(config.skills, stmt);
           break;
       }
     }
@@ -760,7 +760,7 @@ class JSONGenerator {
         }
 
         case 'SkillBlock': {
-          const block = member as AST.SkillBlock;
+          const block = member;
           persona.skills = block.items
             .map((item) => {
               if (item.kind === 'StringSkill') {
@@ -776,7 +776,7 @@ class JSONGenerator {
         }
 
         case 'ConstraintBlock': {
-          const block = member as AST.ConstraintBlock;
+          const block = member;
           persona.constraints = block.items
             .map((item) => {
               if (item.kind === 'StringConstraint') {
@@ -789,7 +789,7 @@ class JSONGenerator {
         }
 
         case 'TagBlock': {
-          const block = member as AST.TagBlock;
+          const block = member;
           persona.tags = block.items
             .map((item) => {
               if (item.kind === 'StringTag') {
@@ -805,15 +805,12 @@ class JSONGenerator {
         }
 
         case 'MethodDeclaration': {
-          const method = member as AST.MethodDeclaration;
+          const method = member;
           if (!persona.methods) persona.methods = {};
           persona.methods[method.name.name] = {
             async: method.async,
             parameters: method.parameters.map((p) => ({
-              name:
-                p.name.kind === 'Identifier'
-                  ? (p.name as AST.Identifier).name
-                  : null,
+              name: p.name.kind === 'Identifier' ? p.name.name : null,
               optional: p.optional,
             })),
           };
@@ -886,23 +883,17 @@ class JSONGenerator {
     for (const member of decl.body.members) {
       switch (member.kind) {
         case 'WorkflowInputDeclaration': {
-          workflow.input = this.typeNodeToString(
-            (member as AST.WorkflowInputDeclaration).type
-          );
+          workflow.input = this.typeNodeToString(member.type);
           break;
         }
 
         case 'WorkflowOutputDeclaration': {
-          workflow.output = this.typeNodeToString(
-            (member as AST.WorkflowOutputDeclaration).type
-          );
+          workflow.output = this.typeNodeToString(member.type);
           break;
         }
 
         case 'WorkflowStepsDeclaration': {
-          workflow.steps = this.workflowExprToObject(
-            (member as AST.WorkflowStepsDeclaration).steps
-          );
+          workflow.steps = this.workflowExprToObject(member.steps);
           break;
         }
 

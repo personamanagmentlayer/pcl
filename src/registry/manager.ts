@@ -455,8 +455,9 @@ export class RegistryManager implements IRegistry {
       .toLowerCase()
       .trim()
       .replace(/[^\w\s-]/g, '') // Remove non-word chars
-      .replace(/[\s_-]+/g, '-') // Replace spaces, underscores with hyphens
-      .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+      .replace(/[\s_]+/g, '-') // Replace spaces and underscores with single hyphen
+      .replace(/^-+/, '') // Remove leading hyphens
+      .replace(/-+$/, ''); // Remove trailing hyphens
   }
 
   /**
@@ -549,7 +550,7 @@ export class RegistryManager implements IRegistry {
 
     // Validate email format
     if (metadata.authorEmail !== undefined) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
       if (!emailRegex.test(metadata.authorEmail)) {
         return Err({
           code: 'VALIDATION_ERROR',

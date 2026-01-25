@@ -18,11 +18,11 @@ import {
   isAssignmentOperator,
 } from '../lexer';
 import type {
+  BackoffStrategy,
   PCLError,
   Position,
   Result,
   Span,
-  BackoffStrategy,
 } from '../types';
 import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
 
@@ -2067,8 +2067,8 @@ export class Parser {
 
   private isHookAt(): boolean {
     if (!this.check(TokenType.AT)) return false;
-    const next = this.peekNext();
-    if (!next || next.type !== TokenType.IDENTIFIER) return false;
+    const nextToken = this.peekNext();
+    if (!nextToken || nextToken.type !== TokenType.IDENTIFIER) return false;
     return [
       'onActivate',
       'onDeactivate',
@@ -2082,7 +2082,7 @@ export class Parser {
       'onDespawn',
       'onTimeout',
       'onRetry',
-    ].includes(next.value);
+    ].includes(nextToken.value);
   }
 
   private isHookDecorator(decorator: AST.Decorator): boolean {
