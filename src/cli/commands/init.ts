@@ -3,9 +3,9 @@
  * Initialize a new PCL project with pcl.json
  */
 
-import { existsSync } from 'fs';
-import { mkdir, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { existsSync } from 'node:fs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { PCLPackage } from '../../build/package-format';
 import { DEFAULT_PACKAGE, validatePackage } from '../../build/package-format';
 
@@ -80,7 +80,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   // Write pcl.json atomically
   const tempPath = `${packagePath}.tmp`;
   await writeFile(tempPath, JSON.stringify(pkg, null, 2), 'utf-8');
-  await import('fs').then((fs) => fs.promises.rename(tempPath, packagePath));
+  await import('node:fs').then((fs) =>
+    fs.promises.rename(tempPath, packagePath)
+  );
   console.log(color('green', '✓ Created pcl.json'));
 
   // Create directory structure
@@ -112,14 +114,16 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 function inferPackageName(cwd: string): string {
   // eslint-disable-next-line no-useless-escape
   const parts = cwd.split(/[\/\\]/);
-  const dirName = parts[parts.length - 1];
+  const dirName = parts.at(-1);
 
   // Convert to valid package name
   return dirName
-    .toLowerCase()
-    .replace(/[^a-z0-9-_.~]/g, '-')
-    .replace(/^[-_.~]+/, '')
-    .replace(/[-_.~]+$/, '');
+    ? dirName
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9-_.~]/g, '-')
+        .replace(/^[-_.~]+/, '')
+        .replace(/[-_.~]+$/, '')
+    : 'my-pcl-project';
 }
 
 /**

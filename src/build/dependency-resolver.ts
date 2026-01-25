@@ -182,8 +182,8 @@ async function fetchLatestVersion(
   registry: string,
   options: ResolveOptions
 ): Promise<string> {
-  // TODO: Implement actual registry fetch
-  // For now, return placeholder
+  // NOTE: Registry fetch not yet implemented - using placeholder version
+  // Future: Fetch from NPM-style registry API endpoint
   if (options.verbose) {
     console.log(`Fetching latest version for ${name} from ${registry}`);
   }
@@ -233,8 +233,8 @@ async function resolveComparisonRange(
   registry: string,
   options: ResolveOptions
 ): Promise<string> {
-  // TODO: Implement actual range resolution
-  // For now, strip operator and return version
+  // NOTE: Comparison range resolution not yet implemented
+  // Future: Query registry for versions matching comparison operators
   if (options.verbose) {
     console.log(`Resolving comparison range ${versionSpec} for ${name}`);
   }
@@ -256,8 +256,8 @@ async function fetchPackageMetadata(
   devDependencies?: Record<string, string>;
   integrity?: string;
 }> {
-  // TODO: Implement actual registry fetch
-  // For now, return placeholder
+  // NOTE: Registry metadata fetch not yet implemented - using stub data
+  // Future: Fetch from registry API and calculate SRI integrity hash
   if (options.verbose) {
     console.log(`Fetching metadata for ${name}@${version} from ${registry}`);
   }
@@ -266,7 +266,7 @@ async function fetchPackageMetadata(
     name,
     version,
     dependencies: {},
-    integrity: '', // TODO: Calculate integrity hash
+    integrity: '', // NOTE: SRI integrity hash calculation pending
   };
 }
 

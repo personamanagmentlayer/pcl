@@ -134,15 +134,15 @@ export class HealthAggregator {
   private determineOverallStatus(
     components: Record<string, ComponentHealth>
   ): HealthStatus {
-    const statuses = Object.values(components).map((c) => c.status);
+    const statuses = new Set(Object.values(components).map((c) => c.status));
 
     // If any component is unhealthy, overall is unhealthy
-    if (statuses.includes('unhealthy')) {
+    if (statuses.has('unhealthy')) {
       return 'unhealthy';
     }
 
     // If any component is degraded, overall is degraded
-    if (statuses.includes('degraded')) {
+    if (statuses.has('degraded')) {
       return 'degraded';
     }
 

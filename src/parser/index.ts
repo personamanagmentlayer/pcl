@@ -64,8 +64,8 @@ export interface ParseResult {
 export class Parser {
   private tokens: Token[] = [];
   private current: number = 0;
-  private errors: PCLError[] = [];
-  private warnings: PCLError[] = [];
+  private readonly errors: PCLError[] = [];
+  private readonly warnings: PCLError[] = [];
   private comments: AST.Comment[] = [];
 
   private readonly source: string;
@@ -1001,7 +1001,12 @@ export class Parser {
 
     return {
       kind: 'RetryConfigNode',
-      count: count!,
+      count: count ?? {
+        kind: 'NumberLiteral',
+        value: 3,
+        raw: '3',
+        span: this.makeSpan(start, this.previous().span.end),
+      },
       delay,
       backoff,
       maxDelay,
@@ -1228,7 +1233,7 @@ export class Parser {
     if (this.matchKeyword('if')) {
       const condition = this.parseExpression();
       this.expectKeyword('then');
-      const then = this.parseWorkflowExpression();
+      const thenExpr = this.parseWorkflowExpression();
       let elseExpr: AST.WorkflowExpression | null = null;
       if (this.matchKeyword('else')) {
         elseExpr = this.parseWorkflowExpression();
@@ -1236,7 +1241,7 @@ export class Parser {
       return {
         kind: 'WorkflowConditionalExpr',
         condition,
-        then,
+        then: thenExpr,
         else: elseExpr,
         span: this.makeSpan(start, this.previous().span.end),
       };
@@ -2402,16 +2407,16 @@ export class Parser {
     let value: number;
     switch (token.type) {
       case TokenType.NUMBER_HEX:
-        value = parseInt(token.value.slice(2), 16);
+        value = Number.parseInt(token.value.slice(2), 16);
         break;
       case TokenType.NUMBER_BINARY:
-        value = parseInt(token.value.slice(2), 2);
+        value = Number.parseInt(token.value.slice(2), 2);
         break;
       case TokenType.NUMBER_OCTAL:
-        value = parseInt(token.value.slice(2), 8);
+        value = Number.parseInt(token.value.slice(2), 8);
         break;
       default:
-        value = parseFloat(token.value);
+        value = Number.parseFloat(token.value);
     }
 
     return {
@@ -3122,7 +3127,7 @@ export class Parser {
       finalizer,
       span: this.makeSpan(
         start,
-        (finalizer ?? handlers[handlers.length - 1]?.body ?? block).span.end
+        (finalizer ?? handlers.at(-1)?.body ?? block).span.end
       ),
     };
   }

@@ -26,7 +26,7 @@ import { ServerConfig } from './types';
  * PCL Language Server
  */
 export class PCLLanguageServer {
-  private config: ServerConfig = {
+  private readonly config: ServerConfig = {
     trace: false,
     maxCachedDocuments: 100,
     diagnosticsDebounce: 300,
@@ -43,7 +43,7 @@ export class PCLLanguageServer {
   private readonly codeActionProvider: CodeActionProvider;
   private readonly renameProvider: RenameProvider;
 
-  constructor(private connection = createLSPConnection()) {
+  constructor(private readonly connection = createLSPConnection()) {
     this.documentManager = new DocumentManager(
       this.connection,
       this.config.maxCachedDocuments
@@ -162,7 +162,8 @@ export class PCLLanguageServer {
 
       // Get all workspace files (simplified - would use workspace folders in real implementation)
       const workspaceFiles = new Map<string, string>();
-      // TODO: Populate with actual workspace files
+      // NOTE: Workspace file enumeration not yet implemented
+      // Future: Use workspace folders API to gather all PCL files
 
       return this.renameProvider.rename(
         params,

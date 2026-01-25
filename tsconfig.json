@@ -13,13 +13,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "baseUrl": ".",
-    "paths": {
-      "@pcl/types": ["./src/types"],
-      "@pcl/ast": ["./src/ast"],
-      "@pcl/lexer": ["./src/lexer"],
-      "@pcl/parser": ["./src/parser"]
-    },
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,

@@ -377,8 +377,8 @@ export class Lexer {
   private startLine: number = 1;
   private startColumn: number = 1;
 
-  private tokens: Token[] = [];
-  private errors: PCLError[] = [];
+  private readonly tokens: Token[] = [];
+  private readonly errors: PCLError[] = [];
 
   constructor(input: string, options: LexerOptions = {}) {
     this.input = input;
@@ -888,11 +888,11 @@ export class Lexer {
         // Hex escape \xHH
         const hex = this.input.slice(this.pos, this.pos + 2);
         if (!/^[0-9a-fA-F]{2}$/.test(hex)) {
-          return { error: `Invalid hex escape sequence: \\x${hex}` };
+          return { error: String.raw`Invalid hex escape sequence: \x${hex}` };
         }
         this.pos += 2;
         this.column += 2;
-        return { value: String.fromCharCode(parseInt(hex, 16)) };
+        return { value: String.fromCodePoint(Number.parseInt(hex, 16)) };
       }
       case 'u':
         // Unicode escape \uHHHH or \u{H...}
@@ -905,20 +905,22 @@ export class Lexer {
           if (this.isAtEnd()) {
             return { error: 'Unterminated unicode escape sequence' };
           }
-          this.advance(); // consume }
-          const codePoint = parseInt(unicode, 16);
-          if (isNaN(codePoint) || codePoint > 0x10ffff) {
+          this.advance();
+          const codePoint = Number.parseInt(unicode, 16);
+          if (Number.isNaN(codePoint) || codePoint > 0x10ffff) {
             return { error: `Invalid unicode code point: ${unicode}` };
           }
           return { value: String.fromCodePoint(codePoint) };
         } else {
           const unicode4 = this.input.slice(this.pos, this.pos + 4);
           if (!/^[0-9a-fA-F]{4}$/.test(unicode4)) {
-            return { error: `Invalid unicode escape sequence: \\u${unicode4}` };
+            return {
+              error: String.raw`Invalid unicode escape sequence: \u${unicode4}`,
+            };
           }
           this.pos += 4;
           this.column += 4;
-          return { value: String.fromCharCode(parseInt(unicode4, 16)) };
+          return { value: String.fromCodePoint(Number.parseInt(unicode4, 16)) };
         }
       default:
         // Unknown escape - return as-is (permissive)
@@ -938,7 +940,7 @@ export class Lexer {
         while (this.isHexDigit(this.peek()) || this.peek() === '_') {
           raw += this.advance();
         }
-        const cleanValue = raw.replace(/_/g, '');
+        const cleanValue = raw.replaceAll('_', '');
         return {
           ...this.makeToken(TokenType.NUMBER_HEX, cleanValue),
           raw,
@@ -950,7 +952,7 @@ export class Lexer {
         while (this.isOctalDigit(this.peek()) || this.peek() === '_') {
           raw += this.advance();
         }
-        const cleanValue = raw.replace(/_/g, '');
+        const cleanValue = raw.replaceAll('_', '');
         return {
           ...this.makeToken(TokenType.NUMBER_OCTAL, cleanValue),
           raw,
@@ -966,7 +968,7 @@ export class Lexer {
         ) {
           raw += this.advance();
         }
-        const cleanValue = raw.replace(/_/g, '');
+        const cleanValue = raw.replaceAll('_', '');
         return {
           ...this.makeToken(TokenType.NUMBER_BINARY, cleanValue),
           raw,
@@ -1017,7 +1019,7 @@ export class Lexer {
       // For now, just return the number
     }
 
-    const cleanValue = raw.replace(/_/g, '');
+    const cleanValue = raw.replaceAll('_', '');
     return {
       ...this.makeToken(
         isFloat ? TokenType.NUMBER_FLOAT : TokenType.NUMBER_INT,
