@@ -312,6 +312,9 @@ export class RenameProvider {
             type: node.kind,
           };
         }
+        // Search in nested children
+        const childResult = this.searchInChildren(node, offset);
+        if (childResult) return childResult;
         break;
       }
 
@@ -335,6 +338,58 @@ export class RenameProvider {
   }
 
   /**
+   * Recursively search in child nodes
+   */
+  private searchInChildren(
+    node: AST.ASTNode,
+    offset: number
+  ): SymbolInfo | null {
+    // Get all child nodes
+    const children = this.getChildNodes(node);
+
+    for (const child of children) {
+      const result = this.findSymbolInNode(child, offset);
+      if (result) {
+        return result;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Get all child nodes from a node
+   */
+  private getChildNodes(node: AST.ASTNode): AST.ASTNode[] {
+    const children: AST.ASTNode[] = [];
+
+    // Handle different node structures
+    if ('body' in node && Array.isArray(node.body)) {
+      children.push(...node.body);
+    }
+    if ('statements' in node && Array.isArray(node.statements)) {
+      children.push(...node.statements);
+    }
+    if ('members' in node && Array.isArray(node.members)) {
+      children.push(...node.members);
+    }
+    if ('steps' in node && node.steps) {
+      children.push(node.steps as AST.ASTNode);
+    }
+    if ('expression' in node && node.expression) {
+      children.push(node.expression as AST.ASTNode);
+    }
+    if ('left' in node && node.left) {
+      children.push(node.left as AST.ASTNode);
+    }
+    if ('right' in node && node.right) {
+      children.push(node.right as AST.ASTNode);
+    }
+
+    return children;
+  }
+
+  /**
    * Find all references to a symbol
    */
   private findAllReferences(
@@ -355,13 +410,13 @@ export class RenameProvider {
 
       // Visit declaration names
       if (
-        (node.kind === 'PersonaDecl' ||
-          node.kind === 'TeamDecl' ||
-          node.kind === 'WorkflowDecl' ||
-          node.kind === 'SkillDecl') &&
-        (node as any).name.name === symbolName
+        (node.kind === 'PersonaDeclaration' ||
+          node.kind === 'TeamDeclaration' ||
+          node.kind === 'WorkflowDeclaration' ||
+          node.kind === 'SkillDeclaration') &&
+        (node as any).id?.name === symbolName
       ) {
-        references.push((node as any).name);
+        references.push((node as any).id);
       }
 
       // Recursively visit child nodes
@@ -548,7 +603,7 @@ export class RenameProvider {
         stmt.kind === 'WorkflowDeclaration' ||
         stmt.kind === 'SkillDeclaration'
       ) {
-        const name = (stmt as any).name.name;
+        const name = (stmt as any).id.name;
         if (name !== oldName) {
           symbols.set(name, stmt);
         }
