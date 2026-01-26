@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitest/config';
-import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vitest/config';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,7 +10,10 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     include: ['tests/**/*.test.ts'],
-    exclude: ['tests/**/*.mjs'],
+    exclude: [
+      'tests/**/*.mjs',
+      'tests/**/*.integration.test.ts', // Skip API integration tests by default
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

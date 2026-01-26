@@ -23,15 +23,20 @@ function parseAndAnalyze(source: string) {
 
   const analysisResult = analyze(parseResult.value.program);
 
-  // Combine parse result with analysis errors
+  // Combine parse result with analysis errors and warnings
   // Note: Result type uses 'error' (singular), not 'errors'
   const analysisErrors = analysisResult.ok
-    ? []
+    ? analysisResult.value.errors || []
     : Array.isArray(analysisResult.error)
       ? analysisResult.error
       : [analysisResult.error];
 
+  const analysisWarnings = analysisResult.ok
+    ? analysisResult.value.warnings || []
+    : [];
+
   const allErrors = [...parseResult.value.errors, ...analysisErrors];
+  const allWarnings = [...parseResult.value.warnings, ...analysisWarnings];
 
   // Return ok: true even if there are validation errors (they're in the errors array)
   // Only return ok: false if parsing failed
@@ -40,7 +45,7 @@ function parseAndAnalyze(source: string) {
     value: {
       ...parseResult.value,
       errors: allErrors,
-      warnings: parseResult.value.warnings,
+      warnings: allWarnings,
     },
   };
 }
@@ -350,7 +355,7 @@ describe('Phase 1.0A: Team Validation', () => {
 
         team MyTeam {
           members: [Alice, Bob, Charlie]
-          conflict: [Alice, Bob]
+          conflict: Alice > Bob
         }
       `;
 
@@ -382,7 +387,7 @@ describe('Phase 1.0A: Team Validation', () => {
 
         team MyTeam {
           members: [Alice, Bob]
-          conflict: [Alice, Bob, Charlie]
+          conflict: Alice > Bob > Charlie
         }
       `;
 
@@ -415,7 +420,7 @@ describe('Phase 1.0A: Team Validation', () => {
 
         team MyTeam {
           members: [Alice, Bob, Charlie]
-          conflict: [Alice, Bob, Charlie]
+          conflict: Alice > Bob > Charlie
         }
       `;
 
@@ -547,7 +552,7 @@ describe('Phase 1.0A: Team Validation', () => {
           members: [Alice, Bob, Alice]
           primary: Charlie
           quorum: 5/3
-          conflict: [Alice, Bob, Charlie, NotAMember]
+          conflict: Alice > Bob > Charlie > NotAMember
         }
       `;
 

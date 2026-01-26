@@ -71,7 +71,7 @@ export class ProviderHealthMonitor {
     this.config = { ...DEFAULT_CIRCUIT_CONFIG, ...config };
 
     this.lastResult = {
-      status: 'unknown',
+      status: 'healthy',
       timestamp: new Date(),
     };
   }

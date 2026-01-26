@@ -11,7 +11,7 @@
 
 import * as AST from '../ast';
 import type { ComparisonOp, PCLError, Result, Span } from '../types';
-import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
+import { ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE SYSTEM
@@ -525,7 +525,7 @@ export class TeamType implements Type {
 
   constructor(
     readonly name: string,
-    readonly members: readonly PersonaType[],
+    readonly members: readonly (PersonaType | TeamType)[],
     readonly primary?: PersonaType
   ) {}
 
@@ -740,7 +740,8 @@ export const Types = {
       exprConstraints,
       methods
     ),
-  team: (name: string, members: PersonaType[]) => new TeamType(name, members),
+  team: (name: string, members: (PersonaType | TeamType)[]) =>
+    new TeamType(name, members),
   workflow: (name: string, input: Type, output: Type) =>
     new WorkflowType(name, input, output),
   skill: (name: string, items: string[]) => new SkillType(name, items),
@@ -1120,14 +1121,14 @@ export class SemanticAnalyzer {
     // Second pass: resolve types and check
     this.checkProgram(program);
 
-    // Third pass: validate exports
+    // Third pass: detect circular team references (must be after all teams are checked)
+    this.detectAllCircularReferences(program);
+
+    // Fourth pass: validate exports
     this.validateExports();
 
-    // Return error result if there are any errors
-    if (this.errors.length > 0) {
-      return Err(this.errors);
-    }
-
+    // Always return Ok with errors and warnings arrays
+    // The caller can decide whether to treat errors as fatal
     return Ok({
       symbols: this.symbolTable,
       errors: this.errors,
@@ -1285,7 +1286,7 @@ export class SemanticAnalyzer {
     }
 
     // Collect members
-    const members: PersonaType[] = [];
+    const members: (PersonaType | TeamType)[] = [];
     let primary: PersonaType | undefined;
 
     for (const member of decl.body.members) {
@@ -1294,7 +1295,10 @@ export class SemanticAnalyzer {
         for (const ref of membersDecl.members) {
           const personaName = this.getPersonaRefName(ref);
           const symbol = this.currentScope.lookup(personaName);
-          if (symbol?.type instanceof PersonaType) {
+          if (
+            symbol?.type instanceof PersonaType ||
+            symbol?.type instanceof TeamType
+          ) {
             members.push(symbol.type);
           }
         }
@@ -2040,8 +2044,8 @@ export class SemanticAnalyzer {
       this.validateTeamConflict(conflictDecl, memberList, decl.span);
     }
 
-    // Phase 1.0A: Circular reference detection
-    this.detectCircularTeamReferences(decl.id.name, new Set(), decl.span);
+    // Note: Circular reference detection is done in a separate pass
+    // after all teams are collected (see detectAllCircularReferences)
   }
 
   /**
@@ -2141,22 +2145,53 @@ export class SemanticAnalyzer {
     const teamSymbol = this.currentScope.lookup(teamName);
 
     if (!teamSymbol || !(teamSymbol.type instanceof TeamType)) {
+      visited.delete(teamName);
+      return false;
+    }
+
+    // Get the AST declaration to check all member names (including forward references)
+    const teamDecl = teamSymbol.declaration as AST.TeamDeclaration | undefined;
+    if (!teamDecl) {
+      visited.delete(teamName);
       return false;
     }
 
     // Check if any team members are themselves teams
-    for (const member of teamSymbol.type.members) {
-      const memberSymbol = this.currentScope.lookup(member.name);
-      if (memberSymbol?.type instanceof TeamType) {
-        if (
-          this.detectCircularTeamReferences(member.name, new Set(visited), span)
-        ) {
-          return true;
+    for (const member of teamDecl.body.members) {
+      if (member.kind === 'TeamMembersDeclaration') {
+        const membersDecl = member as AST.TeamMembersDeclaration;
+        for (const ref of membersDecl.members) {
+          const memberName = this.getPersonaRefName(ref);
+          const memberSymbol = this.currentScope.lookup(memberName);
+
+          // Only check if the member is a team (not a persona)
+          if (memberSymbol?.type instanceof TeamType) {
+            if (this.detectCircularTeamReferences(memberName, visited, span)) {
+              return true;
+            }
+          }
         }
       }
     }
 
+    visited.delete(teamName); // Backtrack for other paths
     return false;
+  }
+
+  /**
+   * Phase 1.0A: Detect circular references in all teams (separate pass)
+   */
+  private detectAllCircularReferences(program: AST.Program): void {
+    for (const stmt of program.statements) {
+      if (stmt.kind === 'TeamDeclaration') {
+        const teamDecl = stmt as AST.TeamDeclaration;
+        this.detectCircularTeamReferences(
+          teamDecl.id.name,
+          new Set(),
+          teamDecl.span
+        );
+      }
+    }
   }
 
   private checkWorkflow(decl: AST.WorkflowDeclaration): void {

@@ -42,7 +42,9 @@
       "Bash(npm audit:*)",
       "Bash(npm outdated:*)",
       "Bash(npm run:*)",
-      "Bash(gh run:*)"
+      "Bash(gh run:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)"
     ]
   }
 }

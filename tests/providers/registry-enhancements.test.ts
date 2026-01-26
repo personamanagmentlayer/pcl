@@ -425,9 +425,14 @@ describe('ProviderRegistry Enhancements', () => {
     });
 
     test('cost tracking across multiple providers', async () => {
-      const provider2 = { ...mockProvider2, name: 'mock2' };
+      const provider2 = new MockProvider();
+      // Create a copy with different name
+      const provider2WithName = Object.create(Object.getPrototypeOf(provider2));
+      Object.assign(provider2WithName, provider2);
+      provider2WithName.name = 'mock2';
+
       registry.register(mockProvider1);
-      registry.register(provider2 as any);
+      registry.register(provider2WithName as any);
 
       const request: GenerationRequest = {
         prompt: 'Test prompt',

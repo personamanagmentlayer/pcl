@@ -4,14 +4,14 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import type { Message } from '../index';
-import { ProviderHealthMonitor, HealthMonitorRegistry } from './health';
+import { CostTracker, CostTrackerRegistry } from './cost-tracker';
 import { FallbackChain, FallbackChainBuilder } from './fallback';
+import { HealthMonitorRegistry, ProviderHealthMonitor } from './health';
 import {
   RateLimiter,
   RateLimiterRegistry,
   type RateLimiterConfig,
 } from './rate-limiter';
-import { CostTracker, CostTrackerRegistry } from './cost-tracker';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Provider Capabilities
@@ -199,6 +199,12 @@ export class ProviderRegistry {
     provider: AIProvider,
     config?: { rateLimiter?: Partial<RateLimiterConfig> }
   ): void {
+    // If provider already exists, clean up old resources
+    if (this.providers.has(provider.name)) {
+      this.healthMonitors.unregister(provider.name);
+      this.rateLimiters.unregister(provider.name);
+    }
+
     this.providers.set(provider.name, provider);
 
     // Set first provider as default
@@ -207,10 +213,10 @@ export class ProviderRegistry {
     // Automatically create health monitor
     this.healthMonitors.register(provider.name, provider);
 
-    // Automatically create rate limiter
-    this.rateLimiters.getOrCreate(provider.name, config?.rateLimiter);
+    // Automatically create rate limiter with new config
+    this.rateLimiters.register(provider.name, config?.rateLimiter);
 
-    // Automatically create cost tracker
+    // Automatically create cost tracker (reuse if exists)
     this.costTrackers.getOrCreate(provider.name);
   }
 
@@ -525,42 +531,42 @@ export type { MockProviderConfig } from './mock';
 // DEPRECATED: Old provider implementations
 // Use the new integrated providers instead (see integrated-providers.ts)
 export { AnthropicProvider } from './anthropic';
-export { OpenAIProvider } from './openai';
-export { GeminiProvider } from './gemini';
-export { DeepSeekProvider } from './deepseek';
-export { OllamaProvider } from './ollama';
 export { AzureOpenAIProvider } from './azure';
 export { BedrockProvider } from './bedrock';
+export { DeepSeekProvider } from './deepseek';
+export { GeminiProvider } from './gemini';
+export { OllamaProvider } from './ollama';
+export { OpenAIProvider } from './openai';
 
 export type { AnthropicProviderConfig } from './anthropic';
-export type { OpenAIProviderConfig } from './openai';
-export type { GeminiProviderConfig } from './gemini';
-export type { DeepSeekProviderConfig } from './deepseek';
-export type { OllamaProviderConfig } from './ollama';
 export type { AzureOpenAIProviderConfig } from './azure';
 export type { BedrockProviderConfig } from './bedrock';
+export type { DeepSeekProviderConfig } from './deepseek';
+export type { GeminiProviderConfig } from './gemini';
+export type { OllamaProviderConfig } from './ollama';
+export type { OpenAIProviderConfig } from './openai';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // New Integrated Provider System (8 Providers)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { createProviderAdapter } from './provider-adapter';
 export {
-  registerAnthropicProvider,
-  registerOpenAIProvider,
-  registerGoogleProvider,
-  registerDeepSeekProvider,
-  registerOllamaProvider,
-  registerMistralProvider,
-  registerGroqProvider,
-  registerCohereProvider,
-  registerAllProviders,
+  getDefaultProvider,
   getProvider as getRuntimeProvider,
   listProviders as listRuntimeProviders,
-  getDefaultProvider,
+  registerAllProviders,
+  registerAnthropicProvider,
+  registerCohereProvider,
+  registerDeepSeekProvider,
+  registerGoogleProvider,
+  registerGroqProvider,
+  registerMistralProvider,
+  registerOllamaProvider,
+  registerOpenAIProvider,
   setDefaultProvider,
   type RuntimeProviderConfig,
 } from './integrated-providers';
+export { createProviderAdapter } from './provider-adapter';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Registry Enhancements
@@ -568,19 +574,19 @@ export {
 
 // Health Monitoring
 export {
-  ProviderHealthMonitor,
   HealthMonitorRegistry,
-  type HealthStatus,
+  ProviderHealthMonitor,
   type HealthCheckResult,
+  type HealthStatus,
 } from './health';
 
 // Fallback Chains
 export {
   FallbackChain,
   FallbackChainBuilder,
-  type FallbackStrategy,
   type FallbackConfig,
   type FallbackResult,
+  type FallbackStrategy,
 } from './fallback';
 
 // Rate Limiting
