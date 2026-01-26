@@ -93,7 +93,9 @@ describe('ProviderRegistry', () => {
       registry.register(mockProvider1);
       registry.unregister('mock');
 
-      expect(() => registry.getDefault()).toThrow('No default provider available');
+      expect(() => registry.getDefault()).toThrow(
+        'No default provider available'
+      );
     });
 
     test('sets new default when unregistering current default', () => {
@@ -169,14 +171,18 @@ describe('ProviderRegistry', () => {
     });
 
     test('throws error when no providers registered', () => {
-      expect(() => registry.getDefault()).toThrow('No default provider available');
+      expect(() => registry.getDefault()).toThrow(
+        'No default provider available'
+      );
     });
 
     test('throws error when default was unregistered and no others exist', () => {
       registry.register(mockProvider1);
       registry.unregister('mock');
 
-      expect(() => registry.getDefault()).toThrow('No default provider available');
+      expect(() => registry.getDefault()).toThrow(
+        'No default provider available'
+      );
     });
 
     test('returns updated default after setDefault', () => {
@@ -336,6 +342,8 @@ describe('ProviderRegistry', () => {
         expect(registry.size).toBe(1);
         registry.unregister('mock');
         expect(registry.size).toBe(0);
+        // Clear all registries to avoid conflicts
+        registry.clear();
       }
     });
 

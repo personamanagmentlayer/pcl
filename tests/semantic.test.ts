@@ -325,7 +325,17 @@ describe('SemanticAnalyzer', () => {
       if (!parseResult.ok) return;
 
       const analysisResult = analyze(parseResult.value.program);
-      expect(analysisResult.ok).toBe(false);
+      expect(analysisResult.ok).toBe(true);
+      if (!analysisResult.ok) return;
+
+      // Should have errors about duplicate declaration
+      expect(analysisResult.value.errors.length).toBeGreaterThan(0);
+      const hasDuplicateError = analysisResult.value.errors.some(
+        (e) =>
+          e.message.toLowerCase().includes('duplicate') ||
+          e.message.toLowerCase().includes('already')
+      );
+      expect(hasDuplicateError).toBe(true);
     });
 
     it('should analyze persona with extends', () => {
@@ -396,7 +406,17 @@ describe('SemanticAnalyzer', () => {
       if (!parseResult.ok) return;
 
       const analysisResult = analyze(parseResult.value.program);
-      expect(analysisResult.ok).toBe(false);
+      expect(analysisResult.ok).toBe(true);
+      if (!analysisResult.ok) return;
+
+      // Should have errors about duplicate declaration
+      expect(analysisResult.value.errors.length).toBeGreaterThan(0);
+      const hasDuplicateError = analysisResult.value.errors.some(
+        (e) =>
+          e.message.toLowerCase().includes('duplicate') ||
+          e.message.toLowerCase().includes('already')
+      );
+      expect(hasDuplicateError).toBe(true);
     });
   });
 
