@@ -9,7 +9,38 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { compile, parse } from '../src';
+// Import directly from modules to avoid loading registry/runtime/mcp
+import { parse } from '../src/parser';
+import { analyze } from '../src/semantic';
+import { Err, Ok } from '../src/types';
+
+// Minimal compile function that doesn't load heavy modules
+function compile(source: string) {
+  const parseResult = parse(source);
+  if (!parseResult.ok) {
+    return parseResult;
+  }
+
+  if (parseResult.value.errors.length > 0) {
+    return Err(parseResult.value.errors);
+  }
+
+  const analysisResult = analyze(parseResult.value.program, {
+    sourceCode: source,
+  });
+  if (!analysisResult.ok) {
+    return analysisResult;
+  }
+
+  if (analysisResult.value.errors.length > 0) {
+    return Err(analysisResult.value.errors);
+  }
+
+  return Ok({
+    program: parseResult.value.program,
+    analysis: analysisResult.value,
+  });
+}
 
 describe('PCL Minimal Sanity Checks', () => {
   describe('Parser', () => {
