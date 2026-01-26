@@ -21,6 +21,14 @@ export default defineConfig({
       exclude: ['src/cli/**'],
     },
     testTimeout: 10000,
+    hookTimeout: 10000,
+    teardownTimeout: 10000,
+    pool: 'forks', // Use process isolation to prevent hanging
+    poolOptions: {
+      forks: {
+        singleFork: false,
+      },
+    },
   },
   resolve: {
     alias: {

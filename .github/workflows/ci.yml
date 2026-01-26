@@ -59,6 +59,7 @@ jobs:
   test:
     name: Test (Node ${{ matrix.node-version }})
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30  # Cancel if tests take more than 30 minutes
 
     strategy:
       fail-fast: false

@@ -17,6 +17,11 @@ describe('ProviderRegistry', () => {
     mockProvider2 = new MockProvider();
   });
 
+  afterEach(() => {
+    // Cleanup all providers and their intervals
+    registry.clear();
+  });
+
   // ───────────────────────────────────────────────────────────────────────────
   // Registration
   // ───────────────────────────────────────────────────────────────────────────

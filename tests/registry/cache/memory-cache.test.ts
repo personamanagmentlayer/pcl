@@ -17,6 +17,7 @@ describe('MemoryCache', () => {
 
   afterEach(() => {
     cache.stopCleanup();
+    cache.destroy(); // Ensure complete cleanup
   });
 
   describe('Basic Operations', () => {
