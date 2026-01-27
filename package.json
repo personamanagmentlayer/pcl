@@ -126,6 +126,7 @@
     "@types/vscode": "^1.108.1",
     "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@typescript-eslint/parser": "^8.53.0",
+    "@vitest/coverage-v8": "^1.6.1",
     "eslint": "^8.55.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
