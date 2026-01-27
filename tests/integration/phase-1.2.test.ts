@@ -15,25 +15,25 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   createStateMachine,
   type StateMachineSnapshot,
-} from '../src/runtime/state-machine';
+} from '../../src/runtime/state-machine';
 import {
   createTeamProcessor,
   createTeamValidator,
   type TeamProcessingOptions,
-} from '../src/runtime/team-edge-cases';
+} from '../../src/runtime/team-edge-cases';
 import {
   createSnapshotManager,
   createRestoreManager,
   type RuntimeSnapshot,
-} from '../src/runtime/snapshot';
+} from '../../src/runtime/snapshot';
 import {
   createRuntime,
   createPersona,
   createTeam,
   type PersonaConfig,
   type Message,
-} from '../src/runtime/index';
-import { MockProvider } from '../src/runtime/providers/mock';
+} from '../../src/runtime/index';
+import { MockProvider } from '../../src/runtime/providers/mock';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              STATE MACHINE TESTS
