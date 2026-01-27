@@ -75,7 +75,7 @@ jobs:
       fail-fast: false
       matrix:
         # Test on Node 20 LTS only - Node 22 tested in separate workflow
-        node-version: ['20']
+        node-version: ['20', '22']
         # Only test on ubuntu for speed - macOS is 60x slower
         os: [ubuntu-latest]
 
