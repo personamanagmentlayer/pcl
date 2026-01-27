@@ -2389,3 +2389,8 @@ export * from './backpressure.js';
 export * from './providers/connection-pool.js';
 export * from './scheduler.js';
 export * from './streams.js';
+
+// Export Phase 1.2 features
+export * from './state-machine.js';
+export * from './team-edge-cases.js';
+export * from './snapshot.js';
