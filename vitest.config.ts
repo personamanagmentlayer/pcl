@@ -15,6 +15,7 @@ export default defineConfig({
       'tests/**/*.integration.test.ts', // Skip API integration tests by default
       'tests/http/**/*.test.ts', // Skip HTTP server tests (they hang in CI)
     ],
+    globalTeardown: './tests/setup/global-teardown.ts',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
