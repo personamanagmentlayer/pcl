@@ -502,6 +502,8 @@ export class Parser {
           name,
           span: name.span,
         });
+      } else {
+        this.error(`Unexpected token in skill block: ${this.peek().value}`);
       }
 
       this.match(TokenType.COMMA);
@@ -542,6 +544,10 @@ export class Parser {
           value,
           span: this.makeSpan(field.span.start, value.span.end),
         });
+      } else {
+        this.error(
+          `Unexpected token in constraint block: ${this.peek().value}`
+        );
       }
 
       this.match(TokenType.COMMA);
@@ -578,6 +584,8 @@ export class Parser {
           name,
           span: name.span,
         });
+      } else {
+        this.error(`Unexpected token in tag block: ${this.peek().value}`);
       }
 
       this.match(TokenType.COMMA);
