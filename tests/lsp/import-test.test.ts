@@ -57,7 +57,7 @@ persona Alice {
 
 team TestTeam {
   members: [Alice, UndefinedPersona]
-  quorum: 2
+  quorum: 2/2
 }
       `.trim();
 
@@ -72,37 +72,34 @@ team TestTeam {
       const { errors } = analysisResult.value;
 
       // Test passes if semantic analyzer runs without crashing
-      // Undefined persona detection may not be fully implemented yet
       expect(errors).toBeDefined();
       expect(Array.isArray(errors)).toBe(true);
 
-      // If errors found, check if undefined detection works
+      // Check if undefined detection works - should find "Unknown persona"
       const hasUndefinedError = errors.some(
         (e) =>
-          e.message.includes('undefined') ||
-          e.message.includes('not found') ||
+          e.message.includes('Unknown persona') ||
           e.message.includes('UndefinedPersona')
       );
-      // Just log result, don't fail test
       console.log(
         `Undefined persona detection: ${hasUndefinedError ? 'IMPLEMENTED' : 'NOT YET IMPLEMENTED'}`
       );
+      // NOTE: Detection requires forward-reference resolution which may need enhancement
     });
 
     it('should detect circular team references (if implemented)', () => {
+      // Note: PCL uses members: [...] to include teams, not a separate "includes" keyword
       const source = `
 persona Alice { description: "Test" }
 
 team TeamA {
-  members: [Alice]
-  includes: [TeamB]
-  quorum: 1
+  members: [Alice, TeamB]
+  quorum: 1/1
 }
 
 team TeamB {
-  members: [Alice]
-  includes: [TeamA]
-  quorum: 1
+  members: [Alice, TeamA]
+  quorum: 1/1
 }
       `.trim();
 
@@ -120,23 +117,25 @@ team TeamB {
       expect(errors).toBeDefined();
       expect(Array.isArray(errors)).toBe(true);
 
-      // If errors found, check if circular detection works
+      // Check if circular detection works
       const hasCircularError = errors.some(
-        (e) => e.message.includes('circular') || e.message.includes('cycle')
+        (e) => e.message.includes('Circular') || e.message.includes('circular')
       );
       console.log(
         `Circular reference detection: ${hasCircularError ? 'IMPLEMENTED' : 'NOT YET IMPLEMENTED'}`
       );
+      // NOTE: Circular detection requires teams to be fully resolved before checking
     });
 
     it('should detect invalid quorum values (if implemented)', () => {
+      // Use quorum: 5/3 format - 5 required out of 3 total, but only 2 members
       const source = `
 persona Alice { description: "A" }
 persona Bob { description: "B" }
 
 team SmallTeam {
   members: [Alice, Bob]
-  quorum: 5
+  quorum: 5/3
 }
       `.trim();
 
@@ -148,19 +147,21 @@ team SmallTeam {
       expect(analysisResult.ok).toBe(true);
       if (!analysisResult.ok) return;
 
-      const { errors } = analysisResult.value;
+      const { errors, warnings } = analysisResult.value;
 
       // Test passes if semantic analyzer runs without crashing
       expect(errors).toBeDefined();
       expect(Array.isArray(errors)).toBe(true);
 
-      // If errors found, check if quorum validation works
-      const hasQuorumError = errors.some((e) =>
-        e.message.toLowerCase().includes('quorum')
-      );
+      // Check if quorum validation works - should find errors or warnings about quorum
+      const hasQuorumIssue =
+        errors.some((e) => e.message.toLowerCase().includes('quorum')) ||
+        warnings.some((w) => w.message.toLowerCase().includes('quorum'));
       console.log(
-        `Quorum validation: ${hasQuorumError ? 'IMPLEMENTED' : 'NOT YET IMPLEMENTED'}`
+        `Quorum validation: ${hasQuorumIssue ? 'IMPLEMENTED' : 'NOT YET IMPLEMENTED'}`
       );
+      // Quorum validation IS implemented - this should pass
+      expect(hasQuorumIssue).toBe(true);
     });
 
     it('should validate conflict order syntax', () => {
@@ -282,6 +283,7 @@ persona Person${i} {
     });
 
     it('should handle deeply nested team structures', () => {
+      // Note: PCL uses members: [...] to include teams, not a separate "includes" keyword
       const source = `
 persona Alice { description: "A" }
 persona Bob { description: "B" }
@@ -293,14 +295,12 @@ team Level1 {
 }
 
 team Level2 {
-  members: [Bob]
-  includes: [Level1]
+  members: [Bob, Level1]
   quorum: 1
 }
 
 team Level3 {
-  members: [Carol]
-  includes: [Level2]
+  members: [Carol, Level2]
   quorum: 1
 }
       `.trim();
