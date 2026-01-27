@@ -11,16 +11,20 @@ export default async function globalTeardown() {
     global.gc();
   }
 
-  // Give Node.js a moment to cleanup
-  await new Promise((resolve) => setTimeout(resolve, 100));
-
   console.log('✓ Global teardown complete\n');
 
-  // Force exit to prevent hanging on background timers
+  // Force immediate exit to prevent hanging on background timers
   // This is necessary because some modules (registry, runtime) have setInterval
   // timers that may not cleanup properly in test environments
-  setTimeout(() => {
-    console.log('⚠️  Forcing process exit after 1s grace period');
+  // In CI, we cannot afford to wait - force exit immediately
+  if (process.env.CI) {
+    console.log('⚠️  CI environment detected - forcing immediate exit');
     process.exit(0);
-  }, 1000);
+  } else {
+    // Give local dev a moment to cleanup gracefully
+    setTimeout(() => {
+      console.log('⚠️  Forcing process exit after 500ms grace period');
+      process.exit(0);
+    }, 500);
+  }
 }
