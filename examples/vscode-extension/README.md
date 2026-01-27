@@ -18,6 +18,7 @@ This extension provides language support for Persona Configuration Language (PCL
 ### From VSIX Package
 
 1. Build the extension:
+
    ```bash
    cd vscode-pcl
    npm install
@@ -35,12 +36,14 @@ This extension provides language support for Persona Configuration Language (PCL
 
 1. Clone the repository
 2. Build the language server:
+
    ```bash
    npm install
    npm run build
    ```
 
 3. Build the extension:
+
    ```bash
    cd vscode-pcl
    npm install
@@ -55,9 +58,9 @@ Configure the extension in VSCode settings (`Ctrl+,`):
 
 ```json
 {
-  "pcl.trace.server": "off",           // Trace LSP communication: "off" | "messages" | "verbose"
-  "pcl.maxCachedDocuments": 100,       // Maximum documents to cache
-  "pcl.diagnosticsDebounce": 300       // Debounce time (ms) for diagnostics
+  "pcl.trace.server": "off", // Trace LSP communication: "off" | "messages" | "verbose"
+  "pcl.maxCachedDocuments": 100, // Maximum documents to cache
+  "pcl.diagnosticsDebounce": 300 // Debounce time (ms) for diagnostics
 }
 ```
 
@@ -66,6 +69,7 @@ Configure the extension in VSCode settings (`Ctrl+,`):
 ### Syntax Highlighting
 
 The extension provides comprehensive syntax highlighting for:
+
 - Keywords: `persona`, `team`, `workflow`, `skill`, `if`, `then`, `else`, etc.
 - Types: `String`, `Int`, `Float`, `Bool`, `Array`, `Map`, `Persona`, `Team`, etc.
 - Operators: `->`, `||`, `|`, `=>`, `==`, `!=`, etc.
@@ -75,6 +79,7 @@ The extension provides comprehensive syntax highlighting for:
 ### IntelliSense
 
 Smart completions include:
+
 - **Keywords** - All PCL keywords with documentation
 - **Code Snippets** - Templates for persona, team, workflow, skill declarations
 - **Properties** - Context-aware property suggestions
@@ -84,6 +89,7 @@ Smart completions include:
 ### Hover Information
 
 Hover over any symbol to see:
+
 - **Keywords** - Category and detailed documentation
 - **Properties** - Type, description, and examples
 - **Symbols** - Type, version, visibility, and documentation
@@ -91,18 +97,21 @@ Hover over any symbol to see:
 ### Go to Definition
 
 Navigate to symbol definitions:
+
 - Click any persona/team/workflow/skill reference while holding Ctrl
 - Jump directly to the declaration
 
 ### Find All References
 
 Find all usages of a symbol:
+
 - Right-click on any symbol → "Find All References"
 - See all locations where the symbol is used
 
 ### Document Outline
 
 View document structure:
+
 - Open the Outline view (Ctrl+Shift+O)
 - See all personas, teams, workflows, and skills
 - Click to navigate
@@ -110,12 +119,14 @@ View document structure:
 ### Code Formatting
 
 Format PCL code:
+
 - Press `Shift+Alt+F` to format the entire document
 - Automatically indents blocks and aligns properties
 
 ### Diagnostics
 
 Real-time error detection:
+
 - Syntax errors highlighted in red
 - Semantic errors (undefined symbols, type mismatches)
 - Warnings for best practices
@@ -184,6 +195,7 @@ workflow DEVELOPMENT {
 ### 1.0.0
 
 Initial release:
+
 - Full syntax highlighting
 - IntelliSense with keyword, snippet, and symbol completions
 - Hover information for keywords, properties, and symbols

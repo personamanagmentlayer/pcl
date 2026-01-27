@@ -63,6 +63,20 @@ export {
   Runtime,
   TeamInstance,
   WorkflowExecutor,
+  // Phase 1.2: State Machine
+  createStateMachine,
+  StateMachine,
+  StateMachineBuilder,
+  // Phase 1.2: Team Edge Cases
+  createTeamProcessor,
+  createTeamValidator,
+  TeamProcessor,
+  TeamValidator,
+  // Phase 1.2: Snapshot/Restore
+  createSnapshotManager,
+  createRestoreManager,
+  SnapshotManager,
+  RestoreManager,
 } from './runtime';
 
 // ═══════════════════════════════════════════════════════════════════════════════

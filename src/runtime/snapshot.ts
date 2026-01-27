@@ -15,7 +15,12 @@
  */
 
 import { Err, Ok, type Result } from '../types';
-import type { Message, PersonaState, TeamState, WorkflowState } from './index';
+import type {
+  Message,
+  PersonaState,
+  TeamState,
+  WorkflowState,
+} from './runtime-types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE DEFINITIONS
@@ -299,7 +304,7 @@ export class SnapshotManager {
       // Validate
       const validation = this.validateSnapshot(snapshot);
       if (!validation.ok) {
-        return Err(validation.error);
+        return validation as Result<RuntimeSnapshot, Error>;
       }
 
       return Ok(snapshot);

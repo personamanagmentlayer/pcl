@@ -832,6 +832,7 @@ PCL computes confidence based on:
    ```
 
 3. **Confidence:**
+
    ```
    confidence = relativeDiff * sampleFactor
    ```
@@ -1155,6 +1156,6 @@ async function updateAllocation(week) {
 
 **Need Help?**
 
-- GitHub: [Report an issue](https://github.com/personalayer/pcl-lite/issues)
+- GitHub: [Report an issue](https://github.com/personalayer/pcl/issues)
 - Docs: [pcl.dev/docs](https://pcl.dev/docs)
 - Community: [Discord](https://discord.gg/pcl)

@@ -14,14 +14,35 @@ PCL implements industry-standard practices for error handling, observability, an
 
 ## Table of Contents
 
-1. [RFC 7807 - Problem Details for HTTP APIs](#rfc-7807---problem-details-for-http-apis)
-2. [OpenTelemetry Semantic Conventions](#opentelemetry-semantic-conventions)
-3. [SLO & Error Budget Tracking](#slo--error-budget-tracking)
-4. [Result Type Pattern](#result-type-pattern)
-5. [Circuit Breaker Pattern](#circuit-breaker-pattern)
-6. [Kubernetes Health Checks](#kubernetes-health-checks)
-7. [Prometheus Metrics](#prometheus-metrics)
-8. [W3C Trace Context](#w3c-trace-context)
+- [PCL Standards Compliance Guide](#pcl-standards-compliance-guide)
+  - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
+  - [RFC 7807 - Problem Details for HTTP APIs](#rfc-7807---problem-details-for-http-apis)
+    - [Response Format](#response-format)
+    - [Field Mapping](#field-mapping)
+    - [Error Types](#error-types)
+    - [Example: Validation Error](#example-validation-error)
+  - [OpenTelemetry Semantic Conventions](#opentelemetry-semantic-conventions)
+    - [Metric Names](#metric-names)
+    - [Attributes](#attributes)
+    - [Usage Example](#usage-example)
+    - [Span Names](#span-names)
+  - [SLO \& Error Budget Tracking](#slo--error-budget-tracking)
+    - [SLO Configuration](#slo-configuration)
+    - [Common SLOs](#common-slos)
+    - [Recording Results](#recording-results)
+    - [SLO Status](#slo-status)
+    - [HTTP API Endpoints](#http-api-endpoints)
+    - [Response Example](#response-example)
+  - [Result Type Pattern](#result-type-pattern)
+  - [Circuit Breaker Pattern](#circuit-breaker-pattern)
+  - [Kubernetes Health Checks](#kubernetes-health-checks)
+  - [Prometheus Metrics](#prometheus-metrics)
+  - [W3C Trace Context](#w3c-trace-context)
+  - [Compliance Summary](#compliance-summary)
+  - [Validation](#validation)
+    - [Automated Compliance Checks](#automated-compliance-checks)
+  - [References](#references)
 
 ---
 
@@ -511,4 +532,4 @@ curl http://localhost:3000/api/v1/slo | jq '.data.slos'
 ---
 
 **Questions or Issues?**
-Report at: https://github.com/personalayer/pcl-lite/issues
+Report at: <https://github.com/personalayer/pcl/issues>

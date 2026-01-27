@@ -1386,6 +1386,6 @@ routing: {
 
 **Need Help?**
 
-- GitHub Issues: [Report a bug](https://github.com/personalayer/pcl-lite/issues)
+- GitHub Issues: [Report a bug](https://github.com/personalayer/pcl/issues)
 - Documentation: [PCL Docs](https://pcl.dev/docs)
 - Community: [Discord](https://discord.gg/pcl)

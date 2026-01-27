@@ -43,8 +43,12 @@ export function activate(context: ExtensionContext) {
     // Get configuration from workspace settings
     initializationOptions: {
       trace: workspace.getConfiguration('pcl').get('trace.server'),
-      maxCachedDocuments: workspace.getConfiguration('pcl').get('maxCachedDocuments'),
-      diagnosticsDebounce: workspace.getConfiguration('pcl').get('diagnosticsDebounce'),
+      maxCachedDocuments: workspace
+        .getConfiguration('pcl')
+        .get('maxCachedDocuments'),
+      diagnosticsDebounce: workspace
+        .getConfiguration('pcl')
+        .get('diagnosticsDebounce'),
     },
   };
 

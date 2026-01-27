@@ -1324,6 +1324,6 @@ Enable one feature at a time, monitor impact, then enable next.
 
 **Questions?**
 
-- GitHub: [Issues](https://github.com/personalayer/pcl-lite/issues)
+- GitHub: [Issues](https://github.com/personalayer/pcl/issues)
 - Docs: [pcl.dev/docs](https://pcl.dev/docs)
 - Community: [Discord](https://discord.gg/pcl)

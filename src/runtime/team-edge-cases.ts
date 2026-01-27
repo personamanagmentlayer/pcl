@@ -16,7 +16,7 @@
  */
 
 import { Err, Ok, type Result } from '../types';
-import type { Message, PersonaInstance, Response } from './index';
+import type { Message, PersonaInstance, Response } from './runtime-types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE DEFINITIONS

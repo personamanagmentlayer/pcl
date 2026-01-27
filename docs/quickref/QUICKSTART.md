@@ -224,7 +224,7 @@ npm run parse examples/showcase.pcl
 
 **Install recommended extensions**:
 
-1. Open VS Code in the `pcl-lite` folder
+1. Open VS Code in the `pcl` folder
 2. Look for the "Install Workspace Recommended Extensions" notification
 3. Click "Install All" (30+ extensions including Copilot, ESLint, Prettier)
 
@@ -425,7 +425,7 @@ Read [GitHub Copilot Instructions](.github/copilot-instructions.md) for coding s
 
 Found a bug? Have a feature request?
 
-**Open an issue**: https://github.com/personamanagmentlayer/pcl/issues
+**Open an issue**: <https://github.com/personamanagmentlayer/pcl/issues>
 
 Please include:
 
@@ -439,9 +439,9 @@ Please include:
 
 ## Community & Support
 
-- **GitHub**: https://github.com/personamanagmentlayer/pcl
-- **Issues**: https://github.com/personamanagmentlayer/pcl/issues
-- **Discussions**: https://github.com/personamanagmentlayer/pcl/discussions
+- **GitHub**: <https://github.com/personamanagmentlayer/pcl>
+- **Issues**: <https://github.com/personamanagmentlayer/pcl/issues>
+- **Discussions**: <https://github.com/personamanagmentlayer/pcl/discussions>
 
 ---
 

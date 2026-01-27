@@ -20,6 +20,7 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ## What Works Well ✅
 
 ### Core Features (Fully Functional)
+
 - ✅ **Language Parsing** - Complete PCL parser with AST generation
 - ✅ **Type System** - Strong typing and semantic analysis
 - ✅ **8 LLM Providers** - Mock, Claude, OpenAI, Gemini, DeepSeek, Ollama, Azure, Bedrock
@@ -28,6 +29,7 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 - ✅ **Standards Compliance** - RFC 7807, OpenTelemetry, SLO tracking (100%)
 
 ### Documentation (Excellent)
+
 - ✅ Comprehensive API documentation
 - ✅ Getting started guides
 - ✅ Standards compliance guide
@@ -38,10 +40,12 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ## Critical Blockers 🔴
 
 ### 1. TypeScript Compilation Errors
+
 **Issue:** 90+ compilation errors across the codebase
 **Impact:** Type safety compromised, build may fail
 
 **Example Issues:**
+
 - Missing type declarations (@types/glob)
 - Type safety violations (string | string[] vs string)
 - Missing interface properties
@@ -52,10 +56,12 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ---
 
 ### 2. Test Suite Failures
+
 **Issue:** All 33 test files report "No test suite found"
 **Impact:** 0% automated quality assurance
 
 **Affected Tests:**
+
 - Parser tests (3 files)
 - MCP tests (2 files)
 - Registry tests (4 files)
@@ -69,10 +75,12 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ---
 
 ### 3. Incomplete HTTP Route Implementations
+
 **Issue:** Several HTTP endpoints reference non-existent methods
 **Impact:** Runtime failures in API endpoints
 
 **Missing Implementations:**
+
 - CostTrackerRegistry methods (getStats, exportCSV, exportJSON, etc.)
 - Metrics collection endpoints
 - Health check components
@@ -83,10 +91,12 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ---
 
 ### 4. Observability Wiring
+
 **Issue:** Observability interfaces exist but not fully wired
 **Impact:** Limited production monitoring and debugging
 
 **Incomplete:**
+
 - OpenTelemetry initialization
 - Metric collection wiring
 - Health check components
@@ -98,16 +108,16 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 
 ## Readiness Scores by Category
 
-| Category | Score | Status |
-|----------|-------|--------|
-| **Type Safety** | 30/100 | 🔴 Critical issues |
-| **Test Coverage** | 0/100 | 🔴 No working tests |
-| **API Completeness** | 60/100 | 🟡 Core works, HTTP incomplete |
-| **Observability** | 50/100 | 🟡 Interfaces exist, not wired |
-| **Documentation** | 85/100 | ✅ Excellent |
-| **Standards Compliance** | 95/100 | ✅ Excellent |
-| **Error Handling** | 80/100 | ✅ Good patterns |
-| **Security** | 70/100 | 🟡 Good design, untested |
+| Category                 | Score  | Status                         |
+| ------------------------ | ------ | ------------------------------ |
+| **Type Safety**          | 30/100 | 🔴 Critical issues             |
+| **Test Coverage**        | 0/100  | 🔴 No working tests            |
+| **API Completeness**     | 60/100 | 🟡 Core works, HTTP incomplete |
+| **Observability**        | 50/100 | 🟡 Interfaces exist, not wired |
+| **Documentation**        | 85/100 | ✅ Excellent                   |
+| **Standards Compliance** | 95/100 | ✅ Excellent                   |
+| **Error Handling**       | 80/100 | ✅ Good patterns               |
+| **Security**             | 70/100 | 🟡 Good design, untested       |
 
 **Overall: 45/100** 🔴
 
@@ -116,24 +126,29 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ## Recommended Timeline to Production
 
 ### Conservative Estimate: 3-4 months
+
 ### Optimistic Estimate: 6-8 weeks
 
 **Phase 1: Critical Fixes (2-3 weeks)**
+
 - Fix all TypeScript compilation errors
 - Restore test suite functionality
 - Achieve >80% test coverage
 
 **Phase 2: Feature Completion (2-3 weeks)**
+
 - Complete HTTP route implementations
 - Wire up observability infrastructure
 - Integration testing
 
 **Phase 3: Stabilization (2-4 weeks)**
+
 - Security audit and fixes
 - Performance testing and optimization
 - Production deployment preparation
 
 **Phase 4: Production Readiness (1-2 weeks)**
+
 - Final security review
 - Load testing
 - Documentation finalization
@@ -146,6 +161,7 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ### ✅ Safe Use Cases
 
 **Development & Testing:**
+
 - Local development of PCL personas
 - Prototyping AI workflows
 - Proof-of-concept implementations
@@ -153,6 +169,7 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 - IDE extension development
 
 **Controlled Environments:**
+
 - Internal tools (non-critical)
 - Personal projects
 - Research experiments
@@ -161,6 +178,7 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 ### ❌ Unsafe Use Cases
 
 **Production Environments:**
+
 - Customer-facing applications
 - High-stakes decision-making
 - Compliance-regulated systems
@@ -168,6 +186,7 @@ PCL has **excellent architectural foundations**, comprehensive documentation, an
 - Systems requiring audit trails
 
 **Until Fixed:**
+
 - TypeScript compilation is clean
 - Test suite is passing (>80% coverage)
 - All HTTP endpoints are implemented
@@ -194,15 +213,18 @@ npm run build
 ### Monitor These Metrics
 
 **Code Quality:**
+
 - TypeScript errors: 90+ → 0 (target)
 - Test coverage: 0% → 80%+ (target)
 - Tests passing: 0/33 → 33/33 (target)
 
 **API Completeness:**
+
 - HTTP routes implemented: 60% → 100%
 - Observability wired: 50% → 100%
 
 **Security:**
+
 - npm audit vulnerabilities: ? → 0 critical/high
 - Security tests passing: 0% → 100%
 
@@ -213,11 +235,13 @@ npm run build
 ### For Contributors
 
 **Internal Documents:**
+
 - See `.roadmap/PRODUCTION-READINESS-PLAN.md` for detailed action plan
 - See `.roadmap/IMMEDIATE-ACTIONS.md` for quick reference
 
 **Public Resources:**
-- [GitHub Issues](https://github.com/personalayer/pcl-lite/issues)
+
+- [GitHub Issues](https://github.com/personalayer/pcl/issues)
 - [API Documentation](docs/api/)
 - [Getting Started Guide](docs/guides/GETTING-STARTED-CURRENT.md)
 - [Standards Compliance](docs/STANDARDS-COMPLIANCE.md)
@@ -239,6 +263,7 @@ If you discover production-readiness issues:
 ## Changelog
 
 ### 2026-01-23 - Initial Assessment
+
 - Completed comprehensive production readiness audit
 - Identified 4 critical blockers
 - Created remediation plan (6-8 weeks)
@@ -251,12 +276,14 @@ If you discover production-readiness issues:
 **PCL is NOT production-ready** but has solid foundations and a clear path to production:
 
 **Strengths:**
+
 - Excellent architecture and design patterns
 - 100% standards compliance (RFC 7807, OpenTelemetry, SLO)
 - Comprehensive documentation
 - Strong security model
 
 **Gaps:**
+
 - TypeScript compilation issues
 - No automated testing
 - Incomplete API implementations
@@ -266,6 +293,6 @@ If you discover production-readiness issues:
 
 ---
 
-**Questions?** Open an issue on [GitHub](https://github.com/personalayer/pcl-lite/issues)
+**Questions?** Open an issue on [GitHub](https://github.com/personalayer/pcl/issues)
 
 **Want to help?** See `.roadmap/IMMEDIATE-ACTIONS.md` for priority tasks
