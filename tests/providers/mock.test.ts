@@ -196,9 +196,9 @@ describe('MockProvider', () => {
 
       const request: GenerationRequest = { prompt: 'Test' };
 
-      await expect(providerWithErrors.generateResponse(request)).rejects.toThrow(
-        'Mock provider error (simulated)'
-      );
+      await expect(
+        providerWithErrors.generateResponse(request)
+      ).rejects.toThrow('Mock provider error (simulated)');
     });
 
     test('does not throw errors when simulation disabled', async () => {
@@ -209,7 +209,9 @@ describe('MockProvider', () => {
 
       const request: GenerationRequest = { prompt: 'Test' };
 
-      await expect(providerNoErrors.generateResponse(request)).resolves.toBeDefined();
+      await expect(
+        providerNoErrors.generateResponse(request)
+      ).resolves.toBeDefined();
     });
 
     test('setErrorSimulation() enables/disables errors', async () => {
@@ -249,7 +251,7 @@ describe('MockProvider', () => {
       await providerWithDelay.generateResponse(request);
       const elapsed = Date.now() - start;
 
-      expect(elapsed).toBeGreaterThanOrEqual(delayMs);
+      expect(elapsed).toBeGreaterThanOrEqual(delayMs - 5); // Allow 5ms margin for timer precision
     });
 
     test('setDelay() updates delay', async () => {
@@ -261,7 +263,7 @@ describe('MockProvider', () => {
       await provider.generateResponse(request);
       const elapsed = Date.now() - start;
 
-      expect(elapsed).toBeGreaterThanOrEqual(50);
+      expect(elapsed).toBeGreaterThanOrEqual(45); // Allow 5ms margin for timer precision
     });
 
     test('works without delay by default', async () => {
@@ -306,14 +308,18 @@ describe('MockProvider', () => {
 
     test('does not mark intermediate chunks as done', async () => {
       const providerWithLongResponse = new MockProvider({
-        responses: ['This is a very long response that will be chunked into multiple pieces'],
+        responses: [
+          'This is a very long response that will be chunked into multiple pieces',
+        ],
         chunkSize: 10,
       });
 
       const request: GenerationRequest = { prompt: 'Test' };
 
       const chunks: any[] = [];
-      for await (const chunk of providerWithLongResponse.streamResponse(request)) {
+      for await (const chunk of providerWithLongResponse.streamResponse(
+        request
+      )) {
         chunks.push(chunk);
       }
 
@@ -334,7 +340,9 @@ describe('MockProvider', () => {
       const request: GenerationRequest = { prompt: 'Test' };
 
       const chunks: string[] = [];
-      for await (const chunk of providerWithSmallChunks.streamResponse(request)) {
+      for await (const chunk of providerWithSmallChunks.streamResponse(
+        request
+      )) {
         chunks.push(chunk.content);
       }
 
