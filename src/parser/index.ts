@@ -495,7 +495,11 @@ export class Parser {
           ref,
           span: ref.span,
         });
-      } else if (this.check(TokenType.IDENTIFIER)) {
+      } else if (
+        this.check(TokenType.IDENTIFIER) ||
+        this.check(TokenType.PERSONA_ID) ||
+        this.check(TokenType.KEYWORD)
+      ) {
         const name = this.parseIdentifier();
         items.push({
           kind: 'IdentifierSkill',
@@ -533,7 +537,11 @@ export class Parser {
           value: token.value,
           span: token.span,
         });
-      } else if (this.check(TokenType.IDENTIFIER)) {
+      } else if (
+        this.check(TokenType.IDENTIFIER) ||
+        this.check(TokenType.PERSONA_ID) ||
+        this.check(TokenType.KEYWORD)
+      ) {
         const field = this.parseIdentifier();
         const op = this.parseComparisonOperator();
         const value = this.parseExpression();
@@ -577,7 +585,11 @@ export class Parser {
           value: token.value,
           span: token.span,
         });
-      } else if (this.check(TokenType.IDENTIFIER)) {
+      } else if (
+        this.check(TokenType.IDENTIFIER) ||
+        this.check(TokenType.PERSONA_ID) ||
+        this.check(TokenType.KEYWORD)
+      ) {
         const name = this.parseIdentifier();
         items.push({
           kind: 'IdentifierTag',
@@ -1230,11 +1242,7 @@ export class Parser {
     if (this.match(TokenType.LPAREN)) {
       const expr = this.parseWorkflowExpression();
       this.expect(TokenType.RPAREN, 'Expected ")" after workflow expression');
-      return {
-        kind: 'WorkflowGroupExpr',
-        expr,
-        span: this.makeSpan(start, this.previous().span.end),
-      };
+      return expr;
     }
 
     // Conditional
@@ -1405,7 +1413,7 @@ export class Parser {
   }
 
   private parseConditional(): AST.Expression {
-    const expr = this.parseBinary(0);
+    const expr = this.parseBinary(3);
 
     if (this.match(TokenType.QUESTION)) {
       const consequent = this.parseExpression();
@@ -1802,6 +1810,8 @@ export class Parser {
     this.current = savedPos;
 
     if (isArrow) {
+      // Backtrack to include the opening parenthesis that was consumed in parsePrimary
+      this.current = savedPos - 1;
       return this.parseArrowFunction(start, false);
     }
 
@@ -2372,7 +2382,7 @@ export class Parser {
     const name = this.parseIdentifier();
 
     let constraint: AST.TypeNode | null = null;
-    if (this.matchKeyword('extends')) {
+    if (this.matchKeyword('extends') || this.match(TokenType.COLON)) {
       constraint = this.parseType();
     }
 
@@ -2717,6 +2727,41 @@ export class Parser {
       };
     }
 
+    // Method with explicit 'fn' keyword (PCL style)
+    if (this.matchKeyword('fn')) {
+      const name = this.parseIdentifier();
+      const typeParameters = this.parseOptionalTypeParameters();
+      const parameters = this.parseParameterList();
+      let returnType: AST.TypeNode = {
+        kind: 'TypeReference',
+        typeName: {
+          kind: 'QualifiedIdentifier',
+          parts: [{ kind: 'Identifier', name: 'void', span: this.peek().span }],
+          span: this.peek().span,
+        },
+        typeArguments: [],
+        span: this.peek().span,
+      };
+
+      if (this.match(TokenType.ARROW)) {
+        returnType = this.parseType();
+      } else if (this.match(TokenType.COLON)) {
+        returnType = this.parseType();
+      }
+
+      this.consumeOptionalSemicolon();
+
+      return {
+        kind: 'MethodSignature',
+        name,
+        optional: false,
+        typeParameters,
+        parameters,
+        returnType,
+        span: this.makeSpan(start, returnType.span.end),
+      };
+    }
+
     const name = this.check(TokenType.STRING)
       ? this.parseStringLiteral()
       : this.parseIdentifier();
@@ -2791,6 +2836,16 @@ export class Parser {
         'keyof',
         'typeof',
         'infer',
+        'string',
+        'number',
+        'boolean',
+        'any',
+        'void',
+        'object',
+        'null',
+        'undefined',
+        'symbol',
+        'bigint',
       ].includes(token.value);
     }
 
@@ -3424,7 +3479,7 @@ export class Parser {
       kind: 'FunctionDeclaration',
       decorators,
       modifiers,
-      async: isAsync,
+      async: isAsync || modifiers.some((m) => m.type === 'async'),
       id,
       typeParameters,
       parameters,
@@ -4011,7 +4066,23 @@ export function parseExpression(
 ): Result<AST.Expression, PCLError[]> {
   const parser = new Parser(`(${source})`, options);
   const result = parser.parse();
-  if (!result.ok) return result;
+  if (!result.ok) {
+    return result as any;
+  }
+
+  // Check if we have statements
+  if (
+    !result.value.program.statements ||
+    result.value.program.statements.length === 0
+  ) {
+    if (result.value.errors && result.value.errors.length > 0) {
+      return Err(result.value.errors);
+    }
+    // Empty input?
+    return Err([
+      createError(ErrorCode.PARSE_INVALID_SYNTAX, 'Empty expression', {}),
+    ]);
+  }
 
   const stmt = result.value.program.statements[0];
   if (stmt?.kind === 'ExpressionStatement') {
@@ -4023,7 +4094,11 @@ export function parseExpression(
   }
 
   return Err([
-    createError(ErrorCode.PARSE_INVALID_SYNTAX, 'Expected expression', {}),
+    createError(
+      ErrorCode.PARSE_INVALID_SYNTAX,
+      `Expected expression, got ${stmt?.kind}`,
+      {}
+    ),
   ]);
 }
 

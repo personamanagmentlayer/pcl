@@ -157,6 +157,7 @@ export const KEYWORDS = new Set([
   'var',
   'import',
   'export',
+  'default',
   'from',
   'module',
   'package',
