@@ -11,29 +11,19 @@
  * @packageDocumentation
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPersona, type Message } from '../../src/runtime/index';
+import { MockProvider } from '../../src/runtime/providers/mock';
 import {
-  createStateMachine,
-  type StateMachineSnapshot,
-} from '../../src/runtime/state-machine';
+  createRestoreManager,
+  createSnapshotManager,
+  type RuntimeSnapshot,
+} from '../../src/runtime/snapshot';
+import { createStateMachine } from '../../src/runtime/state-machine';
 import {
   createTeamProcessor,
   createTeamValidator,
-  type TeamProcessingOptions,
 } from '../../src/runtime/team-edge-cases';
-import {
-  createSnapshotManager,
-  createRestoreManager,
-  type RuntimeSnapshot,
-} from '../../src/runtime/snapshot';
-import {
-  createRuntime,
-  createPersona,
-  createTeam,
-  type PersonaConfig,
-  type Message,
-} from '../../src/runtime/index';
-import { MockProvider } from '../../src/runtime/providers/mock';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              STATE MACHINE TESTS

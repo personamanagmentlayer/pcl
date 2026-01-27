@@ -1,0 +1,222 @@
+
+> @pcl/sdk@1.0.0 test
+> vitest run
+
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Projets/personalayer/pcl-lite[39m
+
+ [32mÔ£ô[39m tests/registry/memory-backend.test.ts [2m ([22m[2m50 tests[22m[2m)[22m[90m 73[2mms[22m[39m
+ [32mÔ£ô[39m tests/workflow/execution.test.ts [2m ([22m[2m16 tests[22m[2m)[22m[33m 313[2mms[22m[39m
+ [32mÔ£ô[39m tests/integration/phase-1.2.test.ts [2m ([22m[2m17 tests[22m[2m)[22m[90m 229[2mms[22m[39m
+ [32mÔ£ô[39m tests/providers/mock.test.ts [2m ([22m[2m36 tests[22m[2m)[22m[90m 297[2mms[22m[39m
+ [32mÔ£ô[39m tests/team-validation.test.ts [2m ([22m[2m17 tests[22m[2m)[22m[90m 31[2mms[22m[39m
+[90mstdout[2m | tests/registry/benchmarks.test.ts[2m > [22m[2mBenchmarks Skipped[2m > [22m[2mshould show how to enable benchmarks[22m[39m
+
+­ƒÆí To run benchmarks, use: ENABLE_BENCHMARKS=true npm test -- tests/registry/benchmarks.test.ts
+
+
+ [32mÔ£ô[39m tests/registry/benchmarks.test.ts [2m ([22m[2m13 tests[22m [2m|[22m [33m12 skipped[39m[2m)[22m[90m 3[2mms[22m[39m
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mState Machine Performance[2m > [22m[2mshould benchmark simple state transitions[22m[39m
+
+­ƒôè Benchmark: Simple state transitions
+   Operations: 10000
+   Total time: 70.76ms
+   Average: 0.007ms/op
+   Throughput: 141313 ops/sec
+   Min: 0.001ms
+   Max: 32.241ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mState Machine Performance[2m > [22m[2mshould benchmark guarded transitions[22m[39m
+
+­ƒôè Benchmark: Guarded transitions with actions
+   Operations: 100
+   Total time: 0.70ms
+   Average: 0.007ms/op
+   Throughput: 142592 ops/sec
+   Min: 0.004ms
+   Max: 0.210ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mState Machine Performance[2m > [22m[2mshould benchmark state machine with large history[22m[39m
+
+­ƒôè Benchmark: State transitions with large history
+   Operations: 1000
+   Total time: 2.15ms
+   Average: 0.002ms/op
+   Throughput: 464209 ops/sec
+   Min: 0.001ms
+   Max: 0.055ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mState Machine Performance[2m > [22m[2mshould benchmark snapshot creation[22m[39m
+
+­ƒôè Benchmark: State machine snapshot creation
+   Operations: 1000
+   Total time: 1.63ms
+   Average: 0.002ms/op
+   Throughput: 613459 ops/sec
+   Min: 0.001ms
+   Max: 0.089ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mTeam Processing Performance[2m > [22m[2mshould benchmark team processing with small team[22m[39m
+
+­ƒôè Benchmark: Small team (3 members)
+   Operations: 100
+   Total time: 61.40ms
+   Average: 0.614ms/op
+   Throughput: 1629 ops/sec
+   Min: 0.105ms
+   Max: 21.525ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mTeam Processing Performance[2m > [22m[2mshould benchmark team processing with medium team[22m[39m
+
+­ƒôè Benchmark: Medium team (5 members)
+   Operations: 50
+   Total time: 100.06ms
+   Average: 2.001ms/op
+   Throughput: 500 ops/sec
+   Min: 0.130ms
+   Max: 35.823ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mTeam Processing Performance[2m > [22m[2mshould benchmark team processing with large team[22m[39m
+
+­ƒôè Benchmark: Large team (10 members)
+   Operations: 20
+   Total time: 5.08ms
+   Average: 0.254ms/op
+   Throughput: 3938 ops/sec
+   Min: 0.173ms
+   Max: 0.380ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mTeam Processing Performance[2m > [22m[2mshould benchmark team processing with retries[22m[39m
+
+­ƒôè Benchmark: Team with retry logic
+   Operations: 50
+   Total time: 88.00ms
+   Average: 1.760ms/op
+   Throughput: 568 ops/sec
+   Min: 0.058ms
+   Max: 42.511ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mSnapshot/Restore Performance[2m > [22m[2mshould benchmark snapshot creation for small runtime[22m[39m
+
+­ƒôè Benchmark: Snapshot 10 personas
+   Operations: 1000
+   Total time: 138.48ms
+   Average: 0.138ms/op
+   Throughput: 7221 ops/sec
+   Min: 0.033ms
+   Max: 43.548ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mSnapshot/Restore Performance[2m > [22m[2mshould benchmark snapshot creation for medium runtime[22m[39m
+
+­ƒôè Benchmark: Snapshot 50 personas
+   Operations: 200
+   Total time: 174.00ms
+   Average: 0.870ms/op
+   Throughput: 1149 ops/sec
+   Min: 0.140ms
+   Max: 50.436ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mSnapshot/Restore Performance[2m > [22m[2mshould benchmark snapshot creation for large runtime[22m[39m
+
+­ƒôè Benchmark: Snapshot 100 personas
+   Operations: 100
+   Total time: 189.91ms
+   Average: 1.899ms/op
+   Throughput: 527 ops/sec
+   Min: 0.296ms
+   Max: 88.615ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mSnapshot/Restore Performance[2m > [22m[2mshould benchmark snapshot serialization[22m[39m
+
+­ƒôè Benchmark: Serialize snapshot (50 personas)
+   Operations: 500
+   Total time: 807.73ms
+   Average: 1.615ms/op
+   Throughput: 619 ops/sec
+   Min: 0.427ms
+   Max: 107.464ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mSnapshot/Restore Performance[2m > [22m[2mshould benchmark snapshot deserialization[22m[39m
+
+­ƒôè Benchmark: Deserialize snapshot (50 personas)
+   Operations: 500
+   Total time: 1869.48ms
+   Average: 3.739ms/op
+   Throughput: 267 ops/sec
+   Min: 1.927ms
+   Max: 79.635ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mSnapshot/Restore Performance[2m > [22m[2mshould benchmark incremental snapshot creation[22m[39m
+
+­ƒôè Benchmark: Incremental snapshot
+   Operations: 1000
+   Total time: 49.89ms
+   Average: 0.050ms/op
+   Throughput: 20045 ops/sec
+   Min: 0.017ms
+   Max: 6.908ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mSnapshot/Restore Performance[2m > [22m[2mshould benchmark snapshot merge[22m[39m
+
+­ƒôè Benchmark: Merge snapshots (25+25 personas)
+   Operations: 500
+   Total time: 6.17ms
+   Average: 0.012ms/op
+   Throughput: 81025 ops/sec
+   Min: 0.007ms
+   Max: 0.406ms
+
+[90mstdout[2m | tests/benchmarks/phase-1.2.test.ts[2m > [22m[2mPhase 1.2 Performance Summary[2m > [22m[2mshould meet all performance targets[22m[39m
+
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+PHASE 1.2 PERFORMANCE SUMMARY
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+
+Performance Targets:
+Ô£ô State machine transitions: < 0.1ms per operation
+Ô£ô Guarded transitions: < 1ms per operation
+Ô£ô Small team processing (3 members): < 100ms
+Ô£ô Medium team processing (5 members): < 150ms
+Ô£ô Large team processing (10 members): < 200ms
+Ô£ô Snapshot creation (10 personas): < 5ms
+Ô£ô Snapshot creation (50 personas): < 20ms
+Ô£ô Snapshot creation (100 personas): < 50ms
+Ô£ô Snapshot serialization: < 10ms
+Ô£ô Snapshot deserialization: < 15ms
+Ô£ô Incremental snapshot: < 5ms
+Ô£ô Snapshot merge: < 5ms
+
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+
+ [32mÔ£ô[39m tests/benchmarks/phase-1.2.test.ts [2m ([22m[2m16 tests[22m[2m)[22m[33m 3668[2mms[22m[39m
+ [32mÔ£ô[39m tests/providers/registry-enhancements.test.ts [2m ([22m[2m36 tests[22m [2m|[22m [33m2 skipped[39m[2m)[22m[90m 131[2mms[22m[39m
+ [32mÔ£ô[39m tests/semantic.test.ts [2m ([22m[2m35 tests[22m[2m)[22m[90m 53[2mms[22m[39m
+ [32mÔ£ô[39m tests/registry/manager.test.ts [2m ([22m[2m26 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+ [32mÔ£ô[39m tests/parser/workflow-advanced-operators.test.ts [2m ([22m[2m22 tests[22m [2m|[22m [33m11 skipped[39m[2m)[22m[90m 20[2mms[22m[39m
+ [32mÔ£ô[39m tests/providers/registry.test.ts [2m ([22m[2m40 tests[22m[2m)[22m[90m 30[2mms[22m[39m
+ [32mÔ£ô[39m tests/phase2-module-visibility.test.ts [2m ([22m[2m26 tests[22m[2m)[22m[90m 43[2mms[22m[39m
+[90mstdout[2m | tests/lsp/import-test.test.ts[2m > [22m[2mLSP Integration Tests[2m > [22m[2mSemantic Analysis Integration[2m > [22m[2mshould detect undefined persona references (if implemented)[22m[39m
+Undefined persona detection: NOT YET IMPLEMENTED
+
+[90mstdout[2m | tests/lsp/import-test.test.ts[2m > [22m[2mLSP Integration Tests[2m > [22m[2mSemantic Analysis Integration[2m > [22m[2mshould detect circular team references (if implemented)[22m[39m
+Circular reference detection: NOT YET IMPLEMENTED
+
+[90mstdout[2m | tests/lsp/import-test.test.ts[2m > [22m[2mLSP Integration Tests[2m > [22m[2mSemantic Analysis Integration[2m > [22m[2mshould detect invalid quorum values (if implemented)[22m[39m
+Quorum validation: NOT YET IMPLEMENTED
+
+[90mstdout[2m | tests/lsp/import-test.test.ts[2m > [22m[2mLSP Integration Tests[2m > [22m[2mPerformance Tests[2m > [22m[2mshould handle large PCL files efficiently[22m[39m
+Performance: Parsed + analyzed 100 personas in 8ms
+
+ [32mÔ£ô[39m tests/lsp/import-test.test.ts [2m ([22m[2m28 tests[22m[2m)[22m[90m 48[2mms[22m[39m
+ [32mÔ£ô[39m tests/runtime.test.ts [2m ([22m[2m33 tests[22m[2m)[22m[90m 40[2mms[22m[39m
+ [32mÔ£ô[39m tests/registry/version/semver-manager.test.ts [2m ([22m[2m52 tests[22m[2m)[22m[90m 161[2mms[22m[39m
+ [32mÔ£ô[39m tests/registry/backends-integration.test.ts [2m ([22m[2m11 tests[22m [2m|[22m [33m2 skipped[39m[2m)[22m[90m 64[2mms[22m[39m
+ [32mÔ£ô[39m tests/lsp/rename.test.ts [2m ([22m[2m17 tests[22m [2m|[22m [33m1 skipped[39m[2m)[22m[90m 28[2mms[22m[39m
+ [32mÔ£ô[39m tests/integration.test.ts [2m ([22m[2m17 tests[22m[2m)[22m[90m 46[2mms[22m[39m
+ [32mÔ£ô[39m tests/lsp/code-actions.test.ts [2m ([22m[2m14 tests[22m [2m|[22m [33m5 skipped[39m[2m)[22m[90m 17[2mms[22m[39m
+ [32mÔ£ô[39m tests/registry/cache/multi-layer-cache.test.ts [2m ([22m[2m28 tests[22m[2m)[22m[90m 26[2mms[22m[39m
+ [32mÔ£ô[39m tests/registry/cache/memory-cache.test.ts [2m ([22m[2m25 tests[22m[2m)[22m[33m 651[2mms[22m[39m
+ [32mÔ£ô[39m tests/skills/skill-merger.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mÔ£ô[39m tests/skills/skill-compiler.test.ts [2m ([22m[2m13 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32mÔ£ô[39m tests/skills/skill-integration.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 29[2mms[22m[39m
+ [32mÔ£ô[39m tests/pcl-minimal.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 25[2mms[22m[39m

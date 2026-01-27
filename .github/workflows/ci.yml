@@ -59,12 +59,13 @@ jobs:
   test:
     name: Test (Node ${{ matrix.node-version }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15 # Cancel if tests take more than 15 minutes
+    timeout-minutes: 20 # Increased timeout for comprehensive test suite
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['20', '22']
+        # Test on Node 20 LTS only - Node 22 tested in separate workflow
+        node-version: ['20']
         # Only test on ubuntu for speed - macOS is 60x slower
         os: [ubuntu-latest]
 

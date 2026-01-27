@@ -3,8 +3,8 @@
 // Comprehensive tests for MockProvider
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { MockProvider } from '../../src/runtime/providers/mock';
 import type { GenerationRequest } from '../../src/runtime/providers/index';
+import { MockProvider } from '../../src/runtime/providers/mock';
 
 describe('MockProvider', () => {
   let provider: MockProvider;
