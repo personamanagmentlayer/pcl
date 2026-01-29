@@ -53,6 +53,18 @@ function calculateSimilarity(str1: string, str2: string): number {
 }
 
 /**
+ * Escape HTML special characters to prevent XSS
+ */
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
  * Highlight matches in text
  */
 function highlightText(text: string, query: string): string {
@@ -60,11 +72,11 @@ function highlightText(text: string, query: string): string {
   const lowerQuery = query.toLowerCase();
   const index = lowerText.indexOf(lowerQuery);
 
-  if (index === -1) return text;
+  if (index === -1) return escapeHtml(text);
 
-  const before = text.substring(0, index);
-  const match = text.substring(index, index + query.length);
-  const after = text.substring(index + query.length);
+  const before = escapeHtml(text.substring(0, index));
+  const match = escapeHtml(text.substring(index, index + query.length));
+  const after = escapeHtml(text.substring(index + query.length));
 
   return `${before}<em>${match}</em>${after}`;
 }

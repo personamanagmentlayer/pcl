@@ -2,6 +2,7 @@
  * JWT token utilities
  */
 
+import crypto from 'crypto';
 import jwt, { type Secret } from 'jsonwebtoken';
 
 /**
@@ -60,7 +61,7 @@ export function getJWTConfig(): JWTConfig {
  * Generate unique JWT ID
  */
 function generateJTI(): string {
-  return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  return `${Date.now()}-${crypto.randomBytes(16).toString('hex')}`;
 }
 
 /**
