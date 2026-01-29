@@ -231,5 +231,6 @@ __marimo__/
 .pypirc
 
 #pcl
-.roadmap/
 .claude/settings.local.json
+# Project Management
+.roadmap/
