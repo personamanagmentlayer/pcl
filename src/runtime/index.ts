@@ -2394,3 +2394,6 @@ export * from './streams.js';
 export * from './state-machine.js';
 export * from './team-edge-cases.js';
 export * from './snapshot.js';
+
+// Export Event System (Phase 2)
+export * from './events/index.js';

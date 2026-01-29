@@ -38,21 +38,25 @@ export type PromptProvider =
 export interface GeneratorOptions {
   target: GeneratorTarget;
   provider?: PromptProvider; // For prompt generation
+  language?: string; // Language for prompt generation (default: 'en')
   minify?: boolean;
   includeComments?: boolean;
   includeMetadata?: boolean;
   indentSize?: number;
   lineWidth?: number;
+  maxTokens?: number; // Maximum token count for optimization
 }
 
 const DEFAULT_OPTIONS: Required<GeneratorOptions> = {
   target: 'prompt',
   provider: 'generic',
+  language: 'en',
   minify: false,
   includeComments: true,
   includeMetadata: true,
   indentSize: 2,
   lineWidth: 80,
+  maxTokens: 0, // 0 = no limit
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -3240,3 +3244,9 @@ export function generate(
       throw new Error(`Unknown target: ${options.target}`);
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//                              PROMPT ENHANCEMENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export * from './prompt-enhancements.js';
