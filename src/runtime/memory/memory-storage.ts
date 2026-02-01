@@ -109,7 +109,7 @@ export class MemoryStorage {
       const personaMemories = this.memories.get(personaId);
       if (!personaMemories) continue;
 
-      for (const entry of personaMemories.values()) {
+      for (const entry of Array.from(personaMemories.values())) {
         // Apply filters
         if (query.type) {
           const types = Array.isArray(query.type) ? query.type : [query.type];
@@ -313,8 +313,8 @@ export class MemoryStorage {
     const daysSinceLastDecay = (now - this.lastDecay) / (24 * 60 * 60 * 1000);
     const decayFactor = Math.pow(this.config.decayRate, daysSinceLastDecay);
 
-    for (const personaMemories of this.memories.values()) {
-      for (const entry of personaMemories.values()) {
+    for (const personaMemories of Array.from(this.memories.values())) {
+      for (const entry of Array.from(personaMemories.values())) {
         entry.importance *= decayFactor;
 
         // Remove entries below minimum importance threshold (0.01)
@@ -328,7 +328,7 @@ export class MemoryStorage {
 
     // Persist all changes to disk
     if (this.config.persistToDisk) {
-      for (const personaId of this.memories.keys()) {
+      for (const personaId of Array.from(this.memories.keys())) {
         this.saveToDisk(personaId);
       }
     }
@@ -447,8 +447,10 @@ export class MemoryStorage {
     const now = Date.now();
     const expirationTime = now - this.config.ttl;
 
-    for (const [personaId, personaMemories] of this.memories.entries()) {
-      for (const [memoryId, entry] of personaMemories.entries()) {
+    for (const [personaId, personaMemories] of Array.from(
+      this.memories.entries()
+    )) {
+      for (const [memoryId, entry] of Array.from(personaMemories.entries())) {
         if (entry.timestamp < expirationTime) {
           personaMemories.delete(memoryId);
         }

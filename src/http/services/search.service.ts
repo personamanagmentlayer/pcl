@@ -5,7 +5,6 @@
 import type {
   SearchQuery,
   SearchResponse,
-  SearchResult,
   SearchSuggestions,
 } from '../schemas/search.schema.js';
 import { listArtifacts } from './artifact.service.js';

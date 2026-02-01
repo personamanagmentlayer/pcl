@@ -136,8 +136,10 @@ export class SemanticDeduplicator {
     const tokens1 = new Set(normalized1.split(/\s+/));
     const tokens2 = new Set(normalized2.split(/\s+/));
 
-    const intersection = new Set([...tokens1].filter((t) => tokens2.has(t)));
-    const union = new Set([...tokens1, ...tokens2]);
+    const intersection = new Set(
+      Array.from(tokens1).filter((t) => tokens2.has(t))
+    );
+    const union = new Set([...Array.from(tokens1), ...Array.from(tokens2)]);
 
     if (union.size === 0) return 0;
 

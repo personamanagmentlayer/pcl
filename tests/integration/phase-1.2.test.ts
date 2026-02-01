@@ -11,7 +11,7 @@
  * @packageDocumentation
  */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { vi } from 'vitest';
 import { createPersona, type Message } from '../../src/runtime/index';
 import { MockProvider } from '../../src/runtime/providers/mock';
 import {

@@ -19,9 +19,29 @@ export default defineConfig({
     globalTeardown: './tests/setup/global-teardown.ts',
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'html', 'lcov'],
       include: ['src/**/*.ts'],
-      exclude: ['src/cli/**'],
+      exclude: [
+        'src/cli/**',
+        'src/**/*.d.ts',
+        'src/**/index.ts', // Re-export files
+        'src/types/index.ts',
+      ],
+      // Progressive thresholds - increase as test coverage improves
+      // Target: 90% for production (per CLAUDE.md)
+      // Current baseline: 28.76% lines, 32.07% functions, 69.81% branches
+      thresholds: {
+        lines: 28, // Current baseline - prevent regression
+        functions: 32, // Current baseline - prevent regression
+        branches: 69, // Current baseline - prevent regression
+        statements: 28, // Current baseline - prevent regression
+        // Roadmap to 90% (see docs/testing/COVERAGE_ROADMAP.md):
+        // - Q1 2026: 50% (add provider tests)
+        // - Q2 2026: 70% (add integration tests)
+        // - Q3 2026: 90% (comprehensive coverage)
+      },
+      all: true,
+      clean: true,
     },
     testTimeout: 10000,
     hookTimeout: 10000,

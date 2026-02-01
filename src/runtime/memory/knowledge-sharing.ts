@@ -89,7 +89,7 @@ export class KnowledgeSharing {
 
     let results: KnowledgeEntry[] = [];
 
-    for (const entry of this.knowledge.values()) {
+    for (const entry of Array.from(this.knowledge.values())) {
       // Apply filters
       if (query.type) {
         const types = Array.isArray(query.type) ? query.type : [query.type];
@@ -282,7 +282,7 @@ export class KnowledgeSharing {
     const now = Date.now();
     const expirationTime = now - this.config.ttl;
 
-    for (const [knowledgeId, entry] of this.knowledge.entries()) {
+    for (const [knowledgeId, entry] of Array.from(this.knowledge.entries())) {
       if (entry.timestamp < expirationTime) {
         this.delete(knowledgeId);
       }
@@ -334,9 +334,12 @@ export class KnowledgeSharing {
     return entries.map((entry) => {
       const entryTagsSet = new Set(entry.tags);
       const intersection = new Set(
-        [...queryTagsSet].filter((tag) => entryTagsSet.has(tag))
+        Array.from(queryTagsSet).filter((tag) => entryTagsSet.has(tag))
       );
-      const union = new Set([...queryTagsSet, ...entryTagsSet]);
+      const union = new Set([
+        ...Array.from(queryTagsSet),
+        ...Array.from(entryTagsSet),
+      ]);
 
       // Jaccard similarity for tag overlap
       const tagSimilarity = intersection.size / union.size;
@@ -363,9 +366,12 @@ export class KnowledgeSharing {
     const scored = entries.map((entry) => {
       const entryTokens = new Set(entry.content.toLowerCase().split(/\s+/));
       const intersection = new Set(
-        [...queryTokens].filter((t) => entryTokens.has(t))
+        Array.from(queryTokens).filter((t) => entryTokens.has(t))
       );
-      const union = new Set([...queryTokens, ...entryTokens]);
+      const union = new Set([
+        ...Array.from(queryTokens),
+        ...Array.from(entryTokens),
+      ]);
 
       const similarity = intersection.size / union.size;
 

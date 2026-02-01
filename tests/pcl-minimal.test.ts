@@ -8,7 +8,6 @@
  * - End-to-end: Complete compilation pipeline
  */
 
-import { describe, expect, it } from 'vitest';
 // Import directly from modules to avoid loading registry/runtime/mcp
 import { parse } from '../src/parser';
 import { analyze } from '../src/semantic';

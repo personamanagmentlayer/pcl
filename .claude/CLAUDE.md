@@ -1368,6 +1368,112 @@ Each persona evaluates:
 
 ---
 
+## Parallel Task Execution Strategy
+
+### Critical Performance Optimization
+
+**MANDATE**: Always execute independent operations in parallel. This is not optional—it's a core performance requirement.
+
+### Parallel Execution Patterns
+
+#### 1. **File Operations**
+
+```markdown
+✅ DO: Read multiple files simultaneously
+
+- Read src/parser/index.ts
+- Read src/lexer/index.ts
+- Read src/semantic/index.ts
+  (All in ONE tool invocation)
+
+❌ DON'T: Read files sequentially
+
+- Read parser (wait)
+- Read lexer (wait)
+- Read semantic (wait)
+```
+
+#### 2. **Code Modifications**
+
+```markdown
+✅ DO: Use multi_replace_string_in_file for multiple edits
+
+- Update 5 import statements
+- Fix 3 type definitions
+- Add 2 exports
+  (All in ONE operation)
+
+❌ DON'T: Multiple sequential replace_string_in_file calls
+```
+
+#### 3. **Search Operations**
+
+```markdown
+✅ DO: Combine compatible searches
+
+- grep_search for patterns
+- file_search for names
+- list_dir for structure
+  (All in parallel)
+
+❌ DON'T: Sequential searches (except semantic_search which must be sequential)
+```
+
+#### 4. **Testing & Validation**
+
+```markdown
+✅ DO: Run checks simultaneously
+
+- npm run lint
+- npm run test
+- tsc --noEmit
+  (Launch all, wait for all)
+
+❌ DON'T: Run one test, wait, run next test
+```
+
+### Benefits
+
+- **Speed**: 5-10x faster for multi-step operations
+- **Cost**: Reduces token consumption significantly
+- **UX**: Better user experience with faster responses
+- **Efficiency**: Optimal use of available tools
+
+### Exceptions
+
+- `semantic_search`: Must be sequential (one at a time)
+- `run_in_terminal`: Sequential for dependent commands
+- Operations with dependencies: Chain properly
+
+### Examples
+
+**Context Gathering:**
+
+```typescript
+// Parallel: Read 3 files + search + list directory
+[read_file(parser), read_file(lexer), grep_search('pattern'), list_dir('src')];
+```
+
+**Code Updates:**
+
+```typescript
+// Parallel: Update 5 files in one multi_replace operation
+multi_replace_string_in_file([
+  { file: 'a.ts', old: '...', new: '...' },
+  { file: 'b.ts', old: '...', new: '...' },
+  { file: 'c.ts', old: '...', new: '...' },
+]);
+```
+
+**Validation:**
+
+```typescript
+// Parallel: All quality checks at once
+[run_task('lint'), run_task('test'), run_task('typecheck')];
+```
+
+---
+
 ## Continuous Improvement
 
 ### Daily Practices

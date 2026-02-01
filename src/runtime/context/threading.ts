@@ -197,7 +197,7 @@ export class ThreadManager {
   findByTags(tags: string[]): ConversationThread[] {
     const results: ConversationThread[] = [];
 
-    for (const thread of this.threads.values()) {
+    for (const thread of Array.from(this.threads.values())) {
       const hasMatchingTag = tags.some((tag) => thread.tags.includes(tag));
       if (hasMatchingTag) {
         results.push(thread);
@@ -262,7 +262,7 @@ export class ThreadManager {
     const threadIds = this.personaThreads.get(personaId);
     if (!threadIds) return;
 
-    for (const threadId of threadIds) {
+    for (const threadId of Array.from(threadIds)) {
       this.threads.delete(threadId);
     }
 

@@ -409,7 +409,7 @@ export class MemoryManager {
 
     for (const pattern of patterns) {
       const matches = content.matchAll(pattern.regex);
-      for (const match of matches) {
+      for (const match of Array.from(matches)) {
         knowledge.push({
           sourcePersonaId: personaId,
           type: pattern.type,

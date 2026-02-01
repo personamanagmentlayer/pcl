@@ -783,6 +783,8 @@ Fix the parser
 
 ### 2. **Parallel Tool Invocation**
 
+**CRITICAL**: Always execute independent operations in parallel to maximize efficiency and minimize latency.
+
 When you have **independent operations**, request them together:
 
 ```markdown
@@ -799,11 +801,24 @@ When you have **independent operations**, request them together:
 - pcl_todo.md (check off runtime tasks)
 - ROADMAP.md (update progress)"
 
+✅ "Execute simultaneously:
+
+- Read file contents
+- Search for patterns
+- List directory contents
+  Then synthesize findings."
+
 ✅ "Run these checks simultaneously:
 
 - npm run lint
 - npm run test
 - tsc --noEmit"
+
+✅ "Perform multi-file edits in parallel using multi_replace_string_in_file:
+
+- Fix import statements across 5 files
+- Update type definitions in 3 files
+- Add missing exports in 2 files"
 ```
 
 ### 3. **Context Window Optimization**

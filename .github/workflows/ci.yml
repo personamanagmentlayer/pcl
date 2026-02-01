@@ -105,9 +105,30 @@ jobs:
       - name: 📊 Generate coverage report
         if: matrix.node-version == '20' && matrix.os == 'ubuntu-latest'
         run: npm run test:coverage
+        continue-on-error: false # Enforce coverage thresholds
 
       - name: 📤 Upload coverage to Codecov
         if: matrix.node-version == '20' && matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+          flags: unittests
+          name: codecov-pcl
+
+      - name: 📤 Upload coverage artifacts
+        if: matrix.node-version == '20' && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage/
+            !coverage/**/*.tmp
+          retention-days: 30
+
+      - name: 📊 Comment coverage on PR
+        if: matrix.node-version == '20' && matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

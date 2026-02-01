@@ -1,10 +1,9 @@
-import { describe, expect, it } from 'vitest';
 import type { CodeActionParams } from 'vscode-languageserver';
-import { format } from '../../src/formatter/index.js';
-import { CodeActionProvider } from '../../src/lsp/code-actions.js';
-import { convertErrorsToDiagnostics } from '../../src/lsp/error-converter.js';
-import { parseProgram } from '../../src/parser/index.js';
-import { analyze } from '../../src/semantic/index.js';
+import { format } from '../../src/formatter/index';
+import { CodeActionProvider } from '../../src/lsp/code-actions';
+import { convertErrorsToDiagnostics } from '../../src/lsp/error-converter';
+import { parseProgram } from '../../src/parser/index';
+import { analyze } from '../../src/semantic/index';
 
 describe('LSP Integration Tests', () => {
   describe('Parser Integration', () => {

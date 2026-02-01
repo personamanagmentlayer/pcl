@@ -45,7 +45,10 @@
       "Bash(gh run:*)",
       "Bash(gh pr list:*)",
       "Bash(gh pr view:*)",
-      "Bash(ENABLE_BENCHMARKS=true npm test:*)"
+      "Bash(ENABLE_BENCHMARKS=true npm test:*)",
+      "Bash(npm pack:*)",
+      "Bash(npx esbuild:*)",
+      "Bash(tee:*)"
     ]
   }
 }
