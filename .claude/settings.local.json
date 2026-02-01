@@ -48,7 +48,9 @@
       "Bash(ENABLE_BENCHMARKS=true npm test:*)",
       "Bash(npm pack:*)",
       "Bash(npx esbuild:*)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(NODE_OPTIONS=\"--experimental-vm-modules\" npx vitest run:*)",
+      "Bash(findstr:*)"
     ]
   }
 }
