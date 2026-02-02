@@ -94,7 +94,9 @@ export class RateLimiter {
       this.config.maxQueueSize > 0 &&
       this.queue.length >= this.config.maxQueueSize
     ) {
-      throw new Error(`Rate limiter queue full (${this.config.maxQueueSize} requests)`);
+      throw new Error(
+        `Rate limiter queue full (${this.config.maxQueueSize} requests)`
+      );
     }
 
     // Queue the request
@@ -258,7 +260,9 @@ export class RateLimiterRegistry {
     config?: Partial<RateLimiterConfig>
   ): RateLimiter {
     if (this.limiters.has(providerName)) {
-      throw new Error(`Rate limiter already exists for provider: ${providerName}`);
+      throw new Error(
+        `Rate limiter already exists for provider: ${providerName}`
+      );
     }
 
     const limiter = new RateLimiter(config);

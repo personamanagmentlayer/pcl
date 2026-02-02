@@ -87,7 +87,8 @@ registerProvider({
   metadata: {
     name: 'google',
     displayName: 'Google',
-    description: 'Google Gemini models (Gemini 2.0 Flash, Gemini 1.5 Pro/Flash)',
+    description:
+      'Google Gemini models (Gemini 2.0 Flash, Gemini 1.5 Pro/Flash)',
     version: '1.0.0',
     homepage: 'https://ai.google.dev',
     documentation: 'https://ai.google.dev/docs',

@@ -13,7 +13,12 @@ import type { CompiledSkill } from './skill-compiler';
 import type { SkillContext } from './skill-context';
 import { createSkillContext, LoadingStrategy } from './skill-context';
 import type { PromptIntegration } from './prompt-integration';
-import { PromptIntegration as PromptIntegrationClass, PromptProvider, PromptSection, defaultPromptIntegrationOptions } from './prompt-integration';
+import {
+  PromptIntegration as PromptIntegrationClass,
+  PromptProvider,
+  PromptSection,
+  defaultPromptIntegrationOptions,
+} from './prompt-integration';
 import type { Result } from '../types';
 import { Ok as ok, Err as err } from '../types';
 
@@ -70,12 +75,16 @@ export class SkillRuntimeIntegration {
   private config: Required<SkillRuntimeConfig>;
 
   constructor(config: SkillRuntimeConfig = {}) {
-    this.skillContext = config.skillContext || createSkillContext({
-      loadingStrategy: config.loadingStrategy || LoadingStrategy.LAZY,
-      cache: config.enableCache ?? true,
-    });
+    this.skillContext =
+      config.skillContext ||
+      createSkillContext({
+        loadingStrategy: config.loadingStrategy || LoadingStrategy.LAZY,
+        cache: config.enableCache ?? true,
+      });
 
-    this.promptIntegration = (config.promptIntegration as PromptIntegration) || new PromptIntegrationClass();
+    this.promptIntegration =
+      (config.promptIntegration as PromptIntegration) ||
+      new PromptIntegrationClass();
 
     this.config = {
       skillContext: this.skillContext,
@@ -121,7 +130,9 @@ export class SkillRuntimeIntegration {
     }
 
     if (errors.length > 0) {
-      return err(new Error(`Failed to load some skills:\n${errors.join('\n')}`));
+      return err(
+        new Error(`Failed to load some skills:\n${errors.join('\n')}`)
+      );
     }
 
     // Calculate total tokens
@@ -161,7 +172,11 @@ export class SkillRuntimeIntegration {
     };
 
     // Integrate skills into prompt
-    const result = this.promptIntegration.integrate(basePrompt, skills, options);
+    const result = this.promptIntegration.integrate(
+      basePrompt,
+      skills,
+      options
+    );
 
     // Check for warnings
     if (result.warnings.length > 0) {
@@ -246,7 +261,9 @@ export class SkillRuntimeIntegration {
 /**
  * Create default skill runtime integration
  */
-export function createSkillRuntime(config?: SkillRuntimeConfig): SkillRuntimeIntegration {
+export function createSkillRuntime(
+  config?: SkillRuntimeConfig
+): SkillRuntimeIntegration {
   return new SkillRuntimeIntegration(config);
 }
 

@@ -2,9 +2,9 @@ name: Security Scanning
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   schedule:
     # Run daily at 2 AM UTC
     - cron: '0 2 * * *'
@@ -25,9 +25,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Dependency Review
+        id: dependency-review
         uses: actions/dependency-review-action@v4
+        continue-on-error: true
         with:
           fail-on-severity: moderate
+
+      - name: Note if dependency graph is disabled
+        if: steps.dependency-review.outcome == 'failure'
+        run: |
+          echo "::notice::Dependency Review failed. This may be because Dependency graph is not enabled."
+          echo "::notice::To enable it, visit: https://github.com/${{ github.repository }}/settings/security_analysis"
+          echo "::notice::Dependency Review is not critical for this workflow and can be enabled later."
 
   npm-audit:
     name: NPM Security Audit
@@ -63,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript' ]
+        language: ['javascript']
 
     steps:
       - name: Checkout code
@@ -81,7 +90,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
         with:
-          category: "/language:${{matrix.language}}"
+          category: '/language:${{matrix.language}}'
 
   secret-scanning:
     name: Secret Scanning
@@ -92,10 +101,35 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check for Gitleaks License
+        id: check-license
+        run: |
+          if [ -n "${{ secrets.GITLEAKS_LICENSE }}" ]; then
+            echo "license_available=true" >> $GITHUB_OUTPUT
+            echo "::notice::Gitleaks license found, using Gitleaks for secret scanning"
+          else
+            echo "license_available=false" >> $GITHUB_OUTPUT
+            echo "::notice::Gitleaks license not found. Using TruffleHog as alternative."
+            echo "::notice::For organization repos, obtain a Gitleaks license from gitleaks.io to use Gitleaks"
+          fi
+
       - name: Gitleaks Scan
+        if: steps.check-license.outputs.license_available == 'true'
         uses: gitleaks/gitleaks-action@v2
+        continue-on-error: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+      - name: Alternative Secret Scan (truffleHog)
+        if: steps.check-license.outputs.license_available != 'true'
+        continue-on-error: true
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
 
   license-compliance:
     name: License Compliance

@@ -10,27 +10,28 @@
  */
 
 import type { Result } from '../types';
-import { Ok as ok, Err as err } from '../types';
-import type { Artifact, ArtifactType, SearchCriteria, SearchResult } from './interfaces';
-import type { RegistryBackend } from './interfaces';
+import { Err as err, Ok as ok } from '../types';
+import type { ArtifactType, SearchCriteria, SearchResult } from './interfaces';
 import type {
+  CuratedCollection,
+  SkillArtifact,
+  SkillBundle,
+  SkillCategory,
+  SkillCompatibilityCheck,
   SkillMetadata,
+  SkillQualityMetrics,
+  SkillRecommendation,
+  SkillRelationship,
   SkillSearchFilters,
   SkillSearchResult,
-  SkillUsageMetrics,
-  SkillRelationship,
-  SkillBundle,
-  SkillCompatibilityCheck,
-  SkillVersion,
   SkillTrending,
-  SkillRecommendation,
-  CuratedCollection,
-  SkillQualityMetrics,
-  SkillArtifact,
-  SkillCategory,
-  SkillComplexity,
+  SkillUsageMetrics,
+  SkillVersion,
 } from './skill-metadata';
-import { calculateCompatibilityScore, determineQualityTier } from './skill-metadata';
+import {
+  calculateCompatibilityScore,
+  determineQualityTier,
+} from './skill-metadata';
 
 /**
  * Skill Registry Interface
@@ -74,12 +75,16 @@ export interface SkillRegistry {
   /**
    * Get skill relationships
    */
-  getRelationships(skillId: string): Promise<Result<SkillRelationship[], Error>>;
+  getRelationships(
+    skillId: string
+  ): Promise<Result<SkillRelationship[], Error>>;
 
   /**
    * Add skill relationship
    */
-  addRelationship(relationship: SkillRelationship): Promise<Result<void, Error>>;
+  addRelationship(
+    relationship: SkillRelationship
+  ): Promise<Result<void, Error>>;
 
   /**
    * Get skill versions
@@ -111,24 +116,30 @@ export interface SkillRegistry {
   /**
    * Get skill bundles
    */
-  getSkillBundles(category?: SkillCategory): Promise<Result<SkillBundle[], Error>>;
+  getSkillBundles(
+    category?: SkillCategory
+  ): Promise<Result<SkillBundle[], Error>>;
 
   /**
    * Create skill bundle
    */
-  createBundle(bundle: Omit<SkillBundle, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<SkillBundle, Error>>;
+  createBundle(
+    bundle: Omit<SkillBundle, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<SkillBundle, Error>>;
 
   /**
    * Get skill quality metrics
    */
-  getQualityMetrics(skillId: string): Promise<Result<SkillQualityMetrics, Error>>;
+  getQualityMetrics(
+    skillId: string
+  ): Promise<Result<SkillQualityMetrics, Error>>;
 }
 
 /**
  * Skill Registry Implementation
  */
 export class SkillRegistryImpl implements SkillRegistry {
-  constructor(private backend: RegistryBackend) {}
+  constructor(private backend: unknown) {}
 
   /**
    * Search for skills with advanced filters
@@ -154,7 +165,7 @@ export class SkillRegistryImpl implements SkillRegistry {
       };
 
       // Execute search
-      const searchResult = await this.backend.search(criteria);
+      const searchResult = await (this.backend as any).search(criteria);
 
       if (!searchResult.ok) {
         return err(searchResult.error);
@@ -179,7 +190,7 @@ export class SkillRegistryImpl implements SkillRegistry {
    */
   async getSkill(skillId: string): Promise<Result<SkillArtifact, Error>> {
     try {
-      const result = await this.backend.get(skillId);
+      const result = await (this.backend as any).get(skillId);
 
       if (!result.ok) {
         return err(result.error);
@@ -241,7 +252,9 @@ export class SkillRegistryImpl implements SkillRegistry {
   /**
    * Get skill usage metrics
    */
-  async getUsageMetrics(skillId: string): Promise<Result<SkillUsageMetrics, Error>> {
+  async getUsageMetrics(
+    skillId: string
+  ): Promise<Result<SkillUsageMetrics, Error>> {
     try {
       // Placeholder implementation - would query database
       const metrics: SkillUsageMetrics = {
@@ -285,13 +298,21 @@ export class SkillRegistryImpl implements SkillRegistry {
         }
 
         const target = targetResult.value;
-        const score = calculateCompatibilityScore(skill.metadata, target.metadata);
+        const score = calculateCompatibilityScore(
+          skill.metadata,
+          target.metadata
+        );
 
         results.push({
           targetSkillId: targetId,
           compatible: score >= 60,
           reason: score < 60 ? 'Low compatibility score' : undefined,
-          severity: score < 40 ? ('error' as const) : score < 60 ? ('warning' as const) : ('info' as const),
+          severity:
+            score < 40
+              ? ('error' as const)
+              : score < 60
+                ? ('warning' as const)
+                : ('info' as const),
         });
       }
 
@@ -315,13 +336,17 @@ export class SkillRegistryImpl implements SkillRegistry {
   /**
    * Get skill relationships
    */
-  async getRelationships(skillId: string): Promise<Result<SkillRelationship[], Error>> {
+  async getRelationships(
+    skillId: string
+  ): Promise<Result<SkillRelationship[], Error>> {
     try {
       // Placeholder - would query database
       return ok([]);
     } catch (error) {
       return err(
-        error instanceof Error ? error : new Error('Failed to get relationships')
+        error instanceof Error
+          ? error
+          : new Error('Failed to get relationships')
       );
     }
   }
@@ -329,7 +354,9 @@ export class SkillRegistryImpl implements SkillRegistry {
   /**
    * Add skill relationship
    */
-  async addRelationship(relationship: SkillRelationship): Promise<Result<void, Error>> {
+  async addRelationship(
+    relationship: SkillRelationship
+  ): Promise<Result<void, Error>> {
     try {
       // Placeholder - would insert into database
       return ok(undefined);
@@ -367,7 +394,9 @@ export class SkillRegistryImpl implements SkillRegistry {
       return ok([]);
     } catch (error) {
       return err(
-        error instanceof Error ? error : new Error('Failed to get trending skills')
+        error instanceof Error
+          ? error
+          : new Error('Failed to get trending skills')
       );
     }
   }
@@ -384,7 +413,9 @@ export class SkillRegistryImpl implements SkillRegistry {
       return ok([]);
     } catch (error) {
       return err(
-        error instanceof Error ? error : new Error('Failed to get recommendations')
+        error instanceof Error
+          ? error
+          : new Error('Failed to get recommendations')
       );
     }
   }
@@ -406,7 +437,9 @@ export class SkillRegistryImpl implements SkillRegistry {
   /**
    * Get skill bundles
    */
-  async getSkillBundles(category?: SkillCategory): Promise<Result<SkillBundle[], Error>> {
+  async getSkillBundles(
+    category?: SkillCategory
+  ): Promise<Result<SkillBundle[], Error>> {
     try {
       // Placeholder - would query bundles
       return ok([]);
@@ -443,7 +476,9 @@ export class SkillRegistryImpl implements SkillRegistry {
   /**
    * Get skill quality metrics
    */
-  async getQualityMetrics(skillId: string): Promise<Result<SkillQualityMetrics, Error>> {
+  async getQualityMetrics(
+    skillId: string
+  ): Promise<Result<SkillQualityMetrics, Error>> {
     try {
       // Placeholder - would calculate quality metrics
       const metrics: SkillQualityMetrics = {
@@ -460,7 +495,9 @@ export class SkillRegistryImpl implements SkillRegistry {
       return ok(metrics);
     } catch (error) {
       return err(
-        error instanceof Error ? error : new Error('Failed to get quality metrics')
+        error instanceof Error
+          ? error
+          : new Error('Failed to get quality metrics')
       );
     }
   }
@@ -476,6 +513,7 @@ export class SkillRegistryImpl implements SkillRegistry {
 
     for (const result of results) {
       const artifact = result.artifact;
+      if (!artifact) continue;
       const metadata = artifact.metadata as SkillMetadata;
 
       // Apply filters
@@ -488,7 +526,9 @@ export class SkillRegistryImpl implements SkillRegistry {
       }
 
       if (filters.tools && filters.tools.length > 0) {
-        const hasAllTools = filters.tools.every((t) => metadata.tools.includes(t));
+        const hasAllTools = filters.tools.every((t) =>
+          metadata.tools.includes(t)
+        );
         if (!hasAllTools) {
           continue;
         }
@@ -530,6 +570,6 @@ export class SkillRegistryImpl implements SkillRegistry {
 /**
  * Create skill registry instance
  */
-export function createSkillRegistry(backend: RegistryBackend): SkillRegistry {
+export function createSkillRegistry(backend: unknown): SkillRegistry {
   return new SkillRegistryImpl(backend);
 }

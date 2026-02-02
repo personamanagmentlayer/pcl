@@ -5,7 +5,6 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import { describe, it, expect, test } from 'vitest';
 import { Lexer, TokenType, tokenize } from '../src/lexer';
 import { Parser, parse, parseExpression, parseType } from '../src/parser';
 

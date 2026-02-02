@@ -32,7 +32,9 @@ export class RedisCache implements CacheBackend {
 
   constructor(config: RedisCacheConfig = {}) {
     this.config = {
-      url: config.url || `redis://${config.host || 'localhost'}:${config.port || 6379}`,
+      url:
+        config.url ||
+        `redis://${config.host || 'localhost'}:${config.port || 6379}`,
       host: config.host || 'localhost',
       port: config.port || 6379,
       password: config.password || '',
@@ -93,7 +95,9 @@ export class RedisCache implements CacheBackend {
       this.isConnected = true;
     } catch (error) {
       this.stats.errors++;
-      throw new Error(`Failed to connect to Redis: ${(error as Error).message}`);
+      throw new Error(
+        `Failed to connect to Redis: ${(error as Error).message}`
+      );
     }
   }
 
@@ -110,7 +114,9 @@ export class RedisCache implements CacheBackend {
       this.isConnected = false;
     } catch (error) {
       this.stats.errors++;
-      throw new Error(`Failed to disconnect from Redis: ${(error as Error).message}`);
+      throw new Error(
+        `Failed to disconnect from Redis: ${(error as Error).message}`
+      );
     }
   }
 
@@ -225,7 +231,10 @@ export class RedisCache implements CacheBackend {
       return keys.length;
     } catch (error) {
       this.stats.errors++;
-      console.error(`Redis invalidatePattern error for pattern "${pattern}":`, error);
+      console.error(
+        `Redis invalidatePattern error for pattern "${pattern}":`,
+        error
+      );
       throw error;
     }
   }
@@ -297,7 +306,8 @@ export class RedisCache implements CacheBackend {
    */
   private updateLatency(latency: number): void {
     const total = this.stats.hits + this.stats.misses + this.stats.sets;
-    this.stats.avgLatency = (this.stats.avgLatency * (total - 1) + latency) / total;
+    this.stats.avgLatency =
+      (this.stats.avgLatency * (total - 1) + latency) / total;
   }
 
   /**
@@ -320,7 +330,9 @@ export class RedisCache implements CacheBackend {
   /**
    * Warm up cache with frequently accessed data
    */
-  async warmCache(loader: () => Promise<Map<string, unknown>>): Promise<number> {
+  async warmCache(
+    loader: () => Promise<Map<string, unknown>>
+  ): Promise<number> {
     try {
       const data = await loader();
       let count = 0;

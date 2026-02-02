@@ -104,7 +104,9 @@ export abstract class BaseProvider implements Provider {
   /**
    * Provider-specific completion logic
    */
-  protected abstract doComplete(request: CompletionRequest): Promise<CompletionResponse>;
+  protected abstract doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse>;
 
   /**
    * Generate completion (streaming)
@@ -119,7 +121,9 @@ export abstract class BaseProvider implements Provider {
   /**
    * Provider-specific streaming logic
    */
-  protected abstract doStream(request: CompletionRequest): AsyncIterable<StreamChunk>;
+  protected abstract doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk>;
 
   /**
    * Count tokens for text
@@ -162,7 +166,9 @@ export abstract class BaseProvider implements Provider {
    */
   protected assertInitialized(): void {
     if (!this.initialized) {
-      throw new Error(`Provider ${this.name} not initialized. Call initialize() first.`);
+      throw new Error(
+        `Provider ${this.name} not initialized. Call initialize() first.`
+      );
     }
   }
 
@@ -180,7 +186,10 @@ export abstract class BaseProvider implements Provider {
 
     // Validate message roles
     for (const message of request.messages) {
-      if (!message.role || !['system', 'user', 'assistant', 'function'].includes(message.role)) {
+      if (
+        !message.role ||
+        !['system', 'user', 'assistant', 'function'].includes(message.role)
+      ) {
         throw new Error(`Invalid message role: ${message.role}`);
       }
     }
@@ -246,7 +255,10 @@ export abstract class BaseProvider implements Provider {
   /**
    * Make HTTP request with timeout
    */
-  protected async fetch(url: string, options: RequestInit = {}): Promise<Response> {
+  protected async fetch(
+    url: string,
+    options: RequestInit = {}
+  ): Promise<Response> {
     const timeout = this.config.timeout || 30000;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -305,7 +317,8 @@ export abstract class BaseProvider implements Provider {
           error?: { message?: string };
           message?: string;
         };
-        errorMessage = errorData.error?.message || errorData.message || errorMessage;
+        errorMessage =
+          errorData.error?.message || errorData.message || errorMessage;
       } else {
         const text = await response.text();
         if (text) {

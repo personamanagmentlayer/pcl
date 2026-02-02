@@ -8,7 +8,11 @@ import { readdir, readFile } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { parseSkillMd } from '../../../skills/skill-loader';
-import { formatOutput, formatError, type OutputFormat } from '../../utils/output';
+import {
+  formatOutput,
+  formatError,
+  type OutputFormat,
+} from '../../utils/output';
 
 export interface SkillListOptions {
   directory?: string;

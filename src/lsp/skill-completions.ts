@@ -46,8 +46,11 @@ export class SkillCompletionProvider {
     const skills = await this.discoverSkills(documentPath);
 
     return skills
-      .filter(skill => !prefix || skill.name.toLowerCase().includes(prefix.toLowerCase()))
-      .map(skill => this.createSkillCompletionItem(skill));
+      .filter(
+        (skill) =>
+          !prefix || skill.name.toLowerCase().includes(prefix.toLowerCase())
+      )
+      .map((skill) => this.createSkillCompletionItem(skill));
   }
 
   /**
@@ -105,7 +108,7 @@ export class SkillCompletionProvider {
       },
     ];
 
-    return properties.map(prop => ({
+    return properties.map((prop) => ({
       label: prop.label,
       kind: CompletionItemKind.Property,
       detail: prop.detail,
@@ -139,7 +142,7 @@ export class SkillCompletionProvider {
       { label: 'design', description: 'Design and UX' },
     ];
 
-    return categories.map(cat => ({
+    return categories.map((cat) => ({
       label: cat.label,
       kind: CompletionItemKind.EnumMember,
       detail: cat.description,
@@ -163,7 +166,7 @@ export class SkillCompletionProvider {
       { label: 'expert', description: 'Expert-level mastery' },
     ];
 
-    return levels.map(level => ({
+    return levels.map((level) => ({
       label: level.label,
       kind: CompletionItemKind.EnumMember,
       detail: level.description,
@@ -177,12 +180,22 @@ export class SkillCompletionProvider {
    */
   getToolCompletions(): CompletionItem[] {
     const tools = [
-      'Read', 'Write', 'Edit', 'Bash', 'Glob', 'Grep',
-      'Task', 'WebFetch', 'WebSearch', 'NotebookEdit',
-      'AskUserQuestion', 'TodoWrite', 'Skill',
+      'Read',
+      'Write',
+      'Edit',
+      'Bash',
+      'Glob',
+      'Grep',
+      'Task',
+      'WebFetch',
+      'WebSearch',
+      'NotebookEdit',
+      'AskUserQuestion',
+      'TodoWrite',
+      'Skill',
     ];
 
-    return tools.map(tool => ({
+    return tools.map((tool) => ({
       label: tool,
       kind: CompletionItemKind.Value,
       detail: `${tool} tool`,
@@ -274,7 +287,7 @@ export class SkillCompletionProvider {
 
       try {
         const files = await readdir(dir);
-        const mdFiles = files.filter(f => f.endsWith('.md'));
+        const mdFiles = files.filter((f) => f.endsWith('.md'));
 
         for (const file of mdFiles) {
           try {

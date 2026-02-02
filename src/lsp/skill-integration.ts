@@ -75,10 +75,11 @@ export class SkillLSPIntegration {
 
       // Skill include completions: includes: [...]
       if (context.type === 'skill-include') {
-        const skillItems = await this.completionProvider.getSkillIncludeCompletions(
-          documentPath,
-          context.prefix
-        );
+        const skillItems =
+          await this.completionProvider.getSkillIncludeCompletions(
+            documentPath,
+            context.prefix
+          );
         items.push(...skillItems);
       }
 
@@ -96,7 +97,8 @@ export class SkillLSPIntegration {
 
       // Complexity completions
       if (context.type === 'skill-complexity') {
-        const complexityItems = this.completionProvider.getSkillComplexityCompletions();
+        const complexityItems =
+          this.completionProvider.getSkillComplexityCompletions();
         items.push(...complexityItems);
       }
 
@@ -134,7 +136,10 @@ export class SkillLSPIntegration {
       const documentPath = this.uriToPath(documentUri);
 
       // If hovering over a skill name in dependencies
-      const skillPath = await this.navigationProvider['findSkillFile'](word, documentPath);
+      const skillPath = await this.navigationProvider['findSkillFile'](
+        word,
+        documentPath
+      );
       if (skillPath) {
         return await this.hoverProvider.getSkillHover(skillPath);
       }
@@ -162,7 +167,10 @@ export class SkillLSPIntegration {
 
     try {
       const documentPath = this.uriToPath(documentUri);
-      return await this.diagnosticsProvider.validateSkillFile(documentPath, content);
+      return await this.diagnosticsProvider.validateSkillFile(
+        documentPath,
+        content
+      );
     } catch (error) {
       this.connection.console.error(
         `Error providing skill diagnostics: ${error instanceof Error ? error.message : String(error)}`
@@ -180,7 +188,10 @@ export class SkillLSPIntegration {
   ): Promise<Location | null> {
     try {
       const documentPath = this.uriToPath(documentUri);
-      return await this.navigationProvider.gotoSkillDefinition(word, documentPath);
+      return await this.navigationProvider.gotoSkillDefinition(
+        word,
+        documentPath
+      );
     } catch (error) {
       this.connection.console.error(
         `Error in goto definition: ${error instanceof Error ? error.message : String(error)}`
@@ -198,7 +209,10 @@ export class SkillLSPIntegration {
   ): Promise<Location[]> {
     try {
       const documentPath = this.uriToPath(documentUri);
-      return await this.navigationProvider.findSkillReferences(word, documentPath);
+      return await this.navigationProvider.findSkillReferences(
+        word,
+        documentPath
+      );
     } catch (error) {
       this.connection.console.error(
         `Error finding references: ${error instanceof Error ? error.message : String(error)}`
@@ -332,9 +346,9 @@ export class SkillLSPIntegration {
    */
   isSkillFile(documentUri: string): boolean {
     const path = this.uriToPath(documentUri);
-    return path.endsWith('.md') && (
-      path.includes('skills') ||
-      path.includes('.claude')
+    return (
+      path.endsWith('.md') &&
+      (path.includes('skills') || path.includes('.claude'))
     );
   }
 

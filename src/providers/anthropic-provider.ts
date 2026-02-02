@@ -29,15 +29,17 @@ interface AnthropicConfig extends ProviderConfig {
  */
 interface AnthropicMessage {
   role: 'user' | 'assistant';
-  content: string | Array<{
-    type: 'text' | 'image';
-    text?: string;
-    source?: {
-      type: 'base64' | 'url';
-      media_type: string;
-      data: string;
-    };
-  }>;
+  content:
+    | string
+    | Array<{
+        type: 'text' | 'image';
+        text?: string;
+        source?: {
+          type: 'base64' | 'url';
+          media_type: string;
+          data: string;
+        };
+      }>;
 }
 
 /**
@@ -209,7 +211,9 @@ export class AnthropicProvider extends BaseProvider {
     };
   }
 
-  protected async doComplete(request: CompletionRequest): Promise<CompletionResponse> {
+  protected async doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse> {
     const anthropicRequest = this.convertRequest(request);
 
     const response = await this.fetch(`${this.baseUrl}/messages`, {
@@ -226,11 +230,14 @@ export class AnthropicProvider extends BaseProvider {
       await this.handleErrorResponse(response);
     }
 
-    const anthropicResponse = await this.parseJsonResponse<AnthropicCompletionResponse>(response);
+    const anthropicResponse =
+      await this.parseJsonResponse<AnthropicCompletionResponse>(response);
     return this.convertResponse(anthropicResponse);
   }
 
-  protected async *doStream(request: CompletionRequest): AsyncIterable<StreamChunk> {
+  protected async *doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk> {
     const anthropicRequest = this.convertRequest(request);
     anthropicRequest.stream = true;
 
@@ -325,7 +332,9 @@ export class AnthropicProvider extends BaseProvider {
   /**
    * Convert PCL request to Anthropic format
    */
-  private convertRequest(request: CompletionRequest): AnthropicCompletionRequest {
+  private convertRequest(
+    request: CompletionRequest
+  ): AnthropicCompletionRequest {
     const messages: AnthropicMessage[] = [];
 
     for (const message of request.messages) {
@@ -344,7 +353,10 @@ export class AnthropicProvider extends BaseProvider {
               return {
                 type: 'image' as const,
                 source: {
-                  type: c.source.type === 'base64' ? ('base64' as const) : ('url' as const),
+                  type:
+                    c.source.type === 'base64'
+                      ? ('base64' as const)
+                      : ('url' as const),
                   media_type: c.source.mediaType || 'image/png',
                   data: c.source.data || c.source.url || '',
                 },
@@ -408,7 +420,9 @@ export class AnthropicProvider extends BaseProvider {
   /**
    * Convert Anthropic response to PCL format
    */
-  private convertResponse(response: AnthropicCompletionResponse): CompletionResponse {
+  private convertResponse(
+    response: AnthropicCompletionResponse
+  ): CompletionResponse {
     // Extract text content
     const textContent = response.content
       .filter((c) => c.type === 'text')

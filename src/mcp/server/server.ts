@@ -53,8 +53,14 @@ export class PclMcpServer implements McpServer {
   public readonly info: McpServerInfo;
 
   private transport: McpTransport | null = null;
-  private tools = new Map<string, { definition: McpTool; handler: ToolHandler }>();
-  private resources = new Map<string, { definition: McpResource; provider: ResourceProvider }>();
+  private tools = new Map<
+    string,
+    { definition: McpTool; handler: ToolHandler }
+  >();
+  private resources = new Map<
+    string,
+    { definition: McpResource; provider: ResourceProvider }
+  >();
   private initialized = false;
 
   constructor(config: McpServerConfig) {
@@ -85,7 +91,10 @@ export class PclMcpServer implements McpServer {
   /**
    * Register a resource provider
    */
-  public registerResource(resource: McpResource, provider: ResourceProvider): void {
+  public registerResource(
+    resource: McpResource,
+    provider: ResourceProvider
+  ): void {
     this.resources.set(resource.uri, { definition: resource, provider });
   }
 
@@ -133,19 +142,28 @@ export class PclMcpServer implements McpServer {
       // Route request to appropriate handler
       switch (method) {
         case McpMethod.Initialize:
-          return this.handleInitialize(params as unknown as McpInitializeParams, requestId);
+          return this.handleInitialize(
+            params as unknown as McpInitializeParams,
+            requestId
+          );
 
         case McpMethod.ToolsList:
           return this.handleToolsList(requestId);
 
         case McpMethod.ToolsCall:
-          return this.handleToolsCall(params as unknown as McpToolCallParams, requestId);
+          return this.handleToolsCall(
+            params as unknown as McpToolCallParams,
+            requestId
+          );
 
         case McpMethod.ResourcesList:
           return this.handleResourcesList(requestId);
 
         case McpMethod.ResourcesRead:
-          return this.handleResourcesRead(params as unknown as { uri: string }, requestId);
+          return this.handleResourcesRead(
+            params as unknown as { uri: string },
+            requestId
+          );
 
         case McpMethod.Shutdown:
           return this.handleShutdown(requestId);
@@ -170,7 +188,10 @@ export class PclMcpServer implements McpServer {
   /**
    * Handle initialize request
    */
-  private handleInitialize(params: McpInitializeParams, id: JsonRpcId): McpResponse {
+  private handleInitialize(
+    params: McpInitializeParams,
+    id: JsonRpcId
+  ): McpResponse {
     if (this.initialized) {
       return createJsonRpcErrorResponse(
         JsonRpcErrorCode.InvalidRequest,
@@ -219,7 +240,10 @@ export class PclMcpServer implements McpServer {
   /**
    * Handle tools/call request
    */
-  private async handleToolsCall(params: McpToolCallParams, id: JsonRpcId): Promise<McpResponse> {
+  private async handleToolsCall(
+    params: McpToolCallParams,
+    id: JsonRpcId
+  ): Promise<McpResponse> {
     if (!this.initialized) {
       return createJsonRpcErrorResponse(
         JsonRpcErrorCode.InvalidRequest,
@@ -263,7 +287,9 @@ export class PclMcpServer implements McpServer {
       );
     }
 
-    const resources = Array.from(this.resources.values()).map((r) => r.definition);
+    const resources = Array.from(this.resources.values()).map(
+      (r) => r.definition
+    );
 
     return createJsonRpcSuccessResponse({ resources }, id);
   }

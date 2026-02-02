@@ -41,7 +41,10 @@ export type { MultiLayerCacheConfig } from './cache/multi-layer-cache';
 
 // Phase 1.2C: Search
 export { ElasticsearchBackend } from './search/elasticsearch';
-export type { ElasticsearchConfig, SearchAnalytics } from './search/elasticsearch';
+export type {
+  ElasticsearchConfig,
+  SearchAnalytics,
+} from './search/elasticsearch';
 
 // Phase 1.2C: Versioning
 export { SemverManager } from './version/semver-manager';

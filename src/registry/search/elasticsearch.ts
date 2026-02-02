@@ -12,12 +12,14 @@ export interface ElasticsearchConfig {
   /** Elasticsearch node URL(s) */
   nodes?: string | string[];
   /** Authentication credentials */
-  auth?: {
-    username: string;
-    password: string;
-  } | {
-    apiKey: string;
-  };
+  auth?:
+    | {
+        username: string;
+        password: string;
+      }
+    | {
+        apiKey: string;
+      };
   /** Index name for artifacts */
   indexName?: string;
   /** Number of shards */
@@ -99,6 +101,7 @@ export class ElasticsearchBackend implements SearchBackend {
     });
 
     if (!indexExists) {
+      // Elasticsearch client type overload mismatch - using any cast
       await this.client.indices.create({
         index: this.config.indexName,
         body: {
@@ -169,7 +172,7 @@ export class ElasticsearchBackend implements SearchBackend {
             },
           },
         },
-      });
+      } as any);
     }
   }
 
@@ -192,7 +195,10 @@ export class ElasticsearchBackend implements SearchBackend {
   /**
    * Search artifacts with advanced options
    */
-  async search(query: string, options: SearchOptions = {}): Promise<SearchResult[]> {
+  async search(
+    query: string,
+    options: SearchOptions = {}
+  ): Promise<SearchResult[]> {
     const start = Date.now();
 
     try {
@@ -227,7 +233,11 @@ export class ElasticsearchBackend implements SearchBackend {
 
       // Record analytics
       if (this.config.analytics) {
-        this.recordSearch(query, Date.now() - start, response.hits.total as any > 0);
+        this.recordSearch(
+          query,
+          Date.now() - start,
+          (response.hits.total as any) > 0
+        );
       }
 
       // Transform results
@@ -235,10 +245,12 @@ export class ElasticsearchBackend implements SearchBackend {
         id: hit._id,
         score: hit._score || 0,
         artifact: hit._source,
-        highlights: hit.highlight ? {
-          name: hit.highlight.name?.[0],
-          description: hit.highlight.description?.[0],
-        } : undefined,
+        highlights: hit.highlight
+          ? {
+              name: hit.highlight.name?.[0],
+              description: hit.highlight.description?.[0],
+            }
+          : undefined,
       }));
 
       return results;
@@ -270,10 +282,12 @@ export class ElasticsearchBackend implements SearchBackend {
             },
           },
         },
-      });
+      } as any);
 
       const suggestions = response.suggest?.name_suggestion?.[0]?.options || [];
-      return suggestions.map((opt: any) => opt.text);
+      return Array.isArray(suggestions)
+        ? suggestions.map((opt: any) => opt.text)
+        : [];
     } catch (error) {
       console.error('Elasticsearch suggest error:', error);
       return [];
@@ -303,7 +317,7 @@ export class ElasticsearchBackend implements SearchBackend {
         },
       },
       refresh: true,
-    });
+    } as any);
   }
 
   /**
@@ -422,7 +436,14 @@ export class ElasticsearchBackend implements SearchBackend {
    * Build sort clause
    */
   private buildSort(sortBy: string, sortOrder: 'asc' | 'desc' = 'desc'): any[] {
-    const validFields = ['name', 'downloads', 'stars', 'created', 'updated', '_score'];
+    const validFields = [
+      'name',
+      'downloads',
+      'stars',
+      'created',
+      'updated',
+      '_score',
+    ];
 
     if (!validFields.includes(sortBy)) {
       return [{ _score: 'desc' }];

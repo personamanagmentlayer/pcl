@@ -192,7 +192,9 @@ export class GroqProvider extends BaseProvider {
     };
   }
 
-  protected async doComplete(request: CompletionRequest): Promise<CompletionResponse> {
+  protected async doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse> {
     const groqRequest = this.convertRequest(request);
 
     const response = await this.fetch(`${this.baseUrl}/chat/completions`, {
@@ -231,7 +233,9 @@ export class GroqProvider extends BaseProvider {
     return this.convertResponse(groqResponse, request.model);
   }
 
-  protected async *doStream(request: CompletionRequest): AsyncIterable<StreamChunk> {
+  protected async *doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk> {
     const groqRequest = this.convertRequest(request);
     groqRequest.stream = true;
 
@@ -362,7 +366,10 @@ export class GroqProvider extends BaseProvider {
       } else if (message.role === 'user' || message.role === 'assistant') {
         messages.push({
           role: message.role,
-          content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+          content:
+            typeof message.content === 'string'
+              ? message.content
+              : JSON.stringify(message.content),
         });
       }
     }
@@ -451,7 +458,9 @@ export class GroqProvider extends BaseProvider {
   /**
    * Convert Groq finish reason to PCL format
    */
-  private convertFinishReason(reason: string): 'stop' | 'length' | 'function_call' | 'content_filter' | 'error' {
+  private convertFinishReason(
+    reason: string
+  ): 'stop' | 'length' | 'function_call' | 'content_filter' | 'error' {
     switch (reason) {
       case 'stop':
         return 'stop';

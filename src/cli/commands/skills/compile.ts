@@ -7,7 +7,11 @@
 import { readFile, writeFile } from 'fs/promises';
 import { parseSkillMd } from '../../../skills/skill-loader';
 import { SkillCompiler } from '../../../skills/skill-compiler';
-import { formatError, formatOutput, type OutputFormat } from '../../utils/output';
+import {
+  formatError,
+  formatOutput,
+  type OutputFormat,
+} from '../../utils/output';
 
 export interface SkillCompileOptions {
   output?: string;
@@ -86,8 +90,8 @@ export async function skillCompileCommand(
         format === 'json'
           ? JSON.stringify(compiledData, null, 2)
           : format === 'yaml'
-          ? formatOutput([compiledData], 'yaml')
-          : formatOutput([compiledData], format);
+            ? formatOutput([compiledData], 'yaml')
+            : formatOutput([compiledData], format);
 
       await writeFile(output, outputContent, 'utf-8');
       console.log(`\n✓ Compiled skill written to: ${output}`);
@@ -102,7 +106,9 @@ export async function skillCompileCommand(
       console.log(`  Name: ${compiled.skill.name}`);
       console.log(`  Hash: ${compiled.hash}`);
       console.log(`  Token Count: ${compiled.metadata.tokenCount}`);
-      console.log(`  Instructions: ${compiled.metadata.instructionsLength} chars`);
+      console.log(
+        `  Instructions: ${compiled.metadata.instructionsLength} chars`
+      );
       console.log(`  Examples: ${compiled.metadata.exampleCount}`);
       console.log(`  Tools: ${compiled.metadata.toolCount}`);
       console.log(`  Dependencies: ${compiled.metadata.dependencyCount}`);

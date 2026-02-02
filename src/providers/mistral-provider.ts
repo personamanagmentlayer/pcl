@@ -168,7 +168,9 @@ export class MistralProvider extends BaseProvider {
     };
   }
 
-  protected async doComplete(request: CompletionRequest): Promise<CompletionResponse> {
+  protected async doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse> {
     const mistralRequest = this.convertRequest(request);
 
     const response = await this.fetch(`${this.baseUrl}/chat/completions`, {
@@ -209,7 +211,9 @@ export class MistralProvider extends BaseProvider {
     return this.convertResponse(mistralResponse, request.model);
   }
 
-  protected async *doStream(request: CompletionRequest): AsyncIterable<StreamChunk> {
+  protected async *doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk> {
     const mistralRequest = this.convertRequest(request);
     mistralRequest.stream = true;
 
@@ -324,7 +328,10 @@ export class MistralProvider extends BaseProvider {
     for (const message of request.messages) {
       messages.push({
         role: message.role === 'assistant' ? 'assistant' : 'user',
-        content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+        content:
+          typeof message.content === 'string'
+            ? message.content
+            : JSON.stringify(message.content),
       });
     }
 
@@ -417,7 +424,9 @@ export class MistralProvider extends BaseProvider {
   /**
    * Convert Mistral finish reason to PCL format
    */
-  private convertFinishReason(reason: string): 'stop' | 'length' | 'function_call' | 'content_filter' | 'error' {
+  private convertFinishReason(
+    reason: string
+  ): 'stop' | 'length' | 'function_call' | 'content_filter' | 'error' {
     switch (reason) {
       case 'stop':
         return 'stop';

@@ -8,7 +8,6 @@ import {
   Connection,
   Definition,
   DefinitionParams,
-  Location,
 } from 'vscode-languageserver/node';
 
 import { DocumentManager } from './document-manager';
@@ -25,7 +24,9 @@ export class DefinitionProvider {
   /**
    * Provide definition location
    */
-  async provideDefinition(params: DefinitionParams): Promise<Definition | null> {
+  async provideDefinition(
+    params: DefinitionParams
+  ): Promise<Definition | null> {
     const uri = params.textDocument.uri;
     const position = params.position;
 
@@ -78,7 +79,10 @@ export class DefinitionProvider {
   /**
    * Get word at position
    */
-  private getWordAtPosition(text: string, position: { line: number; character: number }): string | null {
+  private getWordAtPosition(
+    text: string,
+    position: { line: number; character: number }
+  ): string | null {
     const lines = text.split('\n');
     const line = lines[position.line];
     if (!line) {

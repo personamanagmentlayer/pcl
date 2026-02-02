@@ -43,10 +43,7 @@ export class DeepSeekProvider implements AIProvider {
     vision: false, // DeepSeek doesn't support vision yet
     maxTokens: 8192,
     maxContextWindow: 64_000, // 64K tokens for DeepSeek
-    models: [
-      'deepseek-chat',
-      'deepseek-coder',
-    ],
+    models: ['deepseek-chat', 'deepseek-coder'],
   };
 
   private readonly client: OpenAI;
@@ -73,7 +70,9 @@ export class DeepSeekProvider implements AIProvider {
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     const model = request.model || this.config.defaultModel || 'deepseek-chat';
 
     // Build messages array
@@ -121,14 +120,18 @@ export class DeepSeekProvider implements AIProvider {
         },
       };
     } catch (error) {
-      throw new Error(`DeepSeek generation failed: ${(error as Error).message}`);
+      throw new Error(
+        `DeepSeek generation failed: ${(error as Error).message}`
+      );
     }
   }
 
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     const model = request.model || this.config.defaultModel || 'deepseek-chat';
 
     // Build messages array
@@ -156,7 +159,9 @@ export class DeepSeekProvider implements AIProvider {
         yield {
           content,
           done: finishReason !== null && finishReason !== undefined,
-          finishReason: finishReason ? this.mapFinishReason(finishReason) : undefined,
+          finishReason: finishReason
+            ? this.mapFinishReason(finishReason)
+            : undefined,
         };
       }
     } catch (error) {

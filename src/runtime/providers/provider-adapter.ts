@@ -52,7 +52,10 @@ export class ProviderAdapter implements AIProvider {
     this.provider.getModels().then((modelList) => {
       modelList.forEach((model) => {
         models.push(model.id);
-        maxContextWindow = Math.max(maxContextWindow, model.capabilities.maxContextTokens);
+        maxContextWindow = Math.max(
+          maxContextWindow,
+          model.capabilities.maxContextTokens
+        );
         maxTokens = Math.max(maxTokens, model.capabilities.maxOutputTokens);
       });
     });
@@ -67,7 +70,9 @@ export class ProviderAdapter implements AIProvider {
     };
   }
 
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     // Convert runtime GenerationRequest to provider CompletionRequest
     const completionRequest = this.convertToCompletionRequest(request);
 
@@ -78,7 +83,9 @@ export class ProviderAdapter implements AIProvider {
     return this.convertToGenerationResponse(response);
   }
 
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     // Convert runtime GenerationRequest to provider CompletionRequest
     const completionRequest = this.convertToCompletionRequest(request);
 
@@ -98,7 +105,9 @@ export class ProviderAdapter implements AIProvider {
   /**
    * Convert runtime GenerationRequest to provider CompletionRequest
    */
-  private convertToCompletionRequest(request: GenerationRequest): CompletionRequest {
+  private convertToCompletionRequest(
+    request: GenerationRequest
+  ): CompletionRequest {
     // Build messages array from prompt and history
     const messages: NewMessage[] = [];
 
@@ -130,7 +139,9 @@ export class ProviderAdapter implements AIProvider {
       inputSchema: {
         type: 'object' as const,
         properties: tool.parameters.properties,
-        required: tool.parameters.required ? [...tool.parameters.required] : undefined,
+        required: tool.parameters.required
+          ? [...tool.parameters.required]
+          : undefined,
       },
     }));
 
@@ -141,7 +152,9 @@ export class ProviderAdapter implements AIProvider {
       maxTokens: request.maxTokens,
       temperature: request.temperature,
       topP: request.topP,
-      stopSequences: request.stopSequences ? [...request.stopSequences] : undefined,
+      stopSequences: request.stopSequences
+        ? [...request.stopSequences]
+        : undefined,
       tools,
     };
   }
@@ -149,7 +162,9 @@ export class ProviderAdapter implements AIProvider {
   /**
    * Convert provider CompletionResponse to runtime GenerationResponse
    */
-  private convertToGenerationResponse(response: CompletionResponse): GenerationResponse {
+  private convertToGenerationResponse(
+    response: CompletionResponse
+  ): GenerationResponse {
     // Convert function call to tool calls array
     const toolCalls: ToolCall[] | undefined = response.functionCall
       ? [
@@ -177,7 +192,9 @@ export class ProviderAdapter implements AIProvider {
     return {
       content: chunk.content,
       done: chunk.done,
-      finishReason: chunk.finishReason ? this.convertFinishReason(chunk.finishReason) : undefined,
+      finishReason: chunk.finishReason
+        ? this.convertFinishReason(chunk.finishReason)
+        : undefined,
     };
   }
 

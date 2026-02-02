@@ -258,5 +258,9 @@
   // Security & Privacy
   // ============================================
   "security.workspace.trust.untrustedFiles": "prompt",
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
+  "github.copilot.chat.tools.memory.enabled": true,
+  "github.copilot.chat.alternateGeminiModelFPrompt.enabled": true,
+  "github.copilot.chat.alternateGptPrompt.enabled": true,
+  "github.copilot.chat.anthropic.thinking.budgetTokens": 4096
 }

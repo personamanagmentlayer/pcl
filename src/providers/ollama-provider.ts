@@ -86,7 +86,9 @@ export class OllamaProvider extends BaseProvider {
     };
   }
 
-  protected async doComplete(request: CompletionRequest): Promise<CompletionResponse> {
+  protected async doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse> {
     const ollamaRequest = this.convertRequest(request);
 
     const response = await this.fetch(`${this.baseUrl}/api/chat`, {
@@ -116,7 +118,9 @@ export class OllamaProvider extends BaseProvider {
     return this.convertResponse(ollamaResponse, request.model);
   }
 
-  protected async *doStream(request: CompletionRequest): AsyncIterable<StreamChunk> {
+  protected async *doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk> {
     const ollamaRequest = this.convertRequest(request);
     ollamaRequest.stream = true;
 
@@ -314,7 +318,10 @@ export class OllamaProvider extends BaseProvider {
     for (const message of request.messages) {
       messages.push({
         role: message.role === 'assistant' ? 'assistant' : 'user',
-        content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+        content:
+          typeof message.content === 'string'
+            ? message.content
+            : JSON.stringify(message.content),
       });
     }
 
@@ -370,7 +377,8 @@ export class OllamaProvider extends BaseProvider {
       usage: {
         inputTokens: response.prompt_eval_count || 0,
         outputTokens: response.eval_count || 0,
-        totalTokens: (response.prompt_eval_count || 0) + (response.eval_count || 0),
+        totalTokens:
+          (response.prompt_eval_count || 0) + (response.eval_count || 0),
       },
       model,
     };

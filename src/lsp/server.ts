@@ -6,31 +6,27 @@
  * @shebang #!/usr/bin/env node
  */
 
-import {
-  InitializeParams,
-  InitializeResult,
-  TextDocumentSyncKind,
-} from 'vscode-languageserver/node';
+import { InitializeParams, InitializeResult } from 'vscode-languageserver/node';
 
-import { createLSPConnection } from './connection';
 import { getServerCapabilities } from './capabilities';
-import { ServerConfig } from './types';
-import { DocumentManager } from './document-manager';
-import { DiagnosticsProvider } from './diagnostics';
+import { CodeActionProvider } from './code-actions';
 import { CompletionProvider } from './completion';
-import { HoverProvider } from './hover';
+import { createLSPConnection } from './connection';
 import { DefinitionProvider } from './definition';
-import { ReferencesProvider } from './references';
+import { DiagnosticsProvider } from './diagnostics';
+import { DocumentManager } from './document-manager';
 import { DocumentSymbolsProvider } from './document-symbols';
 import { FormattingProvider } from './formatting';
-import { CodeActionProvider } from './code-actions';
+import { HoverProvider } from './hover';
+import { ReferencesProvider } from './references';
 import { RenameProvider } from './rename';
+import { ServerConfig } from './types';
 
 /**
  * PCL Language Server
  */
 export class PCLLanguageServer {
-  private config: ServerConfig = {
+  private readonly config: ServerConfig = {
     trace: false,
     maxCachedDocuments: 100,
     diagnosticsDebounce: 300,
@@ -47,7 +43,7 @@ export class PCLLanguageServer {
   private readonly codeActionProvider: CodeActionProvider;
   private readonly renameProvider: RenameProvider;
 
-  constructor(private connection = createLSPConnection()) {
+  constructor(private readonly connection = createLSPConnection()) {
     this.documentManager = new DocumentManager(
       this.connection,
       this.config.maxCachedDocuments
@@ -112,22 +108,36 @@ export class PCLLanguageServer {
     this.connection.onInitialized(this.onInitialized.bind(this));
 
     // Completion
-    this.connection.onCompletion(this.completionProvider.provideCompletions.bind(this.completionProvider));
+    this.connection.onCompletion(
+      this.completionProvider.provideCompletions.bind(this.completionProvider)
+    );
 
     // Hover
-    this.connection.onHover(this.hoverProvider.provideHover.bind(this.hoverProvider));
+    this.connection.onHover(
+      this.hoverProvider.provideHover.bind(this.hoverProvider)
+    );
 
     // Definition
-    this.connection.onDefinition(this.definitionProvider.provideDefinition.bind(this.definitionProvider));
+    this.connection.onDefinition(
+      this.definitionProvider.provideDefinition.bind(this.definitionProvider)
+    );
 
     // References
-    this.connection.onReferences(this.referencesProvider.provideReferences.bind(this.referencesProvider));
+    this.connection.onReferences(
+      this.referencesProvider.provideReferences.bind(this.referencesProvider)
+    );
 
     // Document Symbols
-    this.connection.onDocumentSymbol(this.documentSymbolsProvider.provideDocumentSymbols.bind(this.documentSymbolsProvider));
+    this.connection.onDocumentSymbol(
+      this.documentSymbolsProvider.provideDocumentSymbols.bind(
+        this.documentSymbolsProvider
+      )
+    );
 
     // Formatting
-    this.connection.onDocumentFormatting(this.formattingProvider.provideFormatting.bind(this.formattingProvider));
+    this.connection.onDocumentFormatting(
+      this.formattingProvider.provideFormatting.bind(this.formattingProvider)
+    );
 
     // Code Actions
     this.connection.onCodeAction(async (params) => {
@@ -136,21 +146,30 @@ export class PCLLanguageServer {
 
     // Prepare Rename
     this.connection.onPrepareRename(async (params) => {
-      const document = this.documentManager.getDocument(params.textDocument.uri);
+      const document = this.documentManager.getDocument(
+        params.textDocument.uri
+      );
       if (!document) return null;
       return this.renameProvider.prepareRename(params, document.getText());
     });
 
     // Rename
     this.connection.onRenameRequest(async (params) => {
-      const document = this.documentManager.getDocument(params.textDocument.uri);
+      const document = this.documentManager.getDocument(
+        params.textDocument.uri
+      );
       if (!document) return null;
 
       // Get all workspace files (simplified - would use workspace folders in real implementation)
       const workspaceFiles = new Map<string, string>();
-      // TODO: Populate with actual workspace files
+      // NOTE: Workspace file enumeration not yet implemented
+      // Future: Use workspace folders API to gather all PCL files
 
-      return this.renameProvider.rename(params, document.getText(), workspaceFiles);
+      return this.renameProvider.rename(
+        params,
+        document.getText(),
+        workspaceFiles
+      );
     });
 
     // Shutdown
@@ -196,7 +215,9 @@ export class PCLLanguageServer {
    * Handle initialized notification
    */
   private onInitialized(): void {
-    this.connection.console.info('PCL Language Server initialized successfully');
+    this.connection.console.info(
+      'PCL Language Server initialized successfully'
+    );
 
     // Log cache configuration
     const stats = this.documentManager.getCacheStats();

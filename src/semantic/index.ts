@@ -11,7 +11,7 @@
 
 import * as AST from '../ast';
 import type { ComparisonOp, PCLError, Result, Span } from '../types';
-import { ErrorCode, Ok, Err, PCLError as createError } from '../types';
+import { ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPE SYSTEM
@@ -500,6 +500,7 @@ export class PersonaType implements Type {
     if (other instanceof AnyType) return true;
     if (other instanceof PersonaType) {
       // Check if this extends other
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
       let current: PersonaType | undefined = this;
       while (current) {
         if (current.name === other.name) return true;
@@ -524,7 +525,7 @@ export class TeamType implements Type {
 
   constructor(
     readonly name: string,
-    readonly members: readonly PersonaType[],
+    readonly members: readonly (PersonaType | TeamType)[],
     readonly primary?: PersonaType
   ) {}
 
@@ -739,7 +740,8 @@ export const Types = {
       exprConstraints,
       methods
     ),
-  team: (name: string, members: PersonaType[]) => new TeamType(name, members),
+  team: (name: string, members: (PersonaType | TeamType)[]) =>
+    new TeamType(name, members),
   workflow: (name: string, input: Type, output: Type) =>
     new WorkflowType(name, input, output),
   skill: (name: string, items: string[]) => new SkillType(name, items),
@@ -1119,14 +1121,14 @@ export class SemanticAnalyzer {
     // Second pass: resolve types and check
     this.checkProgram(program);
 
-    // Third pass: validate exports
+    // Third pass: detect circular team references (must be after all teams are checked)
+    this.detectAllCircularReferences(program);
+
+    // Fourth pass: validate exports
     this.validateExports();
 
-    // Return error result if there are any errors
-    if (this.errors.length > 0) {
-      return Err(this.errors);
-    }
-
+    // Always return Ok with errors and warnings arrays
+    // The caller can decide whether to treat errors as fatal
     return Ok({
       symbols: this.symbolTable,
       errors: this.errors,
@@ -1284,7 +1286,7 @@ export class SemanticAnalyzer {
     }
 
     // Collect members
-    const members: PersonaType[] = [];
+    const members: (PersonaType | TeamType)[] = [];
     let primary: PersonaType | undefined;
 
     for (const member of decl.body.members) {
@@ -1293,7 +1295,10 @@ export class SemanticAnalyzer {
         for (const ref of membersDecl.members) {
           const personaName = this.getPersonaRefName(ref);
           const symbol = this.currentScope.lookup(personaName);
-          if (symbol?.type instanceof PersonaType) {
+          if (
+            symbol?.type instanceof PersonaType ||
+            symbol?.type instanceof TeamType
+          ) {
             members.push(symbol.type);
           }
         }
@@ -1988,7 +1993,10 @@ export class SemanticAnalyzer {
               ErrorCode.TYPE_UNKNOWN,
               `Define the persona '${personaName}' before using it in the team, or check for typos`
             );
-          } else if (!(persona.type instanceof PersonaType) && !(persona.type instanceof TeamType)) {
+          } else if (
+            !(persona.type instanceof PersonaType) &&
+            !(persona.type instanceof TeamType)
+          ) {
             this.error(
               `${personaName} is not a persona or team`,
               ref.span,
@@ -2036,8 +2044,8 @@ export class SemanticAnalyzer {
       this.validateTeamConflict(conflictDecl, memberList, decl.span);
     }
 
-    // Phase 1.0A: Circular reference detection
-    this.detectCircularTeamReferences(decl.id.name, new Set(), decl.span);
+    // Note: Circular reference detection is done in a separate pass
+    // after all teams are collected (see detectAllCircularReferences)
   }
 
   /**
@@ -2137,20 +2145,53 @@ export class SemanticAnalyzer {
     const teamSymbol = this.currentScope.lookup(teamName);
 
     if (!teamSymbol || !(teamSymbol.type instanceof TeamType)) {
+      visited.delete(teamName);
+      return false;
+    }
+
+    // Get the AST declaration to check all member names (including forward references)
+    const teamDecl = teamSymbol.declaration as AST.TeamDeclaration | undefined;
+    if (!teamDecl) {
+      visited.delete(teamName);
       return false;
     }
 
     // Check if any team members are themselves teams
-    for (const member of teamSymbol.type.members) {
-      const memberSymbol = this.currentScope.lookup(member.name);
-      if (memberSymbol?.type instanceof TeamType) {
-        if (this.detectCircularTeamReferences(member.name, new Set(visited), span)) {
-          return true;
+    for (const member of teamDecl.body.members) {
+      if (member.kind === 'TeamMembersDeclaration') {
+        const membersDecl = member as AST.TeamMembersDeclaration;
+        for (const ref of membersDecl.members) {
+          const memberName = this.getPersonaRefName(ref);
+          const memberSymbol = this.currentScope.lookup(memberName);
+
+          // Only check if the member is a team (not a persona)
+          if (memberSymbol?.type instanceof TeamType) {
+            if (this.detectCircularTeamReferences(memberName, visited, span)) {
+              return true;
+            }
+          }
         }
       }
     }
 
+    visited.delete(teamName); // Backtrack for other paths
     return false;
+  }
+
+  /**
+   * Phase 1.0A: Detect circular references in all teams (separate pass)
+   */
+  private detectAllCircularReferences(program: AST.Program): void {
+    for (const stmt of program.statements) {
+      if (stmt.kind === 'TeamDeclaration') {
+        const teamDecl = stmt as AST.TeamDeclaration;
+        this.detectCircularTeamReferences(
+          teamDecl.id.name,
+          new Set(),
+          teamDecl.span
+        );
+      }
+    }
   }
 
   private checkWorkflow(decl: AST.WorkflowDeclaration): void {
@@ -2283,7 +2324,7 @@ export class SemanticAnalyzer {
         if (loop.condition) this.checkExpression(loop.condition);
         break;
       }
-      case 'WorkflowPersonaRef':
+      case 'WorkflowPersonaRef': {
         const personaName = this.getPersonaRefName(
           (expr as AST.WorkflowPersonaRef).ref
         );
@@ -2297,6 +2338,7 @@ export class SemanticAnalyzer {
           this.error(`${personaName} is not a persona or team`, expr.span);
         }
         break;
+      }
     }
   }
 
@@ -2630,13 +2672,14 @@ export class SemanticAnalyzer {
           BuiltinTypes.String
         );
 
-      case 'NumberLiteral':
+      case 'NumberLiteral': {
         const num = expr as AST.NumberLiteral;
         const isInt = Number.isInteger(num.value);
         return new LiteralType(
           num.value,
           isInt ? BuiltinTypes.Int : BuiltinTypes.Float
         );
+      }
 
       case 'BooleanLiteral':
         return new LiteralType(
@@ -2734,12 +2777,28 @@ export class SemanticAnalyzer {
         ) {
           return BuiltinTypes.String;
         }
+        // Return Int if both operands are Int, otherwise Float
+        if (
+          leftType.isAssignableTo(BuiltinTypes.Int) &&
+          rightType.isAssignableTo(BuiltinTypes.Int)
+        ) {
+          return BuiltinTypes.Int;
+        }
         return BuiltinTypes.Float;
       case '-':
       case '*':
-      case '/':
       case '%':
       case '**':
+        // Return Int if both operands are Int, otherwise Float
+        if (
+          leftType.isAssignableTo(BuiltinTypes.Int) &&
+          rightType.isAssignableTo(BuiltinTypes.Int)
+        ) {
+          return BuiltinTypes.Int;
+        }
+        return BuiltinTypes.Float;
+      case '/':
+        // Division always returns Float
         return BuiltinTypes.Float;
 
       // Comparison
@@ -3089,17 +3148,19 @@ export class SemanticAnalyzer {
       case 'TypeReference':
         return this.resolveTypeReference(node as AST.TypeReference);
 
-      case 'UnionType':
+      case 'UnionType': {
         const unionTypes = (node as AST.UnionType).types.map((t) =>
           this.resolveTypeNode(t)
         );
         return UnionType.create(unionTypes);
+      }
 
-      case 'IntersectionType':
+      case 'IntersectionType': {
         const intersectionTypes = (node as AST.IntersectionType).types.map(
           (t) => this.resolveTypeNode(t)
         );
         return IntersectionType.create(intersectionTypes);
+      }
 
       case 'ArrayType':
         return new ArrayType(
@@ -3111,7 +3172,7 @@ export class SemanticAnalyzer {
           (node as AST.TupleType).elements.map((e) => this.resolveTypeNode(e))
         );
 
-      case 'FunctionType':
+      case 'FunctionType': {
         const funcNode = node as AST.FunctionType;
         const params: FunctionParameter[] = funcNode.parameters.map((p) => ({
           name: p.name && p.name.kind === 'Identifier' ? p.name.name : '',
@@ -3123,8 +3184,9 @@ export class SemanticAnalyzer {
           params,
           this.resolveTypeNode(funcNode.returnType)
         );
+      }
 
-      case 'ObjectType':
+      case 'ObjectType': {
         const members = new Map<string, ObjectTypeMember>();
         for (const member of (node as AST.ObjectType).members) {
           if (member.kind === 'PropertySignature') {
@@ -3144,8 +3206,9 @@ export class SemanticAnalyzer {
           }
         }
         return new ObjectType(members);
+      }
 
-      case 'LiteralType':
+      case 'LiteralType': {
         const lit = node as AST.LiteralType;
         if (lit.literal.kind === 'StringLiteral') {
           return new LiteralType(lit.literal.value, BuiltinTypes.String);
@@ -3155,6 +3218,7 @@ export class SemanticAnalyzer {
           return new LiteralType(lit.literal.value, BuiltinTypes.Bool);
         }
         return BuiltinTypes.Any;
+      }
 
       case 'ParenthesizedType':
         return this.resolveTypeNode((node as AST.ParenthesizedType).type);
@@ -3482,19 +3546,21 @@ export class SemanticAnalyzer {
    */
   private applyTypeNarrowing(expr: AST.Expression, truthy: boolean): void {
     switch (expr.kind) {
-      case 'BinaryExpression':
+      case 'BinaryExpression': {
         const binExpr = expr as AST.BinaryExpression;
         this.narrowTypeByTypeofCheck(binExpr, truthy);
         this.narrowTypeByNullCheck(binExpr, truthy);
         break;
+      }
 
-      case 'UnaryExpression':
+      case 'UnaryExpression': {
         // Handle negation - flip truthiness
         const unExpr = expr as AST.UnaryExpression;
         if (unExpr.operator === '!') {
           this.applyTypeNarrowing(unExpr.argument, !truthy);
         }
         break;
+      }
 
       // Could add more narrowing patterns here:
       // - Identifier (truthiness narrowing)

@@ -73,7 +73,9 @@ export class OllamaProvider implements AIProvider {
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     const model = request.model || this.config.defaultModel || 'llama2';
 
     // Build messages array
@@ -123,7 +125,9 @@ export class OllamaProvider implements AIProvider {
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     const model = request.model || this.config.defaultModel || 'llama2';
 
     // Build messages array
@@ -149,7 +153,9 @@ export class OllamaProvider implements AIProvider {
         yield {
           content,
           done,
-          finishReason: done ? this.mapFinishReason(chunk.done_reason) : undefined,
+          finishReason: done
+            ? this.mapFinishReason(chunk.done_reason)
+            : undefined,
         };
       }
     } catch (error) {
@@ -234,7 +240,9 @@ export class OllamaProvider implements AIProvider {
       const response = await this.client.list();
       return response.models.map((m) => m.name);
     } catch (error) {
-      throw new Error(`Failed to list Ollama models: ${(error as Error).message}`);
+      throw new Error(
+        `Failed to list Ollama models: ${(error as Error).message}`
+      );
     }
   }
 
@@ -245,7 +253,9 @@ export class OllamaProvider implements AIProvider {
     try {
       await this.client.pull({ model, stream: false });
     } catch (error) {
-      throw new Error(`Failed to pull Ollama model '${model}': ${(error as Error).message}`);
+      throw new Error(
+        `Failed to pull Ollama model '${model}': ${(error as Error).message}`
+      );
     }
   }
 

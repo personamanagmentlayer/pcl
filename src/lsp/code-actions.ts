@@ -120,18 +120,22 @@ export class CodeActionProvider {
     const ast = parseResult.value.program;
 
     // Extract to persona/skill/workflow
-    refactorings.push(this.createExtractRefactoring(context, ast));
+    const extract = this.createExtractRefactoring(context, ast);
+    if (extract) refactorings.push(extract);
 
     // Inline persona/skill
-    refactorings.push(this.createInlineRefactoring(context, ast));
+    const inline = this.createInlineRefactoring(context, ast);
+    if (inline) refactorings.push(inline);
 
     // Convert between persona types
-    refactorings.push(this.createConvertTypeRefactoring(context, ast));
+    const convert = this.createConvertTypeRefactoring(context, ast);
+    if (convert) refactorings.push(convert);
 
     // Simplify workflow
-    refactorings.push(this.createSimplifyWorkflowRefactoring(context, ast));
+    const simplify = this.createSimplifyWorkflowRefactoring(context, ast);
+    if (simplify) refactorings.push(simplify);
 
-    return refactorings.filter((r) => r !== null) as CodeAction[];
+    return refactorings;
   }
 
   /**
@@ -162,7 +166,10 @@ export class CodeActionProvider {
   /**
    * Fix undefined persona reference
    */
-  private createPersonaFix(diagnostic: Diagnostic, context: CodeActionContext): CodeAction {
+  private createPersonaFix(
+    diagnostic: Diagnostic,
+    context: CodeActionContext
+  ): CodeAction {
     const personaName = this.extractName(diagnostic.message);
 
     return {
@@ -173,7 +180,10 @@ export class CodeActionProvider {
         changes: {
           [context.uri]: [
             {
-              range: { start: { line: 0, character: 0 }, end: { line: 0, character: 0 } },
+              range: {
+                start: { line: 0, character: 0 },
+                end: { line: 0, character: 0 },
+              },
               newText: `persona ${personaName} {\n  instructions: "TODO: Add instructions"\n}\n\n`,
             },
           ],
@@ -185,7 +195,10 @@ export class CodeActionProvider {
   /**
    * Fix missing required field
    */
-  private createMissingFieldFix(diagnostic: Diagnostic, context: CodeActionContext): CodeAction {
+  private createMissingFieldFix(
+    diagnostic: Diagnostic,
+    context: CodeActionContext
+  ): CodeAction {
     const fieldName = this.extractFieldName(diagnostic.message);
     const line = diagnostic.range.end.line;
 
@@ -197,7 +210,10 @@ export class CodeActionProvider {
         changes: {
           [context.uri]: [
             {
-              range: { start: { line, character: 0 }, end: { line, character: 0 } },
+              range: {
+                start: { line, character: 0 },
+                end: { line, character: 0 },
+              },
               newText: `  ${fieldName}: TODO\n`,
             },
           ],
@@ -209,7 +225,10 @@ export class CodeActionProvider {
   /**
    * Fix type mismatch
    */
-  private createTypeFix(diagnostic: Diagnostic, context: CodeActionContext): CodeAction {
+  private createTypeFix(
+    diagnostic: Diagnostic,
+    context: CodeActionContext
+  ): CodeAction {
     return {
       title: 'Convert to correct type',
       kind: 'quickfix' as CodeActionKind,
@@ -230,7 +249,10 @@ export class CodeActionProvider {
   /**
    * Remove unused declaration
    */
-  private createRemoveUnusedFix(diagnostic: Diagnostic, context: CodeActionContext): CodeAction {
+  private createRemoveUnusedFix(
+    diagnostic: Diagnostic,
+    context: CodeActionContext
+  ): CodeAction {
     return {
       title: 'Remove unused declaration',
       kind: 'quickfix' as CodeActionKind,
@@ -251,7 +273,10 @@ export class CodeActionProvider {
   /**
    * Fix import not found
    */
-  private createImportFix(diagnostic: Diagnostic, context: CodeActionContext): CodeAction {
+  private createImportFix(
+    diagnostic: Diagnostic,
+    context: CodeActionContext
+  ): CodeAction {
     const moduleName = this.extractModuleName(diagnostic.message);
 
     return {
@@ -273,7 +298,10 @@ export class CodeActionProvider {
   /**
    * Extract selected code to new persona/skill/workflow
    */
-  private createExtractRefactoring(context: CodeActionContext, ast: AST.Program): CodeAction | null {
+  private createExtractRefactoring(
+    context: CodeActionContext,
+    ast: AST.Program
+  ): CodeAction | null {
     // Check if selection is extractable
     const selectedNode = this.getNodeAtRange(ast, context.range);
     if (!selectedNode) {
@@ -290,7 +318,10 @@ export class CodeActionProvider {
   /**
    * Inline persona/skill reference
    */
-  private createInlineRefactoring(context: CodeActionContext, ast: AST.Program): CodeAction | null {
+  private createInlineRefactoring(
+    context: CodeActionContext,
+    ast: AST.Program
+  ): CodeAction | null {
     const selectedNode = this.getNodeAtRange(ast, context.range);
     if (!selectedNode || selectedNode.kind !== 'Identifier') {
       return null;
@@ -306,9 +337,15 @@ export class CodeActionProvider {
   /**
    * Convert between persona types (persona ↔ team)
    */
-  private createConvertTypeRefactoring(context: CodeActionContext, ast: AST.Program): CodeAction | null {
+  private createConvertTypeRefactoring(
+    context: CodeActionContext,
+    ast: AST.Program
+  ): CodeAction | null {
     const selectedNode = this.getNodeAtRange(ast, context.range);
-    if (!selectedNode || (selectedNode.kind !== 'PersonaDecl' && selectedNode.kind !== 'TeamDecl')) {
+    if (
+      !selectedNode ||
+      (selectedNode.kind !== 'PersonaDecl' && selectedNode.kind !== 'TeamDecl')
+    ) {
       return null;
     }
 
@@ -336,7 +373,10 @@ export class CodeActionProvider {
     return {
       title: 'Simplify workflow',
       kind: 'refactor.rewrite' as CodeActionKind,
-      edit: this.buildSimplifyWorkflowEdit(selectedNode as AST.WorkflowDeclaration, context),
+      edit: this.buildSimplifyWorkflowEdit(
+        selectedNode as AST.WorkflowDeclaration,
+        context
+      ),
     };
   }
 
@@ -383,7 +423,9 @@ export class CodeActionProvider {
   /**
    * Add missing imports automatically
    */
-  private createAddMissingImportsAction(context: CodeActionContext): CodeAction {
+  private createAddMissingImportsAction(
+    context: CodeActionContext
+  ): CodeAction {
     return {
       title: 'Add missing imports',
       kind: 'source' as CodeActionKind,
@@ -422,7 +464,10 @@ export class CodeActionProvider {
   /**
    * Infer correct type from context
    */
-  private inferCorrectType(diagnostic: Diagnostic, context: CodeActionContext): string {
+  private inferCorrectType(
+    diagnostic: Diagnostic,
+    context: CodeActionContext
+  ): string {
     // Simple inference - in real implementation would analyze expected vs actual types
     return '/* TODO: Fix type */';
   }
@@ -430,7 +475,10 @@ export class CodeActionProvider {
   /**
    * Get full declaration range for removal
    */
-  private getDeclarationRange(diagnostic: Diagnostic, context: CodeActionContext): Range {
+  private getDeclarationRange(
+    diagnostic: Diagnostic,
+    context: CodeActionContext
+  ): Range {
     // Extend range to include entire declaration line(s)
     return {
       start: { line: diagnostic.range.start.line, character: 0 },
@@ -467,7 +515,10 @@ export class CodeActionProvider {
   /**
    * Build edit for extract refactoring
    */
-  private buildExtractEdit(node: AST.ASTNode, context: CodeActionContext): WorkspaceEdit {
+  private buildExtractEdit(
+    node: AST.ASTNode,
+    context: CodeActionContext
+  ): WorkspaceEdit {
     // Extract code to new declaration
     const extracted = this.extractNodeText(node, context.source);
     const name = this.generateUniqueName('Extracted', context);
@@ -477,7 +528,10 @@ export class CodeActionProvider {
         [context.uri]: [
           // Add new declaration at top
           {
-            range: { start: { line: 0, character: 0 }, end: { line: 0, character: 0 } },
+            range: {
+              start: { line: 0, character: 0 },
+              end: { line: 0, character: 0 },
+            },
             newText: `persona ${name} {\n  ${extracted}\n}\n\n`,
           },
           // Replace original with reference
@@ -530,7 +584,10 @@ export class CodeActionProvider {
   /**
    * Build edit for workflow simplification
    */
-  private buildSimplifyWorkflowEdit(node: AST.WorkflowDeclaration, context: CodeActionContext): WorkspaceEdit {
+  private buildSimplifyWorkflowEdit(
+    node: AST.WorkflowDeclaration,
+    context: CodeActionContext
+  ): WorkspaceEdit {
     return {
       changes: {
         [context.uri]: [
@@ -577,14 +634,19 @@ export class CodeActionProvider {
   /**
    * Build edit for adding missing imports
    */
-  private buildAddMissingImportsEdit(context: CodeActionContext): WorkspaceEdit {
+  private buildAddMissingImportsEdit(
+    context: CodeActionContext
+  ): WorkspaceEdit {
     const missingImports = this.findMissingImports(context);
 
     return {
       changes: {
         [context.uri]: [
           {
-            range: { start: { line: 0, character: 0 }, end: { line: 0, character: 0 } },
+            range: {
+              start: { line: 0, character: 0 },
+              end: { line: 0, character: 0 },
+            },
             newText: missingImports.map((imp) => `import "${imp}";\n`).join(''),
           },
         ],
@@ -631,7 +693,11 @@ export class CodeActionProvider {
   /**
    * Convert node type
    */
-  private convertNodeType(node: AST.ASTNode, targetType: string, source: string): string {
+  private convertNodeType(
+    node: AST.ASTNode,
+    targetType: string,
+    source: string
+  ): string {
     const content = this.extractNodeText(node, source);
     // Simple conversion - real implementation would transform AST
     return content.replace(/^(persona|team)/, targetType);
@@ -640,7 +706,10 @@ export class CodeActionProvider {
   /**
    * Simplify workflow
    */
-  private simplifyWorkflow(node: AST.WorkflowDeclaration, source: string): string {
+  private simplifyWorkflow(
+    node: AST.WorkflowDeclaration,
+    source: string
+  ): string {
     // Analyze and simplify workflow steps
     return this.extractNodeText(node, source);
   }
@@ -674,7 +743,9 @@ export class CodeActionProvider {
     const stdlib = unique.filter((imp) => imp.startsWith('stdlib/'));
     const custom = unique.filter((imp) => !imp.startsWith('stdlib/'));
 
-    const organized = [...stdlib, ...custom].map((imp) => `import "${imp}";\n`).join('');
+    const organized = [...stdlib, ...custom]
+      .map((imp) => `import "${imp}";\n`)
+      .join('');
 
     return organized + (organized ? '\n' : '');
   }

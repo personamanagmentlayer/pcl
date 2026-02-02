@@ -2,7 +2,6 @@
  * Multi-Layer Cache Tests - Phase 1.2C
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { MultiLayerCache } from '../../../src/registry/cache/multi-layer-cache';
 import { MemoryCache } from '../../../src/registry/cache/memory-cache';
 

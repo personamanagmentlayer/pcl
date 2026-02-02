@@ -3,7 +3,6 @@
 // Tests with real Anthropic API (requires ANTHROPIC_API_KEY)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { AnthropicProvider } from '../../src/runtime/providers/anthropic';
 import type { GenerationRequest, Tool } from '../../src/runtime/providers/index';
 

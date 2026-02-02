@@ -89,7 +89,7 @@ const GOOGLE_MODELS: ModelInfo[] = [
       chatHistory: true,
     },
     inputTokenCost: 0.075 / 1000000, // $0.075 per million (128K and below)
-    outputTokenCost: 0.30 / 1000000, // $0.30 per million
+    outputTokenCost: 0.3 / 1000000, // $0.30 per million
     version: '1.5',
   },
 ];
@@ -146,7 +146,9 @@ export class GoogleProvider extends BaseProvider {
     };
   }
 
-  protected async doComplete(request: CompletionRequest): Promise<CompletionResponse> {
+  protected async doComplete(
+    request: CompletionRequest
+  ): Promise<CompletionResponse> {
     const googleRequest = this.convertRequest(request);
 
     const response = await this.fetch(
@@ -181,7 +183,9 @@ export class GoogleProvider extends BaseProvider {
     return this.convertResponse(googleResponse, request.model);
   }
 
-  protected async *doStream(request: CompletionRequest): AsyncIterable<StreamChunk> {
+  protected async *doStream(
+    request: CompletionRequest
+  ): AsyncIterable<StreamChunk> {
     const googleRequest = this.convertRequest(request);
 
     const response = await this.fetch(
@@ -259,7 +263,9 @@ export class GoogleProvider extends BaseProvider {
                 yield {
                   content: '',
                   done: true,
-                  finishReason: this.convertFinishReason(candidate.finishReason),
+                  finishReason: this.convertFinishReason(
+                    candidate.finishReason
+                  ),
                   usage: totalTokens
                     ? {
                         inputTokens: 0, // Google doesn't split in stream
@@ -308,7 +314,10 @@ export class GoogleProvider extends BaseProvider {
       }
 
       const role = message.role === 'assistant' ? 'model' : 'user';
-      const text = typeof message.content === 'string' ? message.content : JSON.stringify(message.content);
+      const text =
+        typeof message.content === 'string'
+          ? message.content
+          : JSON.stringify(message.content);
 
       contents.push({
         role,

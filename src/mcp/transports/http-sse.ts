@@ -66,7 +66,9 @@ export class HttpSseTransport implements McpTransport {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `HTTP error: ${response.status} ${response.statusText}`
+        );
       }
 
       // Parse response

@@ -63,7 +63,8 @@ export class MockProvider implements AIProvider {
       delay: config.delay ?? 0,
       simulateErrors: config.simulateErrors ?? false,
       errorRate: config.errorRate ?? 0.1,
-      defaultResponse: config.defaultResponse ?? 'Mock response: I understand your request.',
+      defaultResponse:
+        config.defaultResponse ?? 'Mock response: I understand your request.',
       enableStreaming: config.enableStreaming ?? true,
       chunkSize: config.chunkSize ?? 10,
     };
@@ -72,7 +73,9 @@ export class MockProvider implements AIProvider {
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     // Simulate delay
     if (this.config.delay > 0) {
       await this.sleep(this.config.delay);
@@ -108,7 +111,9 @@ export class MockProvider implements AIProvider {
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     if (!this.config.enableStreaming) {
       const response = await this.generateResponse(request);
       yield {
@@ -156,7 +161,10 @@ export class MockProvider implements AIProvider {
   private getNextResponse(request: GenerationRequest): string {
     // Use predefined responses in sequence
     if (this.config.responses.length > 0) {
-      const response = this.config.responses[this.responseIndex % this.config.responses.length];
+      const response =
+        this.config.responses[
+          this.responseIndex % this.config.responses.length
+        ];
       this.responseIndex++;
       return response;
     }
@@ -169,7 +177,9 @@ export class MockProvider implements AIProvider {
     const parts: string[] = [];
 
     if (request.systemPrompt) {
-      parts.push(`[Following instructions: ${request.systemPrompt.slice(0, 50)}...]`);
+      parts.push(
+        `[Following instructions: ${request.systemPrompt.slice(0, 50)}...]`
+      );
     }
 
     parts.push(`Mock response to: "${request.prompt.slice(0, 100)}..."`);

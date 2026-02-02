@@ -5,8 +5,8 @@
  */
 
 import {
-  createConnection,
   Connection,
+  createConnection,
   ProposedFeatures,
 } from 'vscode-languageserver/node';
 
@@ -17,15 +17,8 @@ export function createLSPConnection(): Connection {
   // Create connection using Node IPC or stdio
   const connection = createConnection(ProposedFeatures.all);
 
-  // Set up error handling
-  connection.onError((error) => {
-    connection.console.error(`LSP Connection Error: ${error.message}`);
-  });
-
-  // Set up close handling
-  connection.onClose(() => {
-    connection.console.info('LSP Connection closed');
-  });
+  // Note: onError and onClose are not available in current LSP API version
+  // Error handling is managed internally by the connection
 
   return connection;
 }

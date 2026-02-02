@@ -71,9 +71,14 @@ export class SemverManager {
 
   /**
    * Validate semantic version format
+   * Strict validation - version must be in exact semver format (e.g., 1.0.0)
+   * Use parse() to coerce partial versions like '1.0' to '1.0.0'
    */
   isValid(version: string): boolean {
-    return semver.valid(version) !== null;
+    // Use valid() with strict option - no coercion
+    const validated = semver.valid(version);
+    // Also reject versions with leading 'v'
+    return validated !== null && !version.startsWith('v');
   }
 
   /**
@@ -351,7 +356,9 @@ export class SemverManager {
     }
 
     // Verify target version exists
-    const targetInfo = history.versions.find((v) => v.version === targetVersion);
+    const targetInfo = history.versions.find(
+      (v) => v.version === targetVersion
+    );
     if (!targetInfo) {
       throw new Error(`Version ${targetVersion} not found for ${artifactId}`);
     }
@@ -387,7 +394,10 @@ export class SemverManager {
   /**
    * Get breaking changes since version
    */
-  getBreakingChangesSince(artifactId: string, sinceVersion: string): VersionInfo[] {
+  getBreakingChangesSince(
+    artifactId: string,
+    sinceVersion: string
+  ): VersionInfo[] {
     const history = this.history.get(artifactId);
     if (!history) return [];
 
@@ -399,8 +409,15 @@ export class SemverManager {
   /**
    * Check if upgrade would introduce breaking changes
    */
-  hasBreakingChanges(artifactId: string, fromVersion: string, toVersion: string): boolean {
-    const breakingChanges = this.getBreakingChangesSince(artifactId, fromVersion);
+  hasBreakingChanges(
+    artifactId: string,
+    fromVersion: string,
+    toVersion: string
+  ): boolean {
+    const breakingChanges = this.getBreakingChangesSince(
+      artifactId,
+      fromVersion
+    );
     return breakingChanges.some((v) => this.compare(v.version, toVersion) <= 0);
   }
 

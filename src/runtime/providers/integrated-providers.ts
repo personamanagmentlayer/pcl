@@ -65,14 +65,18 @@ export async function registerAnthropicProvider(
 /**
  * Register OpenAI provider
  */
-export async function registerOpenAIProvider(config: RuntimeProviderConfig): Promise<AIProvider> {
+export async function registerOpenAIProvider(
+  config: RuntimeProviderConfig
+): Promise<AIProvider> {
   return registerProvider('openai', NewOpenAIProvider, config);
 }
 
 /**
  * Register Google provider
  */
-export async function registerGoogleProvider(config: RuntimeProviderConfig): Promise<AIProvider> {
+export async function registerGoogleProvider(
+  config: RuntimeProviderConfig
+): Promise<AIProvider> {
   return registerProvider('google', NewGoogleProvider, config);
 }
 
@@ -88,28 +92,36 @@ export async function registerDeepSeekProvider(
 /**
  * Register Ollama provider
  */
-export async function registerOllamaProvider(config: RuntimeProviderConfig): Promise<AIProvider> {
+export async function registerOllamaProvider(
+  config: RuntimeProviderConfig
+): Promise<AIProvider> {
   return registerProvider('ollama', NewOllamaProvider, config);
 }
 
 /**
  * Register Mistral AI provider
  */
-export async function registerMistralProvider(config: RuntimeProviderConfig): Promise<AIProvider> {
+export async function registerMistralProvider(
+  config: RuntimeProviderConfig
+): Promise<AIProvider> {
   return registerProvider('mistral', NewMistralProvider, config);
 }
 
 /**
  * Register Groq provider
  */
-export async function registerGroqProvider(config: RuntimeProviderConfig): Promise<AIProvider> {
+export async function registerGroqProvider(
+  config: RuntimeProviderConfig
+): Promise<AIProvider> {
   return registerProvider('groq', NewGroqProvider, config);
 }
 
 /**
  * Register Cohere provider
  */
-export async function registerCohereProvider(config: RuntimeProviderConfig): Promise<AIProvider> {
+export async function registerCohereProvider(
+  config: RuntimeProviderConfig
+): Promise<AIProvider> {
   return registerProvider('cohere', NewCohereProvider, config);
 }
 

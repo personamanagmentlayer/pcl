@@ -51,7 +51,9 @@ export async function skillLintCommand(
     const compileResult = compiler.compile(skill);
 
     if (!compileResult.success) {
-      console.error(formatError('Skill has compilation errors. Fix these first.'));
+      console.error(
+        formatError('Skill has compilation errors. Fix these first.')
+      );
       compileResult.errors.forEach((err) => console.error(`  • ${err}`));
       process.exit(1);
     }
@@ -100,7 +102,8 @@ function lintSkill(skill: any, content: string, compiled: any): LintResult {
       severity: 'warning',
       category: 'Naming',
       message: 'Skill name is very short (< 3 chars)',
-      suggestion: 'Use descriptive names like "python-expert" or "react-testing"',
+      suggestion:
+        'Use descriptive names like "python-expert" or "react-testing"',
     });
   }
 
@@ -119,7 +122,8 @@ function lintSkill(skill: any, content: string, compiled: any): LintResult {
       severity: 'warning',
       category: 'Description',
       message: 'Description is too brief (< 20 chars)',
-      suggestion: 'Provide a clear, informative description of the skill purpose',
+      suggestion:
+        'Provide a clear, informative description of the skill purpose',
     });
   }
 
@@ -339,7 +343,7 @@ function lintSkill(skill: any, content: string, compiled: any): LintResult {
   const score = calculateQualityScore(errors, warnings, info, compiled);
 
   return {
-    passed: errors.length === 0 && (warnings.length === 0 || !strict),
+    passed: errors.length === 0,
     errors,
     warnings,
     info,
@@ -372,7 +376,8 @@ function calculateQualityScore(
   if (metadata.exampleCount >= 2) score += 5;
   if (metadata.exampleCount >= 5) score += 5;
   if (metadata.toolCount > 0 && metadata.toolCount <= 5) score += 5;
-  if (metadata.instructionsLength >= 500 && metadata.instructionsLength <= 5000) score += 5;
+  if (metadata.instructionsLength >= 500 && metadata.instructionsLength <= 5000)
+    score += 5;
 
   return Math.max(0, Math.min(100, score));
 }

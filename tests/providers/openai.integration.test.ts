@@ -3,7 +3,6 @@
 // Tests with real OpenAI API (requires OPENAI_API_KEY)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { OpenAIProvider } from '../../src/runtime/providers/openai';
 import type { GenerationRequest, Tool } from '../../src/runtime/providers/index';
 

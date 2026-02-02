@@ -3,7 +3,10 @@
 // Google's Gemini AI models with multimodal capabilities
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { GoogleGenerativeAI, type GenerativeModel } from '@google/generative-ai';
+import {
+  GoogleGenerativeAI,
+  type GenerativeModel,
+} from '@google/generative-ai';
 import type {
   AIProvider,
   ProviderCapabilities,
@@ -42,11 +45,7 @@ export class GeminiProvider implements AIProvider {
     vision: true, // Gemini supports multimodal input
     maxTokens: 8192,
     maxContextWindow: 1_000_000, // 1M tokens for Pro/Flash
-    models: [
-      'gemini-1.5-pro',
-      'gemini-1.5-flash',
-      'gemini-1.0-pro',
-    ],
+    models: ['gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-1.0-pro'],
   };
 
   private readonly client: GoogleGenerativeAI;
@@ -68,7 +67,9 @@ export class GeminiProvider implements AIProvider {
   /**
    * Generate a complete response
    */
-  async generateResponse(request: GenerationRequest): Promise<GenerationResponse> {
+  async generateResponse(
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
     const model = this.getModel(request.model);
 
     // Build generation config
@@ -92,7 +93,9 @@ export class GeminiProvider implements AIProvider {
       const text = response.text();
 
       // Map finish reason
-      const finishReason = this.mapFinishReason(response.candidates?.[0]?.finishReason);
+      const finishReason = this.mapFinishReason(
+        response.candidates?.[0]?.finishReason
+      );
 
       // Get token usage
       const usage = this.extractUsage(response);
@@ -114,7 +117,9 @@ export class GeminiProvider implements AIProvider {
   /**
    * Stream response chunks
    */
-  async *streamResponse(request: GenerationRequest): AsyncIterable<GenerationChunk> {
+  async *streamResponse(
+    request: GenerationRequest
+  ): AsyncIterable<GenerationChunk> {
     const model = this.getModel(request.model);
 
     // Build generation config
@@ -136,7 +141,9 @@ export class GeminiProvider implements AIProvider {
 
       for await (const chunk of result.stream) {
         const text = chunk.text();
-        const finishReason = this.mapFinishReason(chunk.candidates?.[0]?.finishReason);
+        const finishReason = this.mapFinishReason(
+          chunk.candidates?.[0]?.finishReason
+        );
 
         yield {
           content: text,
@@ -175,7 +182,8 @@ export class GeminiProvider implements AIProvider {
   }
 
   private buildContents(request: GenerationRequest) {
-    const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+    const contents: Array<{ role: string; parts: Array<{ text: string }> }> =
+      [];
 
     // Add system prompt if provided (Gemini uses system instructions)
     // Note: Gemini API doesn't have direct system message support like OpenAI

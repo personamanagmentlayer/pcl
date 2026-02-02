@@ -38,7 +38,7 @@ export class SkillDiagnosticsProvider {
 
       // Add compilation errors
       if (!result.success) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           diagnostics.push({
             severity: DiagnosticSeverity.Error,
             range: this.createFullRange(),
@@ -50,7 +50,7 @@ export class SkillDiagnosticsProvider {
 
       // Add warnings
       if (result.warnings) {
-        result.warnings.forEach(warning => {
+        result.warnings.forEach((warning) => {
           diagnostics.push({
             severity: DiagnosticSeverity.Warning,
             range: this.createFullRange(),
@@ -117,7 +117,8 @@ export class SkillDiagnosticsProvider {
         diagnostics.push({
           severity: DiagnosticSeverity.Information,
           range: this.createFullRange(),
-          message: 'No examples provided. Add at least 2-3 examples to demonstrate usage.',
+          message:
+            'No examples provided. Add at least 2-3 examples to demonstrate usage.',
           source: 'pcl-skill',
           code: 'missing-examples',
         });
@@ -128,7 +129,8 @@ export class SkillDiagnosticsProvider {
         diagnostics.push({
           severity: DiagnosticSeverity.Warning,
           range: this.createFullRange(),
-          message: 'No tools specified. Explicitly list required tools for security.',
+          message:
+            'No tools specified. Explicitly list required tools for security.',
           source: 'pcl-skill',
           code: 'missing-tools',
         });
@@ -158,7 +160,7 @@ export class SkillDiagnosticsProvider {
     try {
       // Get available skills
       const availableSkills = await this.getAvailableSkills(directory);
-      const skillNames = new Set(availableSkills.map(s => s.name));
+      const skillNames = new Set(availableSkills.map((s) => s.name));
 
       // Check each dependency
       for (const dep of dependencies) {
@@ -208,7 +210,7 @@ export class SkillDiagnosticsProvider {
     try {
       // Get available skills
       const availableSkills = await this.getAvailableSkills(directory);
-      const skillNames = new Set(availableSkills.map(s => s.name));
+      const skillNames = new Set(availableSkills.map((s) => s.name));
 
       // Check each conflict
       for (const conflict of conflicts) {
@@ -232,12 +234,14 @@ export class SkillDiagnosticsProvider {
   /**
    * Get available skills in directory
    */
-  private async getAvailableSkills(directory: string): Promise<Array<{ name: string; dependencies?: string[] }>> {
+  private async getAvailableSkills(
+    directory: string
+  ): Promise<Array<{ name: string; dependencies?: string[] }>> {
     const skills: Array<{ name: string; dependencies?: string[] }> = [];
 
     try {
       const files = await readdir(directory);
-      const mdFiles = files.filter(f => f.endsWith('.md'));
+      const mdFiles = files.filter((f) => f.endsWith('.md'));
 
       for (const file of mdFiles) {
         try {
@@ -269,14 +273,16 @@ export class SkillDiagnosticsProvider {
     availableSkills: Array<{ name: string; dependencies?: string[] }>
   ): string[] {
     // Simple check: if any dependency depends on this skill
-    const currentSkillName = availableSkills.find(s =>
-      s.name === parseSkillMd(require('fs').readFileSync(currentFile, 'utf-8')).name
+    const currentSkillName = availableSkills.find(
+      (s) =>
+        s.name ===
+        parseSkillMd(require('fs').readFileSync(currentFile, 'utf-8')).name
     )?.name;
 
     if (!currentSkillName) return [];
 
     for (const dep of dependencies) {
-      const depSkill = availableSkills.find(s => s.name === dep);
+      const depSkill = availableSkills.find((s) => s.name === dep);
       if (depSkill && depSkill.dependencies?.includes(currentSkillName)) {
         return [currentSkillName, dep, currentSkillName];
       }

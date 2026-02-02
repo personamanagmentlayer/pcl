@@ -3,10 +3,9 @@
 // Tests for health monitoring, fallback chains, rate limiting, and cost tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
+import type { GenerationRequest } from '../../src/runtime/providers/index';
 import { ProviderRegistry } from '../../src/runtime/providers/index';
 import { MockProvider } from '../../src/runtime/providers/mock';
-import type { GenerationRequest } from '../../src/runtime/providers/index';
 
 describe('ProviderRegistry Enhancements', () => {
   let registry: ProviderRegistry;
@@ -309,7 +308,7 @@ describe('ProviderRegistry Enhancements', () => {
       registry.register(mockProvider1, {
         rateLimiter: {
           maxRequests: 1,
-          windowMs: 60000,
+          windowMs: 100,
         },
       });
 
@@ -426,9 +425,14 @@ describe('ProviderRegistry Enhancements', () => {
     });
 
     test('cost tracking across multiple providers', async () => {
-      const provider2 = { ...mockProvider2, name: 'mock2' };
+      const provider2 = new MockProvider();
+      // Create a copy with different name
+      const provider2WithName = Object.create(Object.getPrototypeOf(provider2));
+      Object.assign(provider2WithName, provider2);
+      provider2WithName.name = 'mock2';
+
       registry.register(mockProvider1);
-      registry.register(provider2 as any);
+      registry.register(provider2WithName as any);
 
       const request: GenerationRequest = {
         prompt: 'Test prompt',

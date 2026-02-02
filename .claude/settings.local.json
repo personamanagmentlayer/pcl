@@ -33,7 +33,24 @@
       "Bash(python scripts/generate-skill-catalog.py:*)",
       "Bash(for dir in .roadmap/*/)",
       "Bash(xargs:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(start /B node dist/http/server.js)",
+      "Bash(timeout:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm outdated:*)",
+      "Bash(npm run:*)",
+      "Bash(gh run:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(ENABLE_BENCHMARKS=true npm test:*)",
+      "Bash(npm pack:*)",
+      "Bash(npx esbuild:*)",
+      "Bash(tee:*)",
+      "Bash(NODE_OPTIONS=\"--experimental-vm-modules\" npx vitest run:*)",
+      "Bash(findstr:*)"
     ]
   }
 }

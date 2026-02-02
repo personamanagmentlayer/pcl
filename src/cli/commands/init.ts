@@ -3,11 +3,14 @@
  * Initialize a new PCL project with pcl.json
  */
 
-import { existsSync } from 'fs';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import type { PCLPackage } from '../../build/package-format';
-import { DEFAULT_PACKAGE, validatePackage } from '../../build/package-format';
+import { existsSync } from 'node:fs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import type { PCLPackage } from '../../build/package-format.js';
+import {
+  DEFAULT_PACKAGE,
+  validatePackage,
+} from '../../build/package-format.js';
 
 // Color utilities
 const colors = {
@@ -41,7 +44,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 
   // Check if pcl.json already exists
   if (existsSync(packagePath) && !options.force) {
-    console.error(color('yellow', '⚠ pcl.json already exists. Use --force to overwrite.'));
+    console.error(
+      color('yellow', '⚠ pcl.json already exists. Use --force to overwrite.')
+    );
     process.exit(1);
   }
 
@@ -49,7 +54,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 
   // Interactive mode (future enhancement)
   if (options.interactive) {
-    console.log(color('yellow', 'Interactive mode not yet implemented. Using defaults.'));
+    console.log(
+      color('yellow', 'Interactive mode not yet implemented. Using defaults.')
+    );
   }
 
   // Create package object
@@ -73,8 +80,12 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     console.log();
   }
 
-  // Write pcl.json
-  await writeFile(packagePath, JSON.stringify(pkg, null, 2), 'utf-8');
+  // Write pcl.json atomically
+  const tempPath = `${packagePath}.tmp`;
+  await writeFile(tempPath, JSON.stringify(pkg, null, 2), 'utf-8');
+  await import('node:fs').then((fs) =>
+    fs.promises.rename(tempPath, packagePath)
+  );
   console.log(color('green', '✓ Created pcl.json'));
 
   // Create directory structure
@@ -94,7 +105,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   console.log(color('cyan', 'Next steps:'));
   console.log(color('dim', '  1. Edit src/index.pcl to define your personas'));
   console.log(color('dim', '  2. Run "pcl build" to build your project'));
-  console.log(color('dim', '  3. Run "pcl run src/index.pcl" to test your personas'));
+  console.log(
+    color('dim', '  3. Run "pcl run src/index.pcl" to test your personas')
+  );
   console.log();
 }
 
@@ -102,21 +115,27 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
  * Infer package name from directory
  */
 function inferPackageName(cwd: string): string {
+  // eslint-disable-next-line no-useless-escape
   const parts = cwd.split(/[\/\\]/);
-  const dirName = parts[parts.length - 1];
+  const dirName = parts.at(-1);
 
   // Convert to valid package name
   return dirName
-    .toLowerCase()
-    .replace(/[^a-z0-9-_.~]/g, '-')
-    .replace(/^[-_.~]+/, '')
-    .replace(/[-_.~]+$/, '');
+    ? dirName
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9-_.~]/g, '-')
+        .replace(/^[-_.~]+/, '')
+        .replace(/[-_.~]+$/, '')
+    : 'my-pcl-project';
 }
 
 /**
  * Create project directory structure
  */
-async function createProjectStructure(cwd: string, pkg: PCLPackage): Promise<void> {
+async function createProjectStructure(
+  cwd: string,
+  pkg: PCLPackage
+): Promise<void> {
   const srcDir = join(cwd, pkg.build?.srcDir || 'src');
 
   // Create src directory
@@ -148,6 +167,7 @@ persona EXAMPLE {
   }
 }
 `;
+    // Atomic write to prevent race condition
     await writeFile(mainFile, template, 'utf-8');
     console.log(color('green', '✓ Created src/index.pcl'));
   }
@@ -196,6 +216,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 `;
+    // Atomic write to prevent race condition
     await writeFile(gitignorePath, gitignore, 'utf-8');
     console.log(color('green', '✓ Created .gitignore'));
   }

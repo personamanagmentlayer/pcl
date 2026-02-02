@@ -2,7 +2,6 @@
  * Tests for Skill Compiler
  */
 
-import { describe, it, expect } from 'vitest';
 import { SkillCompiler } from '../../src/skills/skill-compiler';
 import type { PCLSkill } from '../../src/skills/skill-loader';
 

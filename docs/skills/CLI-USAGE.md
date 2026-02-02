@@ -40,14 +40,17 @@ npm link  # Optional: makes 'pcl' command available globally
 Import skill(s) from SKILL.md format into your project.
 
 **Syntax**:
+
 ```bash
 pcl skill import <source> [options]
 ```
 
 **Arguments**:
+
 - `<source>` - Path to SKILL.md file or directory
 
 **Options**:
+
 - `-o, --output <dir>` - Output directory (default: `./skills`)
 - `--recursive` - Recursively scan directories for SKILL.md files
 - `-v, --verbose` - Show detailed output
@@ -55,21 +58,25 @@ pcl skill import <source> [options]
 **Examples**:
 
 Import a single skill:
+
 ```bash
 pcl skill import ~/.claude/skills/python-expert/SKILL.md -o ./skills/
 ```
 
 Import all Claude Code skills:
+
 ```bash
 pcl skill import ~/.claude/skills/ -o ./skills/ --recursive
 ```
 
 Import with verbose output:
+
 ```bash
 pcl skill import ~/.claude/skills/code-reviewer/SKILL.md -o ./skills/ --verbose
 ```
 
 **Output Structure**:
+
 ```
 ./skills/
 ├── python-expert/
@@ -81,6 +88,7 @@ pcl skill import ~/.claude/skills/code-reviewer/SKILL.md -o ./skills/ --verbose
 ```
 
 **Output**:
+
 ```
 Importing c:\Users\...\python-expert\SKILL.md...
 ✓ Imported skill: python-expert
@@ -94,14 +102,17 @@ Importing c:\Users\...\python-expert\SKILL.md...
 Export a skill to SKILL.md format compatible with Claude Code and Agent Skills.
 
 **Syntax**:
+
 ```bash
 pcl skill export <source> [options]
 ```
 
 **Arguments**:
+
 - `<source>` - Path to SKILL.md file to export
 
 **Options**:
+
 - `-o, --output <path>` - Output file or directory
 - `--format <format>` - Output format: `claude-code`, `agentskills`, or `pcl` (default: `claude-code`)
 - `-v, --verbose` - Show detailed output
@@ -109,21 +120,25 @@ pcl skill export <source> [options]
 **Examples**:
 
 Export to current directory:
+
 ```bash
 pcl skill export ./skills/python-expert/SKILL.md
 ```
 
 Export to specific directory:
+
 ```bash
 pcl skill export ./skills/python-expert/SKILL.md -o ~/.claude/skills/python-expert/
 ```
 
 Export with Agent Skills format:
+
 ```bash
 pcl skill export ./skills/python-expert/SKILL.md --format agentskills -o ./export/
 ```
 
 **Output**:
+
 ```
 Exporting c:\Projets\...\python-expert\SKILL.md...
 ✓ Exported skill: python-expert
@@ -138,14 +153,17 @@ Exporting c:\Projets\...\python-expert\SKILL.md...
 Validate skill(s) against Agent Skills or Claude Code specification.
 
 **Syntax**:
+
 ```bash
 pcl skill validate <source> [options]
 ```
 
 **Arguments**:
+
 - `<source>` - Path to SKILL.md file or directory
 
 **Options**:
+
 - `--spec <spec>` - Specification: `agentskills` or `claude-code` (default: `agentskills`)
 - `--recursive` - Recursively validate directory
 - `-v, --verbose` - Show warnings
@@ -153,21 +171,25 @@ pcl skill validate <source> [options]
 **Examples**:
 
 Validate against Agent Skills spec:
+
 ```bash
 pcl skill validate ./skills/python-expert/SKILL.md --spec agentskills
 ```
 
 Validate against Claude Code spec:
+
 ```bash
 pcl skill validate ./skills/python-expert/SKILL.md --spec claude-code
 ```
 
 Validate all skills in directory:
+
 ```bash
 pcl skill validate ./skills/ --spec agentskills --recursive
 ```
 
 **Output (Valid)**:
+
 ```
 Validating python-expert against agentskills...
 ✓ Valid agentskills skill
@@ -177,6 +199,7 @@ Warnings:
 ```
 
 **Output (Invalid)**:
+
 ```
 Validating test-skill against agentskills...
 ✗ Validation failed
@@ -193,14 +216,17 @@ Errors:
 List all skills discovered in common locations.
 
 **Syntax**:
+
 ```bash
 pcl skill list [options]
 ```
 
 **Options**:
+
 - `-v, --verbose` - Show detailed information (path, tools, model)
 
 **Search Locations**:
+
 1. `~/.claude/skills/` - Personal Claude Code skills
 2. `./.claude/skills/` - Project Claude Code skills
 3. `./examples/skills/` - PCL example skills
@@ -209,16 +235,19 @@ pcl skill list [options]
 **Examples**:
 
 List all skills:
+
 ```bash
 pcl skill list
 ```
 
 List with details:
+
 ```bash
 pcl skill list --verbose
 ```
 
 **Output (Normal)**:
+
 ```
 Discovering skills...
 
@@ -229,6 +258,7 @@ Found 1 skill(s):
 ```
 
 **Output (Verbose)**:
+
 ```
 Discovering skills...
 
@@ -236,7 +266,7 @@ Found 1 skill(s):
 
 ● python-expert
   Expert-level Python programming with PEP 8 standards and modern best practices.
-  Path: c:\Projets\personalayer\pcl-lite\examples\skills\python-expert\SKILL.md
+  Path: <project folder>\examples\skills\python-expert\SKILL.md
   Tools: Read, Write, Bash(python:*)
 ```
 
@@ -247,41 +277,48 @@ Found 1 skill(s):
 Show detailed information about a skill.
 
 **Syntax**:
+
 ```bash
 pcl skill info <name|path> [options]
 ```
 
 **Arguments**:
+
 - `<name|path>` - Skill name (e.g., `python-expert`) or path to SKILL.md
 
 **Options**:
+
 - `-v, --verbose` - Show full instructions (preview)
 
 **Examples**:
 
 Show info by name:
+
 ```bash
 pcl skill info python-expert
 ```
 
 Show info by path:
+
 ```bash
 pcl skill info ./skills/python-expert/SKILL.md
 ```
 
 Show with instructions preview:
+
 ```bash
 pcl skill info python-expert --verbose
 ```
 
 **Output (Normal)**:
+
 ```
 python-expert
 
 Expert-level Python programming with PEP 8 standards and modern best practices.
 
 Metadata:
-  Path: c:\Projets\personalayer\pcl-lite\examples\skills\python-expert\SKILL.md
+  Path: <project folder>\examples\skills\python-expert\SKILL.md
 
 Allowed Tools:
   - Read
@@ -290,13 +327,14 @@ Allowed Tools:
 ```
 
 **Output (Verbose)**:
+
 ```
 python-expert
 
 Expert-level Python programming with PEP 8 standards and modern best practices.
 
 Metadata:
-  Path: c:\Projets\personalayer\pcl-lite\examples\skills\python-expert\SKILL.md
+  Path: <project folder>\examples\skills\python-expert\SKILL.md
 
 Allowed Tools:
   - Read
@@ -318,6 +356,7 @@ You are an expert Python developer with deep knowledge of Python 3.10+ features.
 ### Agent Skills Specification
 
 **Name Requirements**:
+
 - Must match pattern: `^[a-z][a-z0-9-]*$`
 - Lowercase letters only
 - Numbers allowed (not at start)
@@ -325,6 +364,7 @@ You are an expert Python developer with deep knowledge of Python 3.10+ features.
 - No spaces, underscores, or special characters
 
 **Valid Names**:
+
 ```
 ✅ python-expert
 ✅ code-review
@@ -332,6 +372,7 @@ You are an expert Python developer with deep knowledge of Python 3.10+ features.
 ```
 
 **Invalid Names**:
+
 ```
 ❌ Python Expert   (spaces)
 ❌ python_expert   (underscore)
@@ -339,10 +380,12 @@ You are an expert Python developer with deep knowledge of Python 3.10+ features.
 ```
 
 **Required Fields**:
+
 - `name` - Skill identifier
 - `description` - When to use this skill
 
 **Optional Fields**:
+
 - `allowed-tools` - Tool restrictions
 - `license` - License type
 - `compatibility` - Compatible platforms
@@ -351,10 +394,12 @@ You are an expert Python developer with deep knowledge of Python 3.10+ features.
 ### Claude Code Specification
 
 **Required Fields** (same as Agent Skills):
+
 - `name` - Skill identifier
 - `description` - When to use this skill
 
 **Optional Fields**:
+
 - `allowed-tools` - Array of tool names
 - `model` - Preferred model (e.g., `claude-sonnet-4`)
 - `context` - Must be `fork` or omitted
@@ -362,6 +407,7 @@ You are an expert Python developer with deep knowledge of Python 3.10+ features.
 - `user-invocable` - Boolean, user can invoke directly
 
 **Context Field**:
+
 ```yaml
 # Valid
 context: fork
@@ -465,6 +511,7 @@ persona PYTHON_DEVELOPER {
 ### Skill Not Found
 
 **Problem**:
+
 ```
 Error: Skill not found: python-expert
 Available skills:
@@ -472,6 +519,7 @@ Available skills:
 ```
 
 **Solution**:
+
 - Use `pcl skill list` to see all available skills
 - Check skill name matches exactly (case-sensitive)
 - Verify skill is in a searched location
@@ -479,12 +527,14 @@ Available skills:
 ### Invalid Skill Name
 
 **Problem**:
+
 ```
 Validation failed
   - Invalid skill name: "Python Expert". Must match pattern: ^[a-z][a-z0-9-]*$
 ```
 
 **Solution**:
+
 - Rename skill to use lowercase and hyphens
 - Valid: `python-expert`
 - Invalid: `Python Expert`, `python_expert`, `PythonExpert`
@@ -492,11 +542,13 @@ Validation failed
 ### Import Failed
 
 **Problem**:
+
 ```
 Error importing ~/.claude/skills/my-skill/SKILL.md: Invalid SKILL.md format
 ```
 
 **Solution**:
+
 - Check file has YAML frontmatter:
   ```yaml
   ---

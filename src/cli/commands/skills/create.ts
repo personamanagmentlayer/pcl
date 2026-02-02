@@ -27,11 +27,22 @@ name: ${name}
 description: ${options.description || `${name} skill`}
 category: ${options.category || 'general'}
 complexity: ${options.complexity || 'intermediate'}
-allowed-tools:${options.tools ? '\n' + options.tools.split(',').map(t => `  - ${t.trim()}`).join('\n') : '\n  - Read\n  - Write'}
+allowed-tools:${
+    options.tools
+      ? '\n' +
+        options.tools
+          .split(',')
+          .map((t) => `  - ${t.trim()}`)
+          .join('\n')
+      : '\n  - Read\n  - Write'
+  }
 user-invocable: true
 ---
 
-# ${name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+# ${name
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')}
 
 ${options.description || 'A comprehensive guide for ' + name + '.'}
 
@@ -143,7 +154,10 @@ allowed-tools:
 user-invocable: true
 ---
 
-# ${name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Expert
+# ${name
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')} Expert
 
 Expert programming in ${name} with modern best practices.
 
@@ -264,7 +278,10 @@ allowed-tools:
 user-invocable: true
 ---
 
-# ${name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Framework Expert
+# ${name
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')} Framework Expert
 
 Comprehensive ${name} framework development with modern patterns.
 
@@ -410,7 +427,10 @@ allowed-tools:
 user-invocable: true
 ---
 
-# ${name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Tool Expert
+# ${name
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')} Tool Expert
 
 Comprehensive guide to ${name} tool usage and best practices.
 
@@ -522,7 +542,10 @@ allowed-tools:
 user-invocable: true
 ---
 
-# ${name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Domain Expert
+# ${name
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')} Domain Expert
 
 Specialized knowledge and best practices for ${name} domain.
 

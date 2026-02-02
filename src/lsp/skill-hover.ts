@@ -73,7 +73,7 @@ export class SkillHoverProvider {
       // Dependencies section
       if (skill.dependencies && skill.dependencies.length > 0) {
         content_md += `\n**Dependencies:**\n`;
-        skill.dependencies.forEach(dep => {
+        skill.dependencies.forEach((dep) => {
           content_md += `- ${dep}\n`;
         });
       }
@@ -119,7 +119,11 @@ export class SkillHoverProvider {
   /**
    * Get quick info hover (for completion items)
    */
-  getQuickSkillHover(skillName: string, description: string, category?: string): Hover {
+  getQuickSkillHover(
+    skillName: string,
+    description: string,
+    category?: string
+  ): Hover {
     let content = `### ${skillName}\n\n`;
     content += `${description}\n\n`;
 

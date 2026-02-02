@@ -239,12 +239,18 @@ export interface McpServer {
   /**
    * Register a tool handler
    */
-  registerTool(tool: McpTool, handler: (params: McpToolCallParams) => Promise<McpToolCallResult>): void;
+  registerTool(
+    tool: McpTool,
+    handler: (params: McpToolCallParams) => Promise<McpToolCallResult>
+  ): void;
 
   /**
    * Register a resource provider
    */
-  registerResource(resource: McpResource, provider: (uri: string) => Promise<McpResourceContent>): void;
+  registerResource(
+    resource: McpResource,
+    provider: (uri: string) => Promise<McpResourceContent>
+  ): void;
 }
 
 /**
@@ -274,7 +280,10 @@ export interface McpClient {
   /**
    * Call a tool
    */
-  callTool(name: string, args: Record<string, unknown>): Promise<McpToolCallResult>;
+  callTool(
+    name: string,
+    args: Record<string, unknown>
+  ): Promise<McpToolCallResult>;
 
   /**
    * List available resources
@@ -294,5 +303,8 @@ export interface McpClient {
   /**
    * Get a prompt
    */
-  getPrompt(name: string, args?: Record<string, unknown>): Promise<McpPromptResult>;
+  getPrompt(
+    name: string,
+    args?: Record<string, unknown>
+  ): Promise<McpPromptResult>;
 }
