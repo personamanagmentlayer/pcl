@@ -2,7 +2,7 @@
   "name": "vscode-pcl",
   "displayName": "PCL Language Support",
   "description": "Language support for Persona Configuration Language (PCL)",
-  "version": "1.0.0",
+  "version": "26.2.2",
   "publisher": "personalayer",
   "engines": {
     "vscode": "^1.75.0"

@@ -1,6 +1,6 @@
 {
   "name": "@pcl/sdk",
-  "version": "1.0.0",
+  "version": "26.2.2",
   "description": "PCL (Persona Control Language) - The world's first programming language for AI persona management",
   "author": "PCL Team",
   "license": "Apache-2.0",
