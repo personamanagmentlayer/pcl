@@ -17,7 +17,6 @@
  * @module tests/registry/backends-integration
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { mkdirSync, rmSync, existsSync } from 'node:fs';

@@ -14,7 +14,7 @@
 
 import { randomUUID } from 'node:crypto';
 import type { Result } from '../../types';
-import { Ok, Err } from '../../types';
+import { Err, Ok } from '../../types';
 import type {
   Artifact,
   ArtifactType,
@@ -23,7 +23,6 @@ import type {
   Transaction,
   Version,
 } from '../interfaces';
-import { ConnectionError, NotFoundError, DuplicateError } from '../errors';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              TYPES
@@ -235,7 +234,6 @@ export class PostgreSQLBackend implements IBackend {
 
     try {
       // Lazy-load pg to avoid requiring it as a dependency
-      // @ts-expect-error - pg is an optional dependency
       const { Pool } = await import('pg');
 
       this.pool = new Pool({

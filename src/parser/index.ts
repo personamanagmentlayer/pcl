@@ -17,7 +17,13 @@ import {
   getOperatorPrecedence,
   isAssignmentOperator,
 } from '../lexer';
-import type { PCLError, Position, Result, Span } from '../types';
+import type {
+  BackoffStrategy,
+  PCLError,
+  Position,
+  Result,
+  Span,
+} from '../types';
 import { Err, ErrorCode, Ok, PCLError as createError } from '../types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -58,8 +64,8 @@ export interface ParseResult {
 export class Parser {
   private tokens: Token[] = [];
   private current: number = 0;
-  private errors: PCLError[] = [];
-  private warnings: PCLError[] = [];
+  private readonly errors: PCLError[] = [];
+  private readonly warnings: PCLError[] = [];
   private comments: AST.Comment[] = [];
 
   private readonly source: string;
@@ -489,13 +495,19 @@ export class Parser {
           ref,
           span: ref.span,
         });
-      } else if (this.check(TokenType.IDENTIFIER)) {
+      } else if (
+        this.check(TokenType.IDENTIFIER) ||
+        this.check(TokenType.PERSONA_ID) ||
+        this.check(TokenType.KEYWORD)
+      ) {
         const name = this.parseIdentifier();
         items.push({
           kind: 'IdentifierSkill',
           name,
           span: name.span,
         });
+      } else {
+        this.error(`Unexpected token in skill block: ${this.peek().value}`);
       }
 
       this.match(TokenType.COMMA);
@@ -525,7 +537,11 @@ export class Parser {
           value: token.value,
           span: token.span,
         });
-      } else if (this.check(TokenType.IDENTIFIER)) {
+      } else if (
+        this.check(TokenType.IDENTIFIER) ||
+        this.check(TokenType.PERSONA_ID) ||
+        this.check(TokenType.KEYWORD)
+      ) {
         const field = this.parseIdentifier();
         const op = this.parseComparisonOperator();
         const value = this.parseExpression();
@@ -536,6 +552,10 @@ export class Parser {
           value,
           span: this.makeSpan(field.span.start, value.span.end),
         });
+      } else {
+        this.error(
+          `Unexpected token in constraint block: ${this.peek().value}`
+        );
       }
 
       this.match(TokenType.COMMA);
@@ -565,13 +585,19 @@ export class Parser {
           value: token.value,
           span: token.span,
         });
-      } else if (this.check(TokenType.IDENTIFIER)) {
+      } else if (
+        this.check(TokenType.IDENTIFIER) ||
+        this.check(TokenType.PERSONA_ID) ||
+        this.check(TokenType.KEYWORD)
+      ) {
         const name = this.parseIdentifier();
         items.push({
           kind: 'IdentifierTag',
           name,
           span: name.span,
         });
+      } else {
+        this.error(`Unexpected token in tag block: ${this.peek().value}`);
       }
 
       this.match(TokenType.COMMA);
@@ -942,7 +968,9 @@ export class Parser {
 
     let count: AST.NumberLiteral | null = null;
     let delay: AST.DurationLiteral | null = null;
-    let backoff: 'linear' | 'exponential' | 'constant' | null = null;
+    let backoff: BackoffStrategy | null = null;
+    let maxDelay: AST.DurationLiteral | null = null;
+    let jitter = false;
 
     while (!this.check(TokenType.RBRACE) && !this.isAtEnd()) {
       const key = this.parseIdentifier();
@@ -955,10 +983,31 @@ export class Parser {
         case 'delay':
           delay = this.parseDurationLiteral();
           break;
-        case 'backoff':
+        case 'backoff': {
           const backoffToken = this.advance();
-          backoff = backoffToken.value as 'linear' | 'exponential' | 'constant';
+          const backoffValue = backoffToken.value;
+          if (
+            backoffValue === 'linear' ||
+            backoffValue === 'exponential' ||
+            backoffValue === 'fibonacci' ||
+            backoffValue === 'random'
+          ) {
+            backoff = backoffValue;
+          } else {
+            this.error(
+              `Invalid backoff strategy: ${backoffValue}. Expected: linear, exponential, fibonacci, or random`
+            );
+          }
           break;
+        }
+        case 'maxDelay':
+          maxDelay = this.parseDurationLiteral();
+          break;
+        case 'jitter': {
+          const jitterToken = this.advance();
+          jitter = jitterToken.value === 'true';
+          break;
+        }
       }
 
       this.match(TokenType.COMMA);
@@ -972,9 +1021,16 @@ export class Parser {
 
     return {
       kind: 'RetryConfigNode',
-      count: count!,
+      count: count ?? {
+        kind: 'NumberLiteral',
+        value: 3,
+        raw: '3',
+        span: this.makeSpan(start, this.previous().span.end),
+      },
       delay,
       backoff,
+      maxDelay,
+      jitter,
       span: this.makeSpan(start, this.previous().span.end),
     };
   }
@@ -1012,7 +1068,99 @@ export class Parser {
   // ─────────────────────────────────────────────────────────────────────────────
 
   private parseWorkflowExpression(): AST.WorkflowExpression {
-    return this.parseWorkflowSequence();
+    return this.parseWorkflowCompose();
+  }
+
+  // Composition operator (::) - highest precedence
+  private parseWorkflowCompose(): AST.WorkflowExpression {
+    const workflows: (AST.Identifier | AST.WorkflowExpression)[] = [];
+    const start = this.peek().span.start;
+
+    workflows.push(this.parseWorkflowAccumulate());
+
+    while (this.match(TokenType.COLON_COLON)) {
+      workflows.push(this.parseWorkflowAccumulate());
+    }
+
+    if (workflows.length === 1) {
+      return workflows[0] as AST.WorkflowExpression;
+    }
+
+    return {
+      kind: 'WorkflowComposeExpr',
+      workflows,
+      span: this.makeSpan(start, this.previous().span.end),
+    };
+  }
+
+  // Accumulate operator (>>>)
+  private parseWorkflowAccumulate(): AST.WorkflowExpression {
+    const steps: AST.WorkflowExpression[] = [];
+    const start = this.peek().span.start;
+
+    steps.push(this.parseWorkflowBidirectional());
+
+    while (this.match(TokenType.GT_GT_GT)) {
+      steps.push(this.parseWorkflowBidirectional());
+    }
+
+    if (steps.length === 1) {
+      return steps[0];
+    }
+
+    return {
+      kind: 'WorkflowAccumulateExpr',
+      steps,
+      span: this.makeSpan(start, this.previous().span.end),
+    };
+  }
+
+  // Bidirectional operator (<->)
+  private parseWorkflowBidirectional(): AST.WorkflowExpression {
+    const left = this.parseWorkflowAsyncPipe();
+
+    if (this.match(TokenType.LT_MINUS_GT)) {
+      const right = this.parseWorkflowAsyncPipe();
+
+      // Optional max iterations: <-> (5)
+      let maxIterations: AST.NumberLiteral | null = null;
+      if (this.match(TokenType.LPAREN)) {
+        if (
+          this.check(TokenType.NUMBER_INT) ||
+          this.check(TokenType.NUMBER_FLOAT)
+        ) {
+          maxIterations = this.parseNumberLiteral();
+        }
+        this.expect(TokenType.RPAREN, 'Expected ")" after max iterations');
+      }
+
+      return {
+        kind: 'WorkflowBidirectionalExpr',
+        left,
+        right,
+        maxIterations,
+        span: this.makeSpan(left.span.start, this.previous().span.end),
+      };
+    }
+
+    return left;
+  }
+
+  // Async pipe operator (~>)
+  private parseWorkflowAsyncPipe(): AST.WorkflowExpression {
+    let left = this.parseWorkflowSequence();
+
+    while (this.match(TokenType.TILDE_GT)) {
+      const right = this.parseWorkflowSequence();
+      left = {
+        kind: 'WorkflowAsyncPipeExpr',
+        left,
+        right,
+        span: this.makeSpan(left.span.start, right.span.end),
+      };
+    }
+
+    return left;
   }
 
   private parseWorkflowSequence(): AST.WorkflowExpression {
@@ -1064,22 +1212,44 @@ export class Parser {
   private parseWorkflowPrimary(): AST.WorkflowExpression {
     const start = this.peek().span.start;
 
+    // Break statement
+    if (this.matchKeyword('break')) {
+      let label: AST.Identifier | null = null;
+      if (this.check(TokenType.IDENTIFIER)) {
+        label = this.parseIdentifier();
+      }
+      return {
+        kind: 'WorkflowBreakStmt',
+        label,
+        span: this.makeSpan(start, this.previous().span.end),
+      };
+    }
+
+    // Continue statement
+    if (this.matchKeyword('continue')) {
+      let label: AST.Identifier | null = null;
+      if (this.check(TokenType.IDENTIFIER)) {
+        label = this.parseIdentifier();
+      }
+      return {
+        kind: 'WorkflowContinueStmt',
+        label,
+        span: this.makeSpan(start, this.previous().span.end),
+      };
+    }
+
     // Grouped expression
     if (this.match(TokenType.LPAREN)) {
       const expr = this.parseWorkflowExpression();
       this.expect(TokenType.RPAREN, 'Expected ")" after workflow expression');
-      return {
-        kind: 'WorkflowGroupExpr',
-        expr,
-        span: this.makeSpan(start, this.previous().span.end),
-      };
+      return expr;
     }
 
     // Conditional
     if (this.matchKeyword('if')) {
       const condition = this.parseExpression();
       this.expectKeyword('then');
-      const then = this.parseWorkflowExpression();
+      const thenExpr = this.parseWorkflowExpression();
       let elseExpr: AST.WorkflowExpression | null = null;
       if (this.matchKeyword('else')) {
         elseExpr = this.parseWorkflowExpression();
@@ -1087,7 +1257,7 @@ export class Parser {
       return {
         kind: 'WorkflowConditionalExpr',
         condition,
-        then,
+        then: thenExpr,
         else: elseExpr,
         span: this.makeSpan(start, this.previous().span.end),
       };
@@ -1243,7 +1413,7 @@ export class Parser {
   }
 
   private parseConditional(): AST.Expression {
-    const expr = this.parseBinary(0);
+    const expr = this.parseBinary(3);
 
     if (this.match(TokenType.QUESTION)) {
       const consequent = this.parseExpression();
@@ -1265,6 +1435,7 @@ export class Parser {
   private parseBinary(minPrecedence: number): AST.Expression {
     let left = this.parseUnary();
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const precedence = getOperatorPrecedence(this.peek());
       if (precedence <= minPrecedence) break;
@@ -1314,6 +1485,7 @@ export class Parser {
   private parsePostfix(): AST.Expression {
     let expr = this.parsePrimary();
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       if (this.match(TokenType.DOT)) {
         const property = this.parseIdentifier();
@@ -1638,6 +1810,8 @@ export class Parser {
     this.current = savedPos;
 
     if (isArrow) {
+      // Backtrack to include the opening parenthesis that was consumed in parsePrimary
+      this.current = savedPos - 1;
       return this.parseArrowFunction(start, false);
     }
 
@@ -1916,8 +2090,8 @@ export class Parser {
 
   private isHookAt(): boolean {
     if (!this.check(TokenType.AT)) return false;
-    const next = this.peekNext();
-    if (!next || next.type !== TokenType.IDENTIFIER) return false;
+    const nextToken = this.peekNext();
+    if (!nextToken || nextToken.type !== TokenType.IDENTIFIER) return false;
     return [
       'onActivate',
       'onDeactivate',
@@ -1931,7 +2105,7 @@ export class Parser {
       'onDespawn',
       'onTimeout',
       'onRetry',
-    ].includes(next.value);
+    ].includes(nextToken.value);
   }
 
   private isHookDecorator(decorator: AST.Decorator): boolean {
@@ -1955,6 +2129,7 @@ export class Parser {
   private parseModifiers(): AST.Modifier[] {
     const modifiers: AST.Modifier[] = [];
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const token = this.peek();
       if (token.type !== TokenType.KEYWORD) break;
@@ -2207,7 +2382,7 @@ export class Parser {
     const name = this.parseIdentifier();
 
     let constraint: AST.TypeNode | null = null;
-    if (this.matchKeyword('extends')) {
+    if (this.matchKeyword('extends') || this.match(TokenType.COLON)) {
       constraint = this.parseType();
     }
 
@@ -2250,16 +2425,16 @@ export class Parser {
     let value: number;
     switch (token.type) {
       case TokenType.NUMBER_HEX:
-        value = parseInt(token.value.slice(2), 16);
+        value = Number.parseInt(token.value.slice(2), 16);
         break;
       case TokenType.NUMBER_BINARY:
-        value = parseInt(token.value.slice(2), 2);
+        value = Number.parseInt(token.value.slice(2), 2);
         break;
       case TokenType.NUMBER_OCTAL:
-        value = parseInt(token.value.slice(2), 8);
+        value = Number.parseInt(token.value.slice(2), 8);
         break;
       default:
-        value = parseFloat(token.value);
+        value = Number.parseFloat(token.value);
     }
 
     return {
@@ -2552,6 +2727,41 @@ export class Parser {
       };
     }
 
+    // Method with explicit 'fn' keyword (PCL style)
+    if (this.matchKeyword('fn')) {
+      const name = this.parseIdentifier();
+      const typeParameters = this.parseOptionalTypeParameters();
+      const parameters = this.parseParameterList();
+      let returnType: AST.TypeNode = {
+        kind: 'TypeReference',
+        typeName: {
+          kind: 'QualifiedIdentifier',
+          parts: [{ kind: 'Identifier', name: 'void', span: this.peek().span }],
+          span: this.peek().span,
+        },
+        typeArguments: [],
+        span: this.peek().span,
+      };
+
+      if (this.match(TokenType.ARROW)) {
+        returnType = this.parseType();
+      } else if (this.match(TokenType.COLON)) {
+        returnType = this.parseType();
+      }
+
+      this.consumeOptionalSemicolon();
+
+      return {
+        kind: 'MethodSignature',
+        name,
+        optional: false,
+        typeParameters,
+        parameters,
+        returnType,
+        span: this.makeSpan(start, returnType.span.end),
+      };
+    }
+
     const name = this.check(TokenType.STRING)
       ? this.parseStringLiteral()
       : this.parseIdentifier();
@@ -2626,6 +2836,16 @@ export class Parser {
         'keyof',
         'typeof',
         'infer',
+        'string',
+        'number',
+        'boolean',
+        'any',
+        'void',
+        'object',
+        'null',
+        'undefined',
+        'symbol',
+        'bigint',
       ].includes(token.value);
     }
 
@@ -2970,7 +3190,7 @@ export class Parser {
       finalizer,
       span: this.makeSpan(
         start,
-        (finalizer ?? handlers[handlers.length - 1]?.body ?? block).span.end
+        (finalizer ?? handlers.at(-1)?.body ?? block).span.end
       ),
     };
   }
@@ -3259,7 +3479,7 @@ export class Parser {
       kind: 'FunctionDeclaration',
       decorators,
       modifiers,
-      async: isAsync,
+      async: isAsync || modifiers.some((m) => m.type === 'async'),
       id,
       typeParameters,
       parameters,
@@ -3846,7 +4066,23 @@ export function parseExpression(
 ): Result<AST.Expression, PCLError[]> {
   const parser = new Parser(`(${source})`, options);
   const result = parser.parse();
-  if (!result.ok) return result;
+  if (!result.ok) {
+    return result as any;
+  }
+
+  // Check if we have statements
+  if (
+    !result.value.program.statements ||
+    result.value.program.statements.length === 0
+  ) {
+    if (result.value.errors && result.value.errors.length > 0) {
+      return Err(result.value.errors);
+    }
+    // Empty input?
+    return Err([
+      createError(ErrorCode.PARSE_INVALID_SYNTAX, 'Empty expression', {}),
+    ]);
+  }
 
   const stmt = result.value.program.statements[0];
   if (stmt?.kind === 'ExpressionStatement') {
@@ -3858,7 +4094,11 @@ export function parseExpression(
   }
 
   return Err([
-    createError(ErrorCode.PARSE_INVALID_SYNTAX, 'Expected expression', {}),
+    createError(
+      ErrorCode.PARSE_INVALID_SYNTAX,
+      `Expected expression, got ${stmt?.kind}`,
+      {}
+    ),
   ]);
 }
 

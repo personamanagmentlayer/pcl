@@ -3,9 +3,11 @@
 // Tests with real Anthropic API (requires ANTHROPIC_API_KEY)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { AnthropicProvider } from '../../src/runtime/providers/anthropic';
-import type { GenerationRequest, Tool } from '../../src/runtime/providers/index';
+import type {
+  GenerationRequest,
+  Tool,
+} from '../../src/runtime/providers/index';
 
 // Skip all tests if API key not configured
 const hasApiKey = !!process.env.ANTHROPIC_API_KEY;
@@ -87,7 +89,8 @@ describeIfApiKey('AnthropicProvider Integration', () => {
     test('includes system prompt in request', async () => {
       const request: GenerationRequest = {
         prompt: 'What is your role?',
-        systemPrompt: 'You are a test assistant who always responds with "TEST ROLE"',
+        systemPrompt:
+          'You are a test assistant who always responds with "TEST ROLE"',
       };
 
       const response = await provider.generateResponse(request);
@@ -234,7 +237,9 @@ describeIfApiKey('AnthropicProvider Integration', () => {
 
       const generator = invalidProvider.streamResponse(request);
 
-      await expect(generator.next()).rejects.toThrow(/Anthropic streaming error/);
+      await expect(generator.next()).rejects.toThrow(
+        /Anthropic streaming error/
+      );
     });
   });
 

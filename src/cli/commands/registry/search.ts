@@ -109,9 +109,11 @@ export async function searchCommand(
       if (format === 'table' && query) {
         console.log('\nRelevance scores:');
         searchResults.forEach((r, i) => {
-          console.log(
-            `  ${i + 1}. ${r.artifact.metadata.name}: ${(r.score * 100).toFixed(1)}%`
-          );
+          if (r.artifact) {
+            console.log(
+              `  ${i + 1}. ${r.artifact.metadata.name}: ${(r.score * 100).toFixed(1)}%`
+            );
+          }
         });
       }
     }

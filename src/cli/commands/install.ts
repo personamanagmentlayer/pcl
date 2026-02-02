@@ -4,11 +4,10 @@
  */
 
 import { existsSync, readFileSync } from 'fs';
-import { readFile, writeFile, mkdir } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import type { PCLPackage, PCLLockFile } from '../../build/package-format';
-import { validatePackage } from '../../build/package-format';
-import { resolveDependencies, calculateInstallOrder } from '../../build/dependency-resolver';
+import type { PCLLockFile, PCLPackage } from '../../build/package-format.js';
+import { validatePackage } from '../../build/package-format.js';
 
 // Color utilities
 const colors = {
@@ -79,15 +78,19 @@ export async function installCommand(
     await installAllDependencies(pkg, lockFile, cwd, options);
   }
 
-  // Save updated pcl.json if --save or --save-dev was used
+  // Save updated pcl.json if --save or --save-dev was used (atomic write)
   if ((options.save || options.saveDev) && packages.length > 0) {
-    await writeFile(configPath, JSON.stringify(pkg, null, 2), 'utf-8');
+    const tempConfig = `${configPath}.tmp`;
+    await writeFile(tempConfig, JSON.stringify(pkg, null, 2), 'utf-8');
+    await import('fs').then((fs) => fs.promises.rename(tempConfig, configPath));
     console.log(color('green', '\n✓ Updated pcl.json'));
   }
 
-  // Generate/update lock file
+  // Generate/update lock file (atomic write)
   const newLockFile = await generateLockFile(pkg, cwd, options);
-  await writeFile(lockPath, JSON.stringify(newLockFile, null, 2), 'utf-8');
+  const tempLock = `${lockPath}.tmp`;
+  await writeFile(tempLock, JSON.stringify(newLockFile, null, 2), 'utf-8');
+  await import('fs').then((fs) => fs.promises.rename(tempLock, lockPath));
   console.log(color('green', '✓ Updated pcl-lock.json'));
 
   console.log(color('cyan', '\n✨ Installation complete!\n'));
@@ -117,7 +120,11 @@ async function installPackages(
       }
 
       // Resolve package version
-      const resolvedVersion = await resolvePackageVersion(name, version, options);
+      const resolvedVersion = await resolvePackageVersion(
+        name,
+        version,
+        options
+      );
 
       // Download and install package
       await downloadPackage(name, resolvedVersion, cwd, options);
@@ -135,14 +142,20 @@ async function installPackages(
       installedCount++;
     } catch (error) {
       console.error(
-        color('red', `✗ ${packageSpec}: ${error instanceof Error ? error.message : String(error)}`)
+        color(
+          'red',
+          `✗ ${packageSpec}: ${error instanceof Error ? error.message : String(error)}`
+        )
       );
       errorCount++;
     }
   }
 
   console.log(
-    color('cyan', `\nPackage installation: ${installedCount} succeeded, ${errorCount} failed`)
+    color(
+      'cyan',
+      `\nPackage installation: ${installedCount} succeeded, ${errorCount} failed`
+    )
   );
 
   if (errorCount > 0) {
@@ -184,14 +197,21 @@ async function installAllDependencies(
         console.log(color('dim', `Installing ${name}@${version}...`));
       }
 
-      const resolvedVersion = await resolvePackageVersion(name, version, options);
+      const resolvedVersion = await resolvePackageVersion(
+        name,
+        version,
+        options
+      );
       await downloadPackage(name, resolvedVersion, cwd, options);
 
       console.log(color('green', `✓ ${name}@${resolvedVersion}`));
       installedCount++;
     } catch (error) {
       console.error(
-        color('red', `✗ ${name}: ${error instanceof Error ? error.message : String(error)}`)
+        color(
+          'red',
+          `✗ ${name}: ${error instanceof Error ? error.message : String(error)}`
+        )
       );
       errorCount++;
     }
@@ -201,27 +221,40 @@ async function installAllDependencies(
   if (!options.production) {
     for (const [name, versionSpec] of Object.entries(devDeps)) {
       try {
-        const version = lockFile?.devDependencies?.[name]?.version || versionSpec;
+        const version =
+          lockFile?.devDependencies?.[name]?.version || versionSpec;
 
         if (options.verbose) {
           console.log(color('dim', `Installing ${name}@${version} (dev)...`));
         }
 
-        const resolvedVersion = await resolvePackageVersion(name, version, options);
+        const resolvedVersion = await resolvePackageVersion(
+          name,
+          version,
+          options
+        );
         await downloadPackage(name, resolvedVersion, cwd, options);
 
         console.log(color('green', `✓ ${name}@${resolvedVersion} (dev)`));
         installedCount++;
       } catch (error) {
         console.error(
-          color('red', `✗ ${name}: ${error instanceof Error ? error.message : String(error)}`)
+          color(
+            'red',
+            `✗ ${name}: ${error instanceof Error ? error.message : String(error)}`
+          )
         );
         errorCount++;
       }
     }
   }
 
-  console.log(color('cyan', `\nInstallation: ${installedCount} succeeded, ${errorCount} failed`));
+  console.log(
+    color(
+      'cyan',
+      `\nInstallation: ${installedCount} succeeded, ${errorCount} failed`
+    )
+  );
 
   if (errorCount > 0) {
     process.exit(1);
@@ -271,7 +304,8 @@ async function resolvePackageVersion(
 
   if (version && version !== 'latest' && version !== '*') {
     // Validate semver format
-    const semverPattern = /^\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$/;
+    const semverPattern =
+      /^\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$/;
     const rangePattern = /^[\^~<>=]/;
 
     if (semverPattern.test(version)) {
@@ -324,7 +358,11 @@ async function downloadPackage(
     // TODO: Add other metadata from registry
   };
 
-  await writeFile(join(packageDir, 'package.json'), JSON.stringify(packageJson, null, 2), 'utf-8');
+  await writeFile(
+    join(packageDir, 'package.json'),
+    JSON.stringify(packageJson, null, 2),
+    'utf-8'
+  );
 }
 
 /**
@@ -347,7 +385,11 @@ async function generateLockFile(
   // Add dependencies to lock file
   if (pkg.dependencies) {
     for (const [name, versionSpec] of Object.entries(pkg.dependencies)) {
-      const resolvedVersion = await resolvePackageVersion(name, versionSpec, options);
+      const resolvedVersion = await resolvePackageVersion(
+        name,
+        versionSpec as string,
+        options
+      );
       lockFile.dependencies![name] = {
         version: resolvedVersion,
         resolved: `https://registry.pcl.dev/${name}/-/${name}-${resolvedVersion}.tgz`, // TODO: Use actual registry URL
@@ -360,7 +402,11 @@ async function generateLockFile(
   // Add dev dependencies to lock file (unless --production)
   if (!options.production && pkg.devDependencies) {
     for (const [name, versionSpec] of Object.entries(pkg.devDependencies)) {
-      const resolvedVersion = await resolvePackageVersion(name, versionSpec, options);
+      const resolvedVersion = await resolvePackageVersion(
+        name,
+        versionSpec as string,
+        options
+      );
       lockFile.devDependencies![name] = {
         version: resolvedVersion,
         resolved: `https://registry.pcl.dev/${name}/-/${name}-${resolvedVersion}.tgz`,

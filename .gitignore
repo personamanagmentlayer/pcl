@@ -64,6 +64,7 @@ lerna-debug.log*
 # ============================================
 dist/
 build/
+!src/build/
 out/
 lib/
 
@@ -230,5 +231,7 @@ __marimo__/
 .pypirc
 
 #pcl
+.claude/settings.local.json
+# Project Management
 .roadmap/
 .claude/settings.local.json

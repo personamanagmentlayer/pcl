@@ -14,7 +14,10 @@ export { DefinitionProvider } from './definition';
 export { ReferencesProvider } from './references';
 export { DocumentSymbolsProvider } from './document-symbols';
 export { FormattingProvider } from './formatting';
-export { convertErrorToDiagnostic, convertErrorsToDiagnostics } from './error-converter';
+export {
+  convertErrorToDiagnostic,
+  convertErrorsToDiagnostics,
+} from './error-converter';
 export * from './types';
 export * from './completion-types';
 export * from './keywords';

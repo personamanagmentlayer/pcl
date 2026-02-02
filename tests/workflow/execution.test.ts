@@ -3,8 +3,11 @@
 // Tests for WorkflowExecutor with sequential, parallel, and conditional workflows
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
-import { WorkflowExecutor, createPersona, createRuntime } from '../../src/runtime/index';
+import {
+  WorkflowExecutor,
+  createPersona,
+  createRuntime,
+} from '../../src/runtime/index';
 import { MockProvider } from '../../src/runtime/providers/mock';
 import type * as AST from '../../src/types/ast';
 
@@ -26,8 +29,18 @@ describe('WorkflowExecutor', () => {
 
   describe('Sequential Workflows', () => {
     test('executes two personas in sequence', async () => {
-      const personaA = createPersona('A', 'A', { intent: 'First step' }, mockProvider);
-      const personaB = createPersona('B', 'B', { intent: 'Second step' }, mockProvider);
+      const personaA = createPersona(
+        'A',
+        'A',
+        { intent: 'First step' },
+        mockProvider
+      );
+      const personaB = createPersona(
+        'B',
+        'B',
+        { intent: 'Second step' },
+        mockProvider
+      );
 
       const personas = new Map([
         ['A', personaA],
@@ -49,14 +62,20 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      },
                     },
                   },
                 ],
@@ -67,7 +86,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'test input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'test input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       if (result.ok) {
@@ -110,14 +134,20 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      },
                     },
                   },
                 ],
@@ -128,7 +158,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       expect(executor.getState()?.status).toBe('completed');
@@ -168,21 +203,30 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'C' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'C' },
+                      },
                     },
                   },
                 ],
@@ -193,7 +237,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       expect(executor.getState()?.status).toBe('completed');
@@ -237,14 +286,20 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      },
                     },
                   },
                 ],
@@ -256,7 +311,12 @@ describe('WorkflowExecutor', () => {
 
       const executor = new WorkflowExecutor();
       const start = Date.now();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
       const elapsed = Date.now() - start;
 
       expect(result.ok).toBe(true);
@@ -304,21 +364,30 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'C' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'C' },
+                      },
                     },
                   },
                 ],
@@ -329,7 +398,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       if (result.ok) {
@@ -369,14 +443,20 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      },
                     },
                   },
                 ],
@@ -387,7 +467,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       if (result.ok) {
@@ -428,11 +513,17 @@ describe('WorkflowExecutor', () => {
                   kind: 'BooleanLiteral',
                   value: true,
                 },
-                thenBranch: {
+                then: {
                   kind: 'WorkflowPersonaRef',
-                  persona: { kind: 'Identifier', name: 'A' },
+                  ref: {
+                    kind: 'PersonaReference',
+                    ref: {
+                      type: 'id',
+                      id: { kind: 'Identifier', name: 'A' },
+                    },
+                  },
                 },
-                elseBranch: undefined,
+                else: null,
               },
             },
           ],
@@ -440,7 +531,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       expect(executor.getState()?.status).toBe('completed');
@@ -451,10 +547,15 @@ describe('WorkflowExecutor', () => {
         responses: ['Else branch'],
       });
 
+      const personaA = createPersona('A', 'A', {}, provider);
+      personaA.activate();
       const personaB = createPersona('B', 'B', {}, provider);
       personaB.activate();
 
-      const personas = new Map([['B', personaB]]);
+      const personas = new Map([
+        ['A', personaA],
+        ['B', personaB],
+      ]);
 
       const workflow: AST.WorkflowDeclaration = {
         kind: 'WorkflowDeclaration',
@@ -470,13 +571,25 @@ describe('WorkflowExecutor', () => {
                   kind: 'BooleanLiteral',
                   value: false,
                 },
-                thenBranch: {
+                then: {
                   kind: 'WorkflowPersonaRef',
-                  persona: { kind: 'Identifier', name: 'A' },
+                  ref: {
+                    kind: 'PersonaReference',
+                    ref: {
+                      type: 'id',
+                      id: { kind: 'Identifier', name: 'B' },
+                    },
+                  },
                 },
-                elseBranch: {
+                else: {
                   kind: 'WorkflowPersonaRef',
-                  persona: { kind: 'Identifier', name: 'B' },
+                  ref: {
+                    kind: 'PersonaReference',
+                    ref: {
+                      type: 'id',
+                      id: { kind: 'Identifier', name: 'A' },
+                    },
+                  },
                 },
               },
             },
@@ -485,7 +598,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       expect(executor.getState()?.status).toBe('completed');
@@ -506,11 +624,11 @@ describe('WorkflowExecutor', () => {
                   kind: 'BooleanLiteral',
                   value: false,
                 },
-                thenBranch: {
+                then: {
                   kind: 'WorkflowPersonaRef',
                   persona: { kind: 'Identifier', name: 'A' },
                 },
-                elseBranch: undefined,
+                else: null,
               },
             },
           ],
@@ -518,7 +636,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'test input', new Map(), new Map());
+      const result = await executor.execute(
+        workflow,
+        'test input',
+        new Map(),
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       if (result.ok) {
@@ -557,14 +680,20 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      },
                     },
                   },
                 ],
@@ -575,7 +704,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       expect(executor.getState()?.status).toBe('completed');
@@ -608,14 +742,20 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } }, // Doesn't exist
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      }, // Doesn't exist
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'B' } }, // Exists
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'B' },
+                      }, // Exists
                     },
                   },
                 ],
@@ -626,7 +766,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       expect(executor.getState()?.status).toBe('completed');
@@ -659,7 +804,13 @@ describe('WorkflowExecutor', () => {
               kind: 'WorkflowStepsDeclaration',
               steps: {
                 kind: 'WorkflowPersonaRef',
-                persona: { kind: 'Identifier', name: 'A' },
+                ref: {
+                  kind: 'PersonaReference',
+                  ref: {
+                    type: 'id',
+                    id: { kind: 'Identifier', name: 'A' },
+                  },
+                },
               },
             },
           ],
@@ -704,7 +855,13 @@ describe('WorkflowExecutor', () => {
               kind: 'WorkflowStepsDeclaration',
               steps: {
                 kind: 'WorkflowPersonaRef',
-                persona: { kind: 'Identifier', name: 'A' },
+                ref: {
+                  kind: 'PersonaReference',
+                  ref: {
+                    type: 'id',
+                    id: { kind: 'Identifier', name: 'A' },
+                  },
+                },
               },
             },
           ],
@@ -725,12 +882,13 @@ describe('WorkflowExecutor', () => {
     });
 
     test('sets status to failed on error', async () => {
+      // Test with a persona that doesn't exist in the map
       const provider = new MockProvider({
-        simulateErrors: true,
-        errorRate: 1.0,
+        responses: ['Done'],
       });
 
       const personaA = createPersona('A', 'A', {}, provider);
+      personaA.setProvider(provider);
       personaA.activate();
 
       const personas = new Map([['A', personaA]]);
@@ -745,7 +903,13 @@ describe('WorkflowExecutor', () => {
               kind: 'WorkflowStepsDeclaration',
               steps: {
                 kind: 'WorkflowPersonaRef',
-                persona: { kind: 'Identifier', name: 'A' },
+                ref: {
+                  kind: 'PersonaReference',
+                  ref: {
+                    type: 'id',
+                    id: { kind: 'Identifier', name: 'NonExistent' }, // This persona doesn't exist!
+                  },
+                },
               },
             },
           ],
@@ -753,7 +917,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(false);
       expect(executor.getState()?.status).toBe('failed');
@@ -791,14 +960,20 @@ describe('WorkflowExecutor', () => {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                   {
                     kind: 'WorkflowPersonaRef',
                     ref: {
                       kind: 'PersonaReference',
-                      ref: { type: 'id', id: { kind: 'Identifier', name: 'A' } },
+                      ref: {
+                        type: 'id',
+                        id: { kind: 'Identifier', name: 'A' },
+                      },
                     },
                   },
                 ],
@@ -813,7 +988,12 @@ describe('WorkflowExecutor', () => {
       // Abort after a short delay
       setTimeout(() => executor.abort(), 100);
 
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(false);
       if (!result.ok) {
@@ -850,7 +1030,13 @@ describe('WorkflowExecutor', () => {
                 kind: 'WorkflowGroupExpr',
                 expr: {
                   kind: 'WorkflowPersonaRef',
-                  persona: { kind: 'Identifier', name: 'A' },
+                  ref: {
+                    kind: 'PersonaReference',
+                    ref: {
+                      type: 'id',
+                      id: { kind: 'Identifier', name: 'A' },
+                    },
+                  },
                 },
               },
             },
@@ -859,7 +1045,12 @@ describe('WorkflowExecutor', () => {
       };
 
       const executor = new WorkflowExecutor();
-      const result = await executor.execute(workflow, 'input', personas, new Map());
+      const result = await executor.execute(
+        workflow,
+        'input',
+        personas,
+        new Map()
+      );
 
       expect(result.ok).toBe(true);
       expect(executor.getState()?.status).toBe('completed');

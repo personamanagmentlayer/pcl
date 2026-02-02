@@ -5,21 +5,20 @@
  */
 
 import {
-  Connection,
   CompletionItem,
   CompletionParams,
-  TextDocumentPositionParams,
+  Connection,
 } from 'vscode-languageserver/node';
 
-import { DocumentManager } from './document-manager';
-import { CompletionContext, SymbolInfo } from './completion-types';
 import {
   generateKeywordCompletions,
-  generateSnippetCompletions,
   generatePropertyCompletions,
+  generateSnippetCompletions,
   generateSymbolCompletions,
   getPropertyValueCompletions,
 } from './completion-items';
+import { CompletionContext, SymbolInfo } from './completion-types';
+import { DocumentManager } from './document-manager';
 
 /**
  * Completion provider handles textDocument/completion requests
@@ -33,7 +32,9 @@ export class CompletionProvider {
   /**
    * Provide completion items
    */
-  async provideCompletions(params: CompletionParams): Promise<CompletionItem[]> {
+  async provideCompletions(
+    params: CompletionParams
+  ): Promise<CompletionItem[]> {
     const uri = params.textDocument.uri;
     const position = params.position;
 
@@ -112,15 +113,24 @@ export class CompletionProvider {
     const wordBeingTyped = wordMatch ? wordMatch[0] : undefined;
 
     // Determine if inside a block
-    const openBraces = (text.substring(0, this.getOffset(lines, position)).match(/{/g) || []).length;
-    const closeBraces = (text.substring(0, this.getOffset(lines, position)).match(/}/g) || []).length;
+    const openBraces = (
+      text.substring(0, this.getOffset(lines, position)).match(/{/g) || []
+    ).length;
+    const closeBraces = (
+      text.substring(0, this.getOffset(lines, position)).match(/}/g) || []
+    ).length;
     const insideBlock = openBraces > closeBraces;
 
     // Determine declaration type (search backwards for declaration keyword)
     let declarationType: string | undefined;
     if (insideBlock) {
-      const textBeforeCursor = text.substring(0, this.getOffset(lines, position));
-      const declarationMatch = textBeforeCursor.match(/\b(persona|team|workflow|skill|config|metadata)\s+\w+\s*{[^}]*$/);
+      const textBeforeCursor = text.substring(
+        0,
+        this.getOffset(lines, position)
+      );
+      const declarationMatch = textBeforeCursor.match(
+        /\b(persona|team|workflow|skill|config|metadata)\s+\w+\s*{[^}]*$/
+      );
       if (declarationMatch) {
         declarationType = declarationMatch[1];
       }
@@ -154,7 +164,10 @@ export class CompletionProvider {
   /**
    * Get offset in text from line and character
    */
-  private getOffset(lines: string[], position: { line: number; character: number }): number {
+  private getOffset(
+    lines: string[],
+    position: { line: number; character: number }
+  ): number {
     let offset = 0;
     for (let i = 0; i < position.line; i++) {
       offset += lines[i].length + 1; // +1 for newline

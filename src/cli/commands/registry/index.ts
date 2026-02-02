@@ -12,3 +12,5 @@ export { infoCommand, type InfoOptions } from './info';
 export { publishCommand, type PublishOptions } from './publish';
 export { deleteCommand, type DeleteOptions } from './delete';
 export { initCommand, type InitOptions } from './init';
+export { exportCommand, type ExportOptions } from './export';
+export { importCommand, type ImportOptions } from './import';

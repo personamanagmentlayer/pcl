@@ -24,7 +24,9 @@ export class FormattingProvider {
   /**
    * Provide document formatting
    */
-  async provideFormatting(params: DocumentFormattingParams): Promise<TextEdit[] | null> {
+  async provideFormatting(
+    params: DocumentFormattingParams
+  ): Promise<TextEdit[] | null> {
     const uri = params.textDocument.uri;
 
     try {
@@ -69,7 +71,7 @@ export class FormattingProvider {
       ? ' '.repeat(options.tabSize || 2)
       : '\t';
 
-    for (let line of lines) {
+    for (const line of lines) {
       const trimmed = line.trim();
 
       // Skip empty lines

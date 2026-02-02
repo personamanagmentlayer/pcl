@@ -4,19 +4,19 @@
  */
 
 import { existsSync, readFileSync } from 'fs';
-import { readFile, writeFile, mkdir } from 'fs/promises';
-import { join, dirname, basename, relative } from 'path';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { glob } from 'glob';
-import type { PCLPackage, BuildTarget } from '../../build/package-format';
-import { validatePackage } from '../../build/package-format';
-import { parse } from '../../parser';
-import {
-  generatePrompt,
-  generateJSON,
-  generateTypeScript,
-  generateMarkdown,
-} from '../../codegen';
+import { basename, dirname, join, relative } from 'path';
 import type { PersonaDeclaration } from '../../ast';
+import type { BuildTarget, PCLPackage } from '../../build/package-format.js';
+import { validatePackage } from '../../build/package-format.js';
+import {
+  generateJSON,
+  generateMarkdown,
+  generatePrompt,
+  generateTypeScript,
+} from '../../codegen';
+import { parse } from '../../parser';
 
 // Color utilities
 const colors = {
@@ -69,16 +69,22 @@ export async function buildCommand(options: BuildOptions = {}): Promise<void> {
 
   const srcDir = pkg.build?.srcDir || 'src';
   const outDir = pkg.build?.outDir || 'dist';
-  const targets = options.target ? [options.target] : pkg.build?.targets || ['prompt', 'json'];
+  const targets = options.target
+    ? [options.target]
+    : pkg.build?.targets || ['prompt', 'json'];
 
   // Find all PCL files
   const include = pkg.build?.include || ['**/*.pcl'];
   const exclude = pkg.build?.exclude || ['node_modules/**', 'dist/**'];
 
-  const files = await glob(include, {
-    cwd: join(cwd, srcDir),
-    ignore: exclude,
+  // Convert include to a single pattern string
+  const pattern = Array.isArray(include) ? include[0] : include;
+
+  // glob returns an array of matched files
+  const files = await glob(pattern, {
+    ignore: exclude as string | string[],
     absolute: false,
+    cwd: join(cwd, srcDir),
   });
 
   if (files.length === 0) {
@@ -118,21 +124,37 @@ export async function buildCommand(options: BuildOptions = {}): Promise<void> {
 
       // Build for each target
       for (const target of targets) {
-        await buildTarget(program, relativePath, target, cwd, srcDir, outDir, options);
+        await buildTarget(
+          program,
+          relativePath,
+          target,
+          cwd,
+          srcDir,
+          outDir,
+          options
+        );
       }
 
       console.log(color('green', `✓ ${relativePath}`));
       builtCount++;
     } catch (error) {
       console.error(
-        color('red', `✗ ${relativePath}: ${error instanceof Error ? error.message : String(error)}`)
+        color(
+          'red',
+          `✗ ${relativePath}: ${error instanceof Error ? error.message : String(error)}`
+        )
       );
       errorCount++;
     }
   }
 
   // Summary
-  console.log(color('cyan', `\nBuild complete: ${builtCount} succeeded, ${errorCount} failed`));
+  console.log(
+    color(
+      'cyan',
+      `\nBuild complete: ${builtCount} succeeded, ${errorCount} failed`
+    )
+  );
 
   if (errorCount > 0) {
     process.exit(1);
@@ -154,13 +176,15 @@ async function buildTarget(
   const baseName = basename(relativePath, '.pcl');
   const dirName = dirname(relativePath);
 
-  let output: string;
-  let extension: string;
+  let output: string = '';
+  let extension: string = '';
 
   switch (target) {
     case 'prompt': {
       // Generate prompt for each persona
-      const personas = program.statements.filter((s: any) => s.kind === 'PersonaDeclaration');
+      const personas = program.statements.filter(
+        (s: any) => s.kind === 'PersonaDeclaration'
+      );
 
       if (personas.length === 0) {
         if (options.verbose) {
@@ -173,8 +197,13 @@ async function buildTarget(
         output = generatePrompt(persona as PersonaDeclaration);
         extension = '.prompt.txt';
 
-        const personaName = (persona as PersonaDeclaration).name.value;
-        const outputPath = join(cwd, outDir, dirName, `${personaName}${extension}`);
+        const personaName = (persona as PersonaDeclaration).id.name;
+        const outputPath = join(
+          cwd,
+          outDir,
+          dirName,
+          `${personaName}${extension}`
+        );
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, output, 'utf-8');
 

@@ -57,7 +57,8 @@ export class ReferencesProvider {
         while ((index = line.indexOf(word, index)) !== -1) {
           // Check if it's a word boundary
           const before = index > 0 ? line[index - 1] : ' ';
-          const after = index + word.length < line.length ? line[index + word.length] : ' ';
+          const after =
+            index + word.length < line.length ? line[index + word.length] : ' ';
 
           if (!/[\w_]/.test(before) && !/[\w_]/.test(after)) {
             references.push({
@@ -85,7 +86,10 @@ export class ReferencesProvider {
   /**
    * Get word at position
    */
-  private getWordAtPosition(text: string, position: { line: number; character: number }): string | null {
+  private getWordAtPosition(
+    text: string,
+    position: { line: number; character: number }
+  ): string | null {
     const lines = text.split('\n');
     const line = lines[position.line];
     if (!line) {

@@ -3,9 +3,11 @@
 // Tests with real OpenAI API (requires OPENAI_API_KEY)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, test, expect, beforeEach } from 'vitest';
 import { OpenAIProvider } from '../../src/runtime/providers/openai';
-import type { GenerationRequest, Tool } from '../../src/runtime/providers/index';
+import type {
+  GenerationRequest,
+  Tool,
+} from '../../src/runtime/providers/index';
 
 // Skip all tests if API key not configured
 const hasApiKey = !!process.env.OPENAI_API_KEY;
@@ -87,7 +89,8 @@ describeIfApiKey('OpenAIProvider Integration', () => {
     test('includes system prompt in request', async () => {
       const request: GenerationRequest = {
         prompt: 'What is your role?',
-        systemPrompt: 'You are a test assistant who always responds with "TEST ROLE"',
+        systemPrompt:
+          'You are a test assistant who always responds with "TEST ROLE"',
       };
 
       const response = await provider.generateResponse(request);

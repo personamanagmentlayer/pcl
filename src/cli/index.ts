@@ -24,6 +24,7 @@ import { createRuntime } from '../runtime';
 const analyze = (program: any) =>
   ({ ok: true, value: { symbols: {}, errors: [], warnings: [] } }) as any;
 import type { PCLError } from '../types';
+import { format as formatCode, isFormatted } from '../formatter';
 import {
   createCommand,
   searchCommand,
@@ -32,6 +33,8 @@ import {
   publishCommand,
   deleteCommand,
   initCommand,
+  exportCommand as registryExportCommand,
+  importCommand as registryImportCommand,
 } from './commands/registry';
 import {
   importCommand as skillImportCommand,
@@ -40,9 +43,13 @@ import {
   listCommand as skillListCommand,
   infoCommand as skillInfoCommand,
 } from './commands/skills';
+import { skillWizardCommand } from './commands/skills/wizard';
+import { skillLintCommand } from './commands/skills/lint';
 import { initCommand as projectInitCommand } from './commands/init';
 import { buildCommand as projectBuildCommand } from './commands/build';
 import { installCommand as projectInstallCommand } from './commands/install';
+import { completionCommand } from './commands/completion';
+import { initTelemetry } from '../observability/telemetry.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CLI CONFIGURATION
@@ -69,7 +76,7 @@ Commands:
   parse <file>       Parse a PCL file and show AST
   lex <file>         Tokenize a PCL file
   check <file>       Type check a PCL file (semantic analysis)
-  fmt <file>         Format a PCL file
+  fmt <file>         Format a PCL file (auto-formatting with standard style)
   gen <file>         Generate code from a PCL file
   run <file>         Load and run a PCL file
   repl               Start interactive REPL
@@ -87,6 +94,8 @@ Commands:
   registry info <id|slug>    Show artifact details
   registry publish <id|slug> Publish an artifact
   registry delete <id|slug>  Delete an artifact
+  registry export <file>     Export registry data to file
+  registry import <file>     Import registry data from file
 
   Skill Commands:
   skill import <source>      Import skill(s) from SKILL.md format
@@ -94,6 +103,12 @@ Commands:
   skill validate <source>    Validate skill against specification
   skill list                 List all discovered skills
   skill info <name|path>     Show detailed skill information
+  skill wizard               Interactive skill creation wizard
+  skill lint <file>          Lint skill for best practices and quality
+
+  Shell Commands:
+  completion                 Generate shell completion script
+  completion --shell <type>  Generate for specific shell (bash, zsh, fish, powershell)
 
   version            Show version information
   help               Show this help message
@@ -118,6 +133,9 @@ Options:
   --spec <spec>          Specification to validate against (agentskills, claude-code)
   --recursive            Recursively process directories
   --format <format>      Output format (agentskills, claude-code, pcl)
+
+  Completion Options:
+  --shell <type>         Shell type (bash, zsh, fish, powershell)
 
   Project Options:
   --config <path>        Path to pcl.json (default: ./pcl.json)
@@ -150,6 +168,8 @@ Examples:
   pcl registry info code-reviewer
   pcl registry publish code-reviewer
   pcl registry delete old-persona --purge
+  pcl registry export backup.json --compress
+  pcl registry import backup.json --merge
 
   pcl skill import ~/.claude/skills/python-expert/SKILL.md -o ./skills/
   pcl skill import ~/.claude/skills/ -o ./skills/ --recursive
@@ -157,6 +177,11 @@ Examples:
   pcl skill validate ./skills/python-expert/SKILL.md --spec agentskills
   pcl skill list --verbose
   pcl skill info python-expert
+
+  pcl completion --shell bash
+  pcl completion --shell zsh > ~/.zshrc
+  pcl completion --shell fish > ~/.config/fish/completions/pcl.fish
+  pcl completion --shell powershell | Out-String | Invoke-Expression
 `;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -243,7 +268,15 @@ function formatError(
 
 interface CommandOptions {
   output?: string;
-  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list' | 'agentskills' | 'claude-code' | 'pcl';
+  format?:
+    | 'json'
+    | 'yaml'
+    | 'pretty'
+    | 'table'
+    | 'list'
+    | 'agentskills'
+    | 'claude-code'
+    | 'pcl';
   target?: GeneratorTarget;
   quiet?: boolean;
   verbose?: boolean;
@@ -252,6 +285,15 @@ interface CommandOptions {
   backend?: 'memory' | 'json-file' | 'sqlite' | 'postgres';
   publish?: boolean;
   force?: boolean;
+  registry?: string;
+  // Import/Export options
+  compress?: boolean;
+  pretty?: boolean;
+  includeVersions?: boolean;
+  includeDeleted?: boolean;
+  merge?: boolean;
+  skipDuplicates?: boolean;
+  compressed?: boolean;
   purge?: boolean;
   db?: string;
   host?: string;
@@ -268,6 +310,8 @@ interface CommandOptions {
   save?: boolean;
   saveDev?: boolean;
   production?: boolean;
+  // Completion options
+  shell?: 'bash' | 'zsh' | 'fish' | 'powershell';
 }
 
 /**
@@ -559,6 +603,8 @@ function commandFmt(file: string, options: CommandOptions): number {
   }
 
   const source = readFileSync(file, 'utf-8');
+
+  // Parse to check for errors
   const result = parse(source, { source: file });
 
   if (!result.ok) {
@@ -568,9 +614,46 @@ function commandFmt(file: string, options: CommandOptions): number {
     return 1;
   }
 
-  // TODO: Implement pretty printer
-  console.log(color('yellow', '⚠ Formatter not yet implemented'));
-  return 0;
+  // Format the source
+  try {
+    const formatted = formatCode(source, {
+      tabSize: 2,
+      insertSpaces: true,
+      maxLineLength: 100,
+      trailingComma: true,
+      spaceAfterColon: true,
+    });
+
+    // Check if already formatted
+    if (formatted === source || formatted === source + '\n') {
+      if (!options.quiet) {
+        console.log(color('dim', `File already formatted: ${file}`));
+      }
+      return 0;
+    }
+
+    // Write formatted output
+    if (options.output) {
+      writeFileSync(options.output, formatted);
+      console.log(
+        color('green', `✓ Formatted output written to ${options.output}`)
+      );
+    } else {
+      // In-place formatting
+      writeFileSync(file, formatted);
+      console.log(color('green', `✓ Formatted ${file}`));
+    }
+
+    return 0;
+  } catch (error) {
+    console.error(
+      color(
+        'red',
+        `Formatting error: ${error instanceof Error ? error.message : String(error)}`
+      )
+    );
+    return 1;
+  }
 }
 
 /**
@@ -671,10 +754,21 @@ Enter PCL code to parse and evaluate.
 
 function formatAST(
   program: Program,
-  format?: 'json' | 'yaml' | 'pretty' | 'table' | 'list' | 'agentskills' | 'claude-code' | 'pcl'
+  format?:
+    | 'json'
+    | 'yaml'
+    | 'pretty'
+    | 'table'
+    | 'list'
+    | 'agentskills'
+    | 'claude-code'
+    | 'pcl'
 ): string {
   // Default to pretty format for non-AST formats
-  if (!format || !['json', 'yaml', 'pretty', 'table', 'list'].includes(format)) {
+  if (
+    !format ||
+    !['json', 'yaml', 'pretty', 'table', 'list'].includes(format)
+  ) {
     format = 'pretty';
   }
   if (format === 'json') {
@@ -740,6 +834,26 @@ function prettyPrintAST(node: unknown, indent: number = 0): string {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 async function main(): Promise<number> {
+  // Initialize observability for CLI
+  if (process.env.TELEMETRY_ENABLED === 'true') {
+    initTelemetry({
+      serviceName: 'pcl-cli',
+      environment: process.env.NODE_ENV || 'development',
+      metrics: {
+        enabled: false, // Disabled for CLI by default
+      },
+      tracing: {
+        enabled: false, // Disabled for CLI by default
+      },
+      logging: {
+        enabled: true,
+        level:
+          (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') ||
+          'warn',
+      },
+    });
+  }
+
   const args = process.argv.slice(2);
 
   // Parse options
@@ -797,6 +911,8 @@ async function main(): Promise<number> {
       options.saveDev = true;
     } else if (arg === '--production') {
       options.production = true;
+    } else if (arg === '--shell') {
+      options.shell = args[++i] as any;
     } else if (!arg.startsWith('-')) {
       positional.push(arg);
     }
@@ -966,6 +1082,40 @@ async function main(): Promise<number> {
           await deleteCommand(registryArg, registryOptions);
           return 0;
 
+        case 'export':
+          if (!registryArg) {
+            console.error(color('red', 'Error: No output file specified'));
+            return 1;
+          }
+          registryOptions.output = registryArg;
+          if (options.compress !== undefined)
+            registryOptions.compress = options.compress;
+          if (options.pretty !== undefined)
+            registryOptions.pretty = options.pretty;
+          if (options.includeVersions !== undefined)
+            registryOptions.includeVersions = options.includeVersions;
+          if (options.includeDeleted !== undefined)
+            registryOptions.includeDeleted = options.includeDeleted;
+          if (options.registry) registryOptions.registry = options.registry;
+          await registryExportCommand.handler(registryOptions as any);
+          return 0;
+
+        case 'import':
+          if (!registryArg) {
+            console.error(color('red', 'Error: No input file specified'));
+            return 1;
+          }
+          registryOptions.input = registryArg;
+          if (options.merge !== undefined)
+            registryOptions.merge = options.merge;
+          if (options.skipDuplicates !== undefined)
+            registryOptions.skipDuplicates = options.skipDuplicates;
+          if (options.compressed !== undefined)
+            registryOptions.compressed = options.compressed;
+          if (options.registry) registryOptions.registry = options.registry;
+          await registryImportCommand.handler(registryOptions as any);
+          return 0;
+
         default:
           console.error(
             color(
@@ -974,7 +1124,7 @@ async function main(): Promise<number> {
             )
           );
           console.log(
-            'Available registry commands: init, create, search, list, info, publish, delete'
+            'Available registry commands: init, create, search, list, info, publish, delete, export, import'
           );
           return 1;
       }
@@ -1024,10 +1174,25 @@ async function main(): Promise<number> {
 
         case 'info':
           if (!skillArg) {
-            console.error(color('red', 'Error: No skill name or path specified'));
+            console.error(
+              color('red', 'Error: No skill name or path specified')
+            );
             return 1;
           }
           await skillInfoCommand(skillArg, skillOptions);
+          return 0;
+
+        case 'wizard':
+          await skillWizardCommand();
+          return 0;
+
+        case 'lint':
+          if (!skillArg) {
+            console.error(color('red', 'Error: No skill file specified'));
+            return 1;
+          }
+          if (options.strict) skillOptions.strict = options.strict;
+          await skillLintCommand(skillArg, skillOptions);
           return 0;
 
         default:
@@ -1038,10 +1203,19 @@ async function main(): Promise<number> {
             )
           );
           console.log(
-            'Available skill commands: import, export, validate, list, info'
+            'Available skill commands: import, export, validate, list, info, wizard, lint'
           );
           return 1;
       }
+    }
+
+    case 'completion': {
+      const completionOptions: any = {};
+      if (options.shell) completionOptions.shell = options.shell;
+      if (options.verbose) completionOptions.verbose = options.verbose;
+
+      await completionCommand(completionOptions);
+      return 0;
     }
 
     case 'version':

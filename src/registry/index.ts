@@ -30,3 +30,27 @@ export type { SQLiteConfig } from './backends/sqlite';
 
 // Legacy exports (for backwards compatibility)
 export { FileBackend } from './file-backend';
+
+// Phase 1.2C: Caching Layer
+export { RedisCache } from './cache/redis-cache';
+export type { RedisCacheConfig } from './cache/redis-cache';
+export { MemoryCache } from './cache/memory-cache';
+export type { MemoryCacheConfig } from './cache/memory-cache';
+export { MultiLayerCache } from './cache/multi-layer-cache';
+export type { MultiLayerCacheConfig } from './cache/multi-layer-cache';
+
+// Phase 1.2C: Search
+export { ElasticsearchBackend } from './search/elasticsearch';
+export type {
+  ElasticsearchConfig,
+  SearchAnalytics,
+} from './search/elasticsearch';
+
+// Phase 1.2C: Versioning
+export { SemverManager } from './version/semver-manager';
+export type {
+  VersionInfo,
+  VersionHistory,
+  VersionRollback,
+  VersionConstraint,
+} from './version/semver-manager';

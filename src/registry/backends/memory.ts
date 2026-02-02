@@ -45,7 +45,10 @@ class MemoryTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already committed`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -53,7 +56,10 @@ class MemoryTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already rolled back`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -66,7 +72,10 @@ class MemoryTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already committed`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -74,7 +83,10 @@ class MemoryTransaction implements Transaction {
       return Err({
         code: 'TRANSACTION_ERROR',
         message: `Transaction ${this.id} already rolled back`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -138,12 +150,17 @@ export class MemoryBackend implements IBackend {
   //                              CRUD OPERATIONS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  async create(artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>): Promise<Result<Artifact>> {
+  async create(
+    artifact: Omit<Artifact, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Result<Artifact>> {
     if (!this.connected) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -156,7 +173,10 @@ export class MemoryBackend implements IBackend {
         return Err({
           code: 'DUPLICATE',
           message: `Artifact with slug "${artifact.metadata.slug}" already exists`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -180,7 +200,10 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -188,12 +211,18 @@ export class MemoryBackend implements IBackend {
     return Ok(artifact || null);
   }
 
-  async update(id: string, updates: Partial<Artifact>): Promise<Result<Artifact>> {
+  async update(
+    id: string,
+    updates: Partial<Artifact>
+  ): Promise<Result<Artifact>> {
     if (!this.connected) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -202,20 +231,32 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'NOT_FOUND',
         message: `Artifact with ID "${id}" not found`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
     // Check for duplicate slug if updating
-    if (updates.metadata?.slug && updates.metadata.slug !== existing.metadata.slug) {
+    if (
+      updates.metadata?.slug &&
+      updates.metadata.slug !== existing.metadata.slug
+    ) {
       const duplicate = Array.from(this.artifacts.values()).find(
-        (a) => a.metadata.slug === updates.metadata!.slug && a.id !== id && !a.deleted
+        (a) =>
+          a.metadata.slug === updates.metadata!.slug &&
+          a.id !== id &&
+          !a.deleted
       );
       if (duplicate) {
         return Err({
           code: 'DUPLICATE',
           message: `Artifact with slug "${updates.metadata.slug}" already exists`,
-          span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+          span: {
+            start: { line: 0, column: 0, offset: 0 },
+            end: { line: 0, column: 0, offset: 0 },
+          },
         });
       }
     }
@@ -247,7 +288,10 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -272,7 +316,10 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -291,7 +338,10 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -321,7 +371,10 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -336,7 +389,10 @@ export class MemoryBackend implements IBackend {
   }
 
   async findOne(query: Query): Promise<Result<Artifact | null>> {
-    const result = await this.find({ ...query, pagination: { offset: 0, limit: 1 } });
+    const result = await this.find({
+      ...query,
+      pagination: { offset: 0, limit: 1 },
+    });
     if (!result.ok) {
       return Err(result.error);
     }
@@ -348,12 +404,17 @@ export class MemoryBackend implements IBackend {
   //                              VERSION OPERATIONS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  async createVersion(version: Omit<Version, 'createdAt'>): Promise<Result<Version>> {
+  async createVersion(
+    version: Omit<Version, 'createdAt'>
+  ): Promise<Result<Version>> {
     if (!this.connected) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -363,18 +424,26 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'NOT_FOUND',
         message: `Artifact with ID "${version.artifactId}" not found`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
     // Check for duplicate version
     const existingVersions = this.versions.get(version.artifactId) || [];
-    const duplicate = existingVersions.find((v) => v.version === version.version);
+    const duplicate = existingVersions.find(
+      (v) => v.version === version.version
+    );
     if (duplicate) {
       return Err({
         code: 'DUPLICATE',
         message: `Version "${version.version}" already exists for artifact "${version.artifactId}"`,
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -394,22 +463,33 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
     const versions = this.versions.get(artifactId) || [];
     // Sort by version (descending)
-    const sorted = [...versions].sort((a, b) => b.version.localeCompare(a.version));
+    const sorted = [...versions].sort((a, b) =>
+      b.version.localeCompare(a.version)
+    );
     return Ok(sorted);
   }
 
-  async getVersion(artifactId: string, version: string): Promise<Result<Version | null>> {
+  async getVersion(
+    artifactId: string,
+    version: string
+  ): Promise<Result<Version | null>> {
     if (!this.connected) {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -427,7 +507,10 @@ export class MemoryBackend implements IBackend {
       return Err({
         code: 'CONNECTION_ERROR',
         message: 'Backend not connected',
-        span: { start: { line: 0, column: 0, offset: 0 }, end: { line: 0, column: 0, offset: 0 } },
+        span: {
+          start: { line: 0, column: 0, offset: 0 },
+          end: { line: 0, column: 0, offset: 0 },
+        },
       });
     }
 
@@ -441,7 +524,10 @@ export class MemoryBackend implements IBackend {
   //                              HELPER METHODS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  private applyFilters(artifacts: Artifact[], filter: Query['filter']): Artifact[] {
+  private applyFilters(
+    artifacts: Artifact[],
+    filter: Query['filter']
+  ): Artifact[] {
     if (!filter) return artifacts;
 
     return artifacts.filter((artifact) => {
@@ -455,15 +541,23 @@ export class MemoryBackend implements IBackend {
 
       // Tags filter (OR logic)
       if (filter.tags && filter.tags.length > 0) {
-        const hasMatchingTag = filter.tags.some((tag) => artifact.metadata.tags.includes(tag));
+        const hasMatchingTag = filter.tags.some((tag) =>
+          artifact.metadata.tags.includes(tag)
+        );
         if (!hasMatchingTag) {
           return false;
         }
       }
 
       // Skills filter (OR logic)
-      if (filter.skills && filter.skills.length > 0 && artifact.metadata.skills) {
-        const hasMatchingSkill = filter.skills.some((skill) => artifact.metadata.skills!.includes(skill));
+      if (
+        filter.skills &&
+        filter.skills.length > 0 &&
+        artifact.metadata.skills
+      ) {
+        const hasMatchingSkill = filter.skills.some((skill) =>
+          artifact.metadata.skills!.includes(skill)
+        );
         if (!hasMatchingSkill) {
           return false;
         }
@@ -475,12 +569,18 @@ export class MemoryBackend implements IBackend {
       }
 
       // Organization filter
-      if (filter.organization && artifact.metadata.organization !== filter.organization) {
+      if (
+        filter.organization &&
+        artifact.metadata.organization !== filter.organization
+      ) {
         return false;
       }
 
       // Published filter
-      if (filter.published !== undefined && artifact.published !== filter.published) {
+      if (
+        filter.published !== undefined &&
+        artifact.published !== filter.published
+      ) {
         return false;
       }
 

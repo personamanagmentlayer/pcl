@@ -8,12 +8,13 @@ import {
   Connection,
   Diagnostic,
   DiagnosticSeverity,
-  TextDocuments,
 } from 'vscode-languageserver/node';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import { DocumentManager } from './document-manager';
-import { convertErrorsToDiagnostics, createGenericDiagnostic } from './error-converter';
+import {
+  convertErrorsToDiagnostics,
+  createGenericDiagnostic,
+} from './error-converter';
 
 /**
  * Diagnostics provider manages diagnostic publishing
@@ -71,7 +72,9 @@ export class DiagnosticsProvider {
           const parseResult = parse(document.getText(), { source: uri });
 
           if (!parseResult.ok) {
-            const parseDiagnostics = convertErrorsToDiagnostics(parseResult.error);
+            const parseDiagnostics = convertErrorsToDiagnostics(
+              parseResult.error
+            );
             diagnostics.push(...parseDiagnostics);
           }
         }
@@ -81,13 +84,17 @@ export class DiagnosticsProvider {
       if (docInfo.analysis) {
         // Add errors
         if (docInfo.analysis.errors && docInfo.analysis.errors.length > 0) {
-          const errorDiagnostics = convertErrorsToDiagnostics(docInfo.analysis.errors);
+          const errorDiagnostics = convertErrorsToDiagnostics(
+            docInfo.analysis.errors
+          );
           diagnostics.push(...errorDiagnostics);
         }
 
         // Add warnings
         if (docInfo.analysis.warnings && docInfo.analysis.warnings.length > 0) {
-          const warningDiagnostics = convertErrorsToDiagnostics(docInfo.analysis.warnings);
+          const warningDiagnostics = convertErrorsToDiagnostics(
+            docInfo.analysis.warnings
+          );
           diagnostics.push(...warningDiagnostics);
         }
       }

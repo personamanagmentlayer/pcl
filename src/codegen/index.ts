@@ -38,21 +38,25 @@ export type PromptProvider =
 export interface GeneratorOptions {
   target: GeneratorTarget;
   provider?: PromptProvider; // For prompt generation
+  language?: string; // Language for prompt generation (default: 'en')
   minify?: boolean;
   includeComments?: boolean;
   includeMetadata?: boolean;
   indentSize?: number;
   lineWidth?: number;
+  maxTokens?: number; // Maximum token count for optimization
 }
 
 const DEFAULT_OPTIONS: Required<GeneratorOptions> = {
   target: 'prompt',
   provider: 'generic',
+  language: 'en',
   minify: false,
   includeComments: true,
   includeMetadata: true,
   indentSize: 2,
   lineWidth: 80,
+  maxTokens: 0, // 0 = no limit
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -461,7 +465,7 @@ class PromptGenerator {
     for (const member of persona.body.members) {
       switch (member.kind) {
         case 'PropertyDeclaration': {
-          const prop = member as AST.PropertyDeclaration;
+          const prop = member;
           if (
             prop.name.name === 'intent' &&
             prop.initializer?.kind === 'StringLiteral'
@@ -472,25 +476,25 @@ class PromptGenerator {
             prop.name.name === 'tone' &&
             prop.initializer?.kind === 'Identifier'
           ) {
-            tone = (prop.initializer as AST.Identifier).name;
+            tone = prop.initializer.name;
           }
           if (
             prop.name.name === 'depth' &&
             prop.initializer?.kind === 'Identifier'
           ) {
-            depth = (prop.initializer as AST.Identifier).name;
+            depth = prop.initializer.name;
           }
           if (
             prop.name.name === 'verbosity' &&
             prop.initializer?.kind === 'Identifier'
           ) {
-            verbosity = (prop.initializer as AST.Identifier).name;
+            verbosity = prop.initializer.name;
           }
           break;
         }
 
         case 'SkillBlock': {
-          const block = member as AST.SkillBlock;
+          const block = member;
           for (const item of block.items) {
             if (item.kind === 'StringSkill') {
               skills.push((item as { value: string }).value);
@@ -502,7 +506,7 @@ class PromptGenerator {
         }
 
         case 'ConstraintBlock': {
-          const block = member as AST.ConstraintBlock;
+          const block = member;
           for (const item of block.items) {
             if (item.kind === 'StringConstraint') {
               constraints.push((item as { value: string }).value);
@@ -512,7 +516,7 @@ class PromptGenerator {
         }
 
         case 'TagBlock': {
-          const block = member as AST.TagBlock;
+          const block = member;
           for (const item of block.items) {
             if (item.kind === 'StringTag') {
               tags.push((item as { value: string }).value);
@@ -560,7 +564,7 @@ class PromptGenerator {
     for (const member of team.body.members) {
       switch (member.kind) {
         case 'TeamMembersDeclaration': {
-          const decl = member as AST.TeamMembersDeclaration;
+          const decl = member;
           for (const ref of decl.members) {
             const name = this.getPersonaRefName(ref);
             if (name) members.push(name);
@@ -569,13 +573,13 @@ class PromptGenerator {
         }
 
         case 'TeamPrimaryDeclaration': {
-          const decl = member as AST.TeamPrimaryDeclaration;
+          const decl = member;
           primary = this.getPersonaRefName(decl.primary);
           break;
         }
 
         case 'TeamMergeDeclaration': {
-          const decl = member as AST.TeamMergeDeclaration;
+          const decl = member;
           if (decl.mode.kind === 'SimpleMergeMode') {
             mergeMode = decl.mode.mode;
           }
@@ -583,7 +587,7 @@ class PromptGenerator {
         }
 
         case 'TeamQuorumDeclaration': {
-          const decl = member as AST.TeamQuorumDeclaration;
+          const decl = member;
           quorum = {
             required: decl.required.value,
             total: decl.total.value,
@@ -706,16 +710,16 @@ class JSONGenerator {
     for (const stmt of program.statements) {
       switch (stmt.kind) {
         case 'PersonaDeclaration':
-          this.addPersona(config.personas, stmt as AST.PersonaDeclaration);
+          this.addPersona(config.personas, stmt);
           break;
         case 'TeamDeclaration':
-          this.addTeam(config.teams, stmt as AST.TeamDeclaration);
+          this.addTeam(config.teams, stmt);
           break;
         case 'WorkflowDeclaration':
-          this.addWorkflow(config.workflows, stmt as AST.WorkflowDeclaration);
+          this.addWorkflow(config.workflows, stmt);
           break;
         case 'SkillDeclaration':
-          this.addSkill(config.skills, stmt as AST.SkillDeclaration);
+          this.addSkill(config.skills, stmt);
           break;
       }
     }
@@ -760,7 +764,7 @@ class JSONGenerator {
         }
 
         case 'SkillBlock': {
-          const block = member as AST.SkillBlock;
+          const block = member;
           persona.skills = block.items
             .map((item) => {
               if (item.kind === 'StringSkill') {
@@ -776,7 +780,7 @@ class JSONGenerator {
         }
 
         case 'ConstraintBlock': {
-          const block = member as AST.ConstraintBlock;
+          const block = member;
           persona.constraints = block.items
             .map((item) => {
               if (item.kind === 'StringConstraint') {
@@ -789,7 +793,7 @@ class JSONGenerator {
         }
 
         case 'TagBlock': {
-          const block = member as AST.TagBlock;
+          const block = member;
           persona.tags = block.items
             .map((item) => {
               if (item.kind === 'StringTag') {
@@ -805,15 +809,12 @@ class JSONGenerator {
         }
 
         case 'MethodDeclaration': {
-          const method = member as AST.MethodDeclaration;
+          const method = member;
           if (!persona.methods) persona.methods = {};
           persona.methods[method.name.name] = {
             async: method.async,
             parameters: method.parameters.map((p) => ({
-              name:
-                p.name.kind === 'Identifier'
-                  ? (p.name as AST.Identifier).name
-                  : null,
+              name: p.name.kind === 'Identifier' ? p.name.name : null,
               optional: p.optional,
             })),
           };
@@ -886,23 +887,17 @@ class JSONGenerator {
     for (const member of decl.body.members) {
       switch (member.kind) {
         case 'WorkflowInputDeclaration': {
-          workflow.input = this.typeNodeToString(
-            (member as AST.WorkflowInputDeclaration).type
-          );
+          workflow.input = this.typeNodeToString(member.type);
           break;
         }
 
         case 'WorkflowOutputDeclaration': {
-          workflow.output = this.typeNodeToString(
-            (member as AST.WorkflowOutputDeclaration).type
-          );
+          workflow.output = this.typeNodeToString(member.type);
           break;
         }
 
         case 'WorkflowStepsDeclaration': {
-          workflow.steps = this.workflowExprToObject(
-            (member as AST.WorkflowStepsDeclaration).steps
-          );
+          workflow.steps = this.workflowExprToObject(member.steps);
           break;
         }
 
@@ -977,7 +972,7 @@ class JSONGenerator {
             (e): e is AST.Expression => e !== null && e.kind !== 'SpreadElement'
           )
           .map((e) => this.extractValue(e));
-      case 'ObjectExpression':
+      case 'ObjectExpression': {
         const obj: any = {};
         for (const prop of (expr as AST.ObjectExpression).properties) {
           if (prop.kind === 'ObjectKeyValueProperty') {
@@ -992,6 +987,7 @@ class JSONGenerator {
           }
         }
         return obj;
+      }
       default:
         return undefined;
     }
@@ -1543,9 +1539,7 @@ class YAMLGenerator {
         const merge = expr as AST.WorkflowMergeExpr;
         lines.push(`${indent}type: merge`);
         const mode =
-          merge.mode.kind === 'SimpleMergeMode'
-            ? merge.mode.mode
-            : 'custom';
+          merge.mode.kind === 'SimpleMergeMode' ? merge.mode.mode : 'custom';
         lines.push(`${indent}mode: ${mode}`);
         break;
       }
@@ -1607,7 +1601,7 @@ class YAMLGenerator {
             (e): e is AST.Expression => e !== null && e.kind !== 'SpreadElement'
           )
           .map((e) => this.extractValue(e));
-      case 'ObjectExpression':
+      case 'ObjectExpression': {
         const obj: any = {};
         for (const prop of (expr as AST.ObjectExpression).properties) {
           if (prop.kind === 'ObjectKeyValueProperty') {
@@ -1622,6 +1616,7 @@ class YAMLGenerator {
           }
         }
         return obj;
+      }
       default:
         return undefined;
     }
@@ -1801,9 +1796,7 @@ class TypeScriptGenerator {
     // Extract parent if extends
     if (decl.extends.length > 0) {
       const firstExtends = decl.extends[0];
-      parentName = firstExtends.typeName.parts
-        .map((p) => p.name)
-        .join('.');
+      parentName = firstExtends.typeName.parts.map((p) => p.name).join('.');
     }
 
     for (const member of decl.body.members) {
@@ -2011,7 +2004,9 @@ class TypeScriptGenerator {
     // Generate custom methods
     for (const method of methods) {
       this.blank();
-      this.line(`/** ${method.name.name} method (custom implementation needed) */`);
+      this.line(
+        `/** ${method.name.name} method (custom implementation needed) */`
+      );
       const params = method.parameters
         .map((p) => {
           const pName =
@@ -2032,7 +2027,9 @@ class TypeScriptGenerator {
       this.line(`${async}${method.name.name}(${params}): ${returnType} {`);
       this.indent();
       this.line(`// TODO: Implement custom ${method.name.name} logic`);
-      this.line(`throw new Error("Method ${method.name.name} not implemented");`);
+      this.line(
+        `throw new Error("Method ${method.name.name} not implemented");`
+      );
       this.dedent();
       this.line('}');
     }
@@ -2257,7 +2254,9 @@ class TypeScriptGenerator {
     // Generate workflow class
     this.line(`export class ${name}Workflow {`);
     this.indent();
-    this.line(`private status: 'pending' | 'running' | 'completed' | 'failed' = 'pending';`);
+    this.line(
+      `private status: 'pending' | 'running' | 'completed' | 'failed' = 'pending';`
+    );
     this.line(`private currentStep = 0;`);
     this.line(`private result: ${outputType} | null = null;`);
     this.line(`private error: Error | null = null;`);
@@ -3056,7 +3055,6 @@ class MarkdownGenerator {
       case 'WorkflowLoopExpr': {
         const loop = expr as AST.WorkflowLoopExpr;
         const loopId = `${id}_loop`;
-        const bodyId = `${id}_body`;
         const exitId = `${id}_exit`;
 
         const loopType = loop.loopType === 'while' ? 'While' : 'Until';
@@ -3091,9 +3089,7 @@ class MarkdownGenerator {
         const merge = expr as AST.WorkflowMergeExpr;
         const mergeId = `${id}_merge`;
         const mode =
-          merge.mode.kind === 'SimpleMergeMode'
-            ? merge.mode.mode
-            : 'custom';
+          merge.mode.kind === 'SimpleMergeMode' ? merge.mode.mode : 'custom';
 
         nodes.push(`    ${mergeId}[Merge: ${mode}]`);
 
@@ -3225,7 +3221,7 @@ export function generate(
   options: GeneratorOptions
 ): string {
   switch (options.target) {
-    case 'prompt':
+    case 'prompt': {
       // For prompt, generate for first persona
       const personas = program.statements.filter(
         (s) => s.kind === 'PersonaDeclaration'
@@ -3234,6 +3230,7 @@ export function generate(
         return generatePrompt(personas[0] as AST.PersonaDeclaration, options);
       }
       return '';
+    }
     case 'json':
       return generateJSON(program, options);
     case 'typescript':
@@ -3247,3 +3244,9 @@ export function generate(
       throw new Error(`Unknown target: ${options.target}`);
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//                              PROMPT ENHANCEMENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export * from './prompt-enhancements.js';

@@ -11,14 +11,23 @@ import {
   MarkupKind,
 } from 'vscode-languageserver/node';
 
-import { PCL_KEYWORDS, getPropertiesForType, MERGE_STRATEGIES, MODEL_NAMES, THINKING_STYLES, RESPONSE_FORMATS } from './keywords';
-import { PCL_SNIPPETS, getSnippetsForContext } from './snippets';
-import { CompletionContext, PCLKeyword, SnippetDefinition, SymbolInfo } from './completion-types';
+import { CompletionContext, PCLKeyword, SymbolInfo } from './completion-types';
+import {
+  MERGE_STRATEGIES,
+  MODEL_NAMES,
+  PCL_KEYWORDS,
+  RESPONSE_FORMATS,
+  THINKING_STYLES,
+  getPropertiesForType,
+} from './keywords';
+import { getSnippetsForContext } from './snippets';
 
 /**
  * Generate completion items for keywords
  */
-export function generateKeywordCompletions(context: CompletionContext): CompletionItem[] {
+export function generateKeywordCompletions(
+  context: CompletionContext
+): CompletionItem[] {
   const items: CompletionItem[] = [];
 
   for (const keyword of PCL_KEYWORDS) {
@@ -49,7 +58,9 @@ export function generateKeywordCompletions(context: CompletionContext): Completi
 /**
  * Generate completion items for snippets
  */
-export function generateSnippetCompletions(context: CompletionContext): CompletionItem[] {
+export function generateSnippetCompletions(
+  context: CompletionContext
+): CompletionItem[] {
   const items: CompletionItem[] = [];
   const contextType = context.declarationType || 'global';
   const snippets = getSnippetsForContext(contextType);
@@ -77,7 +88,9 @@ export function generateSnippetCompletions(context: CompletionContext): Completi
 /**
  * Generate completion items for properties
  */
-export function generatePropertyCompletions(context: CompletionContext): CompletionItem[] {
+export function generatePropertyCompletions(
+  context: CompletionContext
+): CompletionItem[] {
   const items: CompletionItem[] = [];
 
   if (!context.declarationType) {
@@ -91,7 +104,10 @@ export function generatePropertyCompletions(context: CompletionContext): Complet
       label: property,
       kind: CompletionItemKind.Property,
       detail: `Property of ${context.declarationType}`,
-      documentation: getPropertyDocumentation(context.declarationType, property),
+      documentation: getPropertyDocumentation(
+        context.declarationType,
+        property
+      ),
       insertText: `${property}: `,
       sortText: `2_${property}`, // Lower priority than keywords/snippets
     };
@@ -105,7 +121,9 @@ export function generatePropertyCompletions(context: CompletionContext): Complet
 /**
  * Generate completion items for symbols
  */
-export function generateSymbolCompletions(symbols: SymbolInfo[]): CompletionItem[] {
+export function generateSymbolCompletions(
+  symbols: SymbolInfo[]
+): CompletionItem[] {
   const items: CompletionItem[] = [];
 
   for (const symbol of symbols) {
@@ -156,7 +174,9 @@ export function generateEnumCompletions(
 /**
  * Get completion items for specific property values
  */
-export function getPropertyValueCompletions(property: string): CompletionItem[] {
+export function getPropertyValueCompletions(
+  property: string
+): CompletionItem[] {
   switch (property) {
     case 'merge':
       return generateEnumCompletions('merge', MERGE_STRATEGIES);
@@ -218,7 +238,10 @@ function getSymbolCompletionKind(symbolType: string): CompletionItemKind {
 /**
  * Get documentation for property
  */
-function getPropertyDocumentation(declarationType: string, property: string): string {
+function getPropertyDocumentation(
+  declarationType: string,
+  property: string
+): string {
   const docs: Record<string, Record<string, string>> = {
     persona: {
       name: 'Display name of the persona',
@@ -235,7 +258,8 @@ function getPropertyDocumentation(declarationType: string, property: string): st
       metadata: 'Metadata block with category, description, tags, etc.',
       members: 'Array of persona references that are team members',
       primary: 'Primary persona for decision-making',
-      merge: 'Strategy for merging responses (Primary, Consensus, Voting, etc.)',
+      merge:
+        'Strategy for merging responses (Primary, Consensus, Voting, etc.)',
       quorum: 'Required number of members for consensus (e.g., 2/3)',
       conflict: 'Priority order for conflict resolution',
     },

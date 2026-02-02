@@ -63,6 +63,20 @@ export {
   Runtime,
   TeamInstance,
   WorkflowExecutor,
+  // Phase 1.2: State Machine
+  createStateMachine,
+  StateMachine,
+  StateMachineBuilder,
+  // Phase 1.2: Team Edge Cases
+  createTeamProcessor,
+  createTeamValidator,
+  TeamProcessor,
+  TeamValidator,
+  // Phase 1.2: Snapshot/Restore
+  createSnapshotManager,
+  createRestoreManager,
+  SnapshotManager,
+  RestoreManager,
 } from './runtime';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -90,6 +104,13 @@ export type {
 } from './runtime/providers';
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//                              FORMATTER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export { format, isFormatted, getFormattingEdits } from './formatter';
+export type { FormatOptions, FormattingEdit } from './formatter';
+
+// ═══════════════════════════════════════════════════════════════════════════════
 //                              CODE GENERATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -108,6 +129,12 @@ export {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export * from './registry';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//                              MCP (Model Context Protocol)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export * from './mcp';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //                              CONVENIENCE API

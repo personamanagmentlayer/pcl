@@ -25,7 +25,9 @@ export class DocumentSymbolsProvider {
   /**
    * Provide document symbols
    */
-  async provideDocumentSymbols(params: DocumentSymbolParams): Promise<DocumentSymbol[] | null> {
+  async provideDocumentSymbols(
+    params: DocumentSymbolParams
+  ): Promise<DocumentSymbol[] | null> {
     const uri = params.textDocument.uri;
 
     try {

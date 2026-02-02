@@ -227,6 +227,8 @@ export const PCL_SNIPPETS: SnippetDefinition[] = [
 export function getSnippetsForContext(context: string): SnippetDefinition[] {
   return PCL_SNIPPETS.filter(
     (snippet) =>
-      !snippet.contexts || snippet.contexts.includes(context) || snippet.contexts.includes('global')
+      !snippet.contexts ||
+      snippet.contexts.includes(context) ||
+      snippet.contexts.includes('global')
   ).sort((a, b) => (a.sortPriority || 100) - (b.sortPriority || 100));
 }

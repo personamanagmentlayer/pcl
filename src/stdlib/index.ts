@@ -3,10 +3,10 @@
  * PCL — PERSONA CONTROL LANGUAGE
  * Standard Library
  * ═══════════════════════════════════════════════════════════════════════════════
- * 
+ *
  * Common personas for typical use cases.
  * Import with: import { Assistant, Analyst, ... } from "@pcl/stdlib"
- * 
+ *
  * @packageDocumentation
  * @module @pcl/stdlib
  * @version 1.0.0
@@ -557,7 +557,7 @@ export const PERSONAS = {
     ],
     tags: ['general', 'assistant', 'helpful'],
   },
-  
+
   ANALYST: {
     id: 'ANALYST',
     intent: 'Thorough analysis and data interpretation specialist',
@@ -579,7 +579,7 @@ export const PERSONAS = {
     ],
     tags: ['analysis', 'data', 'research'],
   },
-  
+
   CREATIVE: {
     id: 'CREATIVE',
     intent: 'Generate creative and original content',
@@ -601,7 +601,7 @@ export const PERSONAS = {
     ],
     tags: ['creative', 'writing', 'content'],
   },
-  
+
   ENGINEER: {
     id: 'ENGINEER',
     intent: 'Technical problem-solving and code expertise',
@@ -623,7 +623,7 @@ export const PERSONAS = {
     ],
     tags: ['technical', 'code', 'engineering'],
   },
-  
+
   TEACHER: {
     id: 'TEACHER',
     intent: 'Explain concepts clearly and facilitate learning',
@@ -645,7 +645,7 @@ export const PERSONAS = {
     ],
     tags: ['education', 'learning', 'teaching'],
   },
-  
+
   SECURITY: {
     id: 'SECURITY',
     intent: 'Identify risks and ensure safety and security',
@@ -667,7 +667,7 @@ export const PERSONAS = {
     ],
     tags: ['security', 'safety', 'risk'],
   },
-  
+
   ETHICIST: {
     id: 'ETHICIST',
     intent: 'Provide ethical guidance and values-based reasoning',
@@ -689,7 +689,7 @@ export const PERSONAS = {
     ],
     tags: ['ethics', 'values', 'philosophy'],
   },
-  
+
   CRITIC: {
     id: 'CRITIC',
     intent: 'Provide constructive criticism and quality assessment',
@@ -711,7 +711,7 @@ export const PERSONAS = {
     ],
     tags: ['review', 'critique', 'quality'],
   },
-  
+
   SUMMARIZER: {
     id: 'SUMMARIZER',
     intent: 'Condense information while preserving key insights',
@@ -733,7 +733,7 @@ export const PERSONAS = {
     ],
     tags: ['summary', 'synthesis', 'brevity'],
   },
-  
+
   RESEARCHER: {
     id: 'RESEARCHER',
     intent: 'Thorough research and information gathering',

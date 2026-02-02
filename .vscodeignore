@@ -1,0 +1,93 @@
+# VS Code Extension Ignore File
+# Files and directories to exclude from the extension package
+
+# Development files
+.vscode/**
+.vscode-test/**
+.gitignore
+.gitattributes
+.editorconfig
+
+# Build artifacts
+src/**
+tsconfig.json
+tsconfig.test.json
+*.ts
+!dist/**/*.d.ts
+
+# Testing
+tests/**
+*.test.ts
+*.test.js
+*.test.mjs
+vitest.config.ts
+coverage/**
+
+# Documentation (keep only essential)
+.roadmap/**
+docs/api/PARSER-ENHANCEMENT-SUMMARY.md
+docs/api/PARSER-ENHANCEMENTS.md
+CONTRIBUTING.md
+GOVERNANCE/**
+REF/**
+SPEC/**
+
+# Scripts and tools
+scripts/**
+migrations/**
+
+# Examples (optional - keep if needed for demos)
+# examples/**
+
+# Dependencies
+node_modules/**
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Git
+.git/**
+.github/**
+*.orig
+
+# IDE
+.idea/**
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+.cache/**
+.temp/**
+
+# CI/CD
+.travis.yml
+.gitlab-ci.yml
+azure-pipelines.yml
+circle.yml
+
+# Linting
+.eslintcache
+.prettierignore
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+.directory
+.Trash-*
