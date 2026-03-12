@@ -1,27 +1,22 @@
 ---
 name: databricks-expert
-version: 1.0.0
-description: Expert-level Databricks platform, Apache Spark, Delta Lake, MLflow, notebooks, and cluster management
-category: data
-author: PCL Team
+description: Expert-level Databricks platform, Apache Spark, Delta Lake, MLflow, notebooks, and cluster management. Use when working with databricks, asking about databricks concepts, or reviewing databricks code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - databricks
   - spark
   - delta-lake
   - mlflow
   - lakehouse
   - pyspark
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-requirements:
-  databricks-sdk: ">=0.20.0"
-  pyspark: ">=3.4.0"
+  requirements:
+    databricks-sdk: '>=0.20.0'
+    pyspark: '>=3.4.0'
 ---
 
 # Databricks Expert

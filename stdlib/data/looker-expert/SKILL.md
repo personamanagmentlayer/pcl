@@ -1,26 +1,21 @@
 ---
 name: looker-expert
-version: 1.0.0
-description: Expert-level Looker BI, LookML, explores, dimensions, measures, dashboards, and data modeling
-category: data
-author: PCL Team
+description: Expert-level Looker BI, LookML, explores, dimensions, measures, dashboards, and data modeling. Use when working with looker, asking about looker concepts, or reviewing looker code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - looker
   - lookml
   - bi
   - analytics
   - dashboards
   - data-modeling
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-requirements:
-  looker-sdk: ">=23.0.0"
+  requirements:
+    looker-sdk: '>=23.0.0'
 ---
 
 # Looker Expert

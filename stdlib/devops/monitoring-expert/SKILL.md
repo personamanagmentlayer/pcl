@@ -1,14 +1,19 @@
 ---
 name: monitoring-expert
-version: 1.0.0
-description: Expert-level monitoring and observability with Prometheus, Grafana, logging, and alerting
-category: devops
-tags: [monitoring, observability, prometheus, grafana, logging, metrics, alerting, traces]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(docker:*, kubectl:*, promtool:*)
+description: Expert-level monitoring and observability with Prometheus, Grafana, logging, and alerting. Use when working with monitoring, asking about monitoring concepts, or reviewing monitoring code and configurations
+allowed-tools: Read, Write, Edit, Bash(docker:*, kubectl:*, promtool:*)
+metadata:
+  version: 1.0.0
+  category: devops
+  tags:
+  - monitoring
+  - observability
+  - prometheus
+  - grafana
+  - logging
+  - metrics
+  - alerting
+  - traces
 ---
 
 # Monitoring Expert

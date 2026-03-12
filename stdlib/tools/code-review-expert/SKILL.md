@@ -1,23 +1,18 @@
 ---
 name: code-review-expert
 description: Expert-level code review focusing on quality, security, performance, and maintainability. Use this skill for conducting thorough code reviews, identifying issues, and providing constructive feedback.
-tags: ['code-review', 'quality', 'best-practices', 'collaboration']
-allowed-tools:
-  - Read
-  - Write
+allowed-tools: Read, Write
+compatibility: agentskills, claude-code
 license: Apache-2.0
-compatibility:
-  - agentskills
-  - claude-code
 metadata:
   version: 1.0.0
   author: PCL Team
   category: development-tools
   tags:
-    - code-review
-    - quality
-    - security
-    - best-practices
+  - code-review
+  - quality
+  - best-practices
+  - collaboration
 ---
 
 # Code Review Expert

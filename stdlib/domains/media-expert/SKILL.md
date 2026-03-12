@@ -1,13 +1,17 @@
 ---
 name: media-expert
-version: 1.0.0
-description: Expert-level media production, content management, streaming, broadcasting, and media technology systems
-category: domains
-tags: [media, video, streaming, broadcast, cms, production]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level media production, content management, streaming, broadcasting, and media technology systems. Use when working with media, asking about media concepts, or reviewing media code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - media
+  - video
+  - streaming
+  - broadcast
+  - cms
+  - production
 ---
 
 # Media Expert

@@ -1,27 +1,22 @@
 ---
 name: prometheus-expert
-version: 1.0.0
-description: Expert-level Prometheus monitoring, metrics collection, PromQL queries, alerting, and production operations
-category: devops
-author: PCL Team
+description: Expert-level Prometheus monitoring, metrics collection, PromQL queries, alerting, and production operations. Use when working with prometheus, asking about prometheus concepts, or reviewing prometheus code and configurations
+allowed-tools: Read, Write, Edit, Bash(kubectl:*, promtool:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - prometheus
   - monitoring
   - metrics
   - observability
   - alerting
   - promql
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(kubectl:*, promtool:*)
-  - Glob
-  - Grep
-requirements:
-  prometheus: ">=2.45"
-  kubernetes: ">=1.28"
+  requirements:
+    prometheus: '>=2.45'
+    kubernetes: '>=1.28'
 ---
 
 # Prometheus Expert

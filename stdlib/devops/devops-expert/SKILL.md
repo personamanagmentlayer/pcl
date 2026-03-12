@@ -1,14 +1,16 @@
 ---
 name: devops-expert
-version: 1.0.0
-description: Expert-level DevOps practices, culture, automation, and continuous delivery
-category: devops
-tags: [devops, ci-cd, automation, infrastructure, culture]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(*)
+description: Expert-level DevOps practices, culture, automation, and continuous delivery. Use when working with devops, asking about devops concepts, or reviewing devops code and configurations
+allowed-tools: Read, Write, Edit, Bash(*)
+metadata:
+  version: 1.0.0
+  category: devops
+  tags:
+  - devops
+  - ci-cd
+  - automation
+  - infrastructure
+  - culture
 ---
 
 # DevOps Expert

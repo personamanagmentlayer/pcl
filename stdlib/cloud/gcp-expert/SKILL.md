@@ -1,14 +1,16 @@
 ---
 name: gcp-expert
-version: 1.0.0
-description: Expert-level Google Cloud Platform, services, and cloud architecture
-category: cloud
-tags: [gcp, google-cloud, cloud-functions, bigquery, firestore]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(gcloud:*)
+description: Expert-level Google Cloud Platform, services, and cloud architecture. Use when working with gcp, asking about gcp concepts, or reviewing gcp code and configurations
+allowed-tools: Read, Write, Edit, Bash(gcloud:*)
+metadata:
+  version: 1.0.0
+  category: cloud
+  tags:
+  - gcp
+  - google-cloud
+  - cloud-functions
+  - bigquery
+  - firestore
 ---
 
 # Google Cloud Platform Expert

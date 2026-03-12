@@ -1,13 +1,17 @@
 ---
 name: retail-expert
-version: 1.0.0
-description: Expert-level retail systems, POS, inventory management, e-commerce, customer analytics, and omnichannel retail
-category: domains
-tags: [retail, pos, ecommerce, inventory, crm, omnichannel]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level retail systems, POS, inventory management, e-commerce, customer analytics, and omnichannel retail. Use when working with retail, asking about retail concepts, or reviewing retail code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - retail
+  - pos
+  - ecommerce
+  - inventory
+  - crm
+  - omnichannel
 ---
 
 # Retail Expert

@@ -1,14 +1,18 @@
 ---
 name: fastapi-expert
-version: 1.0.0
-description: Expert-level FastAPI development for high-performance Python APIs with async support
-category: api
-tags: [fastapi, python, api, async, rest, openapi, pydantic]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*, pip:*, uvicorn:*)
+description: Expert-level FastAPI development for high-performance Python APIs with async support. Use when working with fastapi, asking about fastapi concepts, or reviewing fastapi code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*, pip:*, uvicorn:*)
+metadata:
+  version: 1.0.0
+  category: api
+  tags:
+  - fastapi
+  - python
+  - api
+  - async
+  - rest
+  - openapi
+  - pydantic
 ---
 
 # FastAPI Expert

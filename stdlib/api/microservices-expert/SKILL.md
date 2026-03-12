@@ -1,13 +1,15 @@
 ---
 name: microservices-expert
-version: 1.0.0
-description: Expert-level microservices architecture, patterns, service mesh, and distributed systems
-category: api
-tags: [microservices, distributed-systems, service-mesh, architecture]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level microservices architecture, patterns, service mesh, and distributed systems. Use when working with microservices, asking about microservices concepts, or reviewing microservices code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: api
+  tags:
+  - microservices
+  - distributed-systems
+  - service-mesh
+  - architecture
 ---
 
 # Microservices Expert

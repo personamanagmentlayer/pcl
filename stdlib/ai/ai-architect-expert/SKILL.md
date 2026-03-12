@@ -1,13 +1,16 @@
 ---
 name: ai-architect-expert
-version: 1.0.0
-description: Expert-level AI system design, MLOps, architecture patterns, and AI infrastructure
-category: ai
-tags: [ai-architecture, mlops, system-design, ai-infrastructure, scalability]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level AI system design, MLOps, architecture patterns, and AI infrastructure. Use when working with ai architect, asking about ai architect concepts, or reviewing ai architect code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: ai
+  tags:
+  - ai-architecture
+  - mlops
+  - system-design
+  - ai-infrastructure
+  - scalability
 ---
 
 # AI Architect Expert

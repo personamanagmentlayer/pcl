@@ -1,26 +1,21 @@
 ---
 name: python-expert
-version: 1.0.0
-description: Expert-level Python development with Python 3.12+ features, async/await, type hints, and modern best practices
-category: languages
-author: PCL Team
+description: Expert-level Python development with Python 3.12+ features, async/await, type hints, and modern best practices. Use when working with python, asking about python concepts, or reviewing python code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*, python3:*, pip:*, pip3:*, uv:*, poetry:*, ruff:*, pytest:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: languages
+  author: PCL Team
+  tags:
   - python
   - python3
   - async
   - type-hints
   - fastapi
   - django
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*, python3:*, pip:*, pip3:*, uv:*, poetry:*, ruff:*, pytest:*)
-  - Glob
-  - Grep
-requirements:
-  python: ">=3.10"
+  requirements:
+    python: '>=3.10'
 ---
 
 # Python Expert

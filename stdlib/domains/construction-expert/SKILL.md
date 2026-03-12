@@ -1,13 +1,16 @@
 ---
 name: construction-expert
-version: 1.0.0
-description: Expert-level construction management, project planning, BIM, safety compliance, and construction technology
-category: domains
-tags: [construction, bim, project-management, safety, building]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level construction management, project planning, BIM, safety compliance, and construction technology. Use when working with construction, asking about construction concepts, or reviewing construction code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - construction
+  - bim
+  - project-management
+  - safety
+  - building
 ---
 
 # Construction Expert

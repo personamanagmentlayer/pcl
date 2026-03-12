@@ -1,13 +1,16 @@
 ---
 name: design-expert
-version: 1.0.0
-description: Expert-level system design, architecture patterns, scalability, and distributed systems
-category: design
-tags: [system-design, architecture, scalability, distributed-systems, patterns]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level system design, architecture patterns, scalability, and distributed systems. Use when working with design, asking about design concepts, or reviewing design code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: design
+  tags:
+  - system-design
+  - architecture
+  - scalability
+  - distributed-systems
+  - patterns
 ---
 
 # System Design Expert

@@ -1,14 +1,16 @@
 ---
 name: qa-expert
-version: 1.0.0
-description: Expert-level quality assurance, testing strategies, automation, and QA processes
-category: qa
-tags: [qa, testing, test-automation, quality-assurance, selenium]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(*)
+description: Expert-level quality assurance, testing strategies, automation, and QA processes. Use when working with qa, asking about qa concepts, or reviewing qa code and configurations
+allowed-tools: Read, Write, Edit, Bash(*)
+metadata:
+  version: 1.0.0
+  category: qa
+  tags:
+  - qa
+  - testing
+  - test-automation
+  - quality-assurance
+  - selenium
 ---
 
 # Quality Assurance Expert

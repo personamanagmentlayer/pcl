@@ -1,13 +1,17 @@
 ---
 name: energy-expert
-version: 1.0.0
-description: Expert-level energy systems, smart grids, renewable energy, power management, and energy analytics
-category: domains
-tags: [energy, smart-grid, renewable, power, utilities, scada]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level energy systems, smart grids, renewable energy, power management, and energy analytics. Use when working with energy, asking about energy concepts, or reviewing energy code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - energy
+  - smart-grid
+  - renewable
+  - power
+  - utilities
+  - scada
 ---
 
 # Energy Expert

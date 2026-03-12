@@ -1,13 +1,17 @@
 ---
 name: manufacturing-expert
-version: 1.0.0
-description: Expert-level manufacturing systems, Industry 4.0, production optimization, quality control, and smart factory solutions
-category: domains
-tags: [manufacturing, industry40, production, quality, mes, plc]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level manufacturing systems, Industry 4.0, production optimization, quality control, and smart factory solutions. Use when working with manufacturing, asking about manufacturing concepts, or reviewing manufacturing code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - manufacturing
+  - industry40
+  - production
+  - quality
+  - mes
+  - plc
 ---
 
 # Manufacturing Expert

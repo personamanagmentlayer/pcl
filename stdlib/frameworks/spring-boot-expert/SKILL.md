@@ -1,14 +1,16 @@
 ---
 name: spring-boot-expert
-version: 1.0.0
-description: Expert-level Spring Boot, Spring Framework, REST APIs, and microservices development
-category: frameworks
-tags: [spring-boot, java, spring-framework, rest-api, microservices]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(mvn:*, gradle:*, java:*)
+description: Expert-level Spring Boot, Spring Framework, REST APIs, and microservices development. Use when working with spring boot, asking about spring boot concepts, or reviewing spring boot code and configurations
+allowed-tools: Read, Write, Edit, Bash(mvn:*, gradle:*, java:*)
+metadata:
+  version: 1.0.0
+  category: frameworks
+  tags:
+  - spring-boot
+  - java
+  - spring-framework
+  - rest-api
+  - microservices
 ---
 
 # Spring Boot Expert

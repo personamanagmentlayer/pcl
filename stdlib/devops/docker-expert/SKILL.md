@@ -1,26 +1,18 @@
 ---
 name: docker-expert
 description: Expert-level Docker containerization, image optimization, and container orchestration. Use this skill for building efficient Docker images, managing containers, and implementing Docker best practices.
-tags: ['devops', 'containers', 'docker', 'infrastructure']
-version: 1.0.0
-category: devops
-allowed-tools:
-  - Read
-  - Write
-  - Bash(docker:*, docker-compose:*)
+allowed-tools: Read, Write, Bash(docker:*, docker-compose:*)
+compatibility: agentskills, claude-code
 license: Apache-2.0
-compatibility:
-  - agentskills
-  - claude-code
 metadata:
   version: 1.0.0
   author: PCL Team
   category: devops
   tags:
-    - docker
-    - containers
-    - devops
-    - orchestration
+  - devops
+  - containers
+  - docker
+  - infrastructure
 ---
 
 # Docker Expert

@@ -1,13 +1,17 @@
 ---
 name: iot-expert
-version: 1.0.0
-description: Expert-level IoT systems, embedded devices, edge computing, and IoT protocols
-category: domains
-tags: [iot, embedded, edge-computing, mqtt, sensors, firmware]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level IoT systems, embedded devices, edge computing, and IoT protocols. Use when working with iot, asking about iot concepts, or reviewing iot code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - iot
+  - embedded
+  - edge-computing
+  - mqtt
+  - sensors
+  - firmware
 ---
 
 # IoT Expert

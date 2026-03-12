@@ -1,14 +1,17 @@
 ---
 name: elixir-expert
-version: 1.0.0
-description: Expert-level Elixir, Phoenix, OTP, and concurrent systems
-category: languages
-tags: [elixir, phoenix, otp, erlang, concurrent, functional]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(elixir:*, mix:*)
+description: Expert-level Elixir, Phoenix, OTP, and concurrent systems. Use when working with elixir, asking about elixir concepts, or reviewing elixir code and configurations
+allowed-tools: Read, Write, Edit, Bash(elixir:*, mix:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - elixir
+  - phoenix
+  - otp
+  - erlang
+  - concurrent
+  - functional
 ---
 
 # Elixir Expert

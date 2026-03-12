@@ -1,25 +1,20 @@
 ---
 name: go-expert
-version: 1.0.0
-description: Expert-level Go development with Go 1.22+ features, concurrency, standard library, and production-grade best practices
-category: languages
-author: PCL Team
+description: Expert-level Go development with Go 1.22+ features, concurrency, standard library, and production-grade best practices. Use when working with go, asking about go concepts, or reviewing go code and configurations
+allowed-tools: Read, Write, Edit, Bash(go:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: languages
+  author: PCL Team
+  tags:
   - go
   - golang
   - concurrency
   - microservices
   - backend
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(go:*)
-  - Glob
-  - Grep
-requirements:
-  go: ">=1.21"
+  requirements:
+    go: '>=1.21'
 ---
 
 # Go Expert

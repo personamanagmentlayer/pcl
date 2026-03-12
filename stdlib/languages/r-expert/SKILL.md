@@ -1,14 +1,16 @@
 ---
 name: r-expert
-version: 1.0.0
-description: Expert-level R statistical computing, data analysis, and visualization
-category: languages
-tags: [r, statistics, data-analysis, ggplot2, tidyverse]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(R:*, Rscript:*)
+description: Expert-level R statistical computing, data analysis, and visualization. Use when working with r, asking about r concepts, or reviewing r code and configurations
+allowed-tools: Read, Write, Edit, Bash(R:*, Rscript:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - r
+  - statistics
+  - data-analysis
+  - ggplot2
+  - tidyverse
 ---
 
 # R Statistical Computing Expert

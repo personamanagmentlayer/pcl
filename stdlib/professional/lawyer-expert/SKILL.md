@@ -1,13 +1,16 @@
 ---
 name: lawyer-expert
-version: 1.0.0
-description: Expert-level legal systems, contracts, compliance, and legal technology
-category: professional
-tags: [legal, contracts, compliance, law, legal-tech]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level legal systems, contracts, compliance, and legal technology. Use when working with lawyer, asking about lawyer concepts, or reviewing lawyer code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: professional
+  tags:
+  - legal
+  - contracts
+  - compliance
+  - law
+  - legal-tech
 ---
 
 # Lawyer Expert

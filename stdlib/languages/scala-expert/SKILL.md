@@ -1,14 +1,16 @@
 ---
 name: scala-expert
-version: 1.0.0
-description: Expert-level Scala, functional programming, Akka, and reactive systems
-category: languages
-tags: [scala, functional-programming, akka, cats, zio]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(scala:*, sbt:*)
+description: Expert-level Scala, functional programming, Akka, and reactive systems. Use when working with scala, asking about scala concepts, or reviewing scala code and configurations
+allowed-tools: Read, Write, Edit, Bash(scala:*, sbt:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - scala
+  - functional-programming
+  - akka
+  - cats
+  - zio
 ---
 
 # Scala Expert

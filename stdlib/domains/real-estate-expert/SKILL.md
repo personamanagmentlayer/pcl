@@ -1,13 +1,17 @@
 ---
 name: real-estate-expert
-version: 1.0.0
-description: Expert-level real estate systems, property management, MLS integration, CRM, virtual tours, and market analysis
-category: domains
-tags: [real-estate, property, mls, crm, proptech, listings]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level real estate systems, property management, MLS integration, CRM, virtual tours, and market analysis. Use when working with real estate, asking about real estate concepts, or reviewing real estate code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - real-estate
+  - property
+  - mls
+  - crm
+  - proptech
+  - listings
 ---
 
 # Real Estate Expert

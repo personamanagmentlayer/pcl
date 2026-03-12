@@ -1,25 +1,20 @@
 ---
 name: nginx-expert
-version: 1.0.0
-description: Expert-level Nginx configuration, reverse proxy, load balancing, SSL/TLS, caching, and performance tuning
-category: devops
-author: PCL Team
+description: Expert-level Nginx configuration, reverse proxy, load balancing, SSL/TLS, caching, and performance tuning. Use when working with nginx, asking about nginx concepts, or reviewing nginx code and configurations
+allowed-tools: Read, Write, Edit, Bash(nginx:*, systemctl:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - nginx
   - web-server
   - reverse-proxy
   - load-balancer
   - ssl
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(nginx:*, systemctl:*)
-  - Glob
-  - Grep
-requirements:
-  nginx: ">=1.24"
+  requirements:
+    nginx: '>=1.24'
 ---
 
 # Nginx Expert

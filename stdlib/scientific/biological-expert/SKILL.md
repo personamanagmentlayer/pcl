@@ -1,14 +1,16 @@
 ---
 name: biological-expert
-version: 1.0.0
-description: Expert-level biology, biotechnology, genetics, bioinformatics, and computational biology
-category: scientific
-tags: [biology, biotechnology, genetics, bioinformatics, genomics]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*)
+description: Expert-level biology, biotechnology, genetics, bioinformatics, and computational biology. Use when working with biological, asking about biological concepts, or reviewing biological code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*)
+metadata:
+  version: 1.0.0
+  category: scientific
+  tags:
+  - biology
+  - biotechnology
+  - genetics
+  - bioinformatics
+  - genomics
 ---
 
 # Biological Sciences Expert

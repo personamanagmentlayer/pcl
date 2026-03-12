@@ -1,13 +1,17 @@
 ---
 name: insurance-expert
-version: 1.0.0
-description: Expert-level insurance systems, underwriting, claims processing, actuarial analysis, risk assessment, and insurtech solutions
-category: domains
-tags: [insurance, underwriting, claims, actuarial, risk, insurtech]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level insurance systems, underwriting, claims processing, actuarial analysis, risk assessment, and insurtech solutions. Use when working with insurance, asking about insurance concepts, or reviewing insurance code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - insurance
+  - underwriting
+  - claims
+  - actuarial
+  - risk
+  - insurtech
 ---
 
 # Insurance Expert

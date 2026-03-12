@@ -1,24 +1,19 @@
 ---
 name: testing-expert
-version: 1.0.0
-description: Expert-level software testing with unit tests, integration tests, E2E tests, TDD/BDD, and testing best practices
-category: tools
-author: PCL Team
+description: Expert-level software testing with unit tests, integration tests, E2E tests, TDD/BDD, and testing best practices. Use when working with testing, asking about testing concepts, or reviewing testing code and configurations
+allowed-tools: Read, Write, Edit, Bash(npm:*, pytest:*, jest:*, vitest:*, go test:*, mvn test:*, gradle test:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: tools
+  author: PCL Team
+  tags:
   - testing
   - tdd
   - bdd
   - unit-tests
   - integration-tests
   - e2e
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(npm:*, pytest:*, jest:*, vitest:*, go test:*, mvn test:*, gradle test:*)
-  - Glob
-  - Grep
 ---
 
 # Testing Expert

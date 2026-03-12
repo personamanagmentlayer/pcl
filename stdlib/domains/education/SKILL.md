@@ -1,13 +1,16 @@
 ---
 name: education-expert
-version: 1.0.0
-description: Expert-level education technology, learning management systems, and ed-tech platforms
-category: domains
-tags: [education, edtech, lms, e-learning, assessment]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level education technology, learning management systems, and ed-tech platforms. Use when working with education, asking about education concepts, or reviewing education code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - education
+  - edtech
+  - lms
+  - e-learning
+  - assessment
 ---
 
 # Education Expert

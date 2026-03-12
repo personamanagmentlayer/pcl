@@ -1,14 +1,17 @@
 ---
 name: php-expert
-version: 1.0.0
-description: Expert-level PHP development with PHP 8+, Laravel, Composer, and modern best practices
-category: languages
-tags: [php, laravel, composer, symfony, phpunit, psr]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(php:*, composer:*, artisan:*)
+description: Expert-level PHP development with PHP 8+, Laravel, Composer, and modern best practices. Use when working with php, asking about php concepts, or reviewing php code and configurations
+allowed-tools: Read, Write, Edit, Bash(php:*, composer:*, artisan:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - php
+  - laravel
+  - composer
+  - symfony
+  - phpunit
+  - psr
 ---
 
 # PHP Expert

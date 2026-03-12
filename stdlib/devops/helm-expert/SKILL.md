@@ -1,27 +1,22 @@
 ---
 name: helm-expert
-version: 1.0.0
-description: Expert-level Helm 3 package management, chart development, templating, and production operations
-category: devops
-author: PCL Team
+description: Expert-level Helm 3 package management, chart development, templating, and production operations. Use when working with helm, asking about helm concepts, or reviewing helm code and configurations
+allowed-tools: Read, Write, Edit, Bash(helm:*, kubectl:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - helm
   - kubernetes
   - package-manager
   - charts
   - templates
   - deployment
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(helm:*, kubectl:*)
-  - Glob
-  - Grep
-requirements:
-  helm: ">=3.0"
-  kubernetes: ">=1.28"
+  requirements:
+    helm: '>=3.0'
+    kubernetes: '>=1.28'
 ---
 
 # Helm Expert

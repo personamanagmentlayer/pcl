@@ -1,14 +1,18 @@
 ---
 name: security-expert
-version: 1.0.0
-description: Expert-level application security, OWASP Top 10, penetration testing, and security best practices
-category: security
-tags: [security, owasp, pentest, appsec, vulnerability, encryption, authentication]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(nmap:*, burpsuite:*, zap:*)
+description: Expert-level application security, OWASP Top 10, penetration testing, and security best practices. Use when working with security, asking about security concepts, or reviewing security code and configurations
+allowed-tools: Read, Write, Edit, Bash(nmap:*, burpsuite:*, zap:*)
+metadata:
+  version: 1.0.0
+  category: security
+  tags:
+  - security
+  - owasp
+  - pentest
+  - appsec
+  - vulnerability
+  - encryption
+  - authentication
 ---
 
 # Security Expert

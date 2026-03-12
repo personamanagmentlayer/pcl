@@ -1,14 +1,16 @@
 ---
 name: ai-engineer-expert
-version: 1.0.0
-description: Expert-level AI implementation, deployment, LLM integration, and production AI systems
-category: ai
-tags: [ai-engineering, llm, deployment, production-ai, integration]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*)
+description: Expert-level AI implementation, deployment, LLM integration, and production AI systems. Use when working with ai engineer, asking about ai engineer concepts, or reviewing ai engineer code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*)
+metadata:
+  version: 1.0.0
+  category: ai
+  tags:
+  - ai-engineering
+  - llm
+  - deployment
+  - production-ai
+  - integration
 ---
 
 # AI Engineer Expert

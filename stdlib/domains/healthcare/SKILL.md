@@ -1,13 +1,17 @@
 ---
 name: healthcare-expert
-version: 1.0.0
-description: Expert-level healthcare systems, medical informatics, HIPAA compliance, and health data standards
-category: domains
-tags: [healthcare, medical, hipaa, hl7, fhir, ehr]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level healthcare systems, medical informatics, HIPAA compliance, and health data standards. Use when working with healthcare, asking about healthcare concepts, or reviewing healthcare code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - healthcare
+  - medical
+  - hipaa
+  - hl7
+  - fhir
+  - ehr
 ---
 
 # Healthcare Expert

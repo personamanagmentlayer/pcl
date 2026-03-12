@@ -1,13 +1,16 @@
 ---
 name: accountant-expert
-version: 1.0.0
-description: Expert-level accounting, tax, financial reporting, and accounting systems
-category: professional
-tags: [accounting, tax, financial-reporting, gaap, ifrs]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level accounting, tax, financial reporting, and accounting systems. Use when working with accountant, asking about accountant concepts, or reviewing accountant code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: professional
+  tags:
+  - accounting
+  - tax
+  - financial-reporting
+  - gaap
+  - ifrs
 ---
 
 # Accountant Expert

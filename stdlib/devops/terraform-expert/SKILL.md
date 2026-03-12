@@ -1,25 +1,20 @@
 ---
 name: terraform-expert
-version: 1.0.0
-description: Expert-level Terraform infrastructure as code, modules, state management, and production best practices
-category: devops
-author: PCL Team
+description: Expert-level Terraform infrastructure as code, modules, state management, and production best practices. Use when working with terraform, asking about terraform concepts, or reviewing terraform code and configurations
+allowed-tools: Read, Write, Edit, Bash(terraform:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - terraform
   - infrastructure-as-code
   - iac
   - devops
   - automation
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(terraform:*)
-  - Glob
-  - Grep
-requirements:
-  terraform: ">=1.6"
+  requirements:
+    terraform: '>=1.6'
 ---
 
 # Terraform Expert

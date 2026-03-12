@@ -1,21 +1,16 @@
 ---
 name: skill-creator-expert
-version: 1.0.0
-description: Expert system for designing, creating, and validating PCL skills with comprehensive domain knowledge extraction
-category: tools
-tags:
-  [
-    skill-creation,
-    meta-programming,
-    domain-modeling,
-    knowledge-engineering,
-    pcl-development,
-  ]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Execute
+description: Expert system for designing, creating, and validating PCL skills with comprehensive domain knowledge extraction. Use when working with skill creator, asking about skill creator concepts, or reviewing skill creator code and configurations
+allowed-tools: Read, Write, Edit, Execute
+metadata:
+  version: 1.0.0
+  category: tools
+  tags:
+  - skill-creation
+  - meta-programming
+  - domain-modeling
+  - knowledge-engineering
+  - pcl-development
 ---
 
 # Skill Creator Expert

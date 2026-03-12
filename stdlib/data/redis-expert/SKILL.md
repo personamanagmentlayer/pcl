@@ -1,14 +1,17 @@
 ---
 name: redis-expert
-version: 1.0.0
-description: Expert-level Redis for caching, pub/sub, data structures, and high-performance applications
-category: data
-tags: [redis, cache, pubsub, inmemory, keyvalue, nosql]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(redis-cli:*, docker:*)
+description: Expert-level Redis for caching, pub/sub, data structures, and high-performance applications. Use when working with redis, asking about redis concepts, or reviewing redis code and configurations
+allowed-tools: Read, Write, Edit, Bash(redis-cli:*, docker:*)
+metadata:
+  version: 1.0.0
+  category: data
+  tags:
+  - redis
+  - cache
+  - pubsub
+  - inmemory
+  - keyvalue
+  - nosql
 ---
 
 # Redis Expert

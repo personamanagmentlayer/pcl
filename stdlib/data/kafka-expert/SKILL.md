@@ -1,14 +1,16 @@
 ---
 name: kafka-expert
-version: 1.0.0
-description: Expert-level Apache Kafka, event streaming, Kafka Streams, and distributed messaging
-category: data
-tags: [kafka, streaming, messaging, event-driven, kafka-streams]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(kafka:*)
+description: Expert-level Apache Kafka, event streaming, Kafka Streams, and distributed messaging. Use when working with kafka, asking about kafka concepts, or reviewing kafka code and configurations
+allowed-tools: Read, Write, Edit, Bash(kafka:*)
+metadata:
+  version: 1.0.0
+  category: data
+  tags:
+  - kafka
+  - streaming
+  - messaging
+  - event-driven
+  - kafka-streams
 ---
 
 # Apache Kafka Expert

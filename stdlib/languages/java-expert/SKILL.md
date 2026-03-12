@@ -1,26 +1,21 @@
 ---
 name: java-expert
-version: 1.0.0
-description: Expert-level Java development with Java 21+ features, Spring Boot, Maven/Gradle, and enterprise best practices
-category: languages
-author: PCL Team
+description: Expert-level Java development with Java 21+ features, Spring Boot, Maven/Gradle, and enterprise best practices. Use when working with java, asking about java concepts, or reviewing java code and configurations
+allowed-tools: Read, Write, Edit, Bash(java:*, javac:*, mvn:*, gradle:*, ./mvnw:*, ./gradlew:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: languages
+  author: PCL Team
+  tags:
   - java
   - jvm
   - spring
   - maven
   - gradle
   - enterprise
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(java:*, javac:*, mvn:*, gradle:*, ./mvnw:*, ./gradlew:*)
-  - Glob
-  - Grep
-requirements:
-  java: ">=17"
+  requirements:
+    java: '>=17'
 ---
 
 # Java Expert

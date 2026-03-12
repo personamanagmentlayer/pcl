@@ -1,25 +1,19 @@
 ---
 name: typescript-expert
 description: Expert-level TypeScript development with modern tooling, advanced types, and best practices. Use this skill for TypeScript projects requiring type-safe code, modern bundling, and comprehensive testing.
-tags: ['typescript', 'javascript', 'web', 'programming', 'types']
-allowed-tools:
-  - Read
-  - Write
-  - Bash(npm:*, pnpm:*, yarn:*, tsc:*, node:*, bun:*)
+allowed-tools: Read, Write, Bash(npm:*, pnpm:*, yarn:*, tsc:*, node:*, bun:*)
+compatibility: agentskills, claude-code
 license: Apache-2.0
-compatibility:
-  - agentskills
-  - claude-code
 metadata:
   version: 1.0.0
   author: PCL Team
   category: programming-languages
   tags:
-    - typescript
-    - javascript
-    - frontend
-    - backend
-    - nodejs
+  - typescript
+  - javascript
+  - web
+  - programming
+  - types
 ---
 
 # TypeScript Expert

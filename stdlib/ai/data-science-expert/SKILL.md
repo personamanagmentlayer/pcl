@@ -1,14 +1,17 @@
 ---
 name: data-science-expert
-version: 1.0.0
-description: Expert-level data science, analytics, visualization, and statistical modeling
-category: ai
-tags: [data-science, analytics, visualization, statistics, pandas, numpy]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*)
+description: Expert-level data science, analytics, visualization, and statistical modeling. Use when working with data science, asking about data science concepts, or reviewing data science code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*)
+metadata:
+  version: 1.0.0
+  category: ai
+  tags:
+  - data-science
+  - analytics
+  - visualization
+  - statistics
+  - pandas
+  - numpy
 ---
 
 # Data Science Expert

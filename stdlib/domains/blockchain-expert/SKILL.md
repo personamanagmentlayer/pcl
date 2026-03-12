@@ -1,13 +1,17 @@
 ---
 name: blockchain-expert
-version: 1.0.0
-description: Expert-level blockchain, Web3, smart contracts, DeFi, and cryptocurrency development
-category: domains
-tags: [blockchain, web3, smart-contracts, defi, ethereum, solidity]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level blockchain, Web3, smart contracts, DeFi, and cryptocurrency development. Use when working with blockchain, asking about blockchain concepts, or reviewing blockchain code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - blockchain
+  - web3
+  - smart-contracts
+  - defi
+  - ethereum
+  - solidity
 ---
 
 # Blockchain Expert

@@ -1,14 +1,16 @@
 ---
 name: performance-expert
-version: 1.0.0
-description: Expert-level performance optimization, profiling, benchmarking, and tuning
-category: devops
-tags: [performance, optimization, profiling, benchmarking, scalability]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(*)
+description: Expert-level performance optimization, profiling, benchmarking, and tuning. Use when working with performance, asking about performance concepts, or reviewing performance code and configurations
+allowed-tools: Read, Write, Edit, Bash(*)
+metadata:
+  version: 1.0.0
+  category: devops
+  tags:
+  - performance
+  - optimization
+  - profiling
+  - benchmarking
+  - scalability
 ---
 
 # Performance Expert

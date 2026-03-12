@@ -1,14 +1,16 @@
 ---
 name: codeql-expert
-version: 1.0.0
-description: Expert-level CodeQL for static analysis, vulnerability detection, and security code scanning
-category: security
-tags: [codeql, static-analysis, sast, vulnerability-detection, github-security]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(codeql:*, gh:*)
+description: Expert-level CodeQL for static analysis, vulnerability detection, and security code scanning. Use when working with codeql, asking about codeql concepts, or reviewing codeql code and configurations
+allowed-tools: Read, Write, Edit, Bash(codeql:*, gh:*)
+metadata:
+  version: 1.0.0
+  category: security
+  tags:
+  - codeql
+  - static-analysis
+  - sast
+  - vulnerability-detection
+  - github-security
 ---
 
 # CodeQL Expert

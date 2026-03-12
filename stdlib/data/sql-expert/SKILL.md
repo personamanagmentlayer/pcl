@@ -1,23 +1,18 @@
 ---
 name: sql-expert
-version: 1.0.0
-description: Expert-level SQL database design, querying, optimization, and administration across PostgreSQL, MySQL, and SQL Server
-category: data
-author: PCL Team
+description: Expert-level SQL database design, querying, optimization, and administration across PostgreSQL, MySQL, and SQL Server. Use when working with sql, asking about sql concepts, or reviewing sql code and configurations
+allowed-tools: Read, Write, Edit, Bash(psql:*, mysql:*, sqlite3:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - sql
   - database
   - postgresql
   - mysql
   - query-optimization
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(psql:*, mysql:*, sqlite3:*)
-  - Glob
-  - Grep
 ---
 
 # SQL Expert

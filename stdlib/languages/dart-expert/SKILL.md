@@ -1,14 +1,16 @@
 ---
 name: dart-expert
-version: 1.0.0
-description: Expert-level Dart, Flutter, mobile development, and cross-platform apps
-category: languages
-tags: [dart, flutter, mobile, cross-platform, widgets]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(dart:*, flutter:*)
+description: Expert-level Dart, Flutter, mobile development, and cross-platform apps. Use when working with dart, asking about dart concepts, or reviewing dart code and configurations
+allowed-tools: Read, Write, Edit, Bash(dart:*, flutter:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - dart
+  - flutter
+  - mobile
+  - cross-platform
+  - widgets
 ---
 
 # Dart & Flutter Expert

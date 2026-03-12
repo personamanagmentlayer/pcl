@@ -1,26 +1,21 @@
 ---
 name: nodejs-expert
-version: 1.0.0
-description: Expert-level Node.js backend development with Express, async patterns, streams, performance optimization, and production best practices
-category: languages
-author: PCL Team
+description: Expert-level Node.js backend development with Express, async patterns, streams, performance optimization, and production best practices. Use when working with nodejs, asking about nodejs concepts, or reviewing nodejs code and configurations
+allowed-tools: Read, Write, Edit, Bash(node:*, npm:*, npx:*, pm2:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: languages
+  author: PCL Team
+  tags:
   - nodejs
   - node
   - javascript
   - backend
   - express
   - async
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(node:*, npm:*, npx:*, pm2:*)
-  - Glob
-  - Grep
-requirements:
-  node: ">=20.0.0"
+  requirements:
+    node: '>=20.0.0'
 ---
 
 # Node.js Expert
