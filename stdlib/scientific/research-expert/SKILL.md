@@ -1,13 +1,16 @@
 ---
 name: research-expert
-version: 1.0.0
-description: Expert-level research methodology, academic writing, statistical analysis, and scientific investigation
-category: scientific
-tags: [research, methodology, statistics, academic-writing, experimental-design]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level research methodology, academic writing, statistical analysis, and scientific investigation. Use when working with research, asking about research concepts, or reviewing research code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: scientific
+  tags:
+  - research
+  - methodology
+  - statistics
+  - academic-writing
+  - experimental-design
 ---
 
 # Research Methodology Expert

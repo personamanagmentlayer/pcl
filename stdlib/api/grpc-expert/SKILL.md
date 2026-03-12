@@ -1,13 +1,16 @@
 ---
 name: grpc-expert
-version: 1.0.0
-description: Expert-level gRPC, Protocol Buffers, microservices communication, and streaming
-category: api
-tags: [grpc, protobuf, microservices, rpc, streaming]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level gRPC, Protocol Buffers, microservices communication, and streaming. Use when working with grpc, asking about grpc concepts, or reviewing grpc code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: api
+  tags:
+  - grpc
+  - protobuf
+  - microservices
+  - rpc
+  - streaming
 ---
 
 # gRPC Expert

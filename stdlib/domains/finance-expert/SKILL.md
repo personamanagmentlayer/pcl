@@ -1,14 +1,17 @@
 ---
 name: finance-expert
-version: 1.0.0
-description: Expert-level financial systems, FinTech, banking, payments, and financial technology
-category: domains
-tags: [finance, fintech, banking, payments, trading, accounting]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(*)
+description: Expert-level financial systems, FinTech, banking, payments, and financial technology. Use when working with finance, asking about finance concepts, or reviewing finance code and configurations
+allowed-tools: Read, Write, Edit, Bash(*)
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - finance
+  - fintech
+  - banking
+  - payments
+  - trading
+  - accounting
 ---
 
 # Finance Expert

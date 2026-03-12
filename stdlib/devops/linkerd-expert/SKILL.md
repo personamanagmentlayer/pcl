@@ -1,27 +1,22 @@
 ---
 name: linkerd-expert
-version: 1.0.0
-description: Expert-level Linkerd service mesh management, traffic control, reliability, and production operations
-category: devops
-author: PCL Team
+description: Expert-level Linkerd service mesh management, traffic control, reliability, and production operations. Use when working with linkerd, asking about linkerd concepts, or reviewing linkerd code and configurations
+allowed-tools: Read, Write, Edit, Bash(kubectl:*, linkerd:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - linkerd
   - service-mesh
   - kubernetes
   - microservices
   - mtls
   - observability
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(kubectl:*, linkerd:*)
-  - Glob
-  - Grep
-requirements:
-  linkerd: ">=2.14"
-  kubernetes: ">=1.28"
+  requirements:
+    linkerd: '>=2.14'
+    kubernetes: '>=1.28'
 ---
 
 # Linkerd Expert

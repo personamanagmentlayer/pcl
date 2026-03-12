@@ -1,13 +1,16 @@
 ---
 name: banking-expert
-version: 1.0.0
-description: Expert-level banking systems, core banking, regulations, and banking technology
-category: professional
-tags: [banking, finance, core-banking, regulations, payments]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level banking systems, core banking, regulations, and banking technology. Use when working with banking, asking about banking concepts, or reviewing banking code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: professional
+  tags:
+  - banking
+  - finance
+  - core-banking
+  - regulations
+  - payments
 ---
 
 # Banking Expert

@@ -1,11 +1,13 @@
 ---
 name: javascript-expert
-version: 1.0.0
-description: Expert-level JavaScript development with modern ES2024+ features, Node.js, npm ecosystem, and best practices
-category: languages
-author: PCL Team
+description: Expert-level JavaScript development with modern ES2024+ features, Node.js, npm ecosystem, and best practices. Use when working with javascript, asking about javascript concepts, or reviewing javascript code and configurations
+allowed-tools: Read, Write, Edit, Bash(node:*, npm:*, npx:*, bun:*, deno:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: languages
+  author: PCL Team
+  tags:
   - javascript
   - js
   - ecmascript
@@ -13,16 +15,9 @@ tags:
   - node
   - npm
   - web
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(node:*, npm:*, npx:*, bun:*, deno:*)
-  - Glob
-  - Grep
-requirements:
-  node: ">=18.0.0"
-  npm: ">=8.0.0"
+  requirements:
+    node: '>=18.0.0'
+    npm: '>=8.0.0'
 ---
 
 # JavaScript Expert

@@ -1,13 +1,17 @@
 ---
 name: maritime-expert
-version: 1.0.0
-description: Expert-level maritime systems, vessel tracking, port operations, cargo management, and maritime logistics
-category: domains
-tags: [maritime, shipping, logistics, vessel, port, cargo]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level maritime systems, vessel tracking, port operations, cargo management, and maritime logistics. Use when working with maritime, asking about maritime concepts, or reviewing maritime code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - maritime
+  - shipping
+  - logistics
+  - vessel
+  - port
+  - cargo
 ---
 
 # Maritime Expert

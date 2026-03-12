@@ -1,14 +1,16 @@
 ---
 name: cloudflare-expert
-version: 1.0.0
-description: Expert-level Cloudflare Workers, CDN, edge computing, and security services
-category: cloud
-tags: [cloudflare, edge-computing, cdn, workers, waf]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(wrangler:*)
+description: Expert-level Cloudflare Workers, CDN, edge computing, and security services. Use when working with cloudflare, asking about cloudflare concepts, or reviewing cloudflare code and configurations
+allowed-tools: Read, Write, Edit, Bash(wrangler:*)
+metadata:
+  version: 1.0.0
+  category: cloud
+  tags:
+  - cloudflare
+  - edge-computing
+  - cdn
+  - workers
+  - waf
 ---
 
 # Cloudflare Expert

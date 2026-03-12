@@ -1,14 +1,16 @@
 ---
 name: kotlin-expert
-version: 1.0.0
-description: Expert-level Kotlin development, Android, coroutines, and multiplatform
-category: languages
-tags: [kotlin, android, coroutines, multiplatform, jvm]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(kotlin:*, gradle:*)
+description: Expert-level Kotlin development, Android, coroutines, and multiplatform. Use when working with kotlin, asking about kotlin concepts, or reviewing kotlin code and configurations
+allowed-tools: Read, Write, Edit, Bash(kotlin:*, gradle:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - kotlin
+  - android
+  - coroutines
+  - multiplatform
+  - jvm
 ---
 
 # Kotlin Expert

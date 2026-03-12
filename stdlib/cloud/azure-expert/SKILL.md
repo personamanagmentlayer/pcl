@@ -1,14 +1,16 @@
 ---
 name: azure-expert
-version: 1.0.0
-description: Expert-level Microsoft Azure cloud platform, services, and architecture
-category: cloud
-tags: [azure, cloud, microsoft, azure-functions, cosmos-db]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(az:*)
+description: Expert-level Microsoft Azure cloud platform, services, and architecture. Use when working with azure, asking about azure concepts, or reviewing azure code and configurations
+allowed-tools: Read, Write, Edit, Bash(az:*)
+metadata:
+  version: 1.0.0
+  category: cloud
+  tags:
+  - azure
+  - cloud
+  - microsoft
+  - azure-functions
+  - cosmos-db
 ---
 
 # Microsoft Azure Expert

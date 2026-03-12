@@ -1,13 +1,17 @@
 ---
 name: telecommunications-expert
-version: 1.0.0
-description: Expert-level telecommunications systems, network management, billing, 5G, SDN, and telecom infrastructure
-category: domains
-tags: [telecom, networking, 5g, billing, oss, bss]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level telecommunications systems, network management, billing, 5G, SDN, and telecom infrastructure. Use when working with telecommunications, asking about telecommunications concepts, or reviewing telecommunications code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - telecom
+  - networking
+  - 5g
+  - billing
+  - oss
+  - bss
 ---
 
 # Telecommunications Expert

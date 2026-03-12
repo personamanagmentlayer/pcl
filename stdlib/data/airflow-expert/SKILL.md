@@ -1,26 +1,21 @@
 ---
 name: airflow-expert
-version: 1.0.0
-description: Expert-level Apache Airflow orchestration, DAGs, operators, sensors, XComs, task dependencies, and scheduling
-category: data
-author: PCL Team
+description: Expert-level Apache Airflow orchestration, DAGs, operators, sensors, XComs, task dependencies, and scheduling. Use when working with airflow, asking about airflow concepts, or reviewing airflow code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - airflow
   - orchestration
   - dag
   - workflow
   - scheduling
   - data-pipeline
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-requirements:
-  apache-airflow: ">=2.8.0"
+  requirements:
+    apache-airflow: '>=2.8.0'
 ---
 
 # Apache Airflow Expert

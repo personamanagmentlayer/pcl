@@ -1,14 +1,17 @@
 ---
 name: sre-expert
-version: 1.0.0
-description: Expert-level site reliability engineering, SLOs, incident management, and operational excellence
-category: devops
-tags: [sre, reliability, monitoring, incident-management, slo, observability]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(*)
+description: Expert-level site reliability engineering, SLOs, incident management, and operational excellence. Use when working with sre, asking about sre concepts, or reviewing sre code and configurations
+allowed-tools: Read, Write, Edit, Bash(*)
+metadata:
+  version: 1.0.0
+  category: devops
+  tags:
+  - sre
+  - reliability
+  - monitoring
+  - incident-management
+  - slo
+  - observability
 ---
 
 # Site Reliability Engineering Expert

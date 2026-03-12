@@ -1,25 +1,20 @@
 ---
 name: postgresql-expert
-version: 1.0.0
-description: Expert-level PostgreSQL database administration, advanced queries, performance tuning, and production operations
-category: data
-author: PCL Team
+description: Expert-level PostgreSQL database administration, advanced queries, performance tuning, and production operations. Use when working with postgresql, asking about postgresql concepts, or reviewing postgresql code and configurations
+allowed-tools: Read, Write, Edit, Bash(psql:*, pg_dump:*, pg_restore:*, createdb:*, dropdb:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - postgresql
   - postgres
   - database
   - sql
   - performance
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(psql:*, pg_dump:*, pg_restore:*, createdb:*, dropdb:*)
-  - Glob
-  - Grep
-requirements:
-  postgresql: ">=15.0"
+  requirements:
+    postgresql: '>=15.0'
 ---
 
 # PostgreSQL Expert

@@ -1,14 +1,17 @@
 ---
 name: openapi-expert
-version: 1.0.0
-description: Expert-level OpenAPI/Swagger specification for API design, documentation, and code generation
-category: api
-tags: [openapi, swagger, api-spec, rest, api-design, documentation]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(openapi:*, swagger:*)
+description: Expert-level OpenAPI/Swagger specification for API design, documentation, and code generation. Use when working with openapi, asking about openapi concepts, or reviewing openapi code and configurations
+allowed-tools: Read, Write, Edit, Bash(openapi:*, swagger:*)
+metadata:
+  version: 1.0.0
+  category: api
+  tags:
+  - openapi
+  - swagger
+  - api-spec
+  - rest
+  - api-design
+  - documentation
 ---
 
 # OpenAPI Expert

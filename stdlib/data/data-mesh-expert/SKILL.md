@@ -1,24 +1,19 @@
 ---
 name: data-mesh-expert
-version: 1.0.0
-description: Expert-level data mesh architecture, domain-oriented ownership, data products, federated governance, and self-serve platforms
-category: data
-author: PCL Team
+description: Expert-level data mesh architecture, domain-oriented ownership, data products, federated governance, and self-serve platforms. Use when working with data mesh, asking about data mesh concepts, or reviewing data mesh code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - data-mesh
   - architecture
   - domain-driven
   - data-products
   - governance
   - platform
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
 ---
 
 # Data Mesh Expert

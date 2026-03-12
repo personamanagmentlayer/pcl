@@ -1,14 +1,18 @@
 ---
 name: graphql-expert
-version: 1.0.0
-description: Expert-level GraphQL API development with schema design, resolvers, and subscriptions
-category: api
-tags: [graphql, api, apollo, schema, resolvers, subscriptions, relay]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(node:*, npm:*, npx:*)
+description: Expert-level GraphQL API development with schema design, resolvers, and subscriptions. Use when working with graphql, asking about graphql concepts, or reviewing graphql code and configurations
+allowed-tools: Read, Write, Edit, Bash(node:*, npm:*, npx:*)
+metadata:
+  version: 1.0.0
+  category: api
+  tags:
+  - graphql
+  - api
+  - apollo
+  - schema
+  - resolvers
+  - subscriptions
+  - relay
 ---
 
 # GraphQL Expert

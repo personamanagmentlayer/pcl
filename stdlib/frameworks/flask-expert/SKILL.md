@@ -1,14 +1,16 @@
 ---
 name: flask-expert
-version: 1.0.0
-description: Expert-level Flask web development, REST APIs, extensions, and production deployment
-category: frameworks
-tags: [flask, python, web-framework, rest-api, jinja2]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(flask:*, python:*)
+description: Expert-level Flask web development, REST APIs, extensions, and production deployment. Use when working with flask, asking about flask concepts, or reviewing flask code and configurations
+allowed-tools: Read, Write, Edit, Bash(flask:*, python:*)
+metadata:
+  version: 1.0.0
+  category: frameworks
+  tags:
+  - flask
+  - python
+  - web-framework
+  - rest-api
+  - jinja2
 ---
 
 # Flask Expert

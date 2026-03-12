@@ -1,14 +1,17 @@
 ---
 name: django-expert
-version: 1.0.0
-description: Expert-level Django development for robust Python web applications with ORM, admin, and authentication
-category: frameworks
-tags: [django, python, web, orm, mvc, rest-framework]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*, django-admin:*, manage.py:*)
+description: Expert-level Django development for robust Python web applications with ORM, admin, and authentication. Use when working with django, asking about django concepts, or reviewing django code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*, django-admin:*, manage.py:*)
+metadata:
+  version: 1.0.0
+  category: frameworks
+  tags:
+  - django
+  - python
+  - web
+  - orm
+  - mvc
+  - rest-framework
 ---
 
 # Django Expert

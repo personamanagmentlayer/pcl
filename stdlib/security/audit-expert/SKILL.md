@@ -1,14 +1,18 @@
 ---
 name: audit-expert
-version: 1.0.0
-description: Expert-level security auditing, compliance, code review, and vulnerability assessment
-category: security
-tags: [audit, compliance, security-review, code-review, vulnerability-assessment, soc2, gdpr]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(git:*, grep:*, find:*)
+description: Expert-level security auditing, compliance, code review, and vulnerability assessment. Use when working with audit, asking about audit concepts, or reviewing audit code and configurations
+allowed-tools: Read, Write, Edit, Bash(git:*, grep:*, find:*)
+metadata:
+  version: 1.0.0
+  category: security
+  tags:
+  - audit
+  - compliance
+  - security-review
+  - code-review
+  - vulnerability-assessment
+  - soc2
+  - gdpr
 ---
 
 # Audit Expert

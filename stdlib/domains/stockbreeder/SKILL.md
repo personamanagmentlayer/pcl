@@ -1,13 +1,16 @@
 ---
 name: stockbreeder-expert
-version: 1.0.0
-description: Expert-level livestock management, animal health monitoring, breeding programs, and ranch management
-category: domains
-tags: [livestock, animal-husbandry, breeding, ranch-management, veterinary]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level livestock management, animal health monitoring, breeding programs, and ranch management. Use when working with stockbreeder, asking about stockbreeder concepts, or reviewing stockbreeder code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - livestock
+  - animal-husbandry
+  - breeding
+  - ranch-management
+  - veterinary
 ---
 
 # Stockbreeder Expert

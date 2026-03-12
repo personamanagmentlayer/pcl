@@ -1,27 +1,22 @@
 ---
 name: istio-expert
-version: 1.0.0
-description: Expert-level Istio service mesh management, traffic control, security, and observability for Kubernetes
-category: devops
-author: PCL Team
+description: Expert-level Istio service mesh management, traffic control, security, and observability for Kubernetes. Use when working with istio, asking about istio concepts, or reviewing istio code and configurations
+allowed-tools: Read, Write, Edit, Bash(kubectl:*, istioctl:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - istio
   - service-mesh
   - kubernetes
   - microservices
   - mtls
   - traffic-management
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(kubectl:*, istioctl:*)
-  - Glob
-  - Grep
-requirements:
-  istio: ">=1.20"
-  kubernetes: ">=1.28"
+  requirements:
+    istio: '>=1.20'
+    kubernetes: '>=1.28'
 ---
 
 # Istio Expert

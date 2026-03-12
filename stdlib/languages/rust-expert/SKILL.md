@@ -1,25 +1,20 @@
 ---
 name: rust-expert
-version: 1.0.0
-description: Expert-level Rust development with ownership, lifetimes, async, error handling, and production-grade patterns
-category: languages
-author: PCL Team
+description: Expert-level Rust development with ownership, lifetimes, async, error handling, and production-grade patterns. Use when working with rust, asking about rust concepts, or reviewing rust code and configurations
+allowed-tools: Read, Write, Edit, Bash(cargo:*, rustc:*, rustup:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: languages
+  author: PCL Team
+  tags:
   - rust
   - systems-programming
   - memory-safety
   - concurrency
   - cargo
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(cargo:*, rustc:*, rustup:*)
-  - Glob
-  - Grep
-requirements:
-  rust: ">=1.75"
+  requirements:
+    rust: '>=1.75'
 ---
 
 # Rust Expert

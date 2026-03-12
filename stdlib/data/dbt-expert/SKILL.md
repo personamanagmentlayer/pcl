@@ -1,26 +1,21 @@
 ---
 name: dbt-expert
-version: 1.0.0
-description: Expert-level dbt (data build tool), models, tests, documentation, incremental models, macros, and Jinja templating
-category: data
-author: PCL Team
+description: Expert-level dbt (data build tool), models, tests, documentation, incremental models, macros, and Jinja templating. Use when working with dbt, asking about dbt concepts, or reviewing dbt code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - dbt
   - analytics-engineering
   - sql
   - data-transformation
   - jinja
   - testing
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-requirements:
-  dbt-core: ">=1.7.0"
+  requirements:
+    dbt-core: '>=1.7.0'
 ---
 
 # dbt Expert

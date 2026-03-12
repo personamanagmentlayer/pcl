@@ -1,25 +1,20 @@
 ---
 name: aws-expert
-version: 1.0.0
-description: Expert-level AWS cloud architecture, services, security, cost optimization, and best practices
-category: cloud
-author: PCL Team
+description: Expert-level AWS cloud architecture, services, security, cost optimization, and best practices. Use when working with aws, asking about aws concepts, or reviewing aws code and configurations
+allowed-tools: Read, Write, Edit, Bash(aws:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: cloud
+  author: PCL Team
+  tags:
   - aws
   - cloud
   - infrastructure
   - devops
   - serverless
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(aws:*)
-  - Glob
-  - Grep
-requirements:
-  aws-cli: ">=2.0"
+  requirements:
+    aws-cli: '>=2.0'
 ---
 
 # AWS Expert

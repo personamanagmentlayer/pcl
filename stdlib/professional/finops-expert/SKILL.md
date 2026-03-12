@@ -1,14 +1,16 @@
 ---
 name: finops-expert
-version: 1.0.0
-description: Expert-level cloud financial operations, cost optimization, and cloud economics
-category: professional
-tags: [finops, cloud-cost, optimization, cloud-economics, aws-cost]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(*)
+description: Expert-level cloud financial operations, cost optimization, and cloud economics. Use when working with finops, asking about finops concepts, or reviewing finops code and configurations
+allowed-tools: Read, Write, Edit, Bash(*)
+metadata:
+  version: 1.0.0
+  category: professional
+  tags:
+  - finops
+  - cloud-cost
+  - optimization
+  - cloud-economics
+  - aws-cost
 ---
 
 # FinOps Expert

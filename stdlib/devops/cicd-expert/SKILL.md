@@ -1,14 +1,18 @@
 ---
 name: cicd-expert
-version: 1.0.0
-description: Expert-level CI/CD with GitHub Actions, Jenkins, deployment pipelines, and automation
-category: devops
-tags: [cicd, github-actions, jenkins, gitlab-ci, deployment, automation, pipeline]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(git:*, docker:*, kubectl:*)
+description: Expert-level CI/CD with GitHub Actions, Jenkins, deployment pipelines, and automation. Use when working with cicd, asking about cicd concepts, or reviewing cicd code and configurations
+allowed-tools: Read, Write, Edit, Bash(git:*, docker:*, kubectl:*)
+metadata:
+  version: 1.0.0
+  category: devops
+  tags:
+  - cicd
+  - github-actions
+  - jenkins
+  - gitlab-ci
+  - deployment
+  - automation
+  - pipeline
 ---
 
 # CI/CD Expert

@@ -1,13 +1,16 @@
 ---
 name: logistics-expert
-version: 1.0.0
-description: Expert-level supply chain management, logistics optimization, warehouse systems, and fleet management
-category: domains
-tags: [logistics, supply-chain, warehouse, fleet, optimization]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level supply chain management, logistics optimization, warehouse systems, and fleet management. Use when working with logistics, asking about logistics concepts, or reviewing logistics code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - logistics
+  - supply-chain
+  - warehouse
+  - fleet
+  - optimization
 ---
 
 # Logistics Expert

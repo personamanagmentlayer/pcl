@@ -1,27 +1,22 @@
 ---
 name: argocd-expert
-version: 1.0.0
-description: Expert-level ArgoCD GitOps deployment, application management, sync strategies, and production operations
-category: devops
-author: PCL Team
+description: Expert-level ArgoCD GitOps deployment, application management, sync strategies, and production operations. Use when working with argocd, asking about argocd concepts, or reviewing argocd code and configurations
+allowed-tools: Read, Write, Edit, Bash(argocd:*, kubectl:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - argocd
   - gitops
   - kubernetes
   - continuous-deployment
   - declarative
   - automation
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(argocd:*, kubectl:*)
-  - Glob
-  - Grep
-requirements:
-  argocd: ">=2.9"
-  kubernetes: ">=1.28"
+  requirements:
+    argocd: '>=2.9'
+    kubernetes: '>=1.28'
 ---
 
 # ArgoCD Expert

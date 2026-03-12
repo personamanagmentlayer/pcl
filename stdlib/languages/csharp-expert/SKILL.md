@@ -1,25 +1,20 @@
 ---
 name: csharp-expert
-version: 1.0.0
-description: Expert-level C# development with .NET 8+, ASP.NET Core, LINQ, async/await, and enterprise patterns
-category: languages
-author: PCL Team
+description: Expert-level C# development with .NET 8+, ASP.NET Core, LINQ, async/await, and enterprise patterns. Use when working with csharp, asking about csharp concepts, or reviewing csharp code and configurations
+allowed-tools: Read, Write, Edit, Bash(dotnet:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: languages
+  author: PCL Team
+  tags:
   - csharp
   - dotnet
   - aspnet
   - enterprise
   - microsoft
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(dotnet:*)
-  - Glob
-  - Grep
-requirements:
-  dotnet: ">=8.0"
+  requirements:
+    dotnet: '>=8.0'
 ---
 
 # C# Expert

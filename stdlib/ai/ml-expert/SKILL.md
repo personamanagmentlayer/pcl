@@ -1,14 +1,16 @@
 ---
 name: ml-expert
-version: 1.0.0
-description: Expert-level machine learning, deep learning, model training, and MLOps
-category: ai
-tags: [machine-learning, deep-learning, neural-networks, mlops, data-science]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*)
+description: Expert-level machine learning, deep learning, model training, and MLOps. Use when working with ml, asking about ml concepts, or reviewing ml code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*)
+metadata:
+  version: 1.0.0
+  category: ai
+  tags:
+  - machine-learning
+  - deep-learning
+  - neural-networks
+  - mlops
+  - data-science
 ---
 
 # Machine Learning Expert

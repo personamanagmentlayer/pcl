@@ -1,14 +1,15 @@
 ---
 name: quantum-expert
-version: 1.0.0
-description: Expert-level quantum computing, Qiskit, quantum algorithms, and quantum information
-category: scientific
-tags: [quantum-computing, qiskit, quantum-algorithms, quantum-information]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(python:*)
+description: Expert-level quantum computing, Qiskit, quantum algorithms, and quantum information. Use when working with quantum, asking about quantum concepts, or reviewing quantum code and configurations
+allowed-tools: Read, Write, Edit, Bash(python:*)
+metadata:
+  version: 1.0.0
+  category: scientific
+  tags:
+  - quantum-computing
+  - qiskit
+  - quantum-algorithms
+  - quantum-information
 ---
 
 # Quantum Computing Expert

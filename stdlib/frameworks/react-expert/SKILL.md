@@ -1,27 +1,22 @@
 ---
 name: react-expert
-version: 1.0.0
-description: Expert-level React development with hooks, performance optimization, state management, and modern patterns
-category: frameworks
-author: PCL Team
+description: Expert-level React development with hooks, performance optimization, state management, and modern patterns. Use when working with react, asking about react concepts, or reviewing react code and configurations
+allowed-tools: Read, Write, Edit, Bash(npm:*, pnpm:*, yarn:*, bun:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: frameworks
+  author: PCL Team
+  tags:
   - react
   - frontend
   - hooks
   - jsx
   - typescript
   - nextjs
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(npm:*, pnpm:*, yarn:*, bun:*)
-  - Glob
-  - Grep
-requirements:
-  node: ">=18.0.0"
-  react: ">=18.0.0"
+  requirements:
+    node: '>=18.0.0'
+    react: '>=18.0.0'
 ---
 
 # React Expert

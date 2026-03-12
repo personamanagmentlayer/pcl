@@ -1,14 +1,19 @@
 ---
 name: cpp-expert
-version: 1.0.0
-description: Expert-level C++ development with modern C++20/23, STL, memory management, and performance
-category: languages
-tags: [cpp, c++, c++20, c++23, stl, templates, performance, memory]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(g++:*, clang++:*, cmake:*, make:*)
+description: Expert-level C++ development with modern C++20/23, STL, memory management, and performance. Use when working with cpp, asking about cpp concepts, or reviewing cpp code and configurations
+allowed-tools: Read, Write, Edit, Bash(g++:*, clang++:*, cmake:*, make:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - cpp
+  - c++
+  - c++20
+  - c++23
+  - stl
+  - templates
+  - performance
+  - memory
 ---
 
 # C++ Expert

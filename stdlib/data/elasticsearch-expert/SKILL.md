@@ -1,14 +1,17 @@
 ---
 name: elasticsearch-expert
-version: 1.0.0
-description: Expert-level Elasticsearch, search, ELK stack, and full-text search
-category: data
-tags: [elasticsearch, search, elk, logstash, kibana, full-text-search]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(*)
+description: Expert-level Elasticsearch, search, ELK stack, and full-text search. Use when working with elasticsearch, asking about elasticsearch concepts, or reviewing elasticsearch code and configurations
+allowed-tools: Read, Write, Edit, Bash(*)
+metadata:
+  version: 1.0.0
+  category: data
+  tags:
+  - elasticsearch
+  - search
+  - elk
+  - logstash
+  - kibana
+  - full-text-search
 ---
 
 # Elasticsearch Expert

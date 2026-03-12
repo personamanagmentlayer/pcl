@@ -1,13 +1,16 @@
 ---
 name: api-design-expert
-version: 1.0.0
-description: Expert-level API design principles, REST, GraphQL, versioning, and API best practices
-category: api
-tags: [api-design, rest, graphql, api-versioning, api-security]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level API design principles, REST, GraphQL, versioning, and API best practices. Use when working with api design, asking about api design concepts, or reviewing api design code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: api
+  tags:
+  - api-design
+  - rest
+  - graphql
+  - api-versioning
+  - api-security
 ---
 
 # API Design Expert

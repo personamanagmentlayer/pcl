@@ -1,27 +1,22 @@
 ---
 name: grafana-expert
-version: 1.0.0
-description: Expert-level Grafana dashboards, visualization, data sources, alerting, and production operations
-category: devops
-author: PCL Team
+description: Expert-level Grafana dashboards, visualization, data sources, alerting, and production operations. Use when working with grafana, asking about grafana concepts, or reviewing grafana code and configurations
+allowed-tools: Read, Write, Edit, Bash(kubectl:*, grafana-cli:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - grafana
   - dashboards
   - visualization
   - monitoring
   - observability
   - alerting
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(kubectl:*, grafana-cli:*)
-  - Glob
-  - Grep
-requirements:
-  grafana: ">=10.0"
-  kubernetes: ">=1.28"
+  requirements:
+    grafana: '>=10.0'
+    kubernetes: '>=1.28'
 ---
 
 # Grafana Expert

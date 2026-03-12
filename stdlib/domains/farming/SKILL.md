@@ -1,13 +1,16 @@
 ---
 name: farming-expert
-version: 1.0.0
-description: Expert-level precision agriculture, farm management systems, crop monitoring, and agtech
-category: domains
-tags: [agriculture, farming, precision-agriculture, agtech, crop-management]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level precision agriculture, farm management systems, crop monitoring, and agtech. Use when working with farming, asking about farming concepts, or reviewing farming code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - agriculture
+  - farming
+  - precision-agriculture
+  - agtech
+  - crop-management
 ---
 
 # Farming Expert

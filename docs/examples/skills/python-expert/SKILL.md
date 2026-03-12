@@ -1,10 +1,7 @@
 ---
 name: python-expert
 description: Expert-level Python programming with PEP 8 standards and modern best practices. Use when writing Python code, debugging Python issues, explaining Python concepts, or reviewing Python code.
-allowed-tools:
-  - Read
-  - Write
-  - Bash(python:*)
+allowed-tools: Read, Write, Bash(python:*)
 ---
 
 # Python Expert

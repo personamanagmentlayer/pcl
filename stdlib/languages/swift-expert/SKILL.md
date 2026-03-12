@@ -1,14 +1,18 @@
 ---
 name: swift-expert
-version: 1.0.0
-description: Expert-level Swift development for iOS, macOS with SwiftUI, Combine, and modern Swift 5.9+
-category: languages
-tags: [swift, ios, macos, swiftui, combine, async-await, apple]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(swift:*, xcodebuild:*)
+description: Expert-level Swift development for iOS, macOS with SwiftUI, Combine, and modern Swift 5.9+. Use when working with swift, asking about swift concepts, or reviewing swift code and configurations
+allowed-tools: Read, Write, Edit, Bash(swift:*, xcodebuild:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - swift
+  - ios
+  - macos
+  - swiftui
+  - combine
+  - async-await
+  - apple
 ---
 
 # Swift Expert

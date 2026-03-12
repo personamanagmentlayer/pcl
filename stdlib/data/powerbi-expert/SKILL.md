@@ -1,11 +1,13 @@
 ---
 name: powerbi-expert
-version: 1.0.0
-description: Expert-level Power BI, DAX, M language, data modeling, Power Query, report design, and paginated reports
-category: data
-author: PCL Team
+description: Expert-level Power BI, DAX, M language, data modeling, Power Query, report design, and paginated reports. Use when working with powerbi, asking about powerbi concepts, or reviewing powerbi code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - powerbi
   - dax
   - power-query
@@ -13,15 +15,8 @@ tags:
   - microsoft
   - analytics
   - data-modeling
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-requirements:
-  powerbicli: ">=3.0.0"
+  requirements:
+    powerbicli: '>=3.0.0'
 ---
 
 # Power BI Expert

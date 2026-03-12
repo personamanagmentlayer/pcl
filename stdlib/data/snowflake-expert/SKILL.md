@@ -1,25 +1,20 @@
 ---
 name: snowflake-expert
-version: 1.0.0
-description: Expert-level Snowflake data warehouse platform, virtual warehouses, data sharing, streams, tasks, and SQL optimization
-category: data
-author: PCL Team
+description: Expert-level Snowflake data warehouse platform, virtual warehouses, data sharing, streams, tasks, and SQL optimization. Use when working with snowflake, asking about snowflake concepts, or reviewing snowflake code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - snowflake
   - data-warehouse
   - sql
   - analytics
   - cloud
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-requirements:
-  snowflake-connector-python: ">=3.0.0"
+  requirements:
+    snowflake-connector-python: '>=3.0.0'
 ---
 
 # Snowflake Expert

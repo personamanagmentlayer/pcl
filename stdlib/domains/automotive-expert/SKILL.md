@@ -1,13 +1,17 @@
 ---
 name: automotive-expert
-version: 1.0.0
-description: Expert-level automotive systems, connected vehicles, fleet management, telematics, ADAS, and automotive software
-category: domains
-tags: [automotive, connected-car, fleet, telematics, adas, vehicle]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level automotive systems, connected vehicles, fleet management, telematics, ADAS, and automotive software. Use when working with automotive, asking about automotive concepts, or reviewing automotive code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - automotive
+  - connected-car
+  - fleet
+  - telematics
+  - adas
+  - vehicle
 ---
 
 # Automotive Expert

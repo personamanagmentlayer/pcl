@@ -1,24 +1,19 @@
 ---
 name: git-expert
-version: 1.0.0
-description: Expert-level Git version control with advanced workflows, branching strategies, and best practices for team collaboration
-category: tools
-author: PCL Team
+description: Expert-level Git version control with advanced workflows, branching strategies, and best practices for team collaboration. Use when working with git, asking about git concepts, or reviewing git code and configurations
+allowed-tools: Read, Write, Edit, Bash(git:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: tools
+  author: PCL Team
+  tags:
   - git
   - version-control
   - collaboration
   - workflow
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(git:*)
-  - Glob
-  - Grep
-requirements:
-  git: ">=2.30"
+  requirements:
+    git: '>=2.30'
 ---
 
 # Git Expert

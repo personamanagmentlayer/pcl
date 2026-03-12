@@ -1,13 +1,17 @@
 ---
 name: aerospace-expert
-version: 1.0.0
-description: Expert-level aerospace systems, flight management, maintenance tracking, aviation safety, and aerospace software
-category: domains
-tags: [aerospace, aviation, flight, maintenance, safety, atc]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level aerospace systems, flight management, maintenance tracking, aviation safety, and aerospace software. Use when working with aerospace, asking about aerospace concepts, or reviewing aerospace code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - aerospace
+  - aviation
+  - flight
+  - maintenance
+  - safety
+  - atc
 ---
 
 # Aerospace Expert

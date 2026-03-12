@@ -1,13 +1,16 @@
 ---
 name: standards-expert
-version: 1.0.0
-description: Expert-level ISO standards, quality management, compliance, and certification
-category: professional
-tags: [iso, standards, quality-management, compliance, certification]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level ISO standards, quality management, compliance, and certification. Use when working with standards, asking about standards concepts, or reviewing standards code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: professional
+  tags:
+  - iso
+  - standards
+  - quality-management
+  - compliance
+  - certification
 ---
 
 # ISO Standards and Quality Management Expert

@@ -1,14 +1,17 @@
 ---
 name: ruby-expert
-version: 1.0.0
-description: Expert-level Ruby development with Rails, modern features, testing, and best practices
-category: languages
-tags: [ruby, rails, rspec, gem, sinatra, metaprogramming]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(ruby:*, gem:*, bundle:*, rails:*)
+description: Expert-level Ruby development with Rails, modern features, testing, and best practices. Use when working with ruby, asking about ruby concepts, or reviewing ruby code and configurations
+allowed-tools: Read, Write, Edit, Bash(ruby:*, gem:*, bundle:*, rails:*)
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - ruby
+  - rails
+  - rspec
+  - gem
+  - sinatra
+  - metaprogramming
 ---
 
 # Ruby Expert

@@ -1,26 +1,21 @@
 ---
 name: tableau-expert
-version: 1.0.0
-description: Expert-level Tableau Desktop/Server, calculated fields, LOD expressions, dashboards, data blending, and performance optimization
-category: data
-author: PCL Team
+description: Expert-level Tableau Desktop/Server, calculated fields, LOD expressions, dashboards, data blending, and performance optimization. Use when working with tableau, asking about tableau concepts, or reviewing tableau code and configurations
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - tableau
   - bi
   - visualization
   - dashboards
   - lod
   - analytics
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-requirements:
-  tableau-api-lib: ">=0.1.0"
+  requirements:
+    tableau-api-lib: '>=0.1.0'
 ---
 
 # Tableau Expert

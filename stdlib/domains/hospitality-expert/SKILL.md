@@ -1,13 +1,16 @@
 ---
 name: hospitality-expert
-version: 1.0.0
-description: Expert-level hotel management, reservation systems, guest services, revenue management, and hospitality technology
-category: domains
-tags: [hospitality, hotel, reservation, pms, revenue-management]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
+description: Expert-level hotel management, reservation systems, guest services, revenue management, and hospitality technology. Use when working with hospitality, asking about hospitality concepts, or reviewing hospitality code and configurations
+allowed-tools: Read, Write, Edit
+metadata:
+  version: 1.0.0
+  category: domains
+  tags:
+  - hospitality
+  - hotel
+  - reservation
+  - pms
+  - revenue-management
 ---
 
 # Hospitality Expert

@@ -1,26 +1,21 @@
 ---
 name: kubernetes-expert
-version: 1.0.0
-description: Expert-level Kubernetes cluster management, deployment strategies, networking, and production operations
-category: devops
-author: PCL Team
+description: Expert-level Kubernetes cluster management, deployment strategies, networking, and production operations. Use when working with kubernetes, asking about kubernetes concepts, or reviewing kubernetes code and configurations
+allowed-tools: Read, Write, Edit, Bash(kubectl:*, helm:*, k9s:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: devops
+  author: PCL Team
+  tags:
   - kubernetes
   - k8s
   - containers
   - orchestration
   - devops
   - cloud-native
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(kubectl:*, helm:*, k9s:*)
-  - Glob
-  - Grep
-requirements:
-  kubernetes: ">=1.28"
+  requirements:
+    kubernetes: '>=1.28'
 ---
 
 # Kubernetes Expert

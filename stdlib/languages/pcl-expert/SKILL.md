@@ -1,32 +1,25 @@
 ---
 name: pcl-expert
-version: 1.0.0
-description: Expert in Persona Control Language (PCL) - language design, compiler architecture, runtime systems, and ecosystem development
-category: languages
-tags:
-  [
-    pcl,
-    persona-control-language,
-    compiler-design,
-    language-design,
-    dsl,
-    runtime-systems,
-    lexer,
-    parser,
-    semantic-analysis,
-    codegen,
-    type-systems,
-    ast,
-    lsp,
-    mcp,
-  ]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Execute
-  - Debug
-  - Test
+description: Expert in Persona Control Language (PCL) - language design, compiler architecture, runtime systems, and ecosystem development. Use when working with pcl, asking about pcl concepts, or reviewing pcl code and configurations
+allowed-tools: Read, Write, Edit, Execute, Debug, Test
+metadata:
+  version: 1.0.0
+  category: languages
+  tags:
+  - pcl
+  - persona-control-language
+  - compiler-design
+  - language-design
+  - dsl
+  - runtime-systems
+  - lexer
+  - parser
+  - semantic-analysis
+  - codegen
+  - type-systems
+  - ast
+  - lsp
+  - mcp
 ---
 
 # PCL Expert

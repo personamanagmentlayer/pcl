@@ -1,25 +1,20 @@
 ---
 name: mongodb-expert
-version: 1.0.0
-description: Expert-level MongoDB database design, aggregation pipelines, indexing, replication, and production operations
-category: data
-author: PCL Team
+description: Expert-level MongoDB database design, aggregation pipelines, indexing, replication, and production operations. Use when working with mongodb, asking about mongodb concepts, or reviewing mongodb code and configurations
+allowed-tools: Read, Write, Edit, Bash(mongosh:*, mongo:*, mongod:*, mongodump:*, mongorestore:*), Glob, Grep
 license: Apache-2.0
-tags:
+metadata:
+  version: 1.0.0
+  category: data
+  author: PCL Team
+  tags:
   - mongodb
   - nosql
   - database
   - aggregation
   - performance
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(mongosh:*, mongo:*, mongod:*, mongodump:*, mongorestore:*)
-  - Glob
-  - Grep
-requirements:
-  mongodb: ">=7.0"
+  requirements:
+    mongodb: '>=7.0'
 ---
 
 # MongoDB Expert

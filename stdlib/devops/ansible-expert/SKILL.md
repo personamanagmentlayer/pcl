@@ -1,14 +1,17 @@
 ---
 name: ansible-expert
-version: 1.0.0
-description: Expert-level Ansible for configuration management, automation, and infrastructure as code
-category: devops
-tags: [ansible, automation, configuration-management, iac, playbooks, roles]
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(ansible:*, ansible-playbook:*, ansible-galaxy:*)
+description: Expert-level Ansible for configuration management, automation, and infrastructure as code. Use when working with ansible, asking about ansible concepts, or reviewing ansible code and configurations
+allowed-tools: Read, Write, Edit, Bash(ansible:*, ansible-playbook:*, ansible-galaxy:*)
+metadata:
+  version: 1.0.0
+  category: devops
+  tags:
+  - ansible
+  - automation
+  - configuration-management
+  - iac
+  - playbooks
+  - roles
 ---
 
 # Ansible Expert
