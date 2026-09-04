@@ -235,3 +235,10 @@ __marimo__/
 # Project Management
 .roadmap/
 .claude/settings.local.json
+
+# Python bytecode from the stdlib maintenance scripts
+__pycache__/
+*.py[cod]
+
+# Local PCL runtime state
+.pcl/
