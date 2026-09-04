@@ -609,6 +609,55 @@ describe('SkillResolver - Stdlib Resolution', () => {
 
     expect(result.ok).toBe(true);
   });
+
+  // The standard library stores each skill as its own directory, grouped by
+  // category. Resolving only `<stdlibDir>/<name>.md` made every stdlib skill
+  // unresolvable; these guard the layout the library actually uses.
+  it('should resolve a skill stored as <name>/SKILL.md', async () => {
+    const skillDir = join(stdlibDir, 'code-review-expert');
+    mkdirSync(skillDir, { recursive: true });
+    writeSkillFile(skillDir, 'SKILL.md', minimalSkillMd);
+
+    const result = await resolver.resolve('code-review-expert');
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.type).toBe(SkillRefType.STDLIB);
+      expect(result.value.source).toContain('SKILL.md');
+    }
+  });
+
+  it('should resolve a skill stored as <category>/<name>/SKILL.md', async () => {
+    const skillDir = join(stdlibDir, 'languages', 'python-expert');
+    mkdirSync(skillDir, { recursive: true });
+    writeSkillFile(skillDir, 'SKILL.md', minimalSkillMd);
+
+    const result = await resolver.resolve('python-expert');
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.source).toContain('python-expert');
+    }
+  });
+
+  it('should not treat a category directory as a skill', async () => {
+    mkdirSync(join(stdlibDir, 'languages'), { recursive: true });
+
+    const result = await resolver.resolve('languages');
+
+    expect(result.ok).toBe(false);
+  });
+
+  it('should reject a stdlib reference containing a path separator', async () => {
+    const skillDir = join(stdlibDir, 'languages', 'python-expert');
+    mkdirSync(skillDir, { recursive: true });
+    writeSkillFile(skillDir, 'SKILL.md', minimalSkillMd);
+
+    for (const ref of ['languages/python-expert', '..', '../secrets']) {
+      const result = await resolver.resolve(ref);
+      expect(result.ok).toBe(false);
+    }
+  });
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════

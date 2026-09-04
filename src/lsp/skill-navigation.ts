@@ -5,10 +5,11 @@
  */
 
 import { existsSync } from 'node:fs';
-import { readdir, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { Location } from 'vscode-languageserver/node';
 import { URI } from 'vscode-uri';
+import { findSkillFiles } from '../skills/skill-discovery';
 import { parseSkillMd } from '../skills/skill-loader';
 
 /**
@@ -72,14 +73,10 @@ export class SkillNavigationProvider {
     }
 
     try {
-      const files = await readdir(dir);
-      const skillFiles = files.filter((f) => f.endsWith('.md'));
+      const skillFiles = await findSkillFiles(dir);
 
       for (const file of skillFiles) {
-        const location = await this.checkFileForReference(
-          join(dir, file),
-          skillName
-        );
+        const location = await this.checkFileForReference(file, skillName);
         if (location) {
           locations.push(location);
         }
@@ -153,12 +150,9 @@ export class SkillNavigationProvider {
       }
 
       try {
-        const files = await readdir(dir);
-        const mdFiles = files.filter((f) => f.endsWith('.md'));
+        const skillFiles = await findSkillFiles(dir);
 
-        for (const file of mdFiles) {
-          const filePath = join(dir, file);
-
+        for (const filePath of skillFiles) {
           try {
             const content = await readFile(filePath, 'utf-8');
             const skill = parseSkillMd(content);
@@ -194,7 +188,8 @@ export class SkillNavigationProvider {
       join(docDir, '..', '.claude', 'skills'),
       ...(home ? [join(home, '.claude', 'skills')] : []),
       join(docDir, 'skills'),
-      join(docDir, 'stdlib', 'skills'),
+      // Standard library: skills live under stdlib/<category>/<name>/SKILL.md
+      join(docDir, 'stdlib'),
     ];
     dirs.push(...newDirs);
 

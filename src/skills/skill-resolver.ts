@@ -8,7 +8,7 @@
  * - Remote skills (URLs)
  */
 
-import { existsSync } from 'fs';
+import { existsSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 import type { RegistryManager } from '../registry/manager';
 import type { Result } from '../types';
@@ -106,7 +106,7 @@ export class SkillResolver {
       baseDir: options.baseDir || process.cwd(),
       claudeSkillsDir:
         options.claudeSkillsDir || join(process.cwd(), '.claude', 'skills'),
-      stdlibDir: options.stdlibDir || join(__dirname, '../../stdlib/skills'),
+      stdlibDir: options.stdlibDir || join(__dirname, '../../stdlib'),
       registry: options.registry || undefined!,
       cache: options.cache ?? true,
       allowRemote: options.allowRemote ?? false,
@@ -353,15 +353,63 @@ export class SkillResolver {
   private async resolveStdlib(
     ref: SkillRef
   ): Promise<Result<SkillResolutionResult, Error>> {
-    const path = join(this.options.stdlibDir, `${ref.parsed.name}.md`);
+    const path = this.findStdlibSkill(ref.parsed.name);
 
-    if (!existsSync(path)) {
+    if (!path) {
       return err(
         new Error(`Standard library skill not found: ${ref.parsed.name}`)
       );
     }
 
     return this.loadSkillFromPath(path, SkillRefType.STDLIB);
+  }
+
+  /**
+   * Locate a standard library skill on disk.
+   *
+   * The library stores each skill as `<category>/<name>/SKILL.md`. A flat
+   * `<name>.md` and an uncategorised `<name>/SKILL.md` are also accepted so
+   * that custom stdlib directories keep working.
+   *
+   * The name is used as a single path segment and is rejected if it contains
+   * a separator or traversal, so a reference cannot escape the stdlib root.
+   */
+  private findStdlibSkill(name: string): string | null {
+    if (!name || /[\\/]/.test(name) || name === '.' || name === '..') {
+      return null;
+    }
+
+    const root = this.options.stdlibDir;
+    const direct = [join(root, `${name}.md`), join(root, name, 'SKILL.md')];
+
+    for (const candidate of direct) {
+      if (existsSync(candidate)) {
+        return candidate;
+      }
+    }
+
+    let categories: string[];
+    try {
+      categories = readdirSync(root);
+    } catch {
+      return null;
+    }
+
+    for (const category of categories) {
+      const candidate = join(root, category, name, 'SKILL.md');
+      try {
+        if (
+          statSync(join(root, category)).isDirectory() &&
+          existsSync(candidate)
+        ) {
+          return candidate;
+        }
+      } catch {
+        // Unreadable entry - keep looking
+      }
+    }
+
+    return null;
   }
 
   /**
