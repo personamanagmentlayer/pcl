@@ -1,14 +1,18 @@
 ---
 name: sre-expert
-version: 1.0.0
-description: Expert-level site reliability engineering, SLOs, incident management, and operational excellence
+version: 2.0.0
+description: >-
+  Expert-level site reliability engineering, SLOs, incident management, and operational
+  excellence. Use when the user mentions reliability, monitoring, incident management,
+  SLOs, or observability, or when the task involves SRE Fundamentals, Reliability
+  Practices, SRE Principles, or On-Call.
 category: devops
 tags: [sre, reliability, monitoring, incident-management, slo, observability]
 allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash(*)
+  - Bash(python:*, python3:*, pip:*, pytest:*)
 ---
 
 # Site Reliability Engineering Expert
@@ -18,6 +22,7 @@ Expert guidance for SRE practices, reliability engineering, SLOs/SLIs, incident 
 ## Core Concepts
 
 ### SRE Fundamentals
+
 - Service Level Objectives (SLOs)
 - Service Level Indicators (SLIs)
 - Error budgets
@@ -26,6 +31,7 @@ Expert guidance for SRE practices, reliability engineering, SLOs/SLIs, incident 
 - Capacity planning
 
 ### Reliability Practices
+
 - Incident management
 - Post-incident reviews (PIRs)
 - On-call rotations
@@ -34,6 +40,7 @@ Expert guidance for SRE practices, reliability engineering, SLOs/SLIs, incident 
 - Change management
 
 ### Automation
+
 - Infrastructure as Code
 - Configuration management
 - Deployment automation
@@ -426,6 +433,7 @@ class ChaosExperiment:
 ## Best Practices
 
 ### SRE Principles
+
 - Embrace risk management
 - Set SLOs based on user experience
 - Use error budgets for decision making
@@ -435,6 +443,7 @@ class ChaosExperiment:
 - Gradual rollouts and canary deployments
 
 ### Incident Management
+
 - Clear incident severity definitions
 - Defined incident commander role
 - Communicate proactively
@@ -444,6 +453,7 @@ class ChaosExperiment:
 - Share learnings across teams
 
 ### On-Call
+
 - Reasonable on-call rotations
 - Comprehensive runbooks
 - Alert on symptoms, not causes

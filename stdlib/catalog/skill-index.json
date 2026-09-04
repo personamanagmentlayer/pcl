@@ -3,8 +3,19 @@
     {
       "category": "domains",
       "name": "5g-expert",
-      "path": "domains/5g-expert.md",
-      "tags": []
+      "path": "domains/5g-expert/SKILL.md",
+      "tags": [
+        "5g",
+        "network-slicing",
+        "mec",
+        "edge-computing",
+        "nfv",
+        "sdn",
+        "iot",
+        "urllc",
+        "embb",
+        "mmtc"
+      ]
     },
     {
       "category": "professional",
@@ -26,9 +37,9 @@
       ]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "agtech-expert",
-      "path": "domains/agtech-expert.md",
+      "path": "domains/agtech-expert/SKILL.md",
       "tags": [
         "agtech",
         "precision-agriculture",
@@ -79,7 +90,7 @@
     {
       "category": "frameworks",
       "name": "android-expert",
-      "path": "frameworks/android-expert.md",
+      "path": "frameworks/android-expert/SKILL.md",
       "tags": [
         "mobile",
         "android",
@@ -92,7 +103,7 @@
     {
       "category": "frameworks",
       "name": "angular-expert",
-      "path": "frameworks/angular-expert.md",
+      "path": "frameworks/angular-expert/SKILL.md",
       "tags": [
         "angular",
         "rxjs",
@@ -199,9 +210,9 @@
       ]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "biotech-expert",
-      "path": "domains/biotech-expert.md",
+      "path": "domains/biotech-expert/SKILL.md",
       "tags": [
         "biotech",
         "genomics",
@@ -228,14 +239,35 @@
     {
       "category": "domains",
       "name": "business-intelligence-expert",
-      "path": "domains/business-intelligence-expert.md",
-      "tags": []
+      "path": "domains/business-intelligence-expert/SKILL.md",
+      "tags": [
+        "bi",
+        "business-intelligence",
+        "data-warehouse",
+        "reporting",
+        "dashboards",
+        "data-visualization",
+        "analytics",
+        "olap"
+      ]
     },
     {
       "category": "qa",
       "name": "chaos-engineering-expert",
-      "path": "qa/chaos-engineering-expert.md",
-      "tags": []
+      "path": "qa/chaos-engineering-expert/SKILL.md",
+      "tags": [
+        "chaos-engineering",
+        "reliability",
+        "testing",
+        "sre",
+        "resilience",
+        "failure-injection",
+        "resilience-testing",
+        "chaos-monkey",
+        "gremlin",
+        "fault-tolerance",
+        "site-reliability"
+      ]
     },
     {
       "category": "devops",
@@ -252,9 +284,9 @@
       ]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "cleantech-expert",
-      "path": "domains/cleantech-expert.md",
+      "path": "domains/cleantech-expert/SKILL.md",
       "tags": [
         "cleantech",
         "renewable-energy",
@@ -268,7 +300,7 @@
     {
       "category": "languages",
       "name": "clojure-expert",
-      "path": "languages/clojure-expert.md",
+      "path": "languages/clojure-expert/SKILL.md",
       "tags": [
         "clojure",
         "clojurescript",
@@ -290,7 +322,13 @@
       "category": "tools",
       "name": "code-review-expert",
       "path": "tools/code-review-expert/SKILL.md",
-      "tags": []
+      "tags": [
+        "code-review",
+        "quality",
+        "best-practices",
+        "collaboration",
+        "security"
+      ]
     },
     {
       "category": "security",
@@ -334,7 +372,7 @@
     {
       "category": "security",
       "name": "cryptography-expert",
-      "path": "security/cryptography-expert.md",
+      "path": "security/cryptography-expert/SKILL.md",
       "tags": [
         "cryptography",
         "encryption",
@@ -355,20 +393,50 @@
     {
       "category": "domains",
       "name": "customer-support-expert",
-      "path": "domains/customer-support-expert.md",
-      "tags": []
+      "path": "domains/customer-support-expert/SKILL.md",
+      "tags": [
+        "support",
+        "helpdesk",
+        "ticketing",
+        "customer-service",
+        "knowledge-base",
+        "sla",
+        "service-desk",
+        "customer-success"
+      ]
     },
     {
       "category": "domains",
       "name": "cybersecurity-expert",
-      "path": "domains/cybersecurity-expert.md",
-      "tags": []
+      "path": "domains/cybersecurity-expert/SKILL.md",
+      "tags": [
+        "security",
+        "cybersecurity",
+        "threat-detection",
+        "incident-response",
+        "vulnerability",
+        "siem",
+        "compliance",
+        "infosec"
+      ]
     },
     {
       "category": "qa",
       "name": "cypress-expert",
-      "path": "qa/cypress-expert.md",
-      "tags": []
+      "path": "qa/cypress-expert/SKILL.md",
+      "tags": [
+        "testing",
+        "e2e",
+        "cypress",
+        "qa",
+        "automation",
+        "e2e-testing",
+        "cypress-commands",
+        "fixtures",
+        "cypress-plugins",
+        "visual-testing",
+        "component-testing"
+      ]
     },
     {
       "category": "languages",
@@ -449,8 +517,21 @@
     {
       "category": "tools",
       "name": "discord-expert",
-      "path": "tools/discord-expert.md",
-      "tags": []
+      "path": "tools/discord-expert/SKILL.md",
+      "tags": [
+        "discord",
+        "communication",
+        "community",
+        "bots",
+        "api",
+        "discord-bot",
+        "discordjs",
+        "discordpy",
+        "slash-commands",
+        "discord-embeds",
+        "voice-bot",
+        "discord-moderation"
+      ]
     },
     {
       "category": "frameworks",
@@ -462,30 +543,61 @@
       "category": "devops",
       "name": "docker-expert",
       "path": "devops/docker-expert/SKILL.md",
-      "tags": []
+      "tags": ["devops", "containers", "docker", "infrastructure"]
     },
     {
       "category": "domains",
       "name": "dynamics365-expert",
-      "path": "domains/dynamics365-expert.md",
-      "tags": []
+      "path": "domains/dynamics365-expert/SKILL.md",
+      "tags": [
+        "microsoft",
+        "erp",
+        "crm",
+        "business-apps",
+        "dynamics365",
+        "power-platform",
+        "dataverse",
+        "model-driven-apps",
+        "canvas-apps",
+        "power-automate",
+        "dynamics-crm",
+        "plugins"
+      ]
     },
     {
       "category": "domains",
       "name": "e-learning-expert",
-      "path": "domains/e-learning-expert.md",
-      "tags": []
+      "path": "domains/e-learning-expert/SKILL.md",
+      "tags": [
+        "e-learning",
+        "lms",
+        "online-education",
+        "course-management",
+        "student-engagement",
+        "assessment",
+        "edtech",
+        "learning-analytics"
+      ]
     },
     {
       "category": "domains",
       "name": "edge-computing-expert",
-      "path": "domains/edge-computing-expert.md",
-      "tags": []
+      "path": "domains/edge-computing-expert/SKILL.md",
+      "tags": [
+        "edge-computing",
+        "cdn",
+        "fog-computing",
+        "distributed-systems",
+        "iot-edge",
+        "5g-edge",
+        "mec",
+        "latency"
+      ]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "edtech-expert",
-      "path": "domains/edtech-expert.md",
+      "path": "domains/edtech-expert/SKILL.md",
       "tags": [
         "edtech",
         "education",
@@ -500,7 +612,7 @@
     {
       "category": "domains",
       "name": "education-expert",
-      "path": "domains/education/SKILL.md",
+      "path": "domains/education-expert/SKILL.md",
       "tags": ["education", "edtech", "lms", "e-learning", "assessment"]
     },
     {
@@ -519,7 +631,7 @@
     {
       "category": "frameworks",
       "name": "electron-expert",
-      "path": "frameworks/electron-expert.md",
+      "path": "frameworks/electron-expert/SKILL.md",
       "tags": [
         "desktop",
         "electron",
@@ -552,7 +664,7 @@
     {
       "category": "domains",
       "name": "farming-expert",
-      "path": "domains/farming/SKILL.md",
+      "path": "domains/farming-expert/SKILL.md",
       "tags": [
         "agriculture",
         "farming",
@@ -601,9 +713,9 @@
       ]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "fintech-expert",
-      "path": "domains/fintech-expert.md",
+      "path": "domains/fintech-expert/SKILL.md",
       "tags": [
         "fintech",
         "payments",
@@ -624,7 +736,7 @@
     {
       "category": "frameworks",
       "name": "flutter-expert",
-      "path": "frameworks/flutter-expert.md",
+      "path": "frameworks/flutter-expert/SKILL.md",
       "tags": [
         "mobile",
         "flutter",
@@ -637,8 +749,17 @@
     {
       "category": "domains",
       "name": "gaming-expert",
-      "path": "domains/gaming-expert.md",
-      "tags": []
+      "path": "domains/gaming-expert/SKILL.md",
+      "tags": [
+        "gaming",
+        "game-development",
+        "game-engines",
+        "multiplayer",
+        "game-analytics",
+        "monetization",
+        "unity",
+        "unreal"
+      ]
     },
     {
       "category": "cloud",
@@ -655,7 +776,7 @@
     {
       "category": "security",
       "name": "gdpr-expert",
-      "path": "security/gdpr-expert.md",
+      "path": "security/gdpr-expert/SKILL.md",
       "tags": [
         "gdpr",
         "privacy",
@@ -714,7 +835,7 @@
     {
       "category": "languages",
       "name": "haskell-expert",
-      "path": "languages/haskell-expert.md",
+      "path": "languages/haskell-expert/SKILL.md",
       "tags": [
         "haskell",
         "functional-programming",
@@ -728,13 +849,13 @@
     {
       "category": "domains",
       "name": "healthcare-expert",
-      "path": "domains/healthcare/SKILL.md",
+      "path": "domains/healthcare-expert/SKILL.md",
       "tags": ["healthcare", "medical", "hipaa", "hl7", "fhir", "ehr"]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "healthtech-expert",
-      "path": "domains/healthtech-expert.md",
+      "path": "domains/healthtech-expert/SKILL.md",
       "tags": [
         "healthtech",
         "telemedicine",
@@ -773,13 +894,22 @@
     {
       "category": "domains",
       "name": "hr-tech-expert",
-      "path": "domains/hr-tech-expert.md",
-      "tags": []
+      "path": "domains/hr-tech-expert/SKILL.md",
+      "tags": [
+        "hr",
+        "hris",
+        "recruitment",
+        "ats",
+        "payroll",
+        "performance-management",
+        "employee-engagement",
+        "talent-management"
+      ]
     },
     {
       "category": "security",
       "name": "incident-response-expert",
-      "path": "security/incident-response-expert.md",
+      "path": "security/incident-response-expert/SKILL.md",
       "tags": [
         "incident-response",
         "forensics",
@@ -805,7 +935,7 @@
     {
       "category": "frameworks",
       "name": "ios-expert",
-      "path": "frameworks/ios-expert.md",
+      "path": "frameworks/ios-expert/SKILL.md",
       "tags": ["mobile", "ios", "swift", "swiftui", "uikit", "apple", "xcode"]
     },
     {
@@ -849,13 +979,24 @@
     {
       "category": "qa",
       "name": "jest-expert",
-      "path": "qa/jest-expert.md",
-      "tags": []
+      "path": "qa/jest-expert/SKILL.md",
+      "tags": [
+        "testing",
+        "unit-testing",
+        "jest",
+        "javascript",
+        "qa",
+        "mocking",
+        "snapshots",
+        "test-coverage",
+        "jest-matchers",
+        "javascript-testing"
+      ]
     },
     {
       "category": "languages",
       "name": "julia-expert",
-      "path": "languages/julia-expert.md",
+      "path": "languages/julia-expert/SKILL.md",
       "tags": [
         "julia",
         "scientific-computing",
@@ -905,22 +1046,19 @@
     },
     {
       "category": "domains",
-      "name": "legal-tech-expert",
-      "path": "domains/legal-tech-expert.md",
-      "tags": []
-    },
-    {
-      "category": "industry-specializations",
       "name": "legaltech-expert",
-      "path": "domains/legaltech-expert.md",
+      "path": "domains/legaltech-expert/SKILL.md",
       "tags": [
         "legaltech",
         "legal",
         "contracts",
+        "clm",
         "e-discovery",
         "legal-research",
         "case-management",
-        "document-automation"
+        "document-automation",
+        "compliance",
+        "litigation"
       ]
     },
     {
@@ -939,13 +1077,25 @@
     {
       "category": "qa",
       "name": "load-testing-expert",
-      "path": "qa/load-testing-expert.md",
-      "tags": []
+      "path": "qa/load-testing-expert/SKILL.md",
+      "tags": [
+        "performance",
+        "load-testing",
+        "testing",
+        "qa",
+        "scalability",
+        "performance-testing",
+        "jmeter",
+        "k6",
+        "gatling",
+        "stress-testing",
+        "performance-metrics"
+      ]
     },
     {
       "category": "domains",
       "name": "logistics-expert",
-      "path": "domains/logistics/SKILL.md",
+      "path": "domains/logistics-expert/SKILL.md",
       "tags": [
         "logistics",
         "supply-chain",
@@ -989,8 +1139,17 @@
     {
       "category": "domains",
       "name": "marketing-expert",
-      "path": "domains/marketing-expert.md",
-      "tags": []
+      "path": "domains/marketing-expert/SKILL.md",
+      "tags": [
+        "marketing",
+        "marketing-automation",
+        "campaigns",
+        "analytics",
+        "seo",
+        "content-marketing",
+        "email-marketing",
+        "digital-marketing"
+      ]
     },
     {
       "category": "domains",
@@ -1001,8 +1160,19 @@
     {
       "category": "domains",
       "name": "metaverse-expert",
-      "path": "domains/metaverse-expert.md",
-      "tags": []
+      "path": "domains/metaverse-expert/SKILL.md",
+      "tags": [
+        "metaverse",
+        "vr",
+        "ar",
+        "xr",
+        "unity",
+        "unreal-engine",
+        "3d",
+        "virtual-worlds",
+        "nft",
+        "spatial-computing"
+      ]
     },
     {
       "category": "api",
@@ -1018,8 +1188,21 @@
     {
       "category": "domains",
       "name": "microsoft365-expert",
-      "path": "domains/microsoft365-expert.md",
-      "tags": []
+      "path": "domains/microsoft365-expert/SKILL.md",
+      "tags": [
+        "microsoft",
+        "office365",
+        "m365",
+        "productivity",
+        "cloud",
+        "microsoft365",
+        "power-platform",
+        "sharepoint",
+        "teams",
+        "graph-api",
+        "powerapps",
+        "power-automate"
+      ]
     },
     {
       "category": "ai",
@@ -1057,7 +1240,7 @@
     {
       "category": "frameworks",
       "name": "nextjs-expert",
-      "path": "frameworks/nextjs-expert.md",
+      "path": "frameworks/nextjs-expert/SKILL.md",
       "tags": [
         "nextjs",
         "react",
@@ -1078,7 +1261,7 @@
     {
       "category": "languages",
       "name": "nim-expert",
-      "path": "languages/nim-expert.md",
+      "path": "languages/nim-expert/SKILL.md",
       "tags": [
         "nim",
         "metaprogramming",
@@ -1111,13 +1294,46 @@
     {
       "category": "domains",
       "name": "oracle-expert",
-      "path": "domains/oracle-expert.md",
-      "tags": []
+      "path": "domains/oracle-expert/SKILL.md",
+      "tags": [
+        "oracle",
+        "database",
+        "enterprise",
+        "erp",
+        "plsql",
+        "rac",
+        "data-guard",
+        "performance-tuning",
+        "rman",
+        "awr",
+        "sql-tuning"
+      ]
+    },
+    {
+      "category": "languages",
+      "name": "pcl-expert",
+      "path": "languages/pcl-expert/SKILL.md",
+      "tags": [
+        "pcl",
+        "persona-control-language",
+        "compiler-design",
+        "language-design",
+        "dsl",
+        "runtime-systems",
+        "lexer",
+        "parser",
+        "semantic-analysis",
+        "codegen",
+        "type-systems",
+        "ast",
+        "lsp",
+        "mcp"
+      ]
     },
     {
       "category": "security",
       "name": "penetration-testing-expert",
-      "path": "security/penetration-testing-expert.md",
+      "path": "security/penetration-testing-expert/SKILL.md",
       "tags": [
         "pentesting",
         "ethical-hacking",
@@ -1141,9 +1357,9 @@
       ]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "pharmaceutical-expert",
-      "path": "domains/pharmaceutical-expert.md",
+      "path": "domains/pharmaceutical-expert/SKILL.md",
       "tags": [
         "pharmaceutical",
         "clinical-trials",
@@ -1163,8 +1379,20 @@
     {
       "category": "qa",
       "name": "playwright-expert",
-      "path": "qa/playwright-expert.md",
-      "tags": []
+      "path": "qa/playwright-expert/SKILL.md",
+      "tags": [
+        "testing",
+        "e2e",
+        "playwright",
+        "qa",
+        "automation",
+        "e2e-testing",
+        "test-automation",
+        "browser-testing",
+        "trace-viewer",
+        "playwright-codegen",
+        "cross-browser"
+      ]
     },
     {
       "category": "data",
@@ -1200,9 +1428,9 @@
       ]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "proptech-expert",
-      "path": "domains/proptech-expert.md",
+      "path": "domains/proptech-expert/SKILL.md",
       "tags": [
         "proptech",
         "real-estate",
@@ -1234,14 +1462,32 @@
     {
       "category": "domains",
       "name": "quality-management-expert",
-      "path": "domains/quality-management-expert.md",
-      "tags": []
+      "path": "domains/quality-management-expert/SKILL.md",
+      "tags": [
+        "quality",
+        "qms",
+        "iso",
+        "compliance",
+        "auditing",
+        "continuous-improvement",
+        "six-sigma",
+        "quality-assurance"
+      ]
     },
     {
       "category": "domains",
       "name": "quantum-algorithms-expert",
-      "path": "domains/quantum-algorithms-expert.md",
-      "tags": []
+      "path": "domains/quantum-algorithms-expert/SKILL.md",
+      "tags": [
+        "quantum-computing",
+        "qiskit",
+        "quantum-algorithms",
+        "qaoa",
+        "vqe",
+        "quantum-ml",
+        "quantum-circuits",
+        "qubits"
+      ]
     },
     {
       "category": "scientific",
@@ -1269,7 +1515,7 @@
     {
       "category": "frameworks",
       "name": "react-native-expert",
-      "path": "frameworks/react-native-expert.md",
+      "path": "frameworks/react-native-expert/SKILL.md",
       "tags": [
         "mobile",
         "react-native",
@@ -1293,9 +1539,9 @@
       "tags": ["redis", "cache", "pubsub", "inmemory", "keyvalue", "nosql"]
     },
     {
-      "category": "industry-specializations",
+      "category": "domains",
       "name": "regtech-expert",
-      "path": "domains/regtech-expert.md",
+      "path": "domains/regtech-expert/SKILL.md",
       "tags": [
         "regtech",
         "compliance",
@@ -1309,7 +1555,7 @@
     {
       "category": "frameworks",
       "name": "remix-expert",
-      "path": "frameworks/remix-expert.md",
+      "path": "frameworks/remix-expert/SKILL.md",
       "tags": [
         "remix",
         "react",
@@ -1342,8 +1588,18 @@
     {
       "category": "domains",
       "name": "robotics-expert",
-      "path": "domains/robotics-expert.md",
-      "tags": []
+      "path": "domains/robotics-expert/SKILL.md",
+      "tags": [
+        "robotics",
+        "ros",
+        "ros2",
+        "autonomous-navigation",
+        "sensors",
+        "actuators",
+        "slam",
+        "motion-planning",
+        "control-systems"
+      ]
     },
     {
       "category": "languages",
@@ -1366,20 +1622,55 @@
     {
       "category": "domains",
       "name": "sales-expert",
-      "path": "domains/sales-expert.md",
-      "tags": []
+      "path": "domains/sales-expert/SKILL.md",
+      "tags": [
+        "sales",
+        "crm",
+        "pipeline",
+        "lead-management",
+        "sales-analytics",
+        "forecasting",
+        "opportunity-management",
+        "sales-automation"
+      ]
     },
     {
       "category": "domains",
       "name": "salesforce-expert",
-      "path": "domains/salesforce-expert.md",
-      "tags": []
+      "path": "domains/salesforce-expert/SKILL.md",
+      "tags": [
+        "salesforce",
+        "crm",
+        "cloud",
+        "business-apps",
+        "apex",
+        "lwc",
+        "lightning",
+        "soql",
+        "salesforce-api",
+        "force-platform",
+        "appexchange"
+      ]
     },
     {
       "category": "domains",
       "name": "sap-expert",
-      "path": "domains/sap-expert.md",
-      "tags": []
+      "path": "domains/sap-expert/SKILL.md",
+      "tags": [
+        "sap",
+        "erp",
+        "enterprise",
+        "business-apps",
+        "abap",
+        "hana",
+        "s4hana",
+        "fiori",
+        "odata",
+        "rfc",
+        "idoc",
+        "sap-integration",
+        "enterprise-software"
+      ]
     },
     {
       "category": "languages",
@@ -1404,32 +1695,101 @@
     {
       "category": "qa",
       "name": "selenium-expert",
-      "path": "qa/selenium-expert.md",
-      "tags": []
+      "path": "qa/selenium-expert/SKILL.md",
+      "tags": [
+        "testing",
+        "e2e",
+        "selenium",
+        "qa",
+        "automation",
+        "webdriver",
+        "selenium-grid",
+        "page-object-model",
+        "cross-browser-testing",
+        "test-automation",
+        "selenium-python"
+      ]
     },
     {
       "category": "domains",
       "name": "serverless-expert",
-      "path": "domains/serverless-expert.md",
-      "tags": []
+      "path": "domains/serverless-expert/SKILL.md",
+      "tags": [
+        "serverless",
+        "faas",
+        "lambda",
+        "azure-functions",
+        "event-driven",
+        "cloud-native",
+        "microservices",
+        "api-gateway"
+      ]
     },
     {
       "category": "domains",
       "name": "servicenow-expert",
-      "path": "domains/servicenow-expert.md",
-      "tags": []
+      "path": "domains/servicenow-expert/SKILL.md",
+      "tags": [
+        "servicenow",
+        "itsm",
+        "itom",
+        "workflow",
+        "automation",
+        "cmdb",
+        "service-portal",
+        "gliderecord",
+        "business-rules",
+        "it-service-management"
+      ]
     },
     {
       "category": "domains",
       "name": "sharepoint-expert",
-      "path": "domains/sharepoint-expert.md",
-      "tags": []
+      "path": "domains/sharepoint-expert/SKILL.md",
+      "tags": [
+        "sharepoint",
+        "microsoft",
+        "collaboration",
+        "intranet",
+        "cms",
+        "spfx",
+        "sharepoint-framework",
+        "pnp",
+        "sharepoint-online",
+        "site-collections",
+        "content-types",
+        "workflows"
+      ]
+    },
+    {
+      "category": "tools",
+      "name": "skill-creator-expert",
+      "path": "tools/skill-creator-expert/SKILL.md",
+      "tags": [
+        "skill-creation",
+        "meta-programming",
+        "domain-modeling",
+        "knowledge-engineering",
+        "pcl-development"
+      ]
     },
     {
       "category": "tools",
       "name": "slack-expert",
-      "path": "tools/slack-expert.md",
-      "tags": []
+      "path": "tools/slack-expert/SKILL.md",
+      "tags": [
+        "slack",
+        "communication",
+        "collaboration",
+        "bots",
+        "api",
+        "slack-bot",
+        "block-kit",
+        "slack-api",
+        "slash-commands",
+        "slack-oauth",
+        "bot-development"
+      ]
     },
     {
       "category": "data",
@@ -1440,7 +1800,7 @@
     {
       "category": "security",
       "name": "soc2-expert",
-      "path": "security/soc2-expert.md",
+      "path": "security/soc2-expert/SKILL.md",
       "tags": [
         "soc2",
         "compliance",
@@ -1454,8 +1814,16 @@
     {
       "category": "domains",
       "name": "social-media-expert",
-      "path": "domains/social-media-expert.md",
-      "tags": []
+      "path": "domains/social-media-expert/SKILL.md",
+      "tags": [
+        "social-media",
+        "content-management",
+        "engagement",
+        "analytics",
+        "influencer-marketing",
+        "social-listening",
+        "community-management"
+      ]
     },
     {
       "category": "frameworks",
@@ -1503,7 +1871,7 @@
     {
       "category": "domains",
       "name": "stockbreeder-expert",
-      "path": "domains/stockbreeder/SKILL.md",
+      "path": "domains/stockbreeder-expert/SKILL.md",
       "tags": [
         "livestock",
         "animal-husbandry",
@@ -1515,13 +1883,22 @@
     {
       "category": "domains",
       "name": "supply-chain-expert",
-      "path": "domains/supply-chain-expert.md",
-      "tags": []
+      "path": "domains/supply-chain-expert/SKILL.md",
+      "tags": [
+        "supply-chain",
+        "logistics",
+        "inventory",
+        "procurement",
+        "demand-planning",
+        "supplier-management",
+        "warehouse",
+        "scm"
+      ]
     },
     {
       "category": "frameworks",
       "name": "svelte-expert",
-      "path": "frameworks/svelte-expert.md",
+      "path": "frameworks/svelte-expert/SKILL.md",
       "tags": [
         "svelte",
         "sveltekit",
@@ -1562,7 +1939,7 @@
     {
       "category": "frameworks",
       "name": "tauri-expert",
-      "path": "frameworks/tauri-expert.md",
+      "path": "frameworks/tauri-expert/SKILL.md",
       "tags": [
         "desktop",
         "tauri",
@@ -1575,8 +1952,20 @@
     {
       "category": "tools",
       "name": "teams-expert",
-      "path": "tools/teams-expert.md",
-      "tags": []
+      "path": "tools/teams-expert/SKILL.md",
+      "tags": [
+        "microsoft-teams",
+        "teams",
+        "communication",
+        "collaboration",
+        "microsoft",
+        "teams-bot",
+        "adaptive-cards",
+        "teams-app",
+        "messaging-extensions",
+        "graph-api",
+        "teams-toolkit"
+      ]
     },
     {
       "category": "domains",
@@ -1626,18 +2015,42 @@
       "category": "languages",
       "name": "typescript-expert",
       "path": "languages/typescript-expert/SKILL.md",
-      "tags": []
+      "tags": [
+        "typescript",
+        "javascript",
+        "web",
+        "programming",
+        "types",
+        "frontend",
+        "backend",
+        "nodejs"
+      ]
     },
     {
       "category": "tools",
       "name": "video-streaming-expert",
-      "path": "tools/video-streaming-expert.md",
-      "tags": []
+      "path": "tools/video-streaming-expert/SKILL.md",
+      "tags": [
+        "video",
+        "streaming",
+        "media",
+        "webrtc",
+        "multimedia",
+        "video-streaming",
+        "hls",
+        "dash",
+        "adaptive-bitrate",
+        "cdn",
+        "drm",
+        "ffmpeg",
+        "video-encoding",
+        "live-streaming"
+      ]
     },
     {
       "category": "frameworks",
       "name": "vue-expert",
-      "path": "frameworks/vue-expert.md",
+      "path": "frameworks/vue-expert/SKILL.md",
       "tags": [
         "vue",
         "vue3",
@@ -1652,31 +2065,78 @@
     {
       "category": "domains",
       "name": "web3-expert",
-      "path": "domains/web3-expert.md",
-      "tags": []
+      "path": "domains/web3-expert/SKILL.md",
+      "tags": [
+        "web3",
+        "blockchain",
+        "smart-contracts",
+        "solidity",
+        "dapps",
+        "defi",
+        "ipfs",
+        "ethereum",
+        "web3js",
+        "ethersjs"
+      ]
     },
     {
       "category": "domains",
       "name": "webassembly-expert",
-      "path": "domains/webassembly-expert.md",
-      "tags": []
+      "path": "domains/webassembly-expert/SKILL.md",
+      "tags": [
+        "webassembly",
+        "wasm",
+        "wasi",
+        "rust",
+        "cpp",
+        "performance",
+        "browser",
+        "emscripten",
+        "wasmtime"
+      ]
     },
     {
       "category": "tools",
       "name": "webrtc-expert",
-      "path": "tools/webrtc-expert.md",
-      "tags": []
+      "path": "tools/webrtc-expert/SKILL.md",
+      "tags": [
+        "webrtc",
+        "real-time",
+        "video",
+        "audio",
+        "peer-to-peer",
+        "signaling",
+        "ice",
+        "stun",
+        "turn",
+        "media-streams",
+        "real-time-communication",
+        "video-chat"
+      ]
     },
     {
       "category": "domains",
       "name": "workday-expert",
-      "path": "domains/workday-expert.md",
-      "tags": []
+      "path": "domains/workday-expert/SKILL.md",
+      "tags": [
+        "workday",
+        "hr",
+        "finance",
+        "erp",
+        "cloud",
+        "hcm",
+        "workday-integration",
+        "workday-studio",
+        "xpath",
+        "business-process",
+        "custom-reports",
+        "prism-analytics"
+      ]
     },
     {
       "category": "security",
       "name": "zero-trust-expert",
-      "path": "security/zero-trust-expert.md",
+      "path": "security/zero-trust-expert/SKILL.md",
       "tags": [
         "zero-trust",
         "identity",
@@ -1689,7 +2149,7 @@
     {
       "category": "languages",
       "name": "zig-expert",
-      "path": "languages/zig-expert.md",
+      "path": "languages/zig-expert/SKILL.md",
       "tags": [
         "zig",
         "systems-programming",
@@ -1701,6 +2161,6 @@
       ]
     }
   ],
-  "total_skills": 173,
+  "total_skills": 174,
   "version": "2.0.0"
 }

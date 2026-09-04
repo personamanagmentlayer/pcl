@@ -1,7 +1,10 @@
 ---
 name: r-expert
-version: 1.0.0
-description: Expert-level R statistical computing, data analysis, and visualization
+version: 1.1.0
+description: >-
+  Expert-level R statistical computing, data analysis, and visualization. Use when the user
+  mentions statistics, data analysis, ggplot2, or the tidyverse, or when the task involves
+  R Fundamentals, Statistical Analysis, Data Visualization, or Code Style.
 category: languages
 tags: [r, statistics, data-analysis, ggplot2, tidyverse]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for R programming, statistical analysis, data visualization, and
 ## Core Concepts
 
 ### R Fundamentals
+
 - Vectors and data frames
 - Factors and lists
 - Functions and apply family
@@ -26,6 +30,7 @@ Expert guidance for R programming, statistical analysis, data visualization, and
 - Tidyverse ecosystem
 
 ### Statistical Analysis
+
 - Descriptive statistics
 - Hypothesis testing
 - Regression analysis
@@ -34,6 +39,7 @@ Expert guidance for R programming, statistical analysis, data visualization, and
 - Machine learning
 
 ### Data Visualization
+
 - ggplot2
 - Base R graphics
 - Interactive plots (plotly)
@@ -308,7 +314,7 @@ print(cv_model)
 
 ## R Markdown
 
-```r
+````r
 ---
 title: "Analysis Report"
 author: "Data Scientist"
@@ -327,7 +333,7 @@ This analysis explores the relationship between variables.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
-```
+````
 
 ## Data Loading
 
@@ -347,7 +353,8 @@ ggplot(df, aes(x = x, y = y)) +
 ## Results
 
 The analysis shows that `r cor(df$x, df$y)` correlation.
-```
+
+````
 
 ## Data Import/Export
 
@@ -379,11 +386,12 @@ dbDisconnect(con)
 library(httr)
 response <- GET("https://api.example.com/data")
 data <- content(response, as = "parsed")
-```
+````
 
 ## Best Practices
 
 ### Code Style
+
 - Use <- for assignment
 - Follow tidyverse style guide
 - Write functions for repeated code
@@ -392,6 +400,7 @@ data <- content(response, as = "parsed")
 - Use %>% pipe for readability
 
 ### Data Analysis
+
 - Always explore data first
 - Check for missing values
 - Validate assumptions
@@ -400,6 +409,7 @@ data <- content(response, as = "parsed")
 - Make analysis reproducible
 
 ### Performance
+
 - Vectorize operations
 - Use data.table for large data
 - Avoid growing objects in loops

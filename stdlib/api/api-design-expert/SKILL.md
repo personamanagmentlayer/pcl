@@ -1,7 +1,10 @@
 ---
 name: api-design-expert
-version: 1.0.0
-description: Expert-level API design principles, REST, GraphQL, versioning, and API best practices
+version: 1.1.0
+description: >-
+  Expert-level API design principles, REST, GraphQL, versioning, and API best practices.
+  Use when the user mentions REST, GraphQL, API versioning, or API security, or when the
+  task involves API Design Principles, API Styles, or Documentation.
 category: api
 tags: [api-design, rest, graphql, api-versioning, api-security]
 allowed-tools:
@@ -17,6 +20,7 @@ Expert guidance for API design, RESTful principles, GraphQL, versioning strategi
 ## Core Concepts
 
 ### API Design Principles
+
 - RESTful architecture
 - Resource-oriented design
 - Uniform interface
@@ -25,6 +29,7 @@ Expert guidance for API design, RESTful principles, GraphQL, versioning strategi
 - Layered system
 
 ### API Styles
+
 - REST (Representational State Transfer)
 - GraphQL
 - RPC (Remote Procedure Call)
@@ -33,6 +38,7 @@ Expert guidance for API design, RESTful principles, GraphQL, versioning strategi
 - gRPC
 
 ### Key Considerations
+
 - Versioning strategies
 - Authentication and authorization
 - Rate limiting
@@ -385,6 +391,8 @@ async def get_user_with_links(user_id: str):
 ## API Security
 
 ```python
+import os
+
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -392,7 +400,9 @@ from passlib.context import CryptContext
 security = HTTPBearer()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-SECRET_KEY = "your-secret-key"
+# The JWT signing key. A literal here means every deployment that copies
+# this file shares a forgeable key - load it, and fail closed if absent.
+SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 ALGORITHM = "HS256"
 
 async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
@@ -425,6 +435,7 @@ async def verify_api_key(api_key: str = Header(...)):
 ## Best Practices
 
 ### Design
+
 - Use nouns for resources, not verbs
 - Use plural names for collections
 - Use HTTP methods correctly (GET, POST, PUT, PATCH, DELETE)
@@ -434,6 +445,7 @@ async def verify_api_key(api_key: str = Header(...)):
 - Version APIs from the start
 
 ### Documentation
+
 - Use OpenAPI/Swagger
 - Provide example requests and responses
 - Document error codes and messages
@@ -442,6 +454,7 @@ async def verify_api_key(api_key: str = Header(...)):
 - Provide SDKs when possible
 
 ### Performance
+
 - Implement caching (ETags, Cache-Control)
 - Support compression (gzip)
 - Paginate large result sets
@@ -450,6 +463,7 @@ async def verify_api_key(api_key: str = Header(...)):
 - Monitor API performance
 
 ### Security
+
 - Use HTTPS always
 - Implement authentication and authorization
 - Validate all inputs

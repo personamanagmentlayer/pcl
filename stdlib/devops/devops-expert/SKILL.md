@@ -1,14 +1,17 @@
 ---
 name: devops-expert
-version: 1.0.0
-description: Expert-level DevOps practices, culture, automation, and continuous delivery
+version: 2.0.0
+description: >-
+  Expert-level DevOps practices, culture, automation, and continuous delivery. Use when the
+  user mentions CI/CD, automation, infrastructure, or culture, or when the task involves
+  DevOps Culture or Culture & Process.
 category: devops
 tags: [devops, ci-cd, automation, infrastructure, culture]
 allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash(*)
+  - Bash(python:*, python3:*, pip:*, pytest:*)
 ---
 
 # DevOps Expert
@@ -18,6 +21,7 @@ Expert guidance for DevOps practices, culture, CI/CD pipelines, infrastructure a
 ## Core Concepts
 
 ### DevOps Culture
+
 - Collaboration and communication
 - Shared responsibility
 - Continuous improvement
@@ -26,6 +30,7 @@ Expert guidance for DevOps practices, culture, CI/CD pipelines, infrastructure a
 - Measuring everything
 
 ### Automation
+
 - Infrastructure as Code (IaC)
 - Configuration management
 - Deployment automation
@@ -34,6 +39,7 @@ Expert guidance for DevOps practices, culture, CI/CD pipelines, infrastructure a
 - Self-service platforms
 
 ### CI/CD
+
 - Continuous Integration
 - Continuous Delivery
 - Continuous Deployment
@@ -442,6 +448,7 @@ class ObservabilityStack:
 ## Best Practices
 
 ### Culture & Process
+
 - Foster collaboration between Dev and Ops
 - Automate everything possible
 - Measure and monitor continuously
@@ -451,6 +458,7 @@ class ObservabilityStack:
 - Celebrate successes and learn from failures
 
 ### CI/CD
+
 - Keep builds fast (<10 minutes)
 - Run tests in parallel
 - Use pipeline as code
@@ -460,6 +468,7 @@ class ObservabilityStack:
 - Deploy small, frequent changes
 
 ### Infrastructure
+
 - Use Infrastructure as Code
 - Version everything (code, config, infrastructure)
 - Implement disaster recovery

@@ -1,7 +1,11 @@
 ---
 name: quantum-expert
-version: 1.0.0
-description: Expert-level quantum computing, Qiskit, quantum algorithms, and quantum information
+version: 1.1.0
+description: >-
+  Expert-level quantum computing, Qiskit, quantum algorithms, and quantum information. Use
+  when the user mentions quantum computing, Qiskit, quantum algorithms, or quantum
+  information, or when the task involves Quantum Mechanics Basics, Quantum Hardware,
+  Circuit Design, or Algorithm Implementation.
 category: scientific
 tags: [quantum-computing, qiskit, quantum-algorithms, quantum-information]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for quantum computing, quantum algorithms, Qiskit programming, a
 ## Core Concepts
 
 ### Quantum Mechanics Basics
+
 - Qubits and superposition
 - Quantum entanglement
 - Quantum interference
@@ -26,6 +31,7 @@ Expert guidance for quantum computing, quantum algorithms, Qiskit programming, a
 - Quantum circuits
 
 ### Quantum Algorithms
+
 - Grover's search algorithm
 - Shor's factoring algorithm
 - Quantum Fourier Transform (QFT)
@@ -34,6 +40,7 @@ Expert guidance for quantum computing, quantum algorithms, Qiskit programming, a
 - Quantum machine learning
 
 ### Quantum Hardware
+
 - Superconducting qubits
 - Ion trap quantum computers
 - Quantum annealing
@@ -291,6 +298,7 @@ class QuantumClassifier:
 ## Best Practices
 
 ### Circuit Design
+
 - Minimize circuit depth for NISQ devices
 - Use native gates when possible
 - Consider qubit connectivity
@@ -299,6 +307,7 @@ class QuantumClassifier:
 - Use efficient state preparation
 
 ### Algorithm Implementation
+
 - Start with small quantum circuits
 - Validate with classical simulation
 - Use noise models for realistic testing
@@ -307,6 +316,7 @@ class QuantumClassifier:
 - Document quantum advantage claims
 
 ### Production Usage
+
 - Use quantum cloud services (IBM, AWS Braket)
 - Implement hybrid classical-quantum algorithms
 - Cache quantum results when possible

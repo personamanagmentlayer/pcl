@@ -1,7 +1,10 @@
 ---
 name: grpc-expert
-version: 1.0.0
-description: Expert-level gRPC, Protocol Buffers, microservices communication, and streaming
+version: 1.1.0
+description: >-
+  Expert-level gRPC, Protocol Buffers, microservices communication, and streaming. Use when
+  the user mentions Protocol Buffers, microservices, RPC, or streaming, or when the task
+  involves gRPC Fundamentals, Communication Patterns, or Production Features.
 category: api
 tags: [grpc, protobuf, microservices, rpc, streaming]
 allowed-tools:
@@ -17,6 +20,7 @@ Expert guidance for gRPC services, Protocol Buffers, microservices communication
 ## Core Concepts
 
 ### gRPC Fundamentals
+
 - Protocol Buffers (protobuf)
 - Service definitions
 - RPC patterns (unary, server streaming, client streaming, bidirectional)
@@ -25,6 +29,7 @@ Expert guidance for gRPC services, Protocol Buffers, microservices communication
 - Interceptors and middleware
 
 ### Communication Patterns
+
 - Unary RPC (request-response)
 - Server streaming RPC
 - Client streaming RPC
@@ -33,6 +38,7 @@ Expert guidance for gRPC services, Protocol Buffers, microservices communication
 - Error handling and status codes
 
 ### Production Features
+
 - Load balancing
 - Service discovery
 - Health checking
@@ -383,6 +389,7 @@ class UserClient:
 ## Best Practices
 
 ### Design
+
 - Use semantic versioning for protobuf packages
 - Design backward-compatible changes
 - Use proper field numbering (never reuse)
@@ -391,6 +398,7 @@ class UserClient:
 - Design for pagination in list operations
 
 ### Performance
+
 - Enable HTTP/2 connection pooling
 - Use streaming for large data transfers
 - Implement proper timeouts
@@ -399,6 +407,7 @@ class UserClient:
 - Monitor and tune thread pool sizes
 
 ### Production
+
 - Implement health checks
 - Use TLS for secure communication
 - Add authentication/authorization

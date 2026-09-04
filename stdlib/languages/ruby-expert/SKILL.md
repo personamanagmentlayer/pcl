@@ -1,7 +1,11 @@
 ---
 name: ruby-expert
-version: 1.0.0
-description: Expert-level Ruby development with Rails, modern features, testing, and best practices
+version: 1.1.0
+description: >-
+  Expert-level Ruby development with Rails, modern features, testing, and best practices.
+  Use when the user mentions Ruby on Rails, RSpec, gem, Sinatra, or metaprogramming, or
+  when the task involves Ruby 3+ Features, Object-Oriented, Functional Features, or Pattern
+  Matching.
 category: languages
 tags: [ruby, rails, rspec, gem, sinatra, metaprogramming]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for Ruby development, including Ruby 3+ features, Rails framewor
 ## Core Concepts
 
 ### Ruby 3+ Features
+
 - Pattern matching
 - Ractors (parallel execution)
 - Fibers (cooperative concurrency)
@@ -27,6 +32,7 @@ Expert guidance for Ruby development, including Ruby 3+ features, Rails framewor
 - Hash literal value omission
 
 ### Object-Oriented
+
 - Everything is an object
 - Classes and modules
 - Inheritance and mixins
@@ -35,6 +41,7 @@ Expert guidance for Ruby development, including Ruby 3+ features, Rails framewor
 - Duck typing
 
 ### Functional Features
+
 - Blocks, procs, and lambdas
 - Higher-order functions (map, reduce, select)
 - Enumerables
@@ -43,6 +50,7 @@ Expert guidance for Ruby development, including Ruby 3+ features, Rails framewor
 ## Modern Ruby Syntax
 
 ### Pattern Matching (Ruby 3.0+)
+
 ```ruby
 # Case/in pattern matching
 def process_response(response)
@@ -78,6 +86,7 @@ end
 ```
 
 ### Endless Methods
+
 ```ruby
 # Single-line method definition
 def greet(name) = "Hello, #{name}!"
@@ -96,6 +105,7 @@ end
 ```
 
 ### Numbered Block Parameters
+
 ```ruby
 # Use _1, _2, etc. for block parameters
 [1, 2, 3].map { _1 * 2 }  # [2, 4, 6]
@@ -106,6 +116,7 @@ users.sort_by { [_1.last_name, _1.first_name] }
 ```
 
 ### Hash Literal Value Omission
+
 ```ruby
 name = "Alice"
 age = 30
@@ -118,293 +129,10 @@ user = { name: name, age: age, email: email }
 user = { name:, age:, email: }
 ```
 
-## Ruby on Rails
-
-### Rails 7+ Application
-```ruby
-# app/models/user.rb
-class User < ApplicationRecord
-  # Validations
-  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :name, presence: true, length: { minimum: 2, maximum: 100 }
-  validates :age, numericality: { greater_than_or_equal_to: 18 }, allow_nil: true
-
-  # Associations
-  has_many :posts, dependent: :destroy
-  has_many :comments, dependent: :destroy
-  has_many :likes, dependent: :destroy
-  has_many :liked_posts, through: :likes, source: :post
-
-  # Scopes
-  scope :active, -> { where(active: true) }
-  scope :recent, -> { order(created_at: :desc) }
-  scope :with_posts, -> { joins(:posts).distinct }
-
-  # Callbacks
-  before_save :normalize_email
-  after_create :send_welcome_email
-
-  # Enums
-  enum role: { user: 0, moderator: 1, admin: 2 }
-
-  # Instance methods
-  def full_name
-    "#{first_name} #{last_name}"
-  end
-
-  def admin?
-    role == 'admin'
-  end
-
-  private
-
-  def normalize_email
-    self.email = email.downcase.strip
-  end
-
-  def send_welcome_email
-    UserMailer.welcome(self).deliver_later
-  end
-end
-
-# app/models/post.rb
-class Post < ApplicationRecord
-  belongs_to :user
-  has_many :comments, dependent: :destroy
-  has_many :likes, dependent: :destroy
-  has_many :liking_users, through: :likes, source: :user
-
-  has_one_attached :cover_image
-  has_rich_text :content
-
-  validates :title, presence: true, length: { minimum: 5, maximum: 200 }
-  validates :content, presence: true
-
-  scope :published, -> { where(published: true) }
-  scope :by_user, ->(user) { where(user: user) }
-  scope :search, ->(query) { where('title ILIKE ? OR content ILIKE ?', "%#{query}%", "%#{query}%") }
-
-  before_save :generate_slug
-
-  def publish!
-    update!(published: true, published_at: Time.current)
-  end
-
-  private
-
-  def generate_slug
-    self.slug = title.parameterize
-  end
-end
-```
-
-### Controllers
-```ruby
-# app/controllers/api/v1/posts_controller.rb
-module Api
-  module V1
-    class PostsController < ApplicationController
-      before_action :authenticate_user!, except: [:index, :show]
-      before_action :set_post, only: [:show, :update, :destroy]
-      before_action :authorize_post, only: [:update, :destroy]
-
-      # GET /api/v1/posts
-      def index
-        @posts = Post.published
-                     .includes(:user, :comments)
-                     .page(params[:page])
-                     .per(20)
-
-        render json: @posts, each_serializer: PostSerializer
-      end
-
-      # GET /api/v1/posts/:id
-      def show
-        render json: @post, serializer: PostSerializer, include: [:user, :comments]
-      end
-
-      # POST /api/v1/posts
-      def create
-        @post = current_user.posts.build(post_params)
-
-        if @post.save
-          render json: @post, serializer: PostSerializer, status: :created
-        else
-          render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
-        end
-      end
-
-      # PATCH/PUT /api/v1/posts/:id
-      def update
-        if @post.update(post_params)
-          render json: @post, serializer: PostSerializer
-        else
-          render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/posts/:id
-      def destroy
-        @post.destroy
-        head :no_content
-      end
-
-      private
-
-      def set_post
-        @post = Post.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Post not found' }, status: :not_found
-      end
-
-      def authorize_post
-        unless @post.user == current_user || current_user.admin?
-          render json: { error: 'Unauthorized' }, status: :forbidden
-        end
-      end
-
-      def post_params
-        params.require(:post).permit(:title, :content, :published, :cover_image)
-      end
-    end
-  end
-end
-```
-
-### Active Record Queries
-```ruby
-# Efficient queries
-User.includes(:posts).where(posts: { published: true })
-User.joins(:posts).group('users.id').having('COUNT(posts.id) > ?', 5)
-User.left_joins(:posts).where(posts: { id: nil })  # Users with no posts
-
-# Complex queries
-Post.where('created_at > ?', 1.week.ago)
-    .where(published: true)
-    .order(created_at: :desc)
-    .limit(10)
-
-# Find or create
-user = User.find_or_create_by(email: 'user@example.com') do |u|
-  u.name = 'New User'
-  u.role = :user
-end
-
-# Upsert (Rails 6+)
-User.upsert({ email: 'user@example.com', name: 'Alice' }, unique_by: :email)
-
-# Batch processing
-User.find_each(batch_size: 100) do |user|
-  user.update_subscription_status
-end
-
-# Transactions
-ActiveRecord::Base.transaction do
-  user.update!(balance: user.balance - amount)
-  recipient.update!(balance: recipient.balance + amount)
-  Transaction.create!(from: user, to: recipient, amount: amount)
-end
-
-# Raw SQL (when needed)
-ActiveRecord::Base.connection.execute(
-  "SELECT * FROM users WHERE created_at > '2024-01-01'"
-)
-```
-
-### Background Jobs (Sidekiq)
-```ruby
-# app/jobs/send_email_job.rb
-class SendEmailJob < ApplicationJob
-  queue_as :default
-  retry_on Net::SMTPServerBusy, wait: :exponentially_longer
-
-  def perform(user_id, email_type)
-    user = User.find(user_id)
-    case email_type
-    when 'welcome'
-      UserMailer.welcome(user).deliver_now
-    when 'notification'
-      UserMailer.notification(user).deliver_now
-    end
-  end
-end
-
-# Usage
-SendEmailJob.perform_later(user.id, 'welcome')
-SendEmailJob.set(wait: 1.hour).perform_later(user.id, 'notification')
-```
-
-### Mailers
-```ruby
-# app/mailers/user_mailer.rb
-class UserMailer < ApplicationMailer
-  default from: 'noreply@example.com'
-
-  def welcome(user)
-    @user = user
-    @url  = 'https://example.com/login'
-    mail(to: @user.email, subject: 'Welcome to My App')
-  end
-
-  def notification(user, message)
-    @user = user
-    @message = message
-    mail(
-      to: @user.email,
-      subject: 'New Notification',
-      reply_to: 'support@example.com'
-    )
-  end
-end
-```
-
-### Routes
-```ruby
-# config/routes.rb
-Rails.application.routes.draw do
-  root 'home#index'
-
-  # RESTful resources
-  resources :posts do
-    member do
-      post :publish
-      post :like
-    end
-    collection do
-      get :trending
-    end
-    resources :comments, only: [:create, :destroy]
-  end
-
-  # Nested resources
-  resources :users do
-    resources :posts, only: [:index, :show]
-  end
-
-  # Namespaced routes
-  namespace :api do
-    namespace :v1 do
-      resources :posts, only: [:index, :show, :create, :update, :destroy]
-      resources :users, only: [:index, :show]
-    end
-  end
-
-  # Constraints
-  constraints(subdomain: 'api') do
-    scope module: 'api' do
-      resources :posts
-    end
-  end
-
-  # Custom routes
-  get '/about', to: 'pages#about'
-  post '/contact', to: 'pages#contact'
-end
-```
-
 ## Testing with RSpec
 
 ### Model Specs
+
 ```ruby
 # spec/models/user_spec.rb
 require 'rails_helper'
@@ -457,6 +185,7 @@ end
 ```
 
 ### Controller Specs
+
 ```ruby
 # spec/controllers/posts_controller_spec.rb
 require 'rails_helper'
@@ -525,6 +254,7 @@ end
 ```
 
 ### Request Specs
+
 ```ruby
 # spec/requests/api/v1/posts_spec.rb
 require 'rails_helper'
@@ -575,6 +305,7 @@ end
 ```
 
 ### FactoryBot
+
 ```ruby
 # spec/factories/users.rb
 FactoryBot.define do
@@ -682,6 +413,7 @@ end
 ## Best Practices
 
 ### Code Style
+
 - Follow Ruby Style Guide
 - Use 2-space indentation
 - Prefer symbols over strings for keys
@@ -690,6 +422,7 @@ end
 - Use meaningful variable names
 
 ### Performance
+
 - Use `includes` to avoid N+1 queries
 - Add database indexes on foreign keys
 - Use `select` to load only needed columns
@@ -697,6 +430,7 @@ end
 - Cache expensive computations
 
 ### Security
+
 - Use strong parameters in controllers
 - Sanitize user input
 - Protect against SQL injection (use parameterized queries)
@@ -713,6 +447,12 @@ end
 ❌ **Skipping validations**: Always validate data
 ❌ **Exposing internals**: Use serializers for API responses
 ❌ **Global state**: Avoid global variables and class variables
+
+## Reference Documentation
+
+Detailed material lives alongside this skill and is read on demand:
+
+- [Ruby on Rails](references/RUBY_ON_RAILS.md) — Rails 7+ Application, Controllers, Active Record Queries, Background Jobs (Sidekiq), Mailers, Routes
 
 ## Resources
 

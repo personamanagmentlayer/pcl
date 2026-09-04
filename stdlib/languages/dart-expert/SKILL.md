@@ -1,7 +1,10 @@
 ---
 name: dart-expert
-version: 1.0.0
-description: Expert-level Dart, Flutter, mobile development, and cross-platform apps
+version: 1.1.0
+description: >-
+  Expert-level Dart, Flutter, mobile development, and cross-platform apps. Use when the
+  user mentions Flutter, mobile, cross platform, or widgets, or when the task involves Dart
+  Language or Flutter Framework.
 category: languages
 tags: [dart, flutter, mobile, cross-platform, widgets]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for Dart programming, Flutter framework, mobile development, and
 ## Core Concepts
 
 ### Dart Language
+
 - Strong typing with type inference
 - Async/await and Futures
 - Streams
@@ -26,6 +30,7 @@ Expert guidance for Dart programming, Flutter framework, mobile development, and
 - Collections
 
 ### Flutter Framework
+
 - Widgets (Stateless & Stateful)
 - State management (Provider, Riverpod, Bloc)
 - Navigation and routing
@@ -447,6 +452,7 @@ class User {
 ## Best Practices
 
 ### Dart
+
 - Use const constructors when possible
 - Leverage null safety
 - Use final for immutable values
@@ -455,6 +461,7 @@ class User {
 - Follow Effective Dart guidelines
 
 ### Flutter
+
 - Keep widgets small and focused
 - Use const widgets for optimization
 - Avoid rebuilding entire trees
@@ -464,6 +471,7 @@ class User {
 - Use keys when needed
 
 ### Performance
+
 - Use ListView.builder for long lists
 - Implement pagination
 - Cache network images

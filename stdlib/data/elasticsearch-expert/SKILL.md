@@ -1,14 +1,16 @@
 ---
 name: elasticsearch-expert
-version: 1.0.0
-description: Expert-level Elasticsearch, search, ELK stack, and full-text search
+version: 2.0.0
+description: >-
+  Expert-level Elasticsearch, search, ELK stack, and full-text search. Use when the user
+  mentions search, ELK, Logstash, Kibana, or full text search.
 category: data
 tags: [elasticsearch, search, elk, logstash, kibana, full-text-search]
 allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash(*)
+  - Bash(python:*, python3:*, pip:*, pytest:*)
 ---
 
 # Elasticsearch Expert

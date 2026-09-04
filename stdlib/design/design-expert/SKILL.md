@@ -1,7 +1,10 @@
 ---
 name: design-expert
-version: 1.0.0
-description: Expert-level system design, architecture patterns, scalability, and distributed systems
+version: 1.1.0
+description: >-
+  Expert-level system design, architecture patterns, scalability, and distributed systems.
+  Use when the user mentions system design, architecture, scalability, distributed systems,
+  or patterns, or when the task involves Architecture Patterns or Design Principles.
 category: design
 tags: [system-design, architecture, scalability, distributed-systems, patterns]
 allowed-tools:
@@ -17,6 +20,7 @@ Expert guidance for system design, software architecture, scalability patterns, 
 ## Core Concepts
 
 ### Architecture Patterns
+
 - Microservices vs Monolithic
 - Event-driven architecture
 - CQRS and Event Sourcing
@@ -25,6 +29,7 @@ Expert guidance for system design, software architecture, scalability patterns, 
 - Service-oriented architecture (SOA)
 
 ### Scalability
+
 - Horizontal vs vertical scaling
 - Load balancing strategies
 - Caching layers
@@ -33,6 +38,7 @@ Expert guidance for system design, software architecture, scalability patterns, 
 - CDN usage
 
 ### Distributed Systems
+
 - CAP theorem
 - Consistency models
 - Distributed consensus (Raft, Paxos)
@@ -298,6 +304,7 @@ class LoadBalancer:
 ## Best Practices
 
 ### Design Principles
+
 - SOLID principles
 - DRY (Don't Repeat Yourself)
 - KISS (Keep It Simple, Stupid)
@@ -307,6 +314,7 @@ class LoadBalancer:
 - Design for failure
 
 ### Scalability
+
 - Plan for growth early
 - Use horizontal scaling
 - Implement caching strategically
@@ -316,6 +324,7 @@ class LoadBalancer:
 - Load test regularly
 
 ### Architecture
+
 - Start with monolith, split when needed
 - Define clear boundaries
 - Use APIs for communication

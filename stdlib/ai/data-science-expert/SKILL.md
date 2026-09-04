@@ -1,7 +1,11 @@
 ---
 name: data-science-expert
-version: 1.0.0
-description: Expert-level data science, analytics, visualization, and statistical modeling
+version: 1.1.0
+description: >-
+  Expert-level data science, analytics, visualization, and statistical modeling. Use when
+  the user mentions analytics, visualization, statistics, pandas, or NumPy, or when the
+  task involves Data Analysis, Machine Learning, Data Visualization, or Feature
+  Engineering.
 category: ai
 tags: [data-science, analytics, visualization, statistics, pandas, numpy]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for data science, analytics, statistical modeling, and data visu
 ## Core Concepts
 
 ### Data Analysis
+
 - Exploratory Data Analysis (EDA)
 - Data cleaning and preprocessing
 - Feature engineering
@@ -26,6 +31,7 @@ Expert guidance for data science, analytics, statistical modeling, and data visu
 - A/B testing
 
 ### Machine Learning
+
 - Supervised learning (classification, regression)
 - Unsupervised learning (clustering, PCA)
 - Model selection and validation
@@ -34,6 +40,7 @@ Expert guidance for data science, analytics, statistical modeling, and data visu
 - Ensemble methods
 
 ### Data Visualization
+
 - Matplotlib, Seaborn, Plotly
 - Statistical plots
 - Interactive dashboards
@@ -355,6 +362,7 @@ class ABTest:
 ## Best Practices
 
 ### Data Analysis
+
 - Always explore data before modeling
 - Check data quality and missing values
 - Understand variable distributions
@@ -363,6 +371,7 @@ class ABTest:
 - Validate assumptions
 
 ### Feature Engineering
+
 - Create domain-specific features
 - Test feature importance
 - Avoid data leakage
@@ -371,6 +380,7 @@ class ABTest:
 - Keep features interpretable
 
 ### Visualization
+
 - Choose appropriate plot types
 - Use clear labels and titles
 - Consider color accessibility

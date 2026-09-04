@@ -1,7 +1,10 @@
 ---
 name: lawyer-expert
-version: 1.0.0
-description: Expert-level legal systems, contracts, compliance, and legal technology
+version: 1.1.0
+description: >-
+  Expert-level legal systems, contracts, compliance, and legal technology. Use when the
+  user mentions legal, contracts, compliance, law, or legal tech, or when the task involves
+  Legal Systems, Legal Technology, Compliance Frameworks, or Contract Management.
 category: professional
 tags: [legal, contracts, compliance, law, legal-tech]
 allowed-tools:
@@ -17,6 +20,7 @@ Expert guidance for legal systems, contract law, regulatory compliance, and lega
 ## Core Concepts
 
 ### Legal Systems
+
 - Contract law and drafting
 - Intellectual property (IP)
 - Corporate law
@@ -25,6 +29,7 @@ Expert guidance for legal systems, contract law, regulatory compliance, and lega
 - Litigation and dispute resolution
 
 ### Legal Technology
+
 - Contract lifecycle management (CLM)
 - Legal document automation
 - E-discovery systems
@@ -33,6 +38,7 @@ Expert guidance for legal systems, contract law, regulatory compliance, and lega
 - Compliance management systems
 
 ### Compliance Frameworks
+
 - GDPR (General Data Protection Regulation)
 - CCPA (California Consumer Privacy Act)
 - SOX (Sarbanes-Oxley)
@@ -274,6 +280,7 @@ For privacy inquiries: privacy@{company.lower().replace(' ', '')}.com
 ## Best Practices
 
 ### Contract Management
+
 - Use version control for all contract documents
 - Implement electronic signature workflows
 - Set up automated expiration alerts (90/60/30 days)
@@ -283,6 +290,7 @@ For privacy inquiries: privacy@{company.lower().replace(' ', '')}.com
 - Standardized clause libraries
 
 ### Compliance
+
 - Regular compliance assessments
 - Document all compliance efforts
 - Implement privacy by design
@@ -292,6 +300,7 @@ For privacy inquiries: privacy@{company.lower().replace(' ', '')}.com
 - Third-party vendor assessments
 
 ### Legal Technology
+
 - Automate routine legal tasks
 - Use AI for contract review and analysis
 - Implement document management systems

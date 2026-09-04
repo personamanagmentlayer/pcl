@@ -1,7 +1,11 @@
 ---
 name: codeql-expert
-version: 1.0.0
-description: Expert-level CodeQL for static analysis, vulnerability detection, and security code scanning
+version: 1.1.0
+description: >-
+  Expert-level CodeQL for static analysis, vulnerability detection, and security code
+  scanning. Use when the user mentions static analysis, SAST, vulnerability detection, or
+  github security, or when the task involves writing CodeQL queries, building a CodeQL
+  database, taint tracking, or scanning for injection and hardcoded credentials.
 category: security
 tags: [codeql, static-analysis, sast, vulnerability-detection, github-security]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for CodeQL static analysis, custom query development, vulnerabil
 ## Core Concepts
 
 ### CodeQL Overview
+
 - Semantic code analysis engine
 - Treats code as data (queryable database)
 - Supports C/C++, C#, Go, Java, JavaScript/TypeScript, Python, Ruby
@@ -25,6 +30,7 @@ Expert guidance for CodeQL static analysis, custom query development, vulnerabil
 - Custom query development with QL language
 
 ### CodeQL Workflow
+
 1. Extract code to database
 2. Write QL queries
 3. Run analysis
@@ -33,6 +39,7 @@ Expert guidance for CodeQL static analysis, custom query development, vulnerabil
 6. Integrate into CI/CD
 
 ### Query Types
+
 - Security queries (vulnerabilities)
 - Code quality queries (bugs, code smells)
 - Compliance queries (coding standards)

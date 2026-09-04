@@ -1,7 +1,10 @@
 ---
 name: kotlin-expert
-version: 1.0.0
-description: Expert-level Kotlin development, Android, coroutines, and multiplatform
+version: 1.1.0
+description: >-
+  Expert-level Kotlin development, Android, coroutines, and multiplatform. Use when the
+  user mentions Android, coroutines, multiplatform, or JVM, or when the task involves
+  Kotlin Fundamentals, Android Development, Kotlin Multiplatform, or Kotlin Style.
 category: languages
 tags: [kotlin, android, coroutines, multiplatform, jvm]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for Kotlin development, Android, coroutines, Kotlin Multiplatfor
 ## Core Concepts
 
 ### Kotlin Fundamentals
+
 - Null safety
 - Extension functions
 - Data classes
@@ -26,6 +30,7 @@ Expert guidance for Kotlin development, Android, coroutines, Kotlin Multiplatfor
 - Higher-order functions
 
 ### Android Development
+
 - Jetpack Compose
 - ViewModel and LiveData
 - Room database
@@ -34,6 +39,7 @@ Expert guidance for Kotlin development, Android, coroutines, Kotlin Multiplatfor
 - Android lifecycle
 
 ### Kotlin Multiplatform
+
 - Shared business logic
 - Platform-specific implementations
 - iOS and Android targets
@@ -350,6 +356,7 @@ class UserService {
 ## Best Practices
 
 ### Kotlin Style
+
 - Use val over var when possible
 - Leverage null safety features
 - Use data classes for DTOs
@@ -358,6 +365,7 @@ class UserService {
 - Follow naming conventions
 
 ### Coroutines
+
 - Use appropriate dispatchers (IO, Main, Default)
 - Handle cancellation properly
 - Avoid GlobalScope
@@ -366,6 +374,7 @@ class UserService {
 - Use StateFlow for state
 
 ### Android
+
 - Follow MVVM architecture
 - Use Jetpack Compose for UI
 - Implement proper lifecycle handling

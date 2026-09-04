@@ -1,11 +1,11 @@
 version: 2.0.0
-generated: '2026-01-20'
+generated: '2026-09-05'
 statistics:
-  total_skills: 173
-  total_categories: 15
-  total_code_lines: 86710
-  total_file_size: 3126948
-  avg_lines_per_skill: 631
+  total_skills: 174
+  total_categories: 14
+  total_code_lines: 88048
+  total_file_size: 3144253
+  avg_lines_per_skill: 669
   categories:
     ai: 4
     api: 6
@@ -13,21 +13,26 @@ statistics:
     data: 14
     design: 1
     devops: 16
-    domains: 49
-    industry-specializations: 10
+    domains: 58
     frameworks: 15
-    languages: 22
+    languages: 23
     professional: 5
     qa: 7
     scientific: 3
     security: 9
-    tools: 8
+    tools: 9
 tags:
+- 3d
 - 5g
+- 5g-edge
+- abap
 - academic-writing
 - accounting
 - actions
 - actuarial
+- actuators
+- adaptive-bitrate
+- adaptive-cards
 - adaptive-learning
 - adas
 - aerospace
@@ -49,27 +54,37 @@ tags:
 - angular
 - animal-husbandry
 - ansible
+- apex
 - api
 - api-design
+- api-gateway
 - api-security
 - api-spec
 - api-versioning
 - apollo
 - app-router
+- appexchange
 - apple
 - appsec
+- ar
 - architecture
 - argocd
 - aspnet
 - assessment
+- ast
 - async
 - async-await
 - atc
+- ats
+- audio
 - audit
+- auditing
 - authentication
 - automation
 - automotive
+- autonomous-navigation
 - aviation
+- awr
 - aws
 - aws-cost
 - azure
@@ -78,6 +93,7 @@ tags:
 - banking
 - bdd
 - benchmarking
+- best-practices
 - bi
 - bigquery
 - billing
@@ -87,16 +103,27 @@ tags:
 - bioprocessing
 - biotech
 - biotechnology
+- block-kit
 - blockchain
+- bot-development
+- bots
 - breeding
 - broadcast
+- browser
+- browser-testing
 - bss
 - building
+- business-apps
+- business-intelligence
+- business-process
+- business-rules
 - c++
 - c++20
 - c++23
 - c-interop
 - cache
+- campaigns
+- canvas-apps
 - carbon-tracking
 - cargo
 - case-management
@@ -105,12 +132,15 @@ tags:
 - cdn
 - certificates
 - certification
+- chaos-engineering
+- chaos-monkey
 - charts
 - ci-cd
 - cicd
 - claims
 - cleantech
 - clinical-trials
+- clm
 - clojure
 - clojurescript
 - cloud
@@ -119,14 +149,21 @@ tags:
 - cloud-functions
 - cloud-native
 - cloudflare
+- cmdb
 - cms
 - code-review
+- codegen
 - codeql
 - collaboration
 - combine
+- communication
+- community
+- community-management
 - compiled
 - compiler
+- compiler-design
 - compliance
+- component-testing
 - composer
 - composition-api
 - comptime
@@ -138,27 +175,44 @@ tags:
 - construction
 - containers
 - containment
+- content-management
+- content-marketing
+- content-types
 - continuous-deployment
+- continuous-improvement
 - contracts
+- control-systems
 - controls
 - core-async
 - core-banking
 - coroutines
 - cosmos-db
+- course-management
 - cpp
 - crm
 - crop-management
 - crop-monitoring
+- cross-browser
+- cross-browser-testing
 - cross-platform
 - cryptocurrency
 - cryptography
 - csharp
 - culture
+- custom-reports
+- customer-service
+- customer-success
 - cybersecurity
+- cypress
+- cypress-commands
+- cypress-plugins
 - dag
+- dapps
 - dart
+- dash
 - dashboards
 - data-analysis
+- data-guard
 - data-mesh
 - data-modeling
 - data-pipeline
@@ -166,32 +220,49 @@ tags:
 - data-protection
 - data-science
 - data-transformation
+- data-visualization
 - data-warehouse
 - database
 - databricks
+- dataverse
 - dax
 - dbt
 - declarative
 - deep-learning
 - defi
 - delta-lake
+- demand-planning
 - dependency-injection
 - deployment
 - desktop
 - devops
 - digital-banking
 - digital-health
+- digital-marketing
+- discord
+- discord-bot
+- discord-embeds
+- discord-moderation
+- discordjs
+- discordpy
 - distributed-systems
 - django
+- docker
 - document-automation
 - documentation
 - domain-driven
+- domain-modeling
 - dotnet
 - dpo
+- drm
 - drug-development
+- dsl
+- dynamics-crm
+- dynamics365
 - e-discovery
 - e-learning
 - e2e
+- e2e-testing
 - ecmascript
 - ecommerce
 - edge-computing
@@ -202,36 +273,53 @@ tags:
 - electron
 - elixir
 - elk
+- email-marketing
+- embb
 - embedded
+- employee-engagement
+- emscripten
 - encryption
 - energy
 - energy-optimization
+- engagement
 - enterprise
+- enterprise-software
 - erlang
+- erp
 - es2024
 - esg
 - ethereum
+- ethersjs
 - ethical-hacking
 - eu-regulation
 - event-driven
 - experimental-design
 - exploitation
 - express
+- faas
+- failure-injection
 - farm-management
 - farming
 - fastapi
+- fault-tolerance
 - fda
+- ffmpeg
 - fhir
 - finance
 - financial-reporting
 - finops
 - fintech
+- fiori
 - firestore
 - firmware
+- fixtures
 - flask
 - fleet
 - flight
 - flutter
+- fog-computing
+- force-platform
+- forecasting
 - forensics
 - frontend
 - full-stack
@@ -239,6 +327,11 @@ tags:
 - functional
 - functional-programming
 - gaap
+- game-analytics
+- game-development
+- game-engines
+- gaming
+- gatling
 - gcp
 - gdpr
 - gem
@@ -251,6 +344,7 @@ tags:
 - github-security
 - gitlab-ci
 - gitops
+- gliderecord
 - go
 - golang
 - google
@@ -258,29 +352,41 @@ tags:
 - governance
 - gradle
 - grafana
+- graph-api
 - graphql
 - green-tech
+- gremlin
 - grpc
 - gxp
+- hana
 - haskell
+- hcm
 - health-analytics
 - healthcare
 - healthtech
 - helm
+- helpdesk
 - hft
 - hipaa
 - hl7
+- hls
 - hooks
 - hospitality
 - hotel
 - hpc
+- hr
+- hris
 - iac
+- ice
 - identity
+- idoc
 - ifrs
 - immutability
 - incident-management
 - incident-response
 - industry40
+- influencer-marketing
+- infosec
 - infrastructure
 - infrastructure-as-code
 - inmemory
@@ -288,49 +394,72 @@ tags:
 - insurtech
 - integration
 - integration-tests
+- intranet
 - inventory
 - ios
 - iot
+- iot-edge
+- ipfs
 - iso
 - istio
+- it-service-management
+- itom
+- itsm
 - java
 - javascript
+- javascript-testing
 - jenkins
+- jest
+- jest-matchers
 - jetpack-compose
 - jinja
 - jinja2
+- jmeter
 - js
 - jsx
 - julia
 - jvm
+- k6
 - k8s
 - kafka
 - kafka-streams
 - key-management
 - keyvalue
 - kibana
+- knowledge-base
+- knowledge-engineering
 - kotlin
 - kubernetes
 - kyc
 - lab-automation
 - lakehouse
+- lambda
+- language-design
 - laravel
+- latency
 - law
 - lazy-evaluation
+- lead-management
+- learning-analytics
 - least-privilege
 - legal
 - legal-research
 - legal-tech
 - legaltech
+- lexer
+- lightning
 - lims
 - linkerd
 - linux
 - lisp
 - listings
+- litigation
+- live-streaming
 - livestock
 - llm
 - lms
 - load-balancer
+- load-testing
 - loaders
 - lod
 - logging
@@ -339,47 +468,70 @@ tags:
 - looker
 - lookml
 - low-level
+- lsp
+- lwc
+- m365
 - machine-learning
 - macos
 - macros
 - maintenance
 - manufacturing
 - maritime
+- marketing
+- marketing-automation
 - markets
 - material-design
 - maven
+- mcp
+- mec
 - media
+- media-streams
 - medical
 - memory
 - memory-management
 - memory-safety
 - mes
 - messaging
+- messaging-extensions
+- meta-programming
 - metaprogramming
 - metasploit
+- metaverse
 - methodology
 - metrics
 - mhealth
 - micro-segmentation
 - microservices
 - microsoft
+- microsoft-teams
+- microsoft365
 - mlflow
 - mlops
 - mls
+- mmtc
 - mobile
+- mocking
+- model-driven-apps
 - monads
+- monetization
 - mongodb
 - monitoring
+- motion-planning
 - mqtt
 - mtls
+- multimedia
 - multiplatform
+- multiplayer
 - multiple-dispatch
 - mvc
 - mysql
 - nested-routing
+- network-slicing
 - networking
 - neural-networks
 - nextjs
+- nft
+- nfv
 - nginx
 - nim
 - nist
@@ -391,23 +543,40 @@ tags:
 - numpy
 - nuxt
 - observability
+- odata
+- office365
+- olap
 - omnichannel
+- online-education
 - open-banking
 - openapi
+- opportunity-management
 - optimization
+- oracle
 - orchestration
 - orm
 - oss
 - otp
 - owasp
 - package-manager
+- page-object-model
 - pandas
+- parser
 - patient-monitoring
 - patterns
 - payments
+- payroll
+- pcl
+- pcl-development
+- peer-to-peer
 - pentest
 - pentesting
 - performance
+- performance-management
+- performance-metrics
+- performance-testing
+- performance-tuning
+- persona-control-language
 - pharmaceutical
 - pharmacovigilance
 - phoenix
@@ -418,20 +587,32 @@ tags:
 - pki
 - platform
 - playbooks
+- playwright
+- playwright-codegen
 - plc
+- plsql
+- plugins
 - pms
+- pnp
 - port
 - pos
 - postgres
 - postgresql
 - power
+- power-automate
+- power-platform
 - power-query
+- powerapps
 - powerbi
 - precision-agriculture
+- prism-analytics
 - privacy
+- procurement
 - production
 - production-ai
+- productivity
 - profiling
+- programming
 - progressive-enhancement
 - project-management
 - prometheus
@@ -450,16 +631,22 @@ tags:
 - python-interop
 - python3
 - qa
+- qaoa
 - qiskit
+- qms
 - quality
 - quality-assurance
 - quality-management
 - quant
 - quantum-algorithms
+- quantum-circuits
 - quantum-computing
 - quantum-information
+- quantum-ml
+- qubits
 - query-optimization
 - r
+- rac
 - rails
 - ranch-management
 - react
@@ -467,7 +654,10 @@ tags:
 - reactive
 - reactivity
 - real-estate
+- real-time
+- real-time-communication
 - recovery
+- recruitment
 - redis
 - regtech
 - regulations
@@ -479,8 +669,11 @@ tags:
 - renewable
 - renewable-energy
 - repl
+- reporting
 - research
 - reservation
+- resilience
+- resilience-testing
 - resolvers
 - rest
 - rest-api
@@ -488,16 +681,30 @@ tags:
 - retail
 - revenue-management
 - reverse-proxy
+- rfc
 - risk
 - risk-assessment
+- rman
 - robo-advisor
+- robotics
 - roles
+- ros
+- ros2
 - rpc
 - rspec
 - ruby
+- runtime-systems
 - rust
 - rxjs
+- s4hana
 - safety
+- sales
+- sales-analytics
+- sales-automation
+- salesforce
+- salesforce-api
+- sap
+- sap-integration
 - sast
 - scada
 - scala
@@ -505,6 +712,8 @@ tags:
 - scheduling
 - schema
 - scientific-computing
+- scm
+- sdn
 - search
 - security
 - security-architecture
@@ -512,24 +721,54 @@ tags:
 - security-review
 - security-testing
 - selenium
+- selenium-grid
+- selenium-python
+- semantic-analysis
 - sensors
+- seo
 - server-components
 - serverless
+- service-desk
 - service-mesh
+- service-portal
+- servicenow
+- sharepoint
+- sharepoint-framework
+- sharepoint-online
 - shipping
+- siem
+- signaling
 - sinatra
+- site-collections
+- site-reliability
+- six-sigma
+- skill-creation
+- sla
+- slack
+- slack-api
+- slack-bot
+- slack-oauth
+- slam
+- slash-commands
 - slo
 - smart-buildings
 - smart-contracts
 - smart-grid
+- snapshots
 - snowflake
 - soc2
+- social-listening
+- social-media
 - solidity
+- soql
 - spark
+- spatial-computing
+- spfx
 - spring
 - spring-boot
 - spring-framework
 - sql
+- sql-tuning
 - sre
 - ssg
 - ssl
@@ -540,9 +779,14 @@ tags:
 - statistics
 - stl
 - streaming
+- stress-testing
 - student-analytics
+- student-engagement
+- stun
 - subscriptions
+- supplier-management
 - supply-chain
+- support
 - sustainability
 - sustainable-agriculture
 - svelte
@@ -554,9 +798,14 @@ tags:
 - system-design
 - systems-programming
 - tableau
+- talent-management
 - tauri
 - tax
 - tdd
+- teams
+- teams-app
+- teams-bot
+- teams-toolkit
 - telecom
 - telematics
 - telemedicine
@@ -564,21 +813,33 @@ tags:
 - tenant-portals
 - terraform
 - test-automation
+- test-coverage
 - testing
+- threat-detection
+- ticketing
 - tidyverse
 - tls
+- trace-viewer
 - traces
 - trading
 - traffic-management
 - transaction-monitoring
 - trust-services
+- turn
 - type-hints
 - type-system
+- type-systems
+- types
 - typescript
 - ui
 - uikit
 - underwriting
+- unit-testing
 - unit-tests
+- unity
+- unreal
+- unreal-engine
+- urllc
 - utilities
 - vehicle
 - vercel
@@ -586,9 +847,17 @@ tags:
 - vessel
 - veterinary
 - video
+- video-chat
+- video-encoding
+- video-streaming
 - virtual-classroom
 - virtual-tours
+- virtual-worlds
+- visual-testing
 - visualization
+- voice-bot
+- vqe
+- vr
 - vue
 - vue3
 - vulnerability
@@ -596,17 +865,30 @@ tags:
 - vulnerability-detection
 - waf
 - warehouse
+- wasi
+- wasm
+- wasmtime
 - wearables
 - web
 - web-framework
 - web-server
 - web-standards
 - web3
+- web3js
+- webassembly
+- webdriver
+- webrtc
 - widgets
 - windows
+- workday
+- workday-integration
+- workday-studio
 - workers
 - workflow
+- workflows
 - xcode
+- xpath
+- xr
 - zero-trust
 - zig
 - zio
@@ -614,10 +896,12 @@ categories:
   ai:
   - &id005
     name: ai-architect-expert
-    version: 1.0.0
+    version: 1.1.0
     category: ai
     description: Expert-level AI system design, MLOps, architecture patterns, and
-      AI infrastructure
+      AI infrastructure. Use when the user mentions AI architecture, MLOps, system
+      design, AI infrastructure, or scalability, or when the task involves AI System
+      Architecture, MLOps Infrastructure, Scalability Patterns, or Architecture Design.
     tags:
     - ai-architecture
     - mlops
@@ -629,16 +913,19 @@ categories:
     - Write
     - Edit
     path: ai/ai-architect-expert/SKILL.md
-    file_size: 11306
-    total_lines: 383
+    references: []
+    file_size: 11161
+    total_lines: 393
     code_examples: 4
     code_lines: 285
   - &id006
     name: ai-engineer-expert
-    version: 1.0.0
+    version: 1.1.0
     category: ai
     description: Expert-level AI implementation, deployment, LLM integration, and
-      production AI systems
+      production AI systems. Use when the user mentions AI engineering, LLM, deployment,
+      production AI, or integration, or when the task involves LLM Patterns, LLM Integration,
+      or Production Systems.
     tags:
     - ai-engineering
     - llm
@@ -651,16 +938,19 @@ categories:
     - Edit
     - Bash(python:*)
     path: ai/ai-engineer-expert/SKILL.md
-    file_size: 13487
-    total_lines: 449
+    references: []
+    file_size: 13228
+    total_lines: 459
     code_examples: 5
     code_lines: 347
   - &id038
     name: data-science-expert
-    version: 1.0.0
+    version: 1.1.0
     category: ai
     description: Expert-level data science, analytics, visualization, and statistical
-      modeling
+      modeling. Use when the user mentions analytics, visualization, statistics, pandas,
+      or NumPy, or when the task involves Data Analysis, Machine Learning, Data Visualization,
+      or Feature Engineering.
     tags:
     - data-science
     - analytics
@@ -674,16 +964,19 @@ categories:
     - Edit
     - Bash(python:*)
     path: ai/data-science-expert/SKILL.md
-    file_size: 12859
-    total_lines: 398
+    references: []
+    file_size: 12666
+    total_lines: 408
     code_examples: 4
     code_lines: 299
-  - &id102
+  - &id101
     name: ml-expert
-    version: 1.0.0
+    version: 1.1.0
     category: ai
     description: Expert-level machine learning, deep learning, model training, and
-      MLOps
+      MLOps. Use when the user mentions machine learning, deep learning, neural networks,
+      MLOps, or data science, or when the task involves Machine Learning Fundamentals,
+      Data Preparation, or Model Training.
     tags:
     - machine-learning
     - deep-learning
@@ -696,17 +989,20 @@ categories:
     - Edit
     - Bash(python:*)
     path: ai/ml-expert/SKILL.md
-    file_size: 11019
-    total_lines: 361
+    references: []
+    file_size: 10872
+    total_lines: 371
     code_examples: 4
     code_lines: 262
   api:
   - &id011
     name: api-design-expert
-    version: 1.0.0
+    version: 1.1.0
     category: api
     description: Expert-level API design principles, REST, GraphQL, versioning, and
-      API best practices
+      API best practices. Use when the user mentions REST, GraphQL, API versioning,
+      or API security, or when the task involves API Design Principles, API Styles,
+      or Documentation.
     tags:
     - api-design
     - rest
@@ -718,16 +1014,18 @@ categories:
     - Write
     - Edit
     path: api/api-design-expert/SKILL.md
-    file_size: 13634
-    total_lines: 478
+    references: []
+    file_size: 13496
+    total_lines: 492
     code_examples: 6
-    code_lines: 364
+    code_lines: 368
   - &id056
     name: fastapi-expert
-    version: 1.0.0
+    version: 1.1.0
     category: api
     description: Expert-level FastAPI development for high-performance Python APIs
-      with async support
+      with async support. Use when the user mentions Python, API, async, REST, OpenAPI,
+      or Pydantic, or when the task involves FastAPI Features.
     tags:
     - fastapi
     - python
@@ -742,16 +1040,19 @@ categories:
     - Edit
     - Bash(python:*, pip:*, uvicorn:*)
     path: api/fastapi-expert/SKILL.md
-    file_size: 8196
-    total_lines: 294
+    references: []
+    file_size: 8034
+    total_lines: 299
     code_examples: 7
     code_lines: 220
   - &id068
     name: graphql-expert
-    version: 1.0.0
+    version: 1.1.0
     category: api
     description: Expert-level GraphQL API development with schema design, resolvers,
-      and subscriptions
+      and subscriptions. Use when the user mentions API, apollo, schema, resolvers,
+      subscriptions, or relay, or when the task involves Schema Design, Queries and
+      Mutations, Apollo Server 4, or DataLoader for N+1 Prevention.
     tags:
     - graphql
     - api
@@ -766,16 +1067,22 @@ categories:
     - Edit
     - Bash(node:*, npm:*, npx:*)
     path: api/graphql-expert/SKILL.md
-    file_size: 21188
-    total_lines: 923
+    references:
+    - references/BEST_PRACTICES.md
+    - references/MODERN_GRAPHQL_DEVELOPMENT.md
+    - references/PATTERNS.md
+    file_size: 21483
+    total_lines: 969
     code_examples: 14
-    code_lines: 797
+    code_lines: 800
   - &id069
     name: grpc-expert
-    version: 1.0.0
+    version: 1.1.0
     category: api
     description: Expert-level gRPC, Protocol Buffers, microservices communication,
-      and streaming
+      and streaming. Use when the user mentions Protocol Buffers, microservices, RPC,
+      or streaming, or when the task involves gRPC Fundamentals, Communication Patterns,
+      or Production Features.
     tags:
     - grpc
     - protobuf
@@ -787,16 +1094,19 @@ categories:
     - Write
     - Edit
     path: api/grpc-expert/SKILL.md
-    file_size: 10563
-    total_lines: 425
+    references: []
+    file_size: 10327
+    total_lines: 434
     code_examples: 4
     code_lines: 328
-  - &id100
+  - &id099
     name: microservices-expert
-    version: 1.0.0
+    version: 1.1.0
     category: api
     description: Expert-level microservices architecture, patterns, service mesh,
-      and distributed systems
+      and distributed systems. Use when the user mentions distributed systems, service
+      mesh, or architecture, or when the task involves Microservices Principles, Architecture
+      Patterns, Communication, or Data Management.
     tags:
     - microservices
     - distributed-systems
@@ -807,16 +1117,19 @@ categories:
     - Write
     - Edit
     path: api/microservices-expert/SKILL.md
-    file_size: 14559
-    total_lines: 488
+    references: []
+    file_size: 14279
+    total_lines: 498
     code_examples: 5
     code_lines: 386
-  - &id109
+  - &id108
     name: openapi-expert
-    version: 1.0.0
+    version: 1.1.0
     category: api
     description: Expert-level OpenAPI/Swagger specification for API design, documentation,
-      and code generation
+      and code generation. Use when the user mentions swagger, API specs, REST, API
+      design, or documentation, or when the task involves OpenAPI Specification, Webhooks,
+      or Polymorphism.
     tags:
     - openapi
     - swagger
@@ -830,17 +1143,21 @@ categories:
     - Edit
     - Bash(openapi:*, swagger:*)
     path: api/openapi-expert/SKILL.md
-    file_size: 11279
-    total_lines: 506
+    references:
+    - references/BASIC_OPENAPI_SPECIFICATION.md
+    file_size: 11250
+    total_lines: 522
     code_examples: 6
     code_lines: 430
   cloud:
   - &id015
     name: aws-expert
-    version: 1.0.0
+    version: 1.1.0
     category: cloud
     description: Expert-level AWS cloud architecture, services, security, cost optimization,
-      and best practices
+      and best practices. Use when the user mentions cloud, infrastructure, devops,
+      or serverless, or when the task involves Compute Services, Storage Services,
+      Database Services, or Networking.
     tags:
     - aws
     - cloud
@@ -855,15 +1172,19 @@ categories:
     - Glob
     - Grep
     path: cloud/aws-expert/SKILL.md
-    file_size: 17927
-    total_lines: 702
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 17760
+    total_lines: 735
     code_examples: 22
-    code_lines: 565
+    code_lines: 559
   - &id016
     name: azure-expert
-    version: 1.0.0
+    version: 1.1.0
     category: cloud
-    description: Expert-level Microsoft Azure cloud platform, services, and architecture
+    description: Expert-level Microsoft Azure cloud platform, services, and architecture.
+      Use when the user mentions cloud, Microsoft platforms, Azure Functions, or Cosmos
+      DB.
     tags:
     - azure
     - cloud
@@ -876,16 +1197,18 @@ categories:
     - Edit
     - Bash(az:*)
     path: cloud/azure-expert/SKILL.md
-    file_size: 4103
-    total_lines: 175
+    references: []
+    file_size: 4023
+    total_lines: 177
     code_examples: 4
     code_lines: 111
   - &id026
     name: cloudflare-expert
-    version: 1.0.0
+    version: 1.1.0
     category: cloud
     description: Expert-level Cloudflare Workers, CDN, edge computing, and security
-      services
+      services. Use when the user mentions edge computing, CDN, workers, or WAF, or
+      when the task involves Cloudflare Services or Developer Tools.
     tags:
     - cloudflare
     - edge-computing
@@ -898,15 +1221,19 @@ categories:
     - Edit
     - Bash(wrangler:*)
     path: cloud/cloudflare-expert/SKILL.md
-    file_size: 14364
-    total_lines: 610
+    references:
+    - references/DURABLE_OBJECTS.md
+    - references/REQUEST_RESPONSE_HANDLING.md
+    file_size: 14432
+    total_lines: 638
     code_examples: 8
-    code_lines: 497
+    code_lines: 501
   - &id063
     name: gcp-expert
-    version: 1.0.0
+    version: 1.1.0
     category: cloud
-    description: Expert-level Google Cloud Platform, services, and cloud architecture
+    description: Expert-level Google Cloud Platform, services, and cloud architecture.
+      Use when the user mentions Google Cloud, Cloud Functions, BigQuery, or Firestore.
     tags:
     - gcp
     - google-cloud
@@ -919,17 +1246,21 @@ categories:
     - Edit
     - Bash(gcloud:*)
     path: cloud/gcp-expert/SKILL.md
-    file_size: 4180
-    total_lines: 188
+    references: []
+    file_size: 4083
+    total_lines: 190
     code_examples: 5
     code_lines: 122
   data:
   - &id007
     name: airflow-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Apache Airflow orchestration, DAGs, operators, sensors,
-      XComs, task dependencies, and scheduling
+      XComs, task dependencies, and scheduling. Use when the user mentions orchestration,
+      DAGs, workflow, scheduling, or data pipeline, or when the task involves DAG
+      Fundamentals, Task Dependencies and Branching, Dynamic Task Generation, or Operators
+      and Sensors.
     tags:
     - airflow
     - orchestration
@@ -945,16 +1276,21 @@ categories:
     - Glob
     - Grep
     path: data/airflow-expert/SKILL.md
-    file_size: 23795
-    total_lines: 881
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 23649
+    total_lines: 917
     code_examples: 17
     code_lines: 751
   - &id037
     name: data-mesh-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level data mesh architecture, domain-oriented ownership, data
-      products, federated governance, and self-serve platforms
+      products, federated governance, and self-serve platforms. Use when the user
+      mentions architecture, domain driven, data products, governance, or platform,
+      or when the task involves Data Mesh Principles, Domain-Oriented Data Ownership,
+      Data as a Product, or Self-Serve Data Infrastructure Platform.
     tags:
     - data-mesh
     - architecture
@@ -970,16 +1306,21 @@ categories:
     - Glob
     - Grep
     path: data/data-mesh-expert/SKILL.md
-    file_size: 31241
-    total_lines: 1023
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 30909
+    total_lines: 1055
     code_examples: 12
     code_lines: 901
   - &id039
     name: databricks-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Databricks platform, Apache Spark, Delta Lake, MLflow,
-      notebooks, and cluster management
+      notebooks, and cluster management. Use when the user mentions Apache Spark,
+      Delta Lake, MLflow, lakehouse architecture, or PySpark, or when the task involves
+      Cluster Configuration and Management, Delta Lake Architecture, PySpark Data
+      Processing, or MLflow Integration.
     tags:
     - databricks
     - spark
@@ -995,16 +1336,21 @@ categories:
     - Glob
     - Grep
     path: data/databricks-expert/SKILL.md
-    file_size: 20623
-    total_lines: 742
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 20577
+    total_lines: 779
     code_examples: 18
     code_lines: 613
   - &id040
     name: dbt-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level dbt (data build tool), models, tests, documentation,
-      incremental models, macros, and Jinja templating
+      incremental models, macros, and Jinja templating. Use when the user mentions
+      analytics engineering, SQL, data transformation, Jinja, or testing, or when
+      the task involves Project Structure and Configuration, Sources and Staging Models,
+      Intermediate and Mart Models, or Incremental Models.
     tags:
     - dbt
     - analytics-engineering
@@ -1020,15 +1366,18 @@ categories:
     - Glob
     - Grep
     path: data/dbt-expert/SKILL.md
-    file_size: 21688
-    total_lines: 944
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 21459
+    total_lines: 989
     code_examples: 22
-    code_lines: 802
+    code_lines: 805
   - &id051
     name: elasticsearch-expert
-    version: 1.0.0
+    version: 2.0.0
     category: data
-    description: Expert-level Elasticsearch, search, ELK stack, and full-text search
+    description: Expert-level Elasticsearch, search, ELK stack, and full-text search.
+      Use when the user mentions search, ELK, Logstash, Kibana, or full text search.
     tags:
     - elasticsearch
     - search
@@ -1040,18 +1389,20 @@ categories:
     - Read
     - Write
     - Edit
-    - Bash(*)
+    - Bash(python:*, python3:*, pip:*, pytest:*)
     path: data/elasticsearch-expert/SKILL.md
-    file_size: 4044
-    total_lines: 187
+    references: []
+    file_size: 3980
+    total_lines: 189
     code_examples: 3
     code_lines: 128
   - &id085
     name: kafka-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Apache Kafka, event streaming, Kafka Streams, and distributed
-      messaging
+      messaging. Use when the user mentions streaming, messaging, event driven, or
+      Kafka Streams.
     tags:
     - kafka
     - streaming
@@ -1064,16 +1415,19 @@ categories:
     - Edit
     - Bash(kafka:*)
     path: data/kafka-expert/SKILL.md
-    file_size: 2880
-    total_lines: 125
+    references: []
+    file_size: 2845
+    total_lines: 127
     code_examples: 3
     code_lines: 65
-  - &id094
+  - &id093
     name: looker-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Looker BI, LookML, explores, dimensions, measures, dashboards,
-      and data modeling
+      and data modeling. Use when the user mentions LookML, BI, analytics, dashboards,
+      or data modeling, or when the task involves LookML Basics, Advanced Dimensions
+      and Measures, Persistent Derived Tables, or Explores and Joins.
     tags:
     - looker
     - lookml
@@ -1089,16 +1443,20 @@ categories:
     - Glob
     - Grep
     path: data/looker-expert/SKILL.md
-    file_size: 20970
-    total_lines: 929
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 20724
+    total_lines: 966
     code_examples: 18
     code_lines: 795
-  - &id103
+  - &id102
     name: mongodb-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level MongoDB database design, aggregation pipelines, indexing,
-      replication, and production operations
+      replication, and production operations. Use when the user mentions NoSQL, database,
+      aggregation, or performance, or when the task involves CRUD Operations, Query
+      Operators, Aggregation Pipeline, or Indexing.
     tags:
     - mongodb
     - nosql
@@ -1113,16 +1471,20 @@ categories:
     - Glob
     - Grep
     path: data/mongodb-expert/SKILL.md
-    file_size: 13594
-    total_lines: 674
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 13647
+    total_lines: 706
     code_examples: 29
-    code_lines: 553
+    code_lines: 542
   - &id116
     name: postgresql-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level PostgreSQL database administration, advanced queries,
-      performance tuning, and production operations
+      performance tuning, and production operations. Use when the user mentions database,
+      SQL, or performance, or when the task involves Advanced Data Types, Full-Text
+      Search, Advanced Indexes, or Advanced Queries.
     tags:
     - postgresql
     - postgres
@@ -1137,16 +1499,20 @@ categories:
     - Glob
     - Grep
     path: data/postgresql-expert/SKILL.md
-    file_size: 18892
-    total_lines: 776
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 18739
+    total_lines: 814
     code_examples: 24
     code_lines: 667
   - &id117
     name: powerbi-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Power BI, DAX, M language, data modeling, Power Query,
-      report design, and paginated reports
+      report design, and paginated reports. Use when the user mentions DAX, Power
+      Query, BI, Microsoft platforms, analytics, or data modeling, or when the task
+      involves DAX Fundamentals, Advanced DAX, Row-Level Security, or Report Design.
     tags:
     - powerbi
     - dax
@@ -1163,16 +1529,20 @@ categories:
     - Glob
     - Grep
     path: data/powerbi-expert/SKILL.md
-    file_size: 21531
-    total_lines: 864
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 21285
+    total_lines: 907
     code_examples: 24
     code_lines: 719
   - &id129
     name: redis-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Redis for caching, pub/sub, data structures, and high-performance
-      applications
+      applications. Use when the user mentions cache, pub/sub, in-memory stores, key-value
+      stores, or NoSQL, or when the task involves Data Structures, Basic Operations,
+      Advanced Patterns, or Redis Streams.
     tags:
     - redis
     - cache
@@ -1186,16 +1556,22 @@ categories:
     - Edit
     - Bash(redis-cli:*, docker:*)
     path: data/redis-expert/SKILL.md
-    file_size: 17159
-    total_lines: 708
+    references:
+    - references/BEST_PRACTICES.md
+    - references/NODE_JS_CLIENT_IOREDIS.md
+    file_size: 17460
+    total_lines: 773
     code_examples: 21
-    code_lines: 561
-  - &id147
+    code_lines: 585
+  - &id148
     name: snowflake-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Snowflake data warehouse platform, virtual warehouses,
-      data sharing, streams, tasks, and SQL optimization
+      data sharing, streams, tasks, and SQL optimization. Use when the user mentions
+      data warehouse, SQL, analytics, or cloud, or when the task involves Architecture
+      and Virtual Warehouses, Database Objects and Organization, Data Loading and
+      Stages, or Streams and Tasks.
     tags:
     - snowflake
     - data-warehouse
@@ -1210,16 +1586,20 @@ categories:
     - Glob
     - Grep
     path: data/snowflake-expert/SKILL.md
-    file_size: 18482
-    total_lines: 703
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 18529
+    total_lines: 745
     code_examples: 23
     code_lines: 562
-  - &id151
+  - &id152
     name: sql-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level SQL database design, querying, optimization, and administration
-      across PostgreSQL, MySQL, and SQL Server
+      across PostgreSQL, MySQL, and SQL Server. Use when the user mentions database,
+      PostgreSQL, MySQL, or query optimization, or when the task involves Database
+      Design, Advanced Queries, Indexes and Performance, or Transactions and Concurrency.
     tags:
     - sql
     - database
@@ -1234,16 +1614,21 @@ categories:
     - Glob
     - Grep
     path: data/sql-expert/SKILL.md
-    file_size: 21298
-    total_lines: 858
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 21040
+    total_lines: 894
     code_examples: 22
     code_lines: 759
-  - &id158
+  - &id159
     name: tableau-expert
-    version: 1.0.0
+    version: 1.1.0
     category: data
     description: Expert-level Tableau Desktop/Server, calculated fields, LOD expressions,
-      dashboards, data blending, and performance optimization
+      dashboards, data blending, and performance optimization. Use when the user mentions
+      BI, visualization, dashboards, LOD, or analytics, or when the task involves
+      Calculated Fields, Level of Detail Expressions, Parameters and Dynamic Calculations,
+      or Data Blending and Relationships.
     tags:
     - tableau
     - bi
@@ -1259,17 +1644,21 @@ categories:
     - Glob
     - Grep
     path: data/tableau-expert/SKILL.md
-    file_size: 17333
-    total_lines: 761
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 17314
+    total_lines: 804
     code_examples: 23
     code_lines: 616
   design:
   - &id041
     name: design-expert
-    version: 1.0.0
+    version: 1.1.0
     category: design
     description: Expert-level system design, architecture patterns, scalability, and
-      distributed systems
+      distributed systems. Use when the user mentions system design, architecture,
+      scalability, distributed systems, or patterns, or when the task involves Architecture
+      Patterns or Design Principles.
     tags:
     - system-design
     - architecture
@@ -1281,17 +1670,20 @@ categories:
     - Write
     - Edit
     path: design/design-expert/SKILL.md
-    file_size: 9044
-    total_lines: 343
+    references: []
+    file_size: 8891
+    total_lines: 352
     code_examples: 5
     code_lines: 240
   devops:
   - &id010
     name: ansible-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Ansible for configuration management, automation, and
-      infrastructure as code
+      infrastructure as code. Use when the user mentions automation, configuration
+      management, infrastructure as code, playbooks, or roles, or when the task involves
+      Ansible Architecture, Basic Inventory, YAML Inventory, or Dynamic Inventory.
     tags:
     - ansible
     - automation
@@ -1305,16 +1697,22 @@ categories:
     - Edit
     - Bash(ansible:*, ansible-playbook:*, ansible-galaxy:*)
     path: devops/ansible-expert/SKILL.md
-    file_size: 18580
-    total_lines: 813
+    references:
+    - references/BEST_PRACTICES.md
+    - references/PLAYBOOKS.md
+    - references/ROLES.md
+    file_size: 19142
+    total_lines: 861
     code_examples: 21
-    code_lines: 662
+    code_lines: 667
   - &id012
     name: argocd-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level ArgoCD GitOps deployment, application management, sync
-      strategies, and production operations
+      strategies, and production operations. Use when the user mentions GitOps, Kubernetes,
+      continuous deployment, declarative, or automation, or when the task involves
+      ArgoCD Architecture, Application CRD, AppProject, or ApplicationSet.
     tags:
     - argocd
     - gitops
@@ -1330,16 +1728,20 @@ categories:
     - Glob
     - Grep
     path: devops/argocd-expert/SKILL.md
-    file_size: 16170
-    total_lines: 739
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 16297
+    total_lines: 782
     code_examples: 29
     code_lines: 605
   - &id023
     name: cicd-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level CI/CD with GitHub Actions, Jenkins, deployment pipelines,
-      and automation
+      and automation. Use when the user mentions CI/CD, GitHub Actions, Jenkins, GitLab
+      CI, deployment, or automation, or when the task involves CI/CD Fundamentals,
+      Pipeline Design, Workflow Basics, or Docker Build and Push.
     tags:
     - cicd
     - github-actions
@@ -1354,16 +1756,20 @@ categories:
     - Edit
     - Bash(git:*, docker:*, kubectl:*)
     path: devops/cicd-expert/SKILL.md
-    file_size: 21083
-    total_lines: 848
+    references:
+    - references/GITHUB_ACTIONS.md
+    - references/JENKINS.md
+    file_size: 21020
+    total_lines: 885
     code_examples: 11
     code_lines: 721
   - &id042
     name: devops-expert
-    version: 1.0.0
+    version: 2.0.0
     category: devops
     description: Expert-level DevOps practices, culture, automation, and continuous
-      delivery
+      delivery. Use when the user mentions CI/CD, automation, infrastructure, or culture,
+      or when the task involves DevOps Culture or Culture & Process.
     tags:
     - devops
     - ci-cd
@@ -1374,35 +1780,44 @@ categories:
     - Read
     - Write
     - Edit
-    - Bash(*)
+    - Bash(python:*, python3:*, pip:*, pytest:*)
     path: devops/devops-expert/SKILL.md
-    file_size: 13817
-    total_lines: 488
+    references: []
+    file_size: 13518
+    total_lines: 497
     code_examples: 5
     code_lines: 383
   - &id045
     name: docker-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Docker containerization, image optimization, and container
       orchestration. Use this skill for building efficient Docker images, managing
       containers, and implementing Docker best practices.
-    tags: []
+    tags:
+    - devops
+    - containers
+    - docker
+    - infrastructure
     allowed_tools:
     - Read
     - Write
     - Bash(docker:*, docker-compose:*)
     path: devops/docker-expert/SKILL.md
-    file_size: 12865
-    total_lines: 603
+    references:
+    - references/PATTERNS.md
+    file_size: 12833
+    total_lines: 625
     code_examples: 22
-    code_lines: 452
+    code_lines: 451
   - &id067
     name: grafana-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Grafana dashboards, visualization, data sources, alerting,
-      and production operations
+      and production operations. Use when the user mentions dashboards, visualization,
+      monitoring, observability, or alerting, or when the task involves Grafana Architecture,
+      Installation on Kubernetes, Data Sources, or Dashboard JSON.
     tags:
     - grafana
     - dashboards
@@ -1418,16 +1833,20 @@ categories:
     - Glob
     - Grep
     path: devops/grafana-expert/SKILL.md
-    file_size: 19788
-    total_lines: 875
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 19620
+    total_lines: 918
     code_examples: 29
     code_lines: 743
   - &id073
     name: helm-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Helm 3 package management, chart development, templating,
-      and production operations
+      and production operations. Use when the user mentions Kubernetes, package manager,
+      charts, templates, or deployment, or when the task involves Helm Architecture,
+      Chart Structure, Values.yaml, or Helm Hooks.
     tags:
     - helm
     - kubernetes
@@ -1443,16 +1862,21 @@ categories:
     - Glob
     - Grep
     path: devops/helm-expert/SKILL.md
-    file_size: 16993
-    total_lines: 732
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 16826
+    total_lines: 770
     code_examples: 24
     code_lines: 615
   - &id080
     name: istio-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Istio service mesh management, traffic control, security,
-      and observability for Kubernetes
+      and observability for Kubernetes. Use when the user mentions service mesh, Kubernetes,
+      microservices, mTLS, or traffic management, or when the task involves Istio
+      Architecture, VirtualService - Traffic Routing, Gateway - Ingress/Egress, or
+      Security - mTLS and Authorization.
     tags:
     - istio
     - service-mesh
@@ -1468,16 +1892,20 @@ categories:
     - Glob
     - Grep
     path: devops/istio-expert/SKILL.md
-    file_size: 14338
-    total_lines: 731
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 14902
+    total_lines: 768
     code_examples: 24
-    code_lines: 610
+    code_lines: 609
   - &id087
     name: kubernetes-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Kubernetes cluster management, deployment strategies,
-      networking, and production operations
+      networking, and production operations. Use when the user mentions containers,
+      orchestration, devops, or cloud native, or when the task involves Kubernetes
+      Architecture, Pods, Deployments, or Services.
     tags:
     - kubernetes
     - k8s
@@ -1493,16 +1921,20 @@ categories:
     - Glob
     - Grep
     path: devops/kubernetes-expert/SKILL.md
-    file_size: 19901
-    total_lines: 985
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 20338
+    total_lines: 1032
     code_examples: 33
     code_lines: 845
-  - &id091
+  - &id090
     name: linkerd-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Linkerd service mesh management, traffic control, reliability,
-      and production operations
+      and production operations. Use when the user mentions service mesh, Kubernetes,
+      microservices, mTLS, or observability, or when the task involves Linkerd Architecture,
+      Mesh Injection, Traffic Management, or Reliability Features.
     tags:
     - linkerd
     - service-mesh
@@ -1518,16 +1950,21 @@ categories:
     - Glob
     - Grep
     path: devops/linkerd-expert/SKILL.md
-    file_size: 14575
-    total_lines: 696
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 14817
+    total_lines: 746
     code_examples: 36
     code_lines: 548
-  - &id104
+  - &id103
     name: monitoring-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level monitoring and observability with Prometheus, Grafana,
-      logging, and alerting
+      logging, and alerting. Use when the user mentions observability, Prometheus,
+      Grafana, logging, metrics, or alerting, or when the task involves The Three
+      Pillars of Observability, Monitoring Fundamentals, Prometheus Configuration,
+      or Alert Rules.
     tags:
     - monitoring
     - observability
@@ -1543,16 +1980,21 @@ categories:
     - Edit
     - Bash(docker:*, kubectl:*, promtool:*)
     path: devops/monitoring-expert/SKILL.md
-    file_size: 21445
-    total_lines: 859
+    references:
+    - references/APPLICATION_INSTRUMENTATION.md
+    - references/PROMETHEUS.md
+    file_size: 21479
+    total_lines: 910
     code_examples: 15
-    code_lines: 727
-  - &id106
+    code_lines: 728
+  - &id105
     name: nginx-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Nginx configuration, reverse proxy, load balancing,
-      SSL/TLS, caching, and performance tuning
+      SSL/TLS, caching, and performance tuning. Use when the user mentions web server,
+      reverse proxy, load balancer, or SSL, or when the task involves Basic Configuration,
+      SSL/TLS, Caching, or Performance Optimization.
     tags:
     - nginx
     - web-server
@@ -1567,16 +2009,20 @@ categories:
     - Glob
     - Grep
     path: devops/nginx-expert/SKILL.md
-    file_size: 17152
-    total_lines: 757
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 17003
+    total_lines: 801
     code_examples: 32
     code_lines: 630
   - &id112
     name: performance-expert
-    version: 1.0.0
+    version: 2.0.0
     category: devops
     description: Expert-level performance optimization, profiling, benchmarking, and
-      tuning
+      tuning. Use when the user mentions optimization, profiling, benchmarking, or
+      scalability, or when the task involves Performance Fundamentals, Optimization
+      Areas, Profiling Tools, or General.
     tags:
     - performance
     - optimization
@@ -1587,18 +2033,21 @@ categories:
     - Read
     - Write
     - Edit
-    - Bash(*)
+    - Bash(python:*, python3:*, pip:*, pytest:*)
     path: devops/performance-expert/SKILL.md
-    file_size: 12323
-    total_lines: 464
+    references: []
+    file_size: 11933
+    total_lines: 474
     code_examples: 5
     code_lines: 352
   - &id118
     name: prometheus-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Prometheus monitoring, metrics collection, PromQL queries,
-      alerting, and production operations
+      alerting, and production operations. Use when the user mentions monitoring,
+      metrics, observability, alerting, or PromQL, or when the task involves Prometheus
+      Architecture, Installation on Kubernetes, ServiceMonitor, or PromQL Queries.
     tags:
     - prometheus
     - monitoring
@@ -1614,16 +2063,20 @@ categories:
     - Glob
     - Grep
     path: devops/prometheus-expert/SKILL.md
-    file_size: 19387
-    total_lines: 723
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 20043
+    total_lines: 758
     code_examples: 21
     code_lines: 608
-  - &id152
+  - &id153
     name: sre-expert
-    version: 1.0.0
+    version: 2.0.0
     category: devops
     description: Expert-level site reliability engineering, SLOs, incident management,
-      and operational excellence
+      and operational excellence. Use when the user mentions reliability, monitoring,
+      incident management, SLOs, or observability, or when the task involves SRE Fundamentals,
+      Reliability Practices, SRE Principles, or On-Call.
     tags:
     - sre
     - reliability
@@ -1635,18 +2088,21 @@ categories:
     - Read
     - Write
     - Edit
-    - Bash(*)
+    - Bash(python:*, python3:*, pip:*, pytest:*)
     path: devops/sre-expert/SKILL.md
-    file_size: 14227
-    total_lines: 472
+    references: []
+    file_size: 14001
+    total_lines: 482
     code_examples: 4
     code_lines: 370
-  - &id162
+  - &id163
     name: terraform-expert
-    version: 1.0.0
+    version: 1.1.0
     category: devops
     description: Expert-level Terraform infrastructure as code, modules, state management,
-      and production best practices
+      and production best practices. Use when the user mentions infrastructure as
+      code, devops, or automation, or when the task involves Terraform Basics, Resource
+      Management, Modules, or State Management.
     tags:
     - terraform
     - infrastructure-as-code
@@ -1661,29 +2117,54 @@ categories:
     - Glob
     - Grep
     path: devops/terraform-expert/SKILL.md
-    file_size: 21701
-    total_lines: 1007
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 21257
+    total_lines: 1047
     code_examples: 27
     code_lines: 895
   domains:
   - &id001
     name: 5g-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: 5g-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/5g-expert.md
-    file_size: 25061
-    total_lines: 707
+    description: Design and deploy production-ready 5G network solutions including
+      network slicing, edge computing, and ultra-low latency applications. Use when
+      the user mentions 5G, network slicing, NFV/SDN, MEC or multi-access edge computing,
+      URLLC/eMBB/mMTC, RAN or core network design, or needs ultra-low-latency mobile
+      network architecture.
+    tags:
+    - 5g
+    - network-slicing
+    - mec
+    - edge-computing
+    - nfv
+    - sdn
+    - iot
+    - urllc
+    - embb
+    - mmtc
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/5g-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 25055
+    total_lines: 747
     code_examples: 2
     code_lines: 560
   - &id003
     name: aerospace-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level aerospace systems, flight management, maintenance tracking,
-      aviation safety, and aerospace software
+      aviation safety, and aerospace software. Use when the user mentions aviation,
+      flight, maintenance, safety, or air traffic control, or when the task involves
+      Aerospace Systems, Aviation Technologies, Standards and Regulations, or Flight
+      Operations.
     tags:
     - aerospace
     - aviation
@@ -1696,16 +2177,52 @@ categories:
     - Write
     - Edit
     path: domains/aerospace-expert/SKILL.md
-    file_size: 26558
-    total_lines: 760
+    references:
+    - references/FLIGHT_MANAGEMENT_SYSTEM.md
+    file_size: 26323
+    total_lines: 781
     code_examples: 3
     code_lines: 646
+  - &id004
+    name: agtech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in agricultural technology, precision agriculture, crop monitoring,
+      livestock tracking, farm analytics, and sustainable farming practices. Use when
+      the user mentions precision agriculture, farming, crop monitoring, livestock,
+      farm management, or sustainable agriculture, or when the task involves Livestock
+      Management, Farm Management Systems, Precision Agriculture Platform, or Data
+      Collection.
+    tags:
+    - agtech
+    - precision-agriculture
+    - farming
+    - crop-monitoring
+    - livestock
+    - farm-management
+    - sustainable-agriculture
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: domains/agtech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 26450
+    total_lines: 832
+    code_examples: 1
+    code_lines: 609
   - &id014
     name: automotive-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level automotive systems, connected vehicles, fleet management,
-      telematics, ADAS, and automotive software
+      telematics, ADAS, and automotive software. Use when the user mentions connected
+      car, fleet, telematics, ADAS, or vehicle, or when the task involves Automotive
+      Systems, Technologies, Standards and Protocols, or Fleet Management.
     tags:
     - automotive
     - connected-car
@@ -1718,16 +2235,51 @@ categories:
     - Write
     - Edit
     path: domains/automotive-expert/SKILL.md
-    file_size: 26390
-    total_lines: 760
+    references:
+    - references/FLEET_MANAGEMENT_SYSTEM.md
+    file_size: 26132
+    total_lines: 781
     code_examples: 3
     code_lines: 646
+  - &id019
+    name: biotech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in biotechnology systems, genomics, LIMS, bioinformatics pipelines,
+      lab automation, and bioprocess management. Use when the user mentions genomics,
+      bioinformatics, LIMS, lab automation, bioprocessing, or gene sequencing, or
+      when the task involves Genomics and Sequencing Technologies, Laboratory Information
+      Management Systems, Bioprocess Management, or Bioinformatics Pipeline Framework.
+    tags:
+    - biotech
+    - genomics
+    - bioinformatics
+    - lims
+    - lab-automation
+    - bioprocessing
+    - gene-sequencing
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: domains/biotech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 19957
+    total_lines: 652
+    code_examples: 2
+    code_lines: 444
   - &id020
     name: blockchain-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level blockchain, Web3, smart contracts, DeFi, and cryptocurrency
-      development
+      development. Use when the user mentions Web3, smart contracts, DeFi, Ethereum,
+      or Solidity, or when the task involves Blockchain Fundamentals, Web3 & DeFi,
+      Smart Contract Security, or Gas Optimization.
     tags:
     - blockchain
     - web3
@@ -1740,28 +2292,80 @@ categories:
     - Write
     - Edit
     path: domains/blockchain-expert/SKILL.md
-    file_size: 12128
-    total_lines: 413
+    references: []
+    file_size: 11706
+    total_lines: 419
     code_examples: 3
-    code_lines: 317
+    code_lines: 313
   - &id021
     name: business-intelligence-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: business-intelligence-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/business-intelligence-expert.md
-    file_size: 28937
-    total_lines: 856
+    description: Build comprehensive business intelligence solutions including data
+      warehouses, ETL pipelines, interactive dashboards, and analytical reporting
+      systems. Use when the user mentions BI, data warehousing, star or snowflake
+      schemas, OLAP cubes, ETL/ELT pipelines, dashboards, KPIs, or analytical reporting.
+    tags:
+    - bi
+    - business-intelligence
+    - data-warehouse
+    - reporting
+    - dashboards
+    - data-visualization
+    - analytics
+    - olap
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/business-intelligence-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 28842
+    total_lines: 906
     code_examples: 3
     code_lines: 700
+  - &id024
+    name: cleantech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in clean technology, renewable energy systems, carbon tracking,
+      ESG reporting, sustainability analytics, and energy optimization. Use when the
+      user mentions renewable energy, carbon tracking, esg, sustainability, energy
+      optimization, or green tech, or when the task involves Renewable Energy Systems,
+      Carbon Accounting, ESG Reporting Frameworks, or Carbon Tracking and Accounting
+      System.
+    tags:
+    - cleantech
+    - renewable-energy
+    - carbon-tracking
+    - esg
+    - sustainability
+    - energy-optimization
+    - green-tech
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: domains/cleantech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 28758
+    total_lines: 842
+    code_examples: 1
+    code_lines: 611
   - &id029
     name: construction-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level construction management, project planning, BIM, safety
-      compliance, and construction technology
+      compliance, and construction technology. Use when the user mentions BIM, project
+      management, safety, or building, or when the task involves Construction Management,
+      Technologies, Standards and Regulations, or Cost Control.
     tags:
     - construction
     - bim
@@ -1773,77 +2377,199 @@ categories:
     - Write
     - Edit
     path: domains/construction-expert/SKILL.md
-    file_size: 21331
-    total_lines: 618
+    references:
+    - references/PROJECT_MANAGEMENT_SYSTEM.md
+    file_size: 21222
+    total_lines: 639
     code_examples: 3
     code_lines: 504
   - &id033
     name: customer-support-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: customer-support-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/customer-support-expert.md
-    file_size: 23550
-    total_lines: 662
+    description: Build comprehensive customer support systems including ticketing,
+      knowledge management, SLA tracking, and customer satisfaction analytics. Use
+      when the user mentions helpdesk or service desk, ticketing, SLA targets, knowledge
+      bases, escalation workflows, CSAT/NPS, or customer success operations.
+    tags:
+    - support
+    - helpdesk
+    - ticketing
+    - customer-service
+    - knowledge-base
+    - sla
+    - service-desk
+    - customer-success
+    allowed_tools:
+    - Read
+    - Write
+    - WebSearch
+    path: domains/customer-support-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 23623
+    total_lines: 709
     code_examples: 3
     code_lines: 523
   - &id034
     name: cybersecurity-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: cybersecurity-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/cybersecurity-expert.md
-    file_size: 28613
-    total_lines: 792
+    description: Build comprehensive cybersecurity solutions including threat detection,
+      incident response, vulnerability management, and security compliance monitoring.
+      Use when the user mentions threat detection, SIEM, incident response, vulnerability
+      management, security monitoring, or security compliance programs.
+    tags:
+    - security
+    - cybersecurity
+    - threat-detection
+    - incident-response
+    - vulnerability
+    - siem
+    - compliance
+    - infosec
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: domains/cybersecurity-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 28598
+    total_lines: 843
     code_examples: 3
     code_lines: 643
   - &id046
     name: dynamics365-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in Dynamics 365 platform, model-driven apps, canvas apps,
-      Power Automate flows, Dataverse, plugins, and custom workflows
-    tags: []
-    allowed_tools: []
-    path: domains/dynamics365-expert.md
-    file_size: 23679
-    total_lines: 659
+      Power Automate flows, Dataverse, plugins, and custom workflows. Use when the
+      user mentions Microsoft platforms, ERP, CRM, business apps, the Power Platform,
+      or Dataverse, or when the task involves Dynamics 365 Applications, Dataverse
+      Platform, Customization & Development, or Plugin Development.
+    tags:
+    - microsoft
+    - erp
+    - crm
+    - business-apps
+    - dynamics365
+    - power-platform
+    - dataverse
+    - model-driven-apps
+    - canvas-apps
+    - power-automate
+    - dynamics-crm
+    - plugins
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/dynamics365-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 23087
+    total_lines: 718
     code_examples: 3
-    code_lines: 525
+    code_lines: 532
   - &id047
     name: e-learning-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: e-learning-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/e-learning-expert.md
-    file_size: 27448
-    total_lines: 773
+    description: Build comprehensive e-learning solutions including course management,
+      student engagement, assessment systems, and learning analytics. Use when the
+      user mentions an LMS, online courses, SCORM or xAPI, student engagement, assessments
+      and grading, or learning analytics.
+    tags:
+    - e-learning
+    - lms
+    - online-education
+    - course-management
+    - student-engagement
+    - assessment
+    - edtech
+    - learning-analytics
+    allowed_tools:
+    - Read
+    - Write
+    - WebSearch
+    path: domains/e-learning-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 27361
+    total_lines: 821
     code_examples: 3
     code_lines: 627
   - &id048
     name: edge-computing-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: edge-computing-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/edge-computing-expert.md
-    file_size: 28925
-    total_lines: 840
+    description: Design and implement production-grade edge computing solutions including
+      CDN optimization, fog computing architectures, and distributed edge workloads.
+      Use when the user mentions edge computing, CDN or edge caching, fog computing,
+      MEC, IoT edge workloads, or latency-sensitive distributed deployments.
+    tags:
+    - edge-computing
+    - cdn
+    - fog-computing
+    - distributed-systems
+    - iot-edge
+    - 5g-edge
+    - mec
+    - latency
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/edge-computing-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 28815
+    total_lines: 889
     code_examples: 2
     code_lines: 692
+  - &id049
+    name: edtech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in education technology, adaptive learning, student analytics,
+      virtual classrooms, assessment tools, and learning management systems. Use when
+      the user mentions education, e learning, lms, adaptive learning, student analytics,
+      or virtual classroom, or when the task involves Learning Management Systems,
+      Virtual Classrooms, Assessment and Testing, or Adaptive Learning Engine.
+    tags:
+    - edtech
+    - education
+    - e-learning
+    - lms
+    - adaptive-learning
+    - student-analytics
+    - virtual-classroom
+    - assessment
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/edtech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 26201
+    total_lines: 813
+    code_examples: 1
+    code_lines: 543
   - &id050
     name: education-expert
-    version: 1.0.0
+    version: 2.0.0
     category: domains
     description: Expert-level education technology, learning management systems, and
-      ed-tech platforms
+      ed-tech platforms. Use when the user mentions edtech, lms, e learning, or assessment,
+      or when the task involves Educational Technology or Standards.
     tags:
     - education
     - edtech
@@ -1854,17 +2580,20 @@ categories:
     - Read
     - Write
     - Edit
-    path: domains/education/SKILL.md
-    file_size: 12718
-    total_lines: 408
+    path: domains/education-expert/SKILL.md
+    references: []
+    file_size: 12454
+    total_lines: 414
     code_examples: 4
     code_lines: 321
   - &id054
     name: energy-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level energy systems, smart grids, renewable energy, power
-      management, and energy analytics
+      management, and energy analytics. Use when the user mentions smart grid, renewable,
+      power, utilities, or SCADA, or when the task involves Energy Systems, Smart
+      Grid Technology, Standards and Protocols, or Smart Grid Operations.
     tags:
     - energy
     - smart-grid
@@ -1877,16 +2606,20 @@ categories:
     - Write
     - Edit
     path: domains/energy-expert/SKILL.md
-    file_size: 20406
-    total_lines: 609
+    references:
+    - references/SMART_GRID_MONITORING_SYSTEM.md
+    file_size: 20315
+    total_lines: 630
     code_examples: 4
     code_lines: 497
   - &id055
     name: farming-expert
-    version: 1.0.0
+    version: 2.0.0
     category: domains
     description: Expert-level precision agriculture, farm management systems, crop
-      monitoring, and agtech
+      monitoring, and agtech. Use when the user mentions agriculture, precision agriculture,
+      agtech, or crop management, or when the task involves Farm Management or AgTech
+      Solutions.
     tags:
     - agriculture
     - farming
@@ -1897,17 +2630,20 @@ categories:
     - Read
     - Write
     - Edit
-    path: domains/farming/SKILL.md
-    file_size: 13827
-    total_lines: 405
+    path: domains/farming-expert/SKILL.md
+    references: []
+    file_size: 13590
+    total_lines: 411
     code_examples: 4
     code_lines: 319
   - &id057
     name: finance-expert
-    version: 1.0.0
+    version: 2.0.0
     category: domains
     description: Expert-level financial systems, FinTech, banking, payments, and financial
-      technology
+      technology. Use when the user mentions fintech, banking, payments, trading,
+      or accounting, or when the task involves Financial Systems, FinTech Stack, Key
+      Challenges, or Data Handling.
     tags:
     - finance
     - fintech
@@ -1919,30 +2655,82 @@ categories:
     - Read
     - Write
     - Edit
-    - Bash(*)
     path: domains/finance-expert/SKILL.md
-    file_size: 9630
-    total_lines: 301
+    references: []
+    file_size: 14623
+    total_lines: 423
     code_examples: 5
-    code_lines: 202
+    code_lines: 252
+  - &id059
+    name: fintech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in financial technology, payment processing, open banking
+      APIs, PSD2, blockchain in finance, robo-advisors, and RegTech. Use when the
+      user mentions payments, open banking, PSD2, blockchain, cryptocurrency, or robo
+      advisor, or when the task involves Payment Processing, Blockchain in Finance,
+      Payment Security, or API Design.
+    tags:
+    - fintech
+    - payments
+    - open-banking
+    - psd2
+    - blockchain
+    - cryptocurrency
+    - robo-advisor
+    - digital-banking
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: domains/fintech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 22721
+    total_lines: 724
+    code_examples: 1
+    code_lines: 522
   - &id062
     name: gaming-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: gaming-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/gaming-expert.md
-    file_size: 25129
-    total_lines: 746
+    description: Build comprehensive game systems including gameplay mechanics, multiplayer
+      infrastructure, analytics tracking, and monetization features. Use when the
+      user mentions game development, Unity or Unreal, gameplay mechanics, multiplayer
+      netcode, game analytics, or in-game monetization.
+    tags:
+    - gaming
+    - game-development
+    - game-engines
+    - multiplayer
+    - game-analytics
+    - monetization
+    - unity
+    - unreal
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: domains/gaming-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 25144
+    total_lines: 796
     code_examples: 4
     code_lines: 599
   - &id071
     name: healthcare-expert
-    version: 1.0.0
+    version: 2.0.0
     category: domains
     description: Expert-level healthcare systems, medical informatics, HIPAA compliance,
-      and health data standards
+      and health data standards. Use when the user mentions medical, HIPAA, HL7, FHIR,
+      or EHR, or when the task involves Healthcare IT, Standards and Protocols, Regulatory
+      Compliance, or Security and Compliance.
     tags:
     - healthcare
     - medical
@@ -1954,17 +2742,50 @@ categories:
     - Read
     - Write
     - Edit
-    path: domains/healthcare/SKILL.md
-    file_size: 14590
-    total_lines: 496
+    path: domains/healthcare-expert/SKILL.md
+    references:
+    - references/ELECTRONIC_HEALTH_RECORD_SYSTEM.md
+    file_size: 14613
+    total_lines: 516
     code_examples: 4
     code_lines: 397
+  - &id072
+    name: healthtech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in health technology, telemedicine, wearables, health data
+      analytics, patient monitoring, and digital therapeutics. Use when the user mentions
+      telemedicine, wearables, health analytics, patient monitoring, digital health,
+      or mhealth, or when the task involves Telemedicine and Virtual Care, Wearable
+      Health Devices, Remote Patient Monitoring, or Digital Therapeutics.
+    tags:
+    - healthtech
+    - telemedicine
+    - wearables
+    - health-analytics
+    - patient-monitoring
+    - digital-health
+    - mhealth
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/healthtech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 29350
+    total_lines: 896
+    code_examples: 1
+    code_lines: 620
   - &id074
     name: hospitality-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level hotel management, reservation systems, guest services,
-      revenue management, and hospitality technology
+      revenue management, and hospitality technology. Use when the user mentions hotel,
+      reservation, PMS, or revenue management, or when the task involves Hotel Management
+      Systems, Technologies, Standards and Protocols, or Reservations Management.
     tags:
     - hospitality
     - hotel
@@ -1976,28 +2797,49 @@ categories:
     - Write
     - Edit
     path: domains/hospitality-expert/SKILL.md
-    file_size: 22826
-    total_lines: 685
+    references:
+    - references/PROPERTY_MANAGEMENT_SYSTEM.md
+    file_size: 22663
+    total_lines: 706
     code_examples: 3
     code_lines: 572
   - &id075
     name: hr-tech-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: hr-tech-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/hr-tech-expert.md
-    file_size: 21590
-    total_lines: 614
+    description: Build comprehensive HR technology solutions including HRIS implementation,
+      recruitment automation, performance management, and employee analytics. Use
+      when the user mentions HRIS, an ATS or recruitment pipeline, payroll, onboarding,
+      performance reviews, or employee engagement analytics.
+    tags:
+    - hr
+    - hris
+    - recruitment
+    - ats
+    - payroll
+    - performance-management
+    - employee-engagement
+    - talent-management
+    allowed_tools:
+    - Read
+    - Write
+    - WebSearch
+    path: domains/hr-tech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 21691
+    total_lines: 661
     code_examples: 3
     code_lines: 478
   - &id077
     name: insurance-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level insurance systems, underwriting, claims processing,
-      actuarial analysis, risk assessment, and insurtech solutions
+      actuarial analysis, risk assessment, and insurtech solutions. Use when the user
+      mentions underwriting, claims, actuarial, risk, or insurtech, or when the task
+      involves Insurance Systems, Insurance Types, Standards and Regulations, or Claims
+      Processing.
     tags:
     - insurance
     - underwriting
@@ -2010,16 +2852,20 @@ categories:
     - Write
     - Edit
     path: domains/insurance-expert/SKILL.md
-    file_size: 23487
-    total_lines: 707
+    references:
+    - references/POLICY_ADMINISTRATION_SYSTEM.md
+    file_size: 23301
+    total_lines: 728
     code_examples: 3
     code_lines: 594
   - &id079
     name: iot-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level IoT systems, embedded devices, edge computing, and IoT
-      protocols
+      protocols. Use when the user mentions embedded, edge computing, MQTT, sensors,
+      or firmware, or when the task involves IoT Architecture, IoT Protocols, Embedded
+      Systems, or Device Design.
     tags:
     - iot
     - embedded
@@ -2032,28 +2878,51 @@ categories:
     - Write
     - Edit
     path: domains/iot-expert/SKILL.md
-    file_size: 12487
-    total_lines: 428
+    references: []
+    file_size: 12451
+    total_lines: 441
     code_examples: 4
-    code_lines: 330
+    code_lines: 334
   - &id089
-    name: legal-tech-expert
-    version: 1.0.0
+    name: legaltech-expert
+    version: 1.1.0
     category: domains
-    description: 'skill_id: legal-tech-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/legal-tech-expert.md
-    file_size: 19464
-    total_lines: 549
-    code_examples: 3
-    code_lines: 408
-  - &id093
+    description: 'Expert in legal technology: contract lifecycle management, e-discovery,
+      AI-assisted legal research, case and matter management, document automation,
+      and compliance tooling. Use when the user mentions legal case or matter management,
+      e-discovery and legal holds, CLM or contract review and obligation tracking,
+      legal research automation, litigation workflows, or regulatory compliance tooling.'
+    tags:
+    - legaltech
+    - legal
+    - contracts
+    - clm
+    - e-discovery
+    - legal-research
+    - case-management
+    - document-automation
+    - compliance
+    - litigation
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/legaltech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 31997
+    total_lines: 989
+    code_examples: 1
+    code_lines: 594
+  - &id092
     name: logistics-expert
-    version: 1.0.0
+    version: 2.0.0
     category: domains
     description: Expert-level supply chain management, logistics optimization, warehouse
-      systems, and fleet management
+      systems, and fleet management. Use when the user mentions supply chain, warehouse,
+      fleet, or optimization, or when the task involves Supply Chain Management or
+      Technologies.
     tags:
     - logistics
     - supply-chain
@@ -2064,17 +2933,20 @@ categories:
     - Read
     - Write
     - Edit
-    path: domains/logistics/SKILL.md
-    file_size: 14303
-    total_lines: 477
+    path: domains/logistics-expert/SKILL.md
+    references: []
+    file_size: 13983
+    total_lines: 483
     code_examples: 4
     code_lines: 392
-  - &id095
+  - &id094
     name: manufacturing-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level manufacturing systems, Industry 4.0, production optimization,
-      quality control, and smart factory solutions
+      quality control, and smart factory solutions. Use when the user mentions Industry
+      4.0, production, quality, MES, or PLCs, or when the task involves Manufacturing
+      Systems, Standards and Protocols, Production Management, or Quality Management.
     tags:
     - manufacturing
     - industry40
@@ -2087,16 +2959,20 @@ categories:
     - Write
     - Edit
     path: domains/manufacturing-expert/SKILL.md
-    file_size: 24947
-    total_lines: 731
+    references:
+    - references/MANUFACTURING_EXECUTION_SYSTEM_MES.md
+    file_size: 24772
+    total_lines: 752
     code_examples: 4
     code_lines: 619
-  - &id096
+  - &id095
     name: maritime-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level maritime systems, vessel tracking, port operations,
-      cargo management, and maritime logistics
+      cargo management, and maritime logistics. Use when the user mentions shipping,
+      logistics, vessel, port, or Cargo, or when the task involves Maritime Systems,
+      Maritime Technologies, Standards and Protocols, or Vessel Operations.
     tags:
     - maritime
     - shipping
@@ -2109,28 +2985,48 @@ categories:
     - Write
     - Edit
     path: domains/maritime-expert/SKILL.md
-    file_size: 19733
-    total_lines: 567
+    references:
+    - references/VESSEL_TRACKING_SYSTEM.md
+    file_size: 19662
+    total_lines: 588
     code_examples: 3
     code_lines: 453
-  - &id097
+  - &id096
     name: marketing-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: marketing-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/marketing-expert.md
-    file_size: 22766
-    total_lines: 648
+    description: Build comprehensive marketing technology solutions including automation
+      workflows, campaign management, analytics tracking, and multi-channel orchestration.
+      Use when the user mentions marketing automation, campaign management, SEO, email
+      or content marketing, attribution, or multi-channel orchestration.
+    tags:
+    - marketing
+    - marketing-automation
+    - campaigns
+    - analytics
+    - seo
+    - content-marketing
+    - email-marketing
+    - digital-marketing
+    allowed_tools:
+    - Read
+    - Write
+    - WebSearch
+    path: domains/marketing-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 22863
+    total_lines: 695
     code_examples: 3
     code_lines: 506
-  - &id098
+  - &id097
     name: media-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level media production, content management, streaming, broadcasting,
-      and media technology systems
+      and media technology systems. Use when the user mentions video, streaming, broadcast,
+      CMS, or production, or when the task involves Media Production, Streaming and
+      Broadcasting, Technologies, or Standards and Protocols.
     tags:
     - media
     - video
@@ -2143,78 +3039,236 @@ categories:
     - Write
     - Edit
     path: domains/media-expert/SKILL.md
-    file_size: 18843
-    total_lines: 586
+    references:
+    - references/CONTENT_MANAGEMENT_SYSTEM.md
+    file_size: 18761
+    total_lines: 608
     code_examples: 3
     code_lines: 463
-  - &id099
+  - &id098
     name: metaverse-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: metaverse-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/metaverse-expert.md
-    file_size: 32596
-    total_lines: 929
+    description: Create production-ready metaverse experiences including VR/AR applications,
+      virtual worlds, social platforms, and blockchain-integrated digital assets.
+      Use when the user mentions VR/AR/XR, virtual worlds, spatial computing, 3D avatars
+      and scenes, Unity or Unreal for immersive apps, or NFT-backed digital assets.
+    tags:
+    - metaverse
+    - vr
+    - ar
+    - xr
+    - unity
+    - unreal-engine
+    - 3d
+    - virtual-worlds
+    - nft
+    - spatial-computing
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/metaverse-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 32443
+    total_lines: 980
     code_examples: 3
     code_lines: 777
-  - &id101
+  - &id100
     name: microsoft365-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in Microsoft 365 ecosystem, Power Platform, SharePoint Online,
-      Microsoft Teams, Graph API, and Microsoft 365 administration
-    tags: []
-    allowed_tools: []
-    path: domains/microsoft365-expert.md
-    file_size: 19256
-    total_lines: 602
+      Microsoft Teams, Graph API, and Microsoft 365 administration. Use when the user
+      mentions Microsoft platforms, Office 365, productivity, cloud, the Power Platform,
+      or SharePoint, or when the task involves Microsoft 365 Services, Power Platform,
+      Graph API, or Power Automate Flow.
+    tags:
+    - microsoft
+    - office365
+    - m365
+    - productivity
+    - cloud
+    - microsoft365
+    - power-platform
+    - sharepoint
+    - teams
+    - graph-api
+    - powerapps
+    - power-automate
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/microsoft365-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 18583
+    total_lines: 658
     code_examples: 4
-    code_lines: 467
-  - &id110
+    code_lines: 471
+  - &id109
     name: oracle-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in Oracle Database, PL/SQL programming, Oracle RAC, Data Guard,
-      performance tuning, backup/recovery, and enterprise database administration
-    tags: []
-    allowed_tools: []
-    path: domains/oracle-expert.md
-    file_size: 15873
-    total_lines: 524
+      performance tuning, backup/recovery, and enterprise database administration.
+      Use when the user mentions database, enterprise, ERP, PL/SQL, Oracle RAC, or
+      Data Guard, or when the task involves Oracle Architecture, PL/SQL Programming,
+      Performance & Tuning, or PL/SQL Package with Complex Logic.
+    tags:
+    - oracle
+    - database
+    - enterprise
+    - erp
+    - plsql
+    - rac
+    - data-guard
+    - performance-tuning
+    - rman
+    - awr
+    - sql-tuning
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: domains/oracle-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 16197
+    total_lines: 576
     code_examples: 4
     code_lines: 389
+  - &id113
+    name: pharmaceutical-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in pharmaceutical development, clinical trials, FDA compliance,
+      GxP standards, pharmacovigilance, and regulatory submissions. Use when the user
+      mentions clinical trials, FDA, GxP, pharmacovigilance, regulatory, or drug development,
+      or when the task involves Drug Development Lifecycle, GxP Standards, Clinical
+      Trial Management, or Clinical Trial Data Management System.
+    tags:
+    - pharmaceutical
+    - clinical-trials
+    - fda
+    - gxp
+    - pharmacovigilance
+    - regulatory
+    - drug-development
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/pharmaceutical-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 18320
+    total_lines: 550
+    code_examples: 2
+    code_lines: 354
+  - &id119
+    name: proptech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in property technology, smart buildings, IoT for real estate,
+      property management platforms, virtual tours, and tenant portals. Use when the
+      user mentions real estate, smart buildings, IoT, property management, virtual
+      tours, or tenant portals, or when the task involves Smart Building Systems,
+      Property Management Technology, Virtual Tours and 3D Visualization, or Smart
+      Building IoT Platform.
+    tags:
+    - proptech
+    - real-estate
+    - smart-buildings
+    - iot
+    - property-management
+    - virtual-tours
+    - tenant-portals
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/proptech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 24076
+    total_lines: 766
+    code_examples: 1
+    code_lines: 569
   - &id122
     name: quality-management-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: quality-management-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/quality-management-expert.md
-    file_size: 24714
-    total_lines: 709
+    description: Build comprehensive quality management solutions including QMS implementation,
+      audit tracking, nonconformance management, and continuous improvement programs.
+      Use when the user mentions a QMS, ISO 9001, audits and CAPA, nonconformance
+      tracking, Six Sigma, or continuous improvement programs.
+    tags:
+    - quality
+    - qms
+    - iso
+    - compliance
+    - auditing
+    - continuous-improvement
+    - six-sigma
+    - quality-assurance
+    allowed_tools:
+    - Read
+    - Write
+    - WebSearch
+    path: domains/quality-management-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 24750
+    total_lines: 757
     code_examples: 3
     code_lines: 560
   - &id123
     name: quantum-algorithms-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: quantum-algorithms-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/quantum-algorithms-expert.md
+    description: Develop production-ready quantum algorithms for optimization, simulation,
+      and machine learning on near-term quantum devices. Use when the user mentions
+      quantum computing, Qiskit or Cirq, quantum circuits, QAOA, VQE, Grover or Shor,
+      or quantum machine learning on NISQ devices.
+    tags:
+    - quantum-computing
+    - qiskit
+    - quantum-algorithms
+    - qaoa
+    - vqe
+    - quantum-ml
+    - quantum-circuits
+    - qubits
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: domains/quantum-algorithms-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
     file_size: 22496
-    total_lines: 689
+    total_lines: 739
     code_examples: 1
     code_lines: 543
   - &id128
     name: real-estate-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level real estate systems, property management, MLS integration,
-      CRM, virtual tours, and market analysis
+      CRM, virtual tours, and market analysis. Use when the user mentions property,
+      MLS, CRM, proptech, or listings, or when the task involves Real Estate Systems,
+      PropTech Solutions, Standards and Regulations, or Listing Management.
     tags:
     - real-estate
     - property
@@ -2227,16 +3281,49 @@ categories:
     - Write
     - Edit
     path: domains/real-estate-expert/SKILL.md
-    file_size: 26527
-    total_lines: 782
+    references:
+    - references/PROPERTY_LISTING_SYSTEM.md
+    file_size: 26251
+    total_lines: 803
     code_examples: 3
     code_lines: 669
+  - &id130
+    name: regtech-expert
+    version: 1.1.0
+    category: domains
+    description: Expert in regulatory technology, compliance automation, KYC/AML,
+      transaction monitoring, risk assessment, and automated reporting. Use when the
+      user mentions compliance, KYC, AML, transaction monitoring, risk assessment,
+      or regulatory reporting, or when the task involves KYC/AML Compliance, KYC/AML
+      Program, Regulatory Bodies, or Regulations.
+    tags:
+    - regtech
+    - compliance
+    - kyc
+    - aml
+    - transaction-monitoring
+    - risk-assessment
+    - regulatory-reporting
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/regtech-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 25997
+    total_lines: 806
+    code_examples: 1
+    code_lines: 606
   - &id133
     name: retail-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level retail systems, POS, inventory management, e-commerce,
-      customer analytics, and omnichannel retail
+      customer analytics, and omnichannel retail. Use when the user mentions POS,
+      ecommerce, inventory, CRM, or omnichannel, or when the task involves Retail
+      Systems, Omnichannel Retail, Technologies, or POS Operations.
     tags:
     - retail
     - pos
@@ -2249,116 +3336,270 @@ categories:
     - Write
     - Edit
     path: domains/retail-expert/SKILL.md
-    file_size: 24330
-    total_lines: 723
+    references:
+    - references/POINT_OF_SALE_SYSTEM.md
+    file_size: 24077
+    total_lines: 744
     code_examples: 3
     code_lines: 609
   - &id134
     name: robotics-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: robotics-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/robotics-expert.md
-    file_size: 28927
-    total_lines: 877
+    description: Develop production-ready robotic systems with autonomous navigation,
+      sensor fusion, and intelligent control for real-world applications. Use when
+      the user mentions ROS or ROS 2, autonomous navigation, SLAM, motion planning,
+      sensor fusion, or robot control systems.
+    tags:
+    - robotics
+    - ros
+    - ros2
+    - autonomous-navigation
+    - sensors
+    - actuators
+    - slam
+    - motion-planning
+    - control-systems
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: domains/robotics-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 28808
+    total_lines: 927
     code_examples: 3
     code_lines: 727
   - &id137
     name: sales-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: sales-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/sales-expert.md
-    file_size: 25367
-    total_lines: 691
+    description: Build comprehensive sales technology solutions including CRM implementation,
+      pipeline management, sales forecasting, and performance analytics. Use when
+      the user mentions CRM, sales pipelines, lead qualification, opportunity tracking,
+      sales forecasting, quotas or territories, or sales automation.
+    tags:
+    - sales
+    - crm
+    - pipeline
+    - lead-management
+    - sales-analytics
+    - forecasting
+    - opportunity-management
+    - sales-automation
+    allowed_tools:
+    - Read
+    - Write
+    - WebSearch
+    path: domains/sales-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 25396
+    total_lines: 739
     code_examples: 3
     code_lines: 544
   - &id138
     name: salesforce-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in Salesforce platform development, Apex programming, Lightning
-      Web Components, SOQL/SOSL queries, Salesforce APIs, and AppExchange solutions
-    tags: []
-    allowed_tools: []
-    path: domains/salesforce-expert.md
-    file_size: 14835
-    total_lines: 456
+      Web Components, SOQL/SOSL queries, Salesforce APIs, and AppExchange solutions.
+      Use when the user mentions CRM, cloud, business apps, Apex, Lightning Web Components,
+      or Lightning, or when the task involves Salesforce Platform, Development Components,
+      Integration & APIs, or Apex Trigger with Handler Pattern.
+    tags:
+    - salesforce
+    - crm
+    - cloud
+    - business-apps
+    - apex
+    - lwc
+    - lightning
+    - soql
+    - salesforce-api
+    - force-platform
+    - appexchange
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: domains/salesforce-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 14883
+    total_lines: 512
     code_examples: 6
-    code_lines: 319
+    code_lines: 322
   - &id139
     name: sap-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in SAP ERP systems, ABAP programming, SAP HANA, S/4HANA, Fiori
-      applications, and SAP integration patterns including OData, RFC, and IDoc
-    tags: []
-    allowed_tools: []
-    path: domains/sap-expert.md
-    file_size: 12430
-    total_lines: 404
+      applications, and SAP integration patterns including OData, RFC, and IDoc. Use
+      when the user mentions ERP, enterprise, business apps, ABAP, HANA, or S/4HANA,
+      or when the task involves SAP Ecosystem, ABAP Development, Integration Technologies,
+      or ABAP Report with ALV Grid.
+    tags:
+    - sap
+    - erp
+    - enterprise
+    - business-apps
+    - abap
+    - hana
+    - s4hana
+    - fiori
+    - odata
+    - rfc
+    - idoc
+    - sap-integration
+    - enterprise-software
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/sap-expert/SKILL.md
+    references: []
+    file_size: 12244
+    total_lines: 448
     code_examples: 5
-    code_lines: 268
+    code_lines: 270
   - &id143
     name: serverless-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: serverless-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/serverless-expert.md
-    file_size: 22844
-    total_lines: 770
+    description: Design and implement production-grade serverless applications with
+      optimal performance, cost efficiency, and scalability. Use when the user mentions
+      serverless or FaaS, AWS Lambda, Azure Functions, Cloud Functions, cold starts,
+      event-driven architecture, or API Gateway-fronted workloads.
+    tags:
+    - serverless
+    - faas
+    - lambda
+    - azure-functions
+    - event-driven
+    - cloud-native
+    - microservices
+    - api-gateway
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: domains/serverless-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 22799
+    total_lines: 820
     code_examples: 2
     code_lines: 621
   - &id144
     name: servicenow-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in ServiceNow platform development, scripting, workflows,
-      Service Portal, CMDB, ITSM modules, and integrations
-    tags: []
-    allowed_tools: []
-    path: domains/servicenow-expert.md
-    file_size: 14630
-    total_lines: 445
+      Service Portal, CMDB, ITSM modules, and integrations. Use when the user mentions
+      ITSM, ITOM, workflow, automation, CMDB, or service portal, or when the task
+      involves ServiceNow Platform, Development Components, Scripting APIs, or GlideRecord
+      Query and Update.
+    tags:
+    - servicenow
+    - itsm
+    - itom
+    - workflow
+    - automation
+    - cmdb
+    - service-portal
+    - gliderecord
+    - business-rules
+    - it-service-management
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/servicenow-expert/SKILL.md
+    references: []
+    file_size: 13615
+    total_lines: 483
     code_examples: 8
-    code_lines: 304
+    code_lines: 303
   - &id145
     name: sharepoint-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in SharePoint Server and SharePoint Online, site collections,
-      lists and libraries, workflows, SharePoint Framework (SPFx), and PnP patterns
-    tags: []
-    allowed_tools: []
-    path: domains/sharepoint-expert.md
-    file_size: 18660
-    total_lines: 569
+      lists and libraries, workflows, SharePoint Framework (SPFx), and PnP patterns.
+      Use when the user mentions Microsoft platforms, collaboration, intranet, CMS,
+      SPFx, or SharePoint framework, or when the task involves SharePoint Architecture,
+      Development Approaches, Content Management, or SPFx Web Part with React.
+    tags:
+    - sharepoint
+    - microsoft
+    - collaboration
+    - intranet
+    - cms
+    - spfx
+    - sharepoint-framework
+    - pnp
+    - sharepoint-online
+    - site-collections
+    - content-types
+    - workflows
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/sharepoint-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 18135
+    total_lines: 631
     code_examples: 4
-    code_lines: 436
-  - &id149
+    code_lines: 446
+  - &id150
     name: social-media-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: social-media-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/social-media-expert.md
-    file_size: 25660
-    total_lines: 727
+    description: Build comprehensive social media solutions including content management,
+      engagement tracking, influencer campaigns, and social analytics. Use when the
+      user mentions social media content scheduling, engagement metrics, influencer
+      campaigns, social listening, or community management.
+    tags:
+    - social-media
+    - content-management
+    - engagement
+    - analytics
+    - influencer-marketing
+    - social-listening
+    - community-management
+    allowed_tools:
+    - Read
+    - Write
+    - WebSearch
+    path: domains/social-media-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 25656
+    total_lines: 774
     code_examples: 3
     code_lines: 582
-  - &id154
+  - &id155
     name: stockbreeder-expert
-    version: 1.0.0
+    version: 2.0.0
     category: domains
     description: Expert-level livestock management, animal health monitoring, breeding
-      programs, and ranch management
+      programs, and ranch management. Use when the user mentions livestock, animal
+      husbandry, breeding, ranch management, or veterinary, or when the task involves
+      Livestock Management, Animal Health, or Technologies.
     tags:
     - livestock
     - animal-husbandry
@@ -2369,29 +3610,50 @@ categories:
     - Read
     - Write
     - Edit
-    path: domains/stockbreeder/SKILL.md
-    file_size: 15327
-    total_lines: 459
+    path: domains/stockbreeder-expert/SKILL.md
+    references: []
+    file_size: 15063
+    total_lines: 466
     code_examples: 4
     code_lines: 373
-  - &id155
+  - &id156
     name: supply-chain-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
-    description: 'skill_id: supply-chain-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/supply-chain-expert.md
-    file_size: 24093
-    total_lines: 691
+    description: Build comprehensive supply chain solutions including demand planning,
+      inventory management, supplier coordination, and logistics optimization. Use
+      when the user mentions supply chain, demand planning or forecasting, inventory
+      and safety stock, procurement, supplier management, warehousing, or logistics
+      optimization.
+    tags:
+    - supply-chain
+    - logistics
+    - inventory
+    - procurement
+    - demand-planning
+    - supplier-management
+    - warehouse
+    - scm
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/supply-chain-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 24176
+    total_lines: 740
     code_examples: 3
     code_lines: 545
-  - &id161
+  - &id162
     name: telecommunications-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level telecommunications systems, network management, billing,
-      5G, SDN, and telecom infrastructure
+      5G, SDN, and telecom infrastructure. Use when the user mentions telecom, networking,
+      5G, billing, OSS, or BSS, or when the task involves Telecommunications Systems,
+      Network Technologies, Standards and Protocols, or Network Management.
     tags:
     - telecom
     - networking
@@ -2404,16 +3666,20 @@ categories:
     - Write
     - Edit
     path: domains/telecommunications-expert/SKILL.md
-    file_size: 23112
-    total_lines: 709
+    references:
+    - references/NETWORK_MANAGEMENT_SYSTEM.md
+    file_size: 22940
+    total_lines: 730
     code_examples: 3
     code_lines: 595
-  - &id164
+  - &id165
     name: trading-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert-level algorithmic trading, market systems, quantitative analysis,
-      and trading platforms
+      and trading platforms. Use when the user mentions algorithmic trading, quant,
+      markets, finance, or high-frequency trading, or when the task involves Trading
+      Systems, Market Data, or Execution.
     tags:
     - trading
     - algorithmic-trading
@@ -2427,257 +3693,118 @@ categories:
     - Edit
     - Bash(python:*)
     path: domains/trading-expert/SKILL.md
-    file_size: 11653
-    total_lines: 351
+    references: []
+    file_size: 15698
+    total_lines: 437
     code_examples: 4
-    code_lines: 268
-  - &id168
-    name: web3-expert
-    version: 1.0.0
-    category: domains
-    description: 'skill_id: web3-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/web3-expert.md
-    file_size: 27352
-    total_lines: 794
-    code_examples: 3
-    code_lines: 642
+    code_lines: 316
   - &id169
-    name: webassembly-expert
-    version: 1.0.0
+    name: web3-expert
+    version: 1.1.0
     category: domains
-    description: 'skill_id: webassembly-expert'
-    tags: []
-    allowed_tools: []
-    path: domains/webassembly-expert.md
-    file_size: 21930
-    total_lines: 716
+    description: Build production-ready Web3 applications including smart contracts,
+      dApps, DeFi protocols, and decentralized storage solutions. Use when the user
+      mentions Web3, smart contracts or Solidity, dApps, DeFi protocols, ethers.js
+      or web3.js, IPFS, or on-chain integration with Ethereum-compatible networks.
+    tags:
+    - web3
+    - blockchain
+    - smart-contracts
+    - solidity
+    - dapps
+    - defi
+    - ipfs
+    - ethereum
+    - web3js
+    - ethersjs
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: domains/web3-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 27393
+    total_lines: 850
     code_examples: 3
-    code_lines: 566
-  - &id171
+    code_lines: 646
+  - &id170
+    name: webassembly-expert
+    version: 1.1.0
+    category: domains
+    description: Create production-ready WebAssembly modules for web and server environments
+      with optimal performance and seamless JavaScript integration. Use when the user
+      mentions WebAssembly or Wasm, WASI, compiling Rust/C/C++ to the browser, Emscripten,
+      wasmtime, or JavaScript-to-Wasm interop for performance-critical code.
+    tags:
+    - webassembly
+    - wasm
+    - wasi
+    - rust
+    - cpp
+    - performance
+    - browser
+    - emscripten
+    - wasmtime
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: domains/webassembly-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 21422
+    total_lines: 764
+    code_examples: 3
+    code_lines: 563
+  - &id172
     name: workday-expert
-    version: 1.0.0
+    version: 1.1.0
     category: domains
     description: Expert in Workday HCM platform, integrations, custom reports, business
-      processes, calculated fields, and Workday Studio development
-    tags: []
-    allowed_tools: []
-    path: domains/workday-expert.md
-    file_size: 17941
-    total_lines: 473
+      processes, calculated fields, and Workday Studio development. Use when the user
+      mentions HR, finance, ERP, cloud, HCM, or Workday integration, or when the task
+      involves Workday Modules, Integration Technologies, Reporting & Analytics, or
+      Custom Report with Calculated Fields.
+    tags:
+    - workday
+    - hr
+    - finance
+    - erp
+    - cloud
+    - hcm
+    - workday-integration
+    - workday-studio
+    - xpath
+    - business-process
+    - custom-reports
+    - prism-analytics
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: domains/workday-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 18332
+    total_lines: 525
     code_examples: 4
     code_lines: 336
-  industry-specializations:
-  - &id004
-    name: agtech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in agricultural technology, precision agriculture, crop monitoring,
-      livestock tracking, farm analytics, and sustainable farming practices
-    tags:
-    - agtech
-    - precision-agriculture
-    - farming
-    - crop-monitoring
-    - livestock
-    - farm-management
-    - sustainable-agriculture
-    allowed_tools: []
-    path: domains/agtech-expert.md
-    file_size: 26523
-    total_lines: 790
-    code_examples: 1
-    code_lines: 609
-  - &id019
-    name: biotech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in biotechnology systems, genomics, LIMS, bioinformatics pipelines,
-      lab automation, and bioprocess management
-    tags:
-    - biotech
-    - genomics
-    - bioinformatics
-    - lims
-    - lab-automation
-    - bioprocessing
-    - gene-sequencing
-    allowed_tools: []
-    path: domains/biotech-expert.md
-    file_size: 19796
-    total_lines: 611
-    code_examples: 2
-    code_lines: 444
-  - &id024
-    name: cleantech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in clean technology, renewable energy systems, carbon tracking,
-      ESG reporting, sustainability analytics, and energy optimization
-    tags:
-    - cleantech
-    - renewable-energy
-    - carbon-tracking
-    - esg
-    - sustainability
-    - energy-optimization
-    - green-tech
-    allowed_tools: []
-    path: domains/cleantech-expert.md
-    file_size: 28825
-    total_lines: 799
-    code_examples: 1
-    code_lines: 611
-  - &id049
-    name: edtech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in education technology, adaptive learning, student analytics,
-      virtual classrooms, assessment tools, and learning management systems
-    tags:
-    - edtech
-    - education
-    - e-learning
-    - lms
-    - adaptive-learning
-    - student-analytics
-    - virtual-classroom
-    - assessment
-    allowed_tools: []
-    path: domains/edtech-expert.md
-    file_size: 26278
-    total_lines: 766
-    code_examples: 1
-    code_lines: 543
-  - &id059
-    name: fintech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in financial technology, payment processing, open banking
-      APIs, PSD2, blockchain in finance, robo-advisors, and RegTech
-    tags:
-    - fintech
-    - payments
-    - open-banking
-    - psd2
-    - blockchain
-    - cryptocurrency
-    - robo-advisor
-    - digital-banking
-    allowed_tools: []
-    path: domains/fintech-expert.md
-    file_size: 22610
-    total_lines: 678
-    code_examples: 1
-    code_lines: 517
-  - &id072
-    name: healthtech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in health technology, telemedicine, wearables, health data
-      analytics, patient monitoring, and digital therapeutics
-    tags:
-    - healthtech
-    - telemedicine
-    - wearables
-    - health-analytics
-    - patient-monitoring
-    - digital-health
-    - mhealth
-    allowed_tools: []
-    path: domains/healthtech-expert.md
-    file_size: 29488
-    total_lines: 850
-    code_examples: 1
-    code_lines: 620
-  - &id090
-    name: legaltech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in legal technology, contract automation, e-discovery, legal
-      research AI, case management, and compliance tools
-    tags:
-    - legaltech
-    - legal
-    - contracts
-    - e-discovery
-    - legal-research
-    - case-management
-    - document-automation
-    allowed_tools: []
-    path: domains/legaltech-expert.md
-    file_size: 29543
-    total_lines: 863
-    code_examples: 1
-    code_lines: 594
-  - &id113
-    name: pharmaceutical-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in pharmaceutical development, clinical trials, FDA compliance,
-      GxP standards, pharmacovigilance, and regulatory submissions
-    tags:
-    - pharmaceutical
-    - clinical-trials
-    - fda
-    - gxp
-    - pharmacovigilance
-    - regulatory
-    - drug-development
-    allowed_tools: []
-    path: domains/pharmaceutical-expert.md
-    file_size: 18099
-    total_lines: 514
-    code_examples: 2
-    code_lines: 354
-  - &id119
-    name: proptech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in property technology, smart buildings, IoT for real estate,
-      property management platforms, virtual tours, and tenant portals
-    tags:
-    - proptech
-    - real-estate
-    - smart-buildings
-    - iot
-    - property-management
-    - virtual-tours
-    - tenant-portals
-    allowed_tools: []
-    path: domains/proptech-expert.md
-    file_size: 24096
-    total_lines: 728
-    code_examples: 1
-    code_lines: 569
-  - &id130
-    name: regtech-expert
-    version: 1.0.0
-    category: industry-specializations
-    description: Expert in regulatory technology, compliance automation, KYC/AML,
-      transaction monitoring, risk assessment, and automated reporting
-    tags:
-    - regtech
-    - compliance
-    - kyc
-    - aml
-    - transaction-monitoring
-    - risk-assessment
-    - regulatory-reporting
-    allowed_tools: []
-    path: domains/regtech-expert.md
-    file_size: 26118
-    total_lines: 769
-    code_examples: 1
-    code_lines: 606
   frameworks:
   - &id008
     name: android-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert in Android development with Jetpack Compose, Material Design,
-      ViewModel, and modern Android architecture
+      ViewModel, and modern Android architecture. Use when the user mentions mobile,
+      Kotlin, Jetpack Compose, Material Design, or Google, or when the task involves
+      Android Architecture, Android Components, Jetpack Libraries, or Activity/Fragment
+      Lifecycle.
     tags:
     - mobile
     - android
@@ -2685,18 +3812,29 @@ categories:
     - jetpack-compose
     - material-design
     - google
-    allowed_tools: []
-    path: frameworks/android-expert.md
-    file_size: 20708
-    total_lines: 707
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: frameworks/android-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 20729
+    total_lines: 750
     code_examples: 7
     code_lines: 553
   - &id009
     name: angular-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert knowledge in Angular framework, RxJS reactive programming,
-      TypeScript, dependency injection, and enterprise application development
+      TypeScript, dependency injection, and enterprise application development. Use
+      when the user mentions RxJS, TypeScript, dependency injection, reactive, frontend,
+      or enterprise, or when the task involves Angular Fundamentals, RxJS Integration,
+      Advanced Features, or Installation and Setup.
     tags:
     - angular
     - rxjs
@@ -2712,17 +3850,20 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: frameworks/angular-expert.md
-    file_size: 24488
-    total_lines: 909
+    path: frameworks/angular-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 24578
+    total_lines: 996
     code_examples: 6
-    code_lines: 732
+    code_lines: 777
   - &id044
     name: django-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert-level Django development for robust Python web applications
-      with ORM, admin, and authentication
+      with ORM, admin, and authentication. Use when the user mentions Python, web,
+      ORM, MVC, or Django REST Framework, or when the task involves Django Architecture.
     tags:
     - django
     - python
@@ -2736,16 +3877,19 @@ categories:
     - Edit
     - Bash(python:*, django-admin:*, manage.py:*)
     path: frameworks/django-expert/SKILL.md
-    file_size: 11619
-    total_lines: 416
+    references: []
+    file_size: 11339
+    total_lines: 421
     code_examples: 9
     code_lines: 336
   - &id052
     name: electron-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert in Electron framework, desktop app development, IPC, and cross-platform
-      packaging
+      packaging. Use when the user mentions desktop, Node.js, cross platform, Windows,
+      macOS, or Linux, or when the task involves Electron Architecture, Process Types,
+      IPC Communication, or App Lifecycle.
     tags:
     - desktop
     - electron
@@ -2754,18 +3898,27 @@ categories:
     - windows
     - macos
     - linux
-    allowed_tools: []
-    path: frameworks/electron-expert.md
-    file_size: 19434
-    total_lines: 717
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: frameworks/electron-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 19624
+    total_lines: 767
     code_examples: 6
-    code_lines: 553
+    code_lines: 560
   - &id060
     name: flask-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert-level Flask web development, REST APIs, extensions, and production
-      deployment
+      deployment. Use when the user mentions Python, web framework, REST APIs, or
+      Jinja2, or when the task involves Flask Fundamentals or Flask Extensions.
     tags:
     - flask
     - python
@@ -2778,16 +3931,20 @@ categories:
     - Edit
     - Bash(flask:*, python:*)
     path: frameworks/flask-expert/SKILL.md
-    file_size: 15450
-    total_lines: 577
+    references:
+    - references/REST_API_WITH_FLASK_RESTFUL.md
+    file_size: 15324
+    total_lines: 593
     code_examples: 9
     code_lines: 476
   - &id061
     name: flutter-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert in Flutter SDK, Dart, widgets, state management, and cross-platform
-      mobile development
+      mobile development. Use when the user mentions mobile, Dart, cross platform,
+      UI, or state management, or when the task involves Flutter Architecture, Widget
+      Fundamentals, State Management Approaches, or Lifecycle Methods.
     tags:
     - mobile
     - flutter
@@ -2795,18 +3952,28 @@ categories:
     - cross-platform
     - ui
     - state-management
-    allowed_tools: []
-    path: frameworks/flutter-expert.md
-    file_size: 14220
-    total_lines: 487
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: frameworks/flutter-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 14432
+    total_lines: 530
     code_examples: 7
     code_lines: 331
   - &id078
     name: ios-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert in iOS development with SwiftUI, UIKit, Combine, and Apple
-      ecosystem integration
+      ecosystem integration. Use when the user mentions mobile, Swift, SwiftUI, UIKit,
+      Apple platforms, or Xcode, or when the task involves iOS App Architecture, SwiftUI
+      Fundamentals, UIKit Essentials, or Combine Framework.
     tags:
     - mobile
     - ios
@@ -2815,18 +3982,29 @@ categories:
     - uikit
     - apple
     - xcode
-    allowed_tools: []
-    path: frameworks/ios-expert.md
-    file_size: 19521
-    total_lines: 637
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: frameworks/ios-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 19569
+    total_lines: 681
     code_examples: 7
     code_lines: 475
-  - &id105
+  - &id104
     name: nextjs-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert knowledge in Next.js framework, Server-Side Rendering, Static
-      Site Generation, App Router, Server Components, and full-stack React applications
+      Site Generation, App Router, Server Components, and full-stack React applications.
+      Use when the user mentions React, SSR, SSG, the App Router, React Server Components,
+      or full stack, or when the task involves Next.js Fundamentals, App Router, Rendering
+      Strategies, or Data Fetching.
     tags:
     - nextjs
     - react
@@ -2843,17 +4021,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: frameworks/nextjs-expert.md
-    file_size: 21937
-    total_lines: 899
+    path: frameworks/nextjs-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 21684
+    total_lines: 923
     code_examples: 7
-    code_lines: 720
+    code_lines: 711
   - &id126
     name: react-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert-level React development with hooks, performance optimization,
-      state management, and modern patterns
+      state management, and modern patterns. Use when the user mentions frontend,
+      hooks, JSX, TypeScript, or Next.js, or when the task involves Modern React,
+      State Management, Forms, or Performance Optimization.
     tags:
     - react
     - frontend
@@ -2869,16 +4051,20 @@ categories:
     - Glob
     - Grep
     path: frameworks/react-expert/SKILL.md
-    file_size: 22069
-    total_lines: 905
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 21745
+    total_lines: 949
     code_examples: 18
-    code_lines: 808
+    code_lines: 820
   - &id127
     name: react-native-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert in React Native, cross-platform mobile development, native
-      modules, and performance optimization
+      modules, and performance optimization. Use when the user mentions mobile, JavaScript,
+      TypeScript, cross platform, iOS, or Android, or when the task involves React
+      Native Architecture, Component Types, Hooks Essentials, or Navigation.
     tags:
     - mobile
     - react-native
@@ -2887,18 +4073,29 @@ categories:
     - cross-platform
     - ios
     - android
-    allowed_tools: []
-    path: frameworks/react-native-expert.md
-    file_size: 17630
-    total_lines: 622
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: frameworks/react-native-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 17746
+    total_lines: 668
     code_examples: 7
     code_lines: 452
   - &id131
     name: remix-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert knowledge in Remix framework, nested routing, loaders, actions,
-      progressive enhancement, and building resilient full-stack web applications
+      progressive enhancement, and building resilient full-stack web applications.
+      Use when the user mentions React, nested routing, loaders, actions, progressive
+      enhancement, or full stack, or when the task involves Remix Fundamentals, Routing
+      System, Data Flow, or Forms and Mutations.
     tags:
     - remix
     - react
@@ -2915,17 +4112,20 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: frameworks/remix-expert.md
-    file_size: 24213
-    total_lines: 942
+    path: frameworks/remix-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 24069
+    total_lines: 985
     code_examples: 7
     code_lines: 763
-  - &id150
+  - &id151
     name: spring-boot-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert-level Spring Boot, Spring Framework, REST APIs, and microservices
-      development
+      development. Use when the user mentions Java, Spring framework, REST APIs, or
+      microservices, or when the task involves Spring Boot Fundamentals.
     tags:
     - spring-boot
     - java
@@ -2938,16 +4138,22 @@ categories:
     - Edit
     - Bash(mvn:*, gradle:*, java:*)
     path: frameworks/spring-boot-expert/SKILL.md
-    file_size: 18485
-    total_lines: 643
+    references:
+    - references/SPRING_SECURITY_WITH_JWT.md
+    - references/TESTING.md
+    file_size: 18442
+    total_lines: 664
     code_examples: 7
     code_lines: 547
-  - &id156
+  - &id157
     name: svelte-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert knowledge in Svelte framework, SvelteKit, reactivity system,
-      compiled approach, and building performant web applications
+      compiled approach, and building performant web applications. Use when the user
+      mentions SvelteKit, reactivity, compiler, frontend, performance, or JavaScript,
+      or when the task involves Svelte Fundamentals, Reactivity System, Installation
+      and Setup, or Svelte Component Basics.
     tags:
     - svelte
     - sveltekit
@@ -2963,17 +4169,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: frameworks/svelte-expert.md
-    file_size: 19162
-    total_lines: 858
+    path: frameworks/svelte-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 19014
+    total_lines: 897
     code_examples: 7
-    code_lines: 680
-  - &id159
+    code_lines: 685
+  - &id160
     name: tauri-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert in Tauri framework, Rust backend, web frontend integration,
-      and lightweight desktop applications
+      and lightweight desktop applications. Use when the user mentions desktop, Rust,
+      web, cross platform, or performance, or when the task involves Tauri Architecture,
+      Tauri vs Electron, Core Components, or Security Features.
     tags:
     - desktop
     - tauri
@@ -2981,18 +4191,29 @@ categories:
     - web
     - cross-platform
     - performance
-    allowed_tools: []
-    path: frameworks/tauri-expert.md
-    file_size: 20237
-    total_lines: 712
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: frameworks/tauri-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 20218
+    total_lines: 760
     code_examples: 11
-    code_lines: 540
-  - &id167
+    code_lines: 543
+  - &id168
     name: vue-expert
-    version: 1.0.0
+    version: 1.1.0
     category: frameworks
     description: Expert knowledge in Vue.js 3, Composition API, Pinia state management,
-      and Nuxt.js for building modern reactive web applications
+      and Nuxt.js for building modern reactive web applications. Use when the user
+      mentions Vue 3, the Composition API, Pinia, Nuxt, reactive, or frontend, or
+      when the task involves Vue 3 Fundamentals, Composition API, Pinia State Management,
+      or Nuxt.js.
     tags:
     - vue
     - vue3
@@ -3009,18 +4230,23 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: frameworks/vue-expert.md
-    file_size: 20000
-    total_lines: 881
+    path: frameworks/vue-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 19975
+    total_lines: 913
     code_examples: 6
     code_lines: 705
   languages:
   - &id025
     name: clojure-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert knowledge in Clojure/ClojureScript, immutability, REPL-driven
-      development, core.async, and functional programming on the JVM
+      development, core.async, and functional programming on the JVM. Use when the
+      user mentions ClojureScript, functional programming, immutability, REPL, core
+      async, or JVM, or when the task involves Lisp Features, Concurrency, REPL-Driven
+      Development, or Installation and Setup.
     tags:
     - clojure
     - clojurescript
@@ -3037,17 +4263,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: languages/clojure-expert.md
-    file_size: 17345
-    total_lines: 732
+    path: languages/clojure-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 17333
+    total_lines: 776
     code_examples: 6
     code_lines: 548
   - &id030
     name: cpp-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level C++ development with modern C++20/23, STL, memory management,
-      and performance
+      and performance. Use when the user mentions C++, C++20, C++23, the STL, templates,
+      or performance, or when the task involves Modern C++ Features, Memory Management,
+      Ranges and Views, or Coroutines.
     tags:
     - cpp
     - c++
@@ -3063,16 +4293,21 @@ categories:
     - Edit
     - Bash(g++:*, clang++:*, cmake:*, make:*)
     path: languages/cpp-expert/SKILL.md
-    file_size: 16152
-    total_lines: 668
+    references:
+    - references/BEST_PRACTICES.md
+    - references/MODERN_C_SYNTAX.md
+    file_size: 16319
+    total_lines: 703
     code_examples: 14
     code_lines: 562
   - &id032
     name: csharp-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level C# development with .NET 8+, ASP.NET Core, LINQ, async/await,
-      and enterprise patterns
+      and enterprise patterns. Use when the user mentions C#, .NET, ASP.NET, enterprise,
+      or Microsoft platforms, or when the task involves Modern C#, Async/Await, LINQ,
+      or ASP.NET Core.
     tags:
     - csharp
     - dotnet
@@ -3087,16 +4322,19 @@ categories:
     - Glob
     - Grep
     path: languages/csharp-expert/SKILL.md
-    file_size: 25826
-    total_lines: 994
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 25366
+    total_lines: 1030
     code_examples: 23
     code_lines: 887
   - &id036
     name: dart-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Dart, Flutter, mobile development, and cross-platform
-      apps
+      apps. Use when the user mentions Flutter, mobile, cross platform, or widgets,
+      or when the task involves Dart Language or Flutter Framework.
     tags:
     - dart
     - flutter
@@ -3109,15 +4347,18 @@ categories:
     - Edit
     - Bash(dart:*, flutter:*)
     path: languages/dart-expert/SKILL.md
-    file_size: 10649
-    total_lines: 492
+    references: []
+    file_size: 10307
+    total_lines: 500
     code_examples: 6
     code_lines: 393
   - &id053
     name: elixir-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
-    description: Expert-level Elixir, Phoenix, OTP, and concurrent systems
+    description: Expert-level Elixir, Phoenix, OTP, and concurrent systems. Use when
+      the user mentions Phoenix, OTP, Erlang, concurrent, or functional, or when the
+      task involves Elixir Fundamentals or Phoenix Framework.
     tags:
     - elixir
     - phoenix
@@ -3131,16 +4372,21 @@ categories:
     - Edit
     - Bash(elixir:*, mix:*)
     path: languages/elixir-expert/SKILL.md
-    file_size: 10908
-    total_lines: 530
+    references:
+    - references/PHOENIX_FRAMEWORK.md
+    file_size: 10810
+    total_lines: 549
     code_examples: 7
     code_lines: 419
   - &id066
     name: go-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Go development with Go 1.22+ features, concurrency,
-      standard library, and production-grade best practices
+      standard library, and production-grade best practices. Use when the user mentions
+      concurrency, microservices, or backend, or when the task involves idiomatic
+      Go, goroutines and channels, context-based cancellation, or writing an HTTP
+      server.
     tags:
     - go
     - golang
@@ -3155,16 +4401,22 @@ categories:
     - Glob
     - Grep
     path: languages/go-expert/SKILL.md
-    file_size: 19332
-    total_lines: 913
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 18974
+    total_lines: 953
     code_examples: 26
     code_lines: 798
   - &id070
     name: haskell-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert knowledge in Haskell functional programming, advanced type
-      system, monads, lazy evaluation, and purely functional design
+      system, monads, lazy evaluation, and purely functional design. Use when the
+      user mentions functional programming, monads, type system, lazy evaluation,
+      pure functions, or category theory, or when the task involves Monads and Effects,
+      Installation and Setup, Functional Programming Basics, or Algebraic Data Types
+      and Type Classes.
     tags:
     - haskell
     - functional-programming
@@ -3180,17 +4432,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: languages/haskell-expert.md
-    file_size: 17237
-    total_lines: 703
+    path: languages/haskell-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 17316
+    total_lines: 746
     code_examples: 6
     code_lines: 522
   - &id081
     name: java-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Java development with Java 21+ features, Spring Boot,
-      Maven/Gradle, and enterprise best practices
+      Maven/Gradle, and enterprise best practices. Use when the user mentions JVM,
+      Spring, Maven, Gradle, or enterprise, or when the task involves Modern Java,
+      Spring Boot, Build Tools, or Dependency Injection.
     tags:
     - java
     - jvm
@@ -3206,16 +4462,20 @@ categories:
     - Glob
     - Grep
     path: languages/java-expert/SKILL.md
-    file_size: 23489
-    total_lines: 903
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 23105
+    total_lines: 944
     code_examples: 27
     code_lines: 787
   - &id082
     name: javascript-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level JavaScript development with modern ES2024+ features,
-      Node.js, npm ecosystem, and best practices
+      Node.js, npm ecosystem, and best practices. Use when the user mentions ECMAScript,
+      ES2024, Node.js, npm, or web, or when the task involves Modern JavaScript, Node.js
+      Development, Modern Tooling, or Functional Programming.
     tags:
     - javascript
     - js
@@ -3232,16 +4492,22 @@ categories:
     - Glob
     - Grep
     path: languages/javascript-expert/SKILL.md
-    file_size: 17741
-    total_lines: 819
+    references:
+    - references/CORE_CONCEPTS.md
+    - references/PATTERNS.md
+    file_size: 17820
+    total_lines: 875
     code_examples: 32
-    code_lines: 681
+    code_lines: 686
   - &id084
     name: julia-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert knowledge in Julia scientific computing, multiple dispatch,
-      performance optimization, and numerical analysis
+      performance optimization, and numerical analysis. Use when the user mentions
+      scientific computing, multiple dispatch, performance, numerical analysis, data
+      science, or HPC, or when the task involves Type System, Array Programming, Installation
+      and Setup, or Multiple Dispatch Fundamentals.
     tags:
     - julia
     - scientific-computing
@@ -3257,16 +4523,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: languages/julia-expert.md
-    file_size: 15631
-    total_lines: 662
+    path: languages/julia-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 15703
+    total_lines: 703
     code_examples: 6
     code_lines: 500
   - &id086
     name: kotlin-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
-    description: Expert-level Kotlin development, Android, coroutines, and multiplatform
+    description: Expert-level Kotlin development, Android, coroutines, and multiplatform.
+      Use when the user mentions Android, coroutines, multiplatform, or JVM, or when
+      the task involves Kotlin Fundamentals, Android Development, Kotlin Multiplatform,
+      or Kotlin Style.
     tags:
     - kotlin
     - android
@@ -3279,16 +4550,19 @@ categories:
     - Edit
     - Bash(kotlin:*, gradle:*)
     path: languages/kotlin-expert/SKILL.md
-    file_size: 9682
-    total_lines: 392
+    references: []
+    file_size: 9485
+    total_lines: 401
     code_examples: 6
     code_lines: 290
-  - &id107
+  - &id106
     name: nim-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert knowledge in Nim language, metaprogramming, async/await, Python/C
-      interoperability, and macro systems
+      interoperability, and macro systems. Use when the user mentions metaprogramming,
+      async, macros, Python interop, c interop, or compiled, or when the task involves
+      Language Features, Async/Await, Interoperability, or Installation and Setup.
     tags:
     - nim
     - metaprogramming
@@ -3304,17 +4578,22 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: languages/nim-expert.md
-    file_size: 13356
-    total_lines: 526
+    path: languages/nim-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 13463
+    total_lines: 558
     code_examples: 6
     code_lines: 361
-  - &id108
+  - &id107
     name: nodejs-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Node.js backend development with Express, async patterns,
-      streams, performance optimization, and production best practices
+      streams, performance optimization, and production best practices. Use when the
+      user mentions JavaScript, backend, Express, or async, or when the task involves
+      Modern Node.js Features, Express Framework, File System Operations, or HTTP
+      Requests.
     tags:
     - nodejs
     - node
@@ -3330,16 +4609,59 @@ categories:
     - Glob
     - Grep
     path: languages/nodejs-expert/SKILL.md
-    file_size: 18074
-    total_lines: 821
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 17945
+    total_lines: 858
     code_examples: 23
-    code_lines: 712
+    code_lines: 713
+  - &id110
+    name: pcl-expert
+    version: 1.1.0
+    category: languages
+    description: Expert in Persona Control Language (PCL) - language design, compiler
+      architecture, runtime systems, and ecosystem development. Use when the user
+      mentions persona control language, compiler design, language design, DSL, runtime
+      systems, or lexer, or when the task involves Language Design & Specification,
+      Compiler Architecture, Language Server Protocol, or Model Context Protocol.
+    tags:
+    - pcl
+    - persona-control-language
+    - compiler-design
+    - language-design
+    - dsl
+    - runtime-systems
+    - lexer
+    - parser
+    - semantic-analysis
+    - codegen
+    - type-systems
+    - ast
+    - lsp
+    - mcp
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Execute
+    - Debug
+    - Test
+    path: languages/pcl-expert/SKILL.md
+    references:
+    - references/BEST_PRACTICES.md
+    - references/CORE_CONCEPTS.md
+    file_size: 22031
+    total_lines: 924
+    code_examples: 27
+    code_lines: 681
   - &id114
     name: php-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level PHP development with PHP 8+, Laravel, Composer, and
-      modern best practices
+      modern best practices. Use when the user mentions Laravel, Composer, Symfony,
+      PHPUnit, or PSR standards, or when the task involves PHP 8+ Features, Object-Oriented
+      PHP, Modern PHP, or Constructor Property Promotion.
     tags:
     - php
     - laravel
@@ -3353,16 +4675,21 @@ categories:
     - Edit
     - Bash(php:*, composer:*, artisan:*)
     path: languages/php-expert/SKILL.md
-    file_size: 22543
-    total_lines: 955
+    references:
+    - references/LARAVEL_FRAMEWORK.md
+    - references/MODERN_PHP_8_SYNTAX.md
+    file_size: 22569
+    total_lines: 999
     code_examples: 21
     code_lines: 834
   - &id120
     name: python-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Python development with Python 3.12+ features, async/await,
-      type hints, and modern best practices
+      type hints, and modern best practices. Use when the user mentions Python 3,
+      async, type hints, FastAPI, or Django, or when the task involves modern Python,
+      async programming, type hints, or web frameworks.
     tags:
     - python
     - python3
@@ -3378,15 +4705,20 @@ categories:
     - Glob
     - Grep
     path: languages/python-expert/SKILL.md
-    file_size: 20098
-    total_lines: 805
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 19828
+    total_lines: 843
     code_examples: 24
     code_lines: 695
   - &id125
     name: r-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
-    description: Expert-level R statistical computing, data analysis, and visualization
+    description: Expert-level R statistical computing, data analysis, and visualization.
+      Use when the user mentions statistics, data analysis, ggplot2, or the tidyverse,
+      or when the task involves R Fundamentals, Statistical Analysis, Data Visualization,
+      or Code Style.
     tags:
     - r
     - statistics
@@ -3399,16 +4731,19 @@ categories:
     - Edit
     - Bash(R:*, Rscript:*)
     path: languages/r-expert/SKILL.md
-    file_size: 8662
-    total_lines: 427
+    references: []
+    file_size: 8437
+    total_lines: 437
     code_examples: 11
-    code_lines: 310
+    code_lines: 311
   - &id135
     name: ruby-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Ruby development with Rails, modern features, testing,
-      and best practices
+      and best practices. Use when the user mentions Ruby on Rails, RSpec, gem, Sinatra,
+      or metaprogramming, or when the task involves Ruby 3+ Features, Object-Oriented,
+      Functional Features, or Pattern Matching.
     tags:
     - ruby
     - rails
@@ -3422,16 +4757,20 @@ categories:
     - Edit
     - Bash(ruby:*, gem:*, bundle:*, rails:*)
     path: languages/ruby-expert/SKILL.md
-    file_size: 17702
-    total_lines: 724
+    references:
+    - references/RUBY_ON_RAILS.md
+    file_size: 17557
+    total_lines: 758
     code_examples: 15
     code_lines: 602
   - &id136
     name: rust-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Rust development with ownership, lifetimes, async, error
-      handling, and production-grade patterns
+      handling, and production-grade patterns. Use when the user mentions systems
+      programming, memory safety, concurrency, or Cargo, or when the task involves
+      Ownership and Borrowing, Type System, Async Programming, or Web Development.
     tags:
     - rust
     - systems-programming
@@ -3446,15 +4785,19 @@ categories:
     - Glob
     - Grep
     path: languages/rust-expert/SKILL.md
-    file_size: 21357
-    total_lines: 998
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 20947
+    total_lines: 1037
     code_examples: 27
     code_lines: 880
   - &id140
     name: scala-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
-    description: Expert-level Scala, functional programming, Akka, and reactive systems
+    description: Expert-level Scala, functional programming, Akka, and reactive systems.
+      Use when the user mentions functional programming, Akka, Cats, or ZIO, or when
+      the task involves Scala Fundamentals, Reactive Systems, or Scala Style.
     tags:
     - scala
     - functional-programming
@@ -3467,16 +4810,19 @@ categories:
     - Edit
     - Bash(scala:*, sbt:*)
     path: languages/scala-expert/SKILL.md
-    file_size: 9488
-    total_lines: 416
+    references: []
+    file_size: 9240
+    total_lines: 425
     code_examples: 6
     code_lines: 309
-  - &id157
+  - &id158
     name: swift-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level Swift development for iOS, macOS with SwiftUI, Combine,
-      and modern Swift 5.9+
+      and modern Swift 5.9+. Use when the user mentions iOS, macOS, SwiftUI, Combine,
+      async await, or Apple platforms, or when the task involves Modern Swift Features,
+      Basics and Optionals, Functions and Closures, or Structs and Classes.
     tags:
     - swift
     - ios
@@ -3491,33 +4837,48 @@ categories:
     - Edit
     - Bash(swift:*, xcodebuild:*)
     path: languages/swift-expert/SKILL.md
-    file_size: 14795
-    total_lines: 624
+    references:
+    - references/SWIFT_SYNTAX.md
+    file_size: 14791
+    total_lines: 655
     code_examples: 13
     code_lines: 504
-  - &id165
+  - &id166
     name: typescript-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert-level TypeScript development with modern tooling, advanced
       types, and best practices. Use this skill for TypeScript projects requiring
-      type-safe code, modern bundling, and comprehensive testing
-    tags: []
+      type-safe code, modern bundling, and comprehensive testing.
+    tags:
+    - typescript
+    - javascript
+    - web
+    - programming
+    - types
+    - frontend
+    - backend
+    - nodejs
     allowed_tools:
     - Read
     - Write
     - Bash(npm:*, pnpm:*, yarn:*, tsc:*, node:*, bun:*)
     path: languages/typescript-expert/SKILL.md
-    file_size: 11861
-    total_lines: 506
+    references:
+    - references/PATTERNS.md
+    file_size: 11809
+    total_lines: 521
     code_examples: 23
-    code_lines: 355
-  - &id173
+    code_lines: 352
+  - &id174
     name: zig-expert
-    version: 1.0.0
+    version: 1.1.0
     category: languages
     description: Expert knowledge in Zig systems programming, comptime metaprogramming,
-      manual memory management, and C interoperability
+      manual memory management, and C interoperability. Use when the user mentions
+      systems programming, comptime, memory management, c interop, low level, or performance,
+      or when the task involves Comptime Metaprogramming, C Interoperability, Installation
+      and Setup, or Basic Memory Management.
     tags:
     - zig
     - systems-programming
@@ -3533,18 +4894,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: languages/zig-expert.md
-    file_size: 12518
-    total_lines: 447
+    path: languages/zig-expert/SKILL.md
+    references: []
+    file_size: 12379
+    total_lines: 479
     code_examples: 6
     code_lines: 286
   professional:
   - &id002
     name: accountant-expert
-    version: 1.0.0
+    version: 1.1.0
     category: professional
     description: Expert-level accounting, tax, financial reporting, and accounting
-      systems
+      systems. Use when the user mentions accounting, tax, financial reporting, GAAP,
+      or IFRS, or when the task involves Accounting Principles, Financial Statements,
+      Tax & Compliance, or Accounting Systems.
     tags:
     - accounting
     - tax
@@ -3556,16 +4920,18 @@ categories:
     - Write
     - Edit
     path: professional/accountant-expert/SKILL.md
-    file_size: 11945
-    total_lines: 342
+    references: []
+    file_size: 11814
+    total_lines: 352
     code_examples: 4
     code_lines: 245
   - &id017
     name: banking-expert
-    version: 1.0.0
+    version: 1.1.0
     category: professional
     description: Expert-level banking systems, core banking, regulations, and banking
-      technology
+      technology. Use when the user mentions finance, core banking, regulations, or
+      payments, or when the task involves Banking Systems or Key Technologies.
     tags:
     - banking
     - finance
@@ -3577,16 +4943,19 @@ categories:
     - Write
     - Edit
     path: professional/banking-expert/SKILL.md
-    file_size: 9047
-    total_lines: 295
+    references: []
+    file_size: 8905
+    total_lines: 301
     code_examples: 4
     code_lines: 211
   - &id058
     name: finops-expert
-    version: 1.0.0
+    version: 2.0.0
     category: professional
     description: Expert-level cloud financial operations, cost optimization, and cloud
-      economics
+      economics. Use when the user mentions cloud cost, optimization, cloud economics,
+      or AWS cost, or when the task involves FinOps Fundamentals, Cost Management,
+      FinOps Practices, or Cost Visibility.
     tags:
     - finops
     - cloud-cost
@@ -3597,17 +4966,21 @@ categories:
     - Read
     - Write
     - Edit
-    - Bash(*)
+    - Bash(python:*, python3:*, pip:*, pytest:*)
     path: professional/finops-expert/SKILL.md
-    file_size: 13309
-    total_lines: 401
+    references: []
+    file_size: 13145
+    total_lines: 410
     code_examples: 3
     code_lines: 306
   - &id088
     name: lawyer-expert
-    version: 1.0.0
+    version: 1.1.0
     category: professional
-    description: Expert-level legal systems, contracts, compliance, and legal technology
+    description: Expert-level legal systems, contracts, compliance, and legal technology.
+      Use when the user mentions legal, contracts, compliance, law, or legal tech,
+      or when the task involves Legal Systems, Legal Technology, Compliance Frameworks,
+      or Contract Management.
     tags:
     - legal
     - contracts
@@ -3619,15 +4992,19 @@ categories:
     - Write
     - Edit
     path: professional/lawyer-expert/SKILL.md
-    file_size: 9771
-    total_lines: 318
+    references: []
+    file_size: 9653
+    total_lines: 327
     code_examples: 3
     code_lines: 223
-  - &id153
+  - &id154
     name: standards-expert
-    version: 1.0.0
+    version: 1.1.0
     category: professional
-    description: Expert-level ISO standards, quality management, compliance, and certification
+    description: Expert-level ISO standards, quality management, compliance, and certification.
+      Use when the user mentions ISO standards, quality management, compliance, or
+      certification, or when the task involves Compliance & Certification, Auditing,
+      or Continuous Improvement.
     tags:
     - iso
     - standards
@@ -3639,82 +5016,191 @@ categories:
     - Write
     - Edit
     path: professional/standards-expert/SKILL.md
-    file_size: 14050
-    total_lines: 459
+    references: []
+    file_size: 13791
+    total_lines: 468
     code_examples: 4
     code_lines: 358
   qa:
   - &id022
     name: chaos-engineering-expert
-    version: 1.0.0
+    version: 1.1.0
     category: qa
     description: Expert in chaos engineering principles, failure injection, resilience
-      testing, Chaos Monkey, Gremlin, and building fault-tolerant systems
-    tags: []
-    allowed_tools: []
-    path: qa/chaos-engineering-expert.md
-    file_size: 15041
-    total_lines: 501
+      testing, Chaos Monkey, Gremlin, and building fault-tolerant systems. Use when
+      the user mentions reliability, testing, SRE, resilience, failure injection,
+      or resilience testing, or when the task involves Chaos Engineering Principles,
+      Failure Types, Tools & Platforms, or Chaos Toolkit Experiment.
+    tags:
+    - chaos-engineering
+    - reliability
+    - testing
+    - sre
+    - resilience
+    - failure-injection
+    - resilience-testing
+    - chaos-monkey
+    - gremlin
+    - fault-tolerance
+    - site-reliability
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: qa/chaos-engineering-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 15218
+    total_lines: 555
     code_examples: 4
-    code_lines: 366
+    code_lines: 368
   - &id035
     name: cypress-expert
-    version: 1.0.0
+    version: 1.1.0
     category: qa
     description: Expert in Cypress testing framework, custom commands, fixtures, plugins,
-      visual testing, and component testing
-    tags: []
-    allowed_tools: []
-    path: qa/cypress-expert.md
-    file_size: 16624
-    total_lines: 580
+      visual testing, and component testing. Use when the user mentions testing, end-to-end
+      tests, QA, automation, end-to-end testing, or Cypress commands, or when the
+      task involves Cypress Framework, Test Structure, Advanced Features, or Custom
+      Commands.
+    tags:
+    - testing
+    - e2e
+    - cypress
+    - qa
+    - automation
+    - e2e-testing
+    - cypress-commands
+    - fixtures
+    - cypress-plugins
+    - visual-testing
+    - component-testing
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: qa/cypress-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 16242
+    total_lines: 632
     code_examples: 7
     code_lines: 436
   - &id083
     name: jest-expert
-    version: 1.0.0
+    version: 1.1.0
     category: qa
     description: Expert in Jest unit testing framework, mocks, snapshots, coverage
-      reports, watch mode, and custom matchers
-    tags: []
-    allowed_tools: []
-    path: qa/jest-expert.md
-    file_size: 20361
-    total_lines: 722
+      reports, watch mode, and custom matchers. Use when the user mentions testing,
+      unit testing, JavaScript, QA, mocking, or snapshots, or when the task involves
+      Jest Framework, Test Structure, Advanced Features, or Basic Unit Tests.
+    tags:
+    - testing
+    - unit-testing
+    - jest
+    - javascript
+    - qa
+    - mocking
+    - snapshots
+    - test-coverage
+    - jest-matchers
+    - javascript-testing
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: qa/jest-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 18999
+    total_lines: 775
     code_examples: 8
-    code_lines: 575
-  - &id092
+    code_lines: 577
+  - &id091
     name: load-testing-expert
-    version: 1.0.0
+    version: 1.1.0
     category: qa
     description: Expert in performance and load testing using JMeter, k6, Gatling,
-      load patterns, metrics analysis, and performance optimization
-    tags: []
-    allowed_tools: []
-    path: qa/load-testing-expert.md
-    file_size: 16079
-    total_lines: 470
+      load patterns, metrics analysis, and performance optimization. Use when the
+      user mentions performance, testing, QA, scalability, performance testing, or
+      JMeter, or when the task involves Load Testing Types, Key Metrics, Tools & Frameworks,
+      or k6 Load Test Script.
+    tags:
+    - performance
+    - load-testing
+    - testing
+    - qa
+    - scalability
+    - performance-testing
+    - jmeter
+    - k6
+    - gatling
+    - stress-testing
+    - performance-metrics
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: qa/load-testing-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 16263
+    total_lines: 532
     code_examples: 4
-    code_lines: 335
+    code_lines: 346
   - &id115
     name: playwright-expert
-    version: 1.0.0
+    version: 1.1.0
     category: qa
     description: Expert in Playwright E2E testing framework, auto-waiting mechanisms,
-      test generation, trace viewer, and CI/CD integration
-    tags: []
-    allowed_tools: []
-    path: qa/playwright-expert.md
-    file_size: 17142
-    total_lines: 538
+      test generation, trace viewer, and CI/CD integration. Use when the user mentions
+      testing, end-to-end tests, QA, automation, end-to-end testing, or test automation,
+      or when the task involves Playwright Framework, Test Organization, Advanced
+      Features, or Basic Test Structure.
+    tags:
+    - testing
+    - e2e
+    - playwright
+    - qa
+    - automation
+    - e2e-testing
+    - test-automation
+    - browser-testing
+    - trace-viewer
+    - playwright-codegen
+    - cross-browser
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: qa/playwright-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 16514
+    total_lines: 593
     code_examples: 6
-    code_lines: 397
+    code_lines: 400
   - &id121
     name: qa-expert
-    version: 1.0.0
+    version: 2.0.0
     category: qa
     description: Expert-level quality assurance, testing strategies, automation, and
-      QA processes
+      QA processes. Use when the user mentions testing, test automation, quality assurance,
+      or Selenium, or when the task involves Testing Types, QA Processes, Test Strategy,
+      or Defect Management.
     tags:
     - qa
     - testing
@@ -3725,32 +5211,57 @@ categories:
     - Read
     - Write
     - Edit
-    - Bash(*)
+    - Bash(python:*, python3:*, pip:*, pytest:*)
     path: qa/qa-expert/SKILL.md
-    file_size: 12520
-    total_lines: 436
+    references: []
+    file_size: 12313
+    total_lines: 445
     code_examples: 4
     code_lines: 333
   - &id142
     name: selenium-expert
-    version: 1.0.0
+    version: 1.1.0
     category: qa
     description: Expert in Selenium WebDriver, Selenium Grid, page object model, waits,
-      cross-browser testing, and test automation frameworks
-    tags: []
-    allowed_tools: []
-    path: qa/selenium-expert.md
-    file_size: 16136
-    total_lines: 532
+      cross-browser testing, and test automation frameworks. Use when the user mentions
+      testing, end-to-end tests, QA, automation, WebDriver, or Selenium grid, or when
+      the task involves Selenium Components, Browser Support, Advanced Features, or
+      Basic WebDriver Setup.
+    tags:
+    - testing
+    - e2e
+    - selenium
+    - qa
+    - automation
+    - webdriver
+    - selenium-grid
+    - page-object-model
+    - cross-browser-testing
+    - test-automation
+    - selenium-python
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Grep
+    - Glob
+    path: qa/selenium-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 16486
+    total_lines: 587
     code_examples: 6
-    code_lines: 393
+    code_lines: 396
   scientific:
   - &id018
     name: biological-expert
-    version: 1.0.0
+    version: 1.1.0
     category: scientific
     description: Expert-level biology, biotechnology, genetics, bioinformatics, and
-      computational biology
+      computational biology. Use when the user mentions biology, biotechnology, genetics,
+      bioinformatics, or genomics, or when the task involves Molecular Biology, Genomics
+      & Bioinformatics, Systems Biology, or Data Analysis.
     tags:
     - biology
     - biotechnology
@@ -3763,16 +5274,19 @@ categories:
     - Edit
     - Bash(python:*)
     path: scientific/biological-expert/SKILL.md
-    file_size: 11484
-    total_lines: 365
+    references: []
+    file_size: 11335
+    total_lines: 375
     code_examples: 4
     code_lines: 266
   - &id124
     name: quantum-expert
-    version: 1.0.0
+    version: 1.1.0
     category: scientific
     description: Expert-level quantum computing, Qiskit, quantum algorithms, and quantum
-      information
+      information. Use when the user mentions quantum computing, Qiskit, quantum algorithms,
+      or quantum information, or when the task involves Quantum Mechanics Basics,
+      Quantum Hardware, Circuit Design, or Algorithm Implementation.
     tags:
     - quantum-computing
     - qiskit
@@ -3784,16 +5298,19 @@ categories:
     - Edit
     - Bash(python:*)
     path: scientific/quantum-expert/SKILL.md
-    file_size: 9256
-    total_lines: 333
+    references: []
+    file_size: 9155
+    total_lines: 343
     code_examples: 3
     code_lines: 238
   - &id132
     name: research-expert
-    version: 1.0.0
+    version: 1.1.0
     category: scientific
     description: Expert-level research methodology, academic writing, statistical
-      analysis, and scientific investigation
+      analysis, and scientific investigation. Use when the user mentions methodology,
+      statistics, academic writing, or experimental design, or when the task involves
+      Research Design, Statistical Analysis, or Data Analysis.
     tags:
     - research
     - methodology
@@ -3805,17 +5322,20 @@ categories:
     - Write
     - Edit
     path: scientific/research-expert/SKILL.md
-    file_size: 11624
-    total_lines: 380
+    references: []
+    file_size: 11440
+    total_lines: 390
     code_examples: 3
     code_lines: 281
   security:
   - &id013
     name: audit-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert-level security auditing, compliance, code review, and vulnerability
-      assessment
+      assessment. Use when the user mentions compliance, security review, code review,
+      vulnerability assessment, SOC 2, or GDPR, or when the task involves Audit Types,
+      Audit Frameworks, Audit Process, or Authentication Review.
     tags:
     - audit
     - compliance
@@ -3830,16 +5350,22 @@ categories:
     - Edit
     - Bash(git:*, grep:*, find:*)
     path: security/audit-expert/SKILL.md
-    file_size: 22274
-    total_lines: 841
+    references:
+    - references/COMPLIANCE_AUDITING.md
+    - references/SECURITY_CODE_REVIEW.md
+    file_size: 22499
+    total_lines: 895
     code_examples: 8
-    code_lines: 736
+    code_lines: 743
   - &id028
     name: codeql-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert-level CodeQL for static analysis, vulnerability detection,
-      and security code scanning
+      and security code scanning. Use when the user mentions static analysis, SAST,
+      vulnerability detection, or github security, or when the task involves writing
+      CodeQL queries, building a CodeQL database, taint tracking, or scanning for
+      injection and hardcoded credentials.
     tags:
     - codeql
     - static-analysis
@@ -3852,16 +5378,20 @@ categories:
     - Edit
     - Bash(codeql:*, gh:*)
     path: security/codeql-expert/SKILL.md
-    file_size: 5884
-    total_lines: 244
+    references: []
+    file_size: 5898
+    total_lines: 251
     code_examples: 8
     code_lines: 163
   - &id031
     name: cryptography-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert in cryptographic algorithms, PKI, TLS/SSL, encryption standards,
-      key management, and secure communication protocols
+      key management, and secure communication protocols. Use when the user mentions
+      encryption, PKI, TLS, SSL, key management, or security, or when the task involves
+      Cryptographic Fundamentals, Public Key Infrastructure, TLS/SSL Protocol, or
+      Modern Cryptography.
     tags:
     - cryptography
     - encryption
@@ -3878,17 +5408,22 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: security/cryptography-expert.md
-    file_size: 20175
-    total_lines: 613
+    path: security/cryptography-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 20248
+    total_lines: 655
     code_examples: 5
     code_lines: 439
   - &id064
     name: gdpr-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert in GDPR compliance, data protection, privacy by design, consent
-      management, DPO responsibilities, and EU data regulations
+      management, DPO responsibilities, and EU data regulations. Use when the user
+      mentions privacy, data protection, compliance, consent, a DPO, or eu regulation,
+      or when the task involves GDPR Fundamentals, Key Principles, Data Subject Rights,
+      or Privacy by Design.
     tags:
     - gdpr
     - privacy
@@ -3904,17 +5439,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: security/gdpr-expert.md
-    file_size: 12617
-    total_lines: 370
+    path: security/gdpr-expert/SKILL.md
+    references: []
+    file_size: 12481
+    total_lines: 392
     code_examples: 4
     code_lines: 199
   - &id076
     name: incident-response-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert in security incident response, NIST framework, digital forensics,
-      containment strategies, and recovery procedures
+      containment strategies, and recovery procedures. Use when the user mentions
+      forensics, NIST, containment, recovery, or cybersecurity, or when the task involves
+      NIST Incident Response Lifecycle, Incident Classification, Incident Response
+      Workflow, or Forensic Collection.
     tags:
     - incident-response
     - forensics
@@ -3929,17 +5468,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: security/incident-response-expert.md
-    file_size: 2885
-    total_lines: 102
+    path: security/incident-response-expert/SKILL.md
+    references: []
+    file_size: 3012
+    total_lines: 108
     code_examples: 2
     code_lines: 38
   - &id111
     name: penetration-testing-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert in ethical hacking, penetration testing, OWASP Top 10, vulnerability
-      assessment, exploitation techniques, and security reporting
+      assessment, exploitation techniques, and security reporting. Use when the user
+      mentions pentesting, ethical hacking, OWASP, vulnerability assessment, exploitation,
+      or security testing, or when the task involves Penetration Testing Fundamentals,
+      OWASP Top 10, Testing Methodologies, or Tools and Frameworks.
     tags:
     - pentesting
     - ethical-hacking
@@ -3955,17 +5498,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: security/penetration-testing-expert.md
-    file_size: 17220
-    total_lines: 532
+    path: security/penetration-testing-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 17420
+    total_lines: 575
     code_examples: 6
     code_lines: 348
   - &id141
     name: security-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert-level application security, OWASP Top 10, penetration testing,
-      and security best practices
+      and security best practices. Use when the user mentions OWASP, pentesting, appsec,
+      vulnerability, encryption, or authentication, or when the task involves Security
+      Principles, OWASP Top 10, Security Domains, or Broken Access Control.
     tags:
     - security
     - owasp
@@ -3980,16 +5527,22 @@ categories:
     - Edit
     - Bash(nmap:*, burpsuite:*, zap:*)
     path: security/security-expert/SKILL.md
-    file_size: 19955
-    total_lines: 761
+    references:
+    - references/AUTHENTICATION_AUTHORIZATION.md
+    - references/OWASP_TOP_10_VULNERABILITIES.md
+    file_size: 20320
+    total_lines: 815
     code_examples: 13
-    code_lines: 629
-  - &id148
+    code_lines: 647
+  - &id149
     name: soc2-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert in SOC 2 compliance, trust service criteria, audit preparation,
-      controls implementation, and security frameworks
+      controls implementation, and security frameworks. Use when the user mentions
+      compliance, audit, trust services, AICPA, controls, or security framework, or
+      when the task involves Trust Service Criteria, SOC 2 Types, Security Common
+      Criteria, or Control Implementation Framework.
     tags:
     - soc2
     - compliance
@@ -4005,17 +5558,21 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: security/soc2-expert.md
-    file_size: 12572
-    total_lines: 378
+    path: security/soc2-expert/SKILL.md
+    references: []
+    file_size: 12455
+    total_lines: 400
     code_examples: 2
     code_lines: 231
-  - &id172
+  - &id173
     name: zero-trust-expert
-    version: 1.0.0
+    version: 1.1.0
     category: security
     description: Expert in zero-trust security architecture, identity verification,
-      micro-segmentation, continuous authentication, and least-privilege access
+      micro-segmentation, continuous authentication, and least-privilege access. Use
+      when the user mentions identity, authentication, micro segmentation, least privilege,
+      or security architecture, or when the task involves Zero Trust Principles, Identity
+      and Access Management, Network Segmentation, or Continuous Verification.
     tags:
     - zero-trust
     - identity
@@ -4030,47 +5587,81 @@ categories:
     - Bash
     - Glob
     - Grep
-    path: security/zero-trust-expert.md
-    file_size: 22563
-    total_lines: 735
+    path: security/zero-trust-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 22781
+    total_lines: 779
     code_examples: 4
-    code_lines: 567
+    code_lines: 570
   tools:
   - &id027
     name: code-review-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert-level code review focusing on quality, security, performance,
       and maintainability. Use this skill for conducting thorough code reviews, identifying
       issues, and providing constructive feedback.
-    tags: []
+    tags:
+    - code-review
+    - quality
+    - best-practices
+    - collaboration
+    - security
     allowed_tools:
     - Read
     - Write
     path: tools/code-review-expert/SKILL.md
-    file_size: 12867
-    total_lines: 490
+    references:
+    - references/REVIEW_GUIDELINES.md
+    file_size: 12921
+    total_lines: 525
     code_examples: 20
-    code_lines: 145
+    code_lines: 173
   - &id043
     name: discord-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert in Discord bot development using discord.js and discord.py,
-      slash commands, embeds, voice channels, moderation, and bot deployment
-    tags: []
-    allowed_tools: []
-    path: tools/discord-expert.md
-    file_size: 17080
-    total_lines: 522
+      slash commands, embeds, voice channels, moderation, and bot deployment. Use
+      when the user mentions communication, community, bots, API, Discord bot, or
+      discord.js, or when the task involves Discord Platform, Bot Development, Discord.js
+      Bot, or Discord.py Bot.
+    tags:
+    - discord
+    - communication
+    - community
+    - bots
+    - api
+    - discord-bot
+    - discordjs
+    - discordpy
+    - slash-commands
+    - discord-embeds
+    - voice-bot
+    - discord-moderation
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: tools/discord-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 16650
+    total_lines: 597
     code_examples: 2
-    code_lines: 393
+    code_lines: 415
   - &id065
     name: git-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert-level Git version control with advanced workflows, branching
-      strategies, and best practices for team collaboration
+      strategies, and best practices for team collaboration. Use when the user mentions
+      version control, collaboration, or workflow, or when the task involves Essential
+      Git Commands, Advanced Git Techniques, Branching Strategies, or Conflict Resolution.
     tags:
     - git
     - version-control
@@ -4084,42 +5675,114 @@ categories:
     - Glob
     - Grep
     path: tools/git-expert/SKILL.md
-    file_size: 16111
-    total_lines: 706
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 16032
+    total_lines: 751
     code_examples: 31
     code_lines: 580
   - &id146
+    name: skill-creator-expert
+    version: 1.1.0
+    category: tools
+    description: Expert system for designing, creating, and validating PCL skills
+      with comprehensive domain knowledge extraction. Use when the user mentions skill
+      creation, meta programming, domain modeling, knowledge engineering, or PCL development,
+      or when the task involves Skill Design Principles, Skill Architecture Patterns,
+      Quality & Validation, or Domain Analysis Template.
+    tags:
+    - skill-creation
+    - meta-programming
+    - domain-modeling
+    - knowledge-engineering
+    - pcl-development
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Execute
+    path: tools/skill-creator-expert/SKILL.md
+    references:
+    - references/SKILL_CREATION_FRAMEWORK.md
+    file_size: 22505
+    total_lines: 877
+    code_examples: 9
+    code_lines: 708
+  - &id147
     name: slack-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert in Slack bot development, Block Kit UI, Events API, slash
-      commands, OAuth flows, and app distribution
-    tags: []
-    allowed_tools: []
-    path: tools/slack-expert.md
-    file_size: 17168
-    total_lines: 564
+      commands, OAuth flows, and app distribution. Use when the user mentions communication,
+      collaboration, bots, API, Slack bot, or Block Kit, or when the task involves
+      Slack Platform, Development Tools, Slack Bot with Bolt, or Python Slack Bot.
+    tags:
+    - slack
+    - communication
+    - collaboration
+    - bots
+    - api
+    - slack-bot
+    - block-kit
+    - slack-api
+    - slash-commands
+    - slack-oauth
+    - bot-development
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    - WebSearch
+    path: tools/slack-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 16584
+    total_lines: 617
     code_examples: 3
-    code_lines: 432
-  - &id160
+    code_lines: 433
+  - &id161
     name: teams-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert in Microsoft Teams bot development, tabs, messaging extensions,
-      adaptive cards, Graph API integration, and Teams app deployment
-    tags: []
-    allowed_tools: []
-    path: tools/teams-expert.md
-    file_size: 15061
-    total_lines: 492
+      adaptive cards, Graph API integration, and Teams app deployment. Use when the
+      user mentions Microsoft platforms Microsoft Teams, Microsoft Teams, communication,
+      collaboration, Microsoft platforms, or Microsoft Teams bot, or when the task
+      involves Teams Platform, Bot Framework, Teams Bot, or Tab Application.
+    tags:
+    - microsoft-teams
+    - teams
+    - communication
+    - collaboration
+    - microsoft
+    - teams-bot
+    - adaptive-cards
+    - teams-app
+    - messaging-extensions
+    - graph-api
+    - teams-toolkit
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - WebSearch
+    path: tools/teams-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 14111
+    total_lines: 538
     code_examples: 3
-    code_lines: 360
-  - &id163
+    code_lines: 355
+  - &id164
     name: testing-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert-level software testing with unit tests, integration tests,
-      E2E tests, TDD/BDD, and testing best practices
+      E2E tests, TDD/BDD, and testing best practices. Use when the user mentions TDD,
+      BDD, unit tests, integration tests, or end-to-end tests, or when the task involves
+      Testing Fundamentals, Unit Testing, Integration Testing, or End-to-End Testing.
     tags:
     - testing
     - tdd
@@ -4135,36 +5798,84 @@ categories:
     - Glob
     - Grep
     path: tools/testing-expert/SKILL.md
-    file_size: 28993
-    total_lines: 1052
+    references:
+    - references/CORE_CONCEPTS.md
+    file_size: 28592
+    total_lines: 1093
     code_examples: 22
-    code_lines: 935
-  - &id166
+    code_lines: 938
+  - &id167
     name: video-streaming-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert in video streaming technologies, HLS, DASH, adaptive bitrate
-      streaming, CDN delivery, DRM protection, and video encoding/transcoding
-    tags: []
-    allowed_tools: []
-    path: tools/video-streaming-expert.md
-    file_size: 19792
-    total_lines: 614
+      streaming, CDN delivery, DRM protection, and video encoding/transcoding. Use
+      when the user mentions video, streaming, media, WebRTC, multimedia, or HLS,
+      or when the task involves Streaming Protocols, Adaptive Bitrate Streaming, FFmpeg
+      Video Transcoding, or Node.js Streaming Server.
+    tags:
+    - video
+    - streaming
+    - media
+    - webrtc
+    - multimedia
+    - video-streaming
+    - hls
+    - dash
+    - adaptive-bitrate
+    - cdn
+    - drm
+    - ffmpeg
+    - video-encoding
+    - live-streaming
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: tools/video-streaming-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 18819
+    total_lines: 709
     code_examples: 5
-    code_lines: 476
-  - &id170
+    code_lines: 516
+  - &id171
     name: webrtc-expert
-    version: 1.0.0
+    version: 1.1.0
     category: tools
     description: Expert in WebRTC real-time communication, signaling protocols, ICE/STUN/TURN
-      servers, peer connections, media streams, and building video/audio applications
-    tags: []
-    allowed_tools: []
-    path: tools/webrtc-expert.md
-    file_size: 18845
-    total_lines: 659
+      servers, peer connections, media streams, and building video/audio applications.
+      Use when the user mentions real time, video, audio, peer to peer, signaling,
+      or ice, or when the task involves WebRTC Architecture, Protocols & Standards,
+      Basic Video Chat, or Screen Sharing.
+    tags:
+    - webrtc
+    - real-time
+    - video
+    - audio
+    - peer-to-peer
+    - signaling
+    - ice
+    - stun
+    - turn
+    - media-streams
+    - real-time-communication
+    - video-chat
+    allowed_tools:
+    - Read
+    - Write
+    - Bash
+    - Grep
+    - Glob
+    path: tools/webrtc-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 17625
+    total_lines: 709
     code_examples: 7
-    code_lines: 519
+    code_lines: 517
 skills:
 - *id001
 - *id002
@@ -4339,3 +6050,4 @@ skills:
 - *id171
 - *id172
 - *id173
+- *id174

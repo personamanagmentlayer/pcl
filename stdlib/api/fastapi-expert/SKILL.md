@@ -1,7 +1,10 @@
 ---
 name: fastapi-expert
-version: 1.0.0
-description: Expert-level FastAPI development for high-performance Python APIs with async support
+version: 1.1.0
+description: >-
+  Expert-level FastAPI development for high-performance Python APIs with async support. Use
+  when the user mentions Python, API, async, REST, OpenAPI, or Pydantic, or when the task
+  involves FastAPI Features.
 category: api
 tags: [fastapi, python, api, async, rest, openapi, pydantic]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for FastAPI - modern, fast Python web framework for building API
 ## Core Concepts
 
 ### FastAPI Features
+
 - Fast performance (Starlette + Pydantic)
 - Automatic OpenAPI/Swagger docs
 - Type hints and validation
@@ -27,6 +31,7 @@ Expert guidance for FastAPI - modern, fast Python web framework for building API
 - WebSocket support
 
 ### Key Components
+
 - Path operations (routes)
 - Request/response models (Pydantic)
 - Dependency injection

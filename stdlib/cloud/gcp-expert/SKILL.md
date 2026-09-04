@@ -1,7 +1,9 @@
 ---
 name: gcp-expert
-version: 1.0.0
-description: Expert-level Google Cloud Platform, services, and cloud architecture
+version: 1.1.0
+description: >-
+  Expert-level Google Cloud Platform, services, and cloud architecture. Use when the user
+  mentions Google Cloud, Cloud Functions, BigQuery, or Firestore.
 category: cloud
 tags: [gcp, google-cloud, cloud-functions, bigquery, firestore]
 allowed-tools:
