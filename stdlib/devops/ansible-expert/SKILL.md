@@ -1,7 +1,11 @@
 ---
 name: ansible-expert
-version: 1.0.0
-description: Expert-level Ansible for configuration management, automation, and infrastructure as code
+version: 1.1.0
+description: >-
+  Expert-level Ansible for configuration management, automation, and infrastructure as
+  code. Use when the user mentions automation, configuration management, infrastructure as
+  code, playbooks, or roles, or when the task involves Ansible Architecture, Basic
+  Inventory, YAML Inventory, or Dynamic Inventory.
 category: devops
 tags: [ansible, automation, configuration-management, iac, playbooks, roles]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for Ansible - configuration management, application deployment, 
 ## Core Concepts
 
 ### Ansible Architecture
+
 - Control node (runs Ansible)
 - Managed nodes (target systems)
 - Inventory (hosts and groups)
@@ -27,6 +32,7 @@ Expert guidance for Ansible - configuration management, application deployment, 
 - Plugins (extend functionality)
 
 ### Key Features
+
 - Agentless (SSH-based)
 - Idempotent operations
 - Declarative syntax
@@ -36,6 +42,7 @@ Expert guidance for Ansible - configuration management, application deployment, 
 - Parallel execution
 
 ### Use Cases
+
 - Configuration management
 - Application deployment
 - Provisioning
@@ -63,6 +70,7 @@ ansible --version
 ## Inventory
 
 ### Basic Inventory (INI format)
+
 ```ini
 # inventory/hosts
 [webservers]
@@ -83,6 +91,7 @@ ansible_connection=ssh
 ```
 
 ### YAML Inventory
+
 ```yaml
 # inventory/hosts.yml
 all:
@@ -107,6 +116,7 @@ all:
 ```
 
 ### Dynamic Inventory
+
 ```python
 #!/usr/bin/env python3
 # inventory/aws_ec2.py
@@ -147,308 +157,6 @@ def get_inventory():
 
 if __name__ == '__main__':
     print(json.dumps(get_inventory(), indent=2))
-```
-
-## Playbooks
-
-### Basic Playbook
-```yaml
-# playbooks/webserver.yml
----
-- name: Configure web servers
-  hosts: webservers
-  become: yes
-  vars:
-    app_port: 8080
-    app_user: webapp
-
-  tasks:
-    - name: Install nginx
-      apt:
-        name: nginx
-        state: present
-        update_cache: yes
-
-    - name: Start and enable nginx
-      systemd:
-        name: nginx
-        state: started
-        enabled: yes
-
-    - name: Copy nginx configuration
-      template:
-        src: templates/nginx.conf.j2
-        dest: /etc/nginx/sites-available/default
-        mode: '0644'
-      notify: Reload nginx
-
-    - name: Create application user
-      user:
-        name: "{{ app_user }}"
-        state: present
-        shell: /bin/bash
-
-  handlers:
-    - name: Reload nginx
-      systemd:
-        name: nginx
-        state: reloaded
-```
-
-### Advanced Playbook
-```yaml
-# playbooks/deploy-app.yml
----
-- name: Deploy application
-  hosts: webservers
-  become: yes
-  vars:
-    app_name: myapp
-    app_version: "{{ version | default('latest') }}"
-    app_port: 8080
-    deploy_user: deployer
-
-  pre_tasks:
-    - name: Check if required variables are defined
-      assert:
-        that:
-          - app_name is defined
-          - app_version is defined
-        fail_msg: "Required variables are not defined"
-
-  tasks:
-    - name: Create deployment directory
-      file:
-        path: "/opt/{{ app_name }}"
-        state: directory
-        owner: "{{ deploy_user }}"
-        group: "{{ deploy_user }}"
-        mode: '0755'
-
-    - name: Download application artifact
-      get_url:
-        url: "https://artifacts.example.com/{{ app_name }}/{{ app_version }}/{{ app_name }}.jar"
-        dest: "/opt/{{ app_name }}/{{ app_name }}-{{ app_version }}.jar"
-        mode: '0644'
-      register: download_result
-
-    - name: Create systemd service
-      template:
-        src: templates/app.service.j2
-        dest: "/etc/systemd/system/{{ app_name }}.service"
-        mode: '0644'
-      notify:
-        - Reload systemd
-        - Restart application
-
-    - name: Enable application service
-      systemd:
-        name: "{{ app_name }}"
-        enabled: yes
-
-    - name: Wait for application to start
-      wait_for:
-        port: "{{ app_port }}"
-        delay: 5
-        timeout: 60
-      when: download_result.changed
-
-    - name: Check application health
-      uri:
-        url: "http://localhost:{{ app_port }}/health"
-        status_code: 200
-      retries: 3
-      delay: 5
-
-  post_tasks:
-    - name: Clean up old versions
-      shell: |
-        cd /opt/{{ app_name }}
-        ls -t {{ app_name }}-*.jar | tail -n +4 | xargs -r rm
-      args:
-        executable: /bin/bash
-
-  handlers:
-    - name: Reload systemd
-      systemd:
-        daemon_reload: yes
-
-    - name: Restart application
-      systemd:
-        name: "{{ app_name }}"
-        state: restarted
-```
-
-### Conditionals and Loops
-```yaml
----
-- name: Conditional and loop examples
-  hosts: all
-  tasks:
-    - name: Install package (Debian)
-      apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - nginx
-        - postgresql
-        - redis
-      when: ansible_os_family == "Debian"
-
-    - name: Install package (RedHat)
-      yum:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - nginx
-        - postgresql
-        - redis
-      when: ansible_os_family == "RedHat"
-
-    - name: Create users
-      user:
-        name: "{{ item.name }}"
-        state: present
-        groups: "{{ item.groups }}"
-      loop:
-        - { name: 'alice', groups: 'wheel' }
-        - { name: 'bob', groups: 'users' }
-        - { name: 'charlie', groups: 'developers' }
-
-    - name: Configure services
-      systemd:
-        name: "{{ item.name }}"
-        state: "{{ item.state }}"
-        enabled: "{{ item.enabled }}"
-      loop:
-        - { name: 'nginx', state: 'started', enabled: yes }
-        - { name: 'postgresql', state: 'started', enabled: yes }
-        - { name: 'redis', state: 'started', enabled: yes }
-
-    - name: Set fact based on condition
-      set_fact:
-        environment_type: "{{ 'production' if inventory_hostname in groups['production'] else 'development' }}"
-
-    - name: Debug conditional
-      debug:
-        msg: "This is a {{ environment_type }} server"
-```
-
-## Roles
-
-### Role Structure
-```
-roles/
-└── webserver/
-    ├── defaults/
-    │   └── main.yml         # Default variables
-    ├── files/
-    │   └── app.conf         # Static files
-    ├── handlers/
-    │   └── main.yml         # Handlers
-    ├── meta/
-    │   └── main.yml         # Role metadata and dependencies
-    ├── tasks/
-    │   └── main.yml         # Main task list
-    ├── templates/
-    │   └── nginx.conf.j2    # Jinja2 templates
-    ├── tests/
-    │   └── test.yml         # Role tests
-    └── vars/
-        └── main.yml         # Role variables
-```
-
-### Example Role
-```yaml
-# roles/webserver/defaults/main.yml
----
-nginx_port: 80
-nginx_user: www-data
-document_root: /var/www/html
-
-# roles/webserver/tasks/main.yml
----
-- name: Install nginx
-  apt:
-    name: nginx
-    state: present
-    update_cache: yes
-
-- name: Copy nginx configuration
-  template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
-    mode: '0644'
-  notify: Restart nginx
-
-- name: Create document root
-  file:
-    path: "{{ document_root }}"
-    state: directory
-    owner: "{{ nginx_user }}"
-    mode: '0755'
-
-- name: Start nginx
-  systemd:
-    name: nginx
-    state: started
-    enabled: yes
-
-# roles/webserver/handlers/main.yml
----
-- name: Restart nginx
-  systemd:
-    name: nginx
-    state: restarted
-
-# roles/webserver/templates/nginx.conf.j2
-user {{ nginx_user }};
-worker_processes auto;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
-
-    server {
-        listen {{ nginx_port }};
-        server_name {{ ansible_hostname }};
-
-        root {{ document_root }};
-        index index.html;
-
-        location / {
-            try_files $uri $uri/ =404;
-        }
-    }
-}
-
-# Use role in playbook
----
-- name: Configure web servers
-  hosts: webservers
-  become: yes
-  roles:
-    - role: webserver
-      vars:
-        nginx_port: 8080
-        document_root: /var/www/myapp
-```
-
-### Role Dependencies
-```yaml
-# roles/app/meta/main.yml
----
-dependencies:
-  - role: common
-  - role: nginx
-    vars:
-      nginx_port: 8080
-  - role: postgresql
-    when: database_enabled | default(false)
 ```
 
 ## Templates (Jinja2)
@@ -497,15 +205,16 @@ log_level = debug
 ## Variables and Facts
 
 ### Variable Precedence (low to high)
+
 1. Role defaults
 2. Inventory file/script group vars
 3. Inventory group_vars/all
 4. Playbook group_vars/all
-5. Inventory group_vars/*
-6. Playbook group_vars/*
+5. Inventory group_vars/\*
+6. Playbook group_vars/\*
 7. Inventory file/script host vars
-8. Inventory host_vars/*
-9. Playbook host_vars/*
+8. Inventory host_vars/\*
+9. Playbook host_vars/\*
 10. Host facts
 11. Play vars
 12. Play vars_prompt
@@ -516,6 +225,7 @@ log_level = debug
 17. Extra vars (-e flag)
 
 ### Using Variables
+
 ```yaml
 ---
 - name: Variable examples
@@ -525,16 +235,16 @@ log_level = debug
     app_version: 1.0.0
   vars_files:
     - vars/common.yml
-    - "vars/{{ environment }}.yml"
+    - 'vars/{{ environment }}.yml'
 
   tasks:
     - name: Load variables from file
       include_vars:
-        file: "vars/{{ ansible_distribution }}.yml"
+        file: 'vars/{{ ansible_distribution }}.yml'
 
     - name: Set fact
       set_fact:
-        full_app_name: "{{ app_name }}-{{ app_version }}"
+        full_app_name: '{{ app_name }}-{{ app_version }}'
 
     - name: Register output
       command: hostname
@@ -542,7 +252,7 @@ log_level = debug
 
     - name: Use registered variable
       debug:
-        msg: "Hostname is {{ hostname_output.stdout }}"
+        msg: 'Hostname is {{ hostname_output.stdout }}'
 
     - name: Access facts
       debug:
@@ -574,7 +284,7 @@ log_level = debug
       rescue:
         - name: Log error
           debug:
-            msg: "Failed to start myapp"
+            msg: 'Failed to start myapp'
 
         - name: Try alternative
           systemd:
@@ -583,18 +293,18 @@ log_level = debug
       always:
         - name: This always runs
           debug:
-            msg: "Cleanup task"
+            msg: 'Cleanup task'
 
     - name: Assert condition
       assert:
         that:
           - ansible_memtotal_mb >= 2048
           - ansible_processor_vcpus >= 2
-        fail_msg: "Server does not meet minimum requirements"
+        fail_msg: 'Server does not meet minimum requirements'
 
     - name: Fail when condition
       fail:
-        msg: "Production deployment requires version tag"
+        msg: 'Production deployment requires version tag'
       when:
         - environment == 'production'
         - app_version == 'latest'
@@ -629,14 +339,19 @@ ansible-vault rekey secrets.yml
 ```
 
 ```yaml
-# secrets.yml (encrypted)
+# secrets.yml - what `ansible-vault view secrets.yml` shows you.
+# On disk this file is ciphertext; it is only ever plaintext in memory and in
+# your editor during `ansible-vault edit`. Never commit the decrypted form.
 ---
-db_password: supersecret
-api_key: abc123xyz
-ssl_key: |
-  -----BEGIN PRIVATE KEY-----
-  ...
-  -----END PRIVATE KEY-----
+db_password: "{{ lookup('env', 'DB_PASSWORD') }}"
+api_key: "{{ lookup('env', 'API_KEY') }}"
+ssl_key: "{{ lookup('env', 'SSL_PRIVATE_KEY') }}"
+
+
+# The same file at rest, after `ansible-vault encrypt`:
+#   $ANSIBLE_VAULT;1.1;AES256
+#   66386439653236336462626566653063336164663966303231363934653561363964363833313662
+#   ...
 
 # Use in playbook
 ---
@@ -649,7 +364,7 @@ ssl_key: |
       template:
         src: db.conf.j2
         dest: /etc/db.conf
-      no_log: yes  # Don't log sensitive data
+      no_log: yes # Don't log sensitive data
 ```
 
 ```bash
@@ -663,101 +378,10 @@ ansible-playbook playbook.yml --vault-password-file ~/.vault_pass
 ansible-playbook playbook.yml --vault-id prod@prompt --vault-id dev@~/.vault_dev
 ```
 
-## Best Practices
-
-### Playbook Organization
-```
-ansible-project/
-├── ansible.cfg
-├── inventory/
-│   ├── production/
-│   │   ├── hosts.yml
-│   │   └── group_vars/
-│   └── staging/
-│       ├── hosts.yml
-│       └── group_vars/
-├── playbooks/
-│   ├── site.yml
-│   ├── webservers.yml
-│   └── databases.yml
-├── roles/
-│   ├── common/
-│   ├── nginx/
-│   └── postgresql/
-├── group_vars/
-│   ├── all.yml
-│   └── webservers.yml
-├── host_vars/
-└── files/
-```
-
-### Idempotency
-```yaml
-# ❌ Not idempotent
-- name: Add line to file
-  shell: echo "server {{ ansible_hostname }}" >> /etc/hosts
-
-# ✅ Idempotent
-- name: Add line to file
-  lineinfile:
-    path: /etc/hosts
-    line: "server {{ ansible_hostname }}"
-    state: present
-```
-
-### Performance
-- Use `strategy: free` for faster execution
-- Enable pipelining in ansible.cfg
-- Use `async` for long-running tasks
-- Disable fact gathering when not needed
-- Use `serial` for rolling updates
-
-```yaml
-# ansible.cfg
-[defaults]
-forks = 20
-host_key_checking = False
-pipelining = True
-gathering = smart
-fact_caching = jsonfile
-fact_caching_connection = /tmp/ansible_facts
-fact_caching_timeout = 86400
-
-# Playbook with performance optimizations
----
-- name: Fast deployment
-  hosts: webservers
-  strategy: free
-  gather_facts: no
-  serial: 5  # Deploy to 5 hosts at a time
-
-  tasks:
-    - name: Long running task
-      command: /usr/local/bin/build.sh
-      async: 3600
-      poll: 0
-      register: build_job
-
-    - name: Check build status
-      async_status:
-        jid: "{{ build_job.ansible_job_id }}"
-      register: job_result
-      until: job_result.finished
-      retries: 60
-      delay: 30
-```
-
-### Security
-- Use Ansible Vault for secrets
-- Use `no_log: yes` for sensitive tasks
-- Set proper file permissions
-- Use `become` sparingly
-- Validate SSL certificates
-- Use SSH keys, not passwords
-
 ## Testing
 
 ### Molecule (Role Testing)
+
 ```bash
 # Install molecule
 pip install molecule molecule-docker
@@ -803,6 +427,14 @@ verifier:
 ❌ **Not testing**: Use molecule for role testing
 ❌ **Ignoring idempotency**: Tasks should be safe to run multiple times
 ❌ **Complex playbooks**: Break into smaller, focused playbooks
+
+## Reference Documentation
+
+Detailed material lives alongside this skill and is read on demand:
+
+- [Best Practices](references/BEST_PRACTICES.md) — Playbook Organization, Idempotency, Performance, Security
+- [Playbooks](references/PLAYBOOKS.md) — Basic Playbook, Advanced Playbook, Conditionals and Loops
+- [Roles](references/ROLES.md) — Role Structure, Example Role, Role Dependencies
 
 ## Resources
 

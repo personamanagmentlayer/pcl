@@ -1,7 +1,11 @@
 ---
 name: ml-expert
-version: 1.0.0
-description: Expert-level machine learning, deep learning, model training, and MLOps
+version: 1.1.0
+description: >-
+  Expert-level machine learning, deep learning, model training, and MLOps. Use when the
+  user mentions machine learning, deep learning, neural networks, MLOps, or data science,
+  or when the task involves Machine Learning Fundamentals, Data Preparation, or Model
+  Training.
 category: ai
 tags: [machine-learning, deep-learning, neural-networks, mlops, data-science]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for machine learning systems, deep learning, model training, dep
 ## Core Concepts
 
 ### Machine Learning Fundamentals
+
 - Supervised learning (classification, regression)
 - Unsupervised learning (clustering, dimensionality reduction)
 - Reinforcement learning
@@ -26,6 +31,7 @@ Expert guidance for machine learning systems, deep learning, model training, dep
 - Hyperparameter tuning
 
 ### Deep Learning
+
 - Neural networks (CNNs, RNNs, Transformers)
 - Transfer learning
 - Fine-tuning pre-trained models
@@ -34,6 +40,7 @@ Expert guidance for machine learning systems, deep learning, model training, dep
 - Autoencoders
 
 ### MLOps
+
 - Model versioning and tracking
 - Experiment management
 - Model deployment and serving
@@ -318,6 +325,7 @@ class MLflowExperiment:
 ## Best Practices
 
 ### Data Preparation
+
 - Handle missing values appropriately
 - Scale/normalize features
 - Encode categorical variables properly
@@ -326,6 +334,7 @@ class MLflowExperiment:
 - Create validation set for hyperparameter tuning
 
 ### Model Training
+
 - Start with simple baselines
 - Use cross-validation
 - Monitor training and validation metrics
@@ -334,6 +343,7 @@ class MLflowExperiment:
 - Track experiments systematically
 
 ### Deployment
+
 - Version models and datasets
 - Monitor model performance in production
 - Implement model A/B testing

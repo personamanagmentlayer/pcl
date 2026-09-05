@@ -1,7 +1,11 @@
 ---
 name: trading-expert
-version: 1.0.0
-description: Expert-level algorithmic trading, market systems, quantitative analysis, and trading platforms
+version: 1.1.0
+description: >-
+  Expert-level algorithmic trading, market systems, quantitative analysis, and trading
+  platforms. Use when the user mentions algorithmic trading, quant, markets, finance, or
+  high-frequency trading, or when the task involves Trading Systems, Market Data, or
+  Execution.
 category: domains
 tags: [trading, algorithmic-trading, quant, markets, finance, hft]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for algorithmic trading systems, quantitative analysis, market d
 ## Core Concepts
 
 ### Trading Systems
+
 - Algorithmic trading strategies
 - High-frequency trading (HFT)
 - Market making
@@ -26,6 +31,7 @@ Expert guidance for algorithmic trading systems, quantitative analysis, market d
 - Risk management
 
 ### Market Data
+
 - Order book processing
 - Tick data analysis
 - Market microstructure
@@ -33,6 +39,7 @@ Expert guidance for algorithmic trading systems, quantitative analysis, market d
 - Historical data analysis
 
 ### Execution
+
 - Order routing
 - Smart order routing (SOR)
 - Execution algorithms (TWAP, VWAP)
@@ -207,41 +214,69 @@ class Order:
         return str(uuid.uuid4())
 
 class OrderManager:
-    def __init__(self):
+    """Order lifecycle and routing.
+
+    `send_to_venue` is deliberately left abstract: connecting it to a live
+    broker or exchange is the point at which this becomes a system that can
+    lose money. Implement it against a paper-trading endpoint first, and see
+    [Execution guardrails](#execution-guardrails) before pointing it at a real
+    venue.
+    """
+
+    def __init__(self, risk_manager: "RiskManager", portfolio: dict, live: bool = False):
         self.orders = {}
         self.positions = {}
+        self.risk_manager = risk_manager
+        self.portfolio = portfolio
+        # Live routing is opt-in. Defaulting to paper trading means a
+        # misconfiguration costs nothing.
+        self.live = live
 
     def place_order(self, order: Order) -> str:
-        """Place new order"""
+        """Place a new order, after pre-trade risk checks.
+
+        Risk is checked before routing, never after: an order that has reached
+        the venue cannot be un-sent, and a fill can arrive in microseconds.
+        """
+        if order.id in self.orders:
+            # Same client order id - already submitted, do not duplicate.
+            return order.id
+
+        self.risk_manager.validate_order(order, self.portfolio)
+
         self.orders[order.id] = order
-
-        # Route to exchange/broker
         self.route_order(order)
-
         return order.id
 
     def cancel_order(self, order_id: str) -> bool:
-        """Cancel existing order"""
-        if order_id in self.orders:
-            order = self.orders[order_id]
-            if order.status in ["NEW", "PARTIALLY_FILLED"]:
-                order.status = "CANCELLED"
-                return True
+        """Cancel an existing order.
+
+        Returns False both when the order is unknown and when it is no longer
+        cancellable; callers that need to tell those apart should inspect the
+        order status rather than rely on the boolean.
+        """
+        order = self.orders.get(order_id)
+        if order is None:
+            return False
+        if order.status in ("NEW", "PARTIALLY_FILLED"):
+            order.status = "CANCELLED"
+            return True
         return False
 
     def route_order(self, order: Order):
-        """Smart order routing"""
-        # Check for best execution venue
+        """Smart order routing."""
         venues = self.get_venue_quotes(order.symbol)
         best_venue = self.select_best_venue(venues, order)
-
-        # Send order to venue
         self.send_to_venue(order, best_venue)
 ```
 
 ## Risk Management
 
 ```python
+class RiskLimitExceeded(Exception):
+    """Raised when a pre-trade check rejects an order."""
+
+
 class RiskManager:
     def __init__(self, max_position_size: float = 0.1,
                  max_portfolio_risk: float = 0.02,
@@ -260,6 +295,26 @@ class RiskManager:
         risk_adjusted_shares = int(shares * (1 - volatility))
 
         return max(0, risk_adjusted_shares)
+
+    def validate_order(self, order, portfolio: dict) -> None:
+        """Pre-trade check. Raises rather than returning a boolean.
+
+        A rejected order must stop the caller. Returning False invites a
+        caller that ignores the result and routes anyway, so this fails closed.
+        """
+        if order.quantity <= 0:
+            raise ValueError("order quantity must be positive")
+        if order.type.name in ("LIMIT", "STOP_LIMIT") and order.price is None:
+            raise ValueError("%s order requires a price" % order.type.name)
+        if not self.check_risk_limits(portfolio):
+            raise RiskLimitExceeded("portfolio risk limit exceeded; order rejected")
+
+        notional = order.quantity * float(order.price or portfolio["last_price"][order.symbol])
+        total_value = portfolio["cash"] + sum(p["value"] for p in portfolio["positions"])
+        if notional > total_value * self.max_position_size:
+            raise RiskLimitExceeded(
+                "order notional %.2f exceeds max position size" % notional
+            )
 
     def check_risk_limits(self, portfolio: dict) -> bool:
         """Check if portfolio is within risk limits"""
@@ -318,6 +373,37 @@ class MarketDataProcessor:
             return best_ask - best_bid
         return 0
 ```
+
+## Execution guardrails
+
+The order-execution example above stops short of venue connectivity on
+purpose. `send_to_venue` is where an illustration becomes a system that can
+lose money, and a Snyk audit flags this skill as W009 (direct money access) on
+that basis. Before wiring it to a broker or exchange:
+
+- **Paper trade first.** Default to a simulated or paper endpoint and make live
+  routing an explicit, reviewed configuration change. `OrderManager(live=True)`
+  should never be the default in any environment.
+- **Check risk before routing, never after.** A routed order cannot be
+  un-sent, and a fill can arrive in microseconds. Pre-trade checks that raise
+  are safer than checks that return a boolean a caller may ignore.
+- **Enforce a kill switch.** A single operator action must halt all new order
+  submission and cancel resting orders, independently of strategy logic.
+- **Bound everything.** Maximum order notional, maximum position per symbol,
+  maximum daily loss, and maximum message rate. Breach means stop, not clamp.
+- **Use client order IDs idempotently.** A retried submission must not create a
+  second order; reject a reused ID rather than routing it again.
+- **Never hardcode broker credentials.** Load them from a secrets manager, use
+  the narrowest permission the strategy needs, and keep read-only market-data
+  credentials separate from execution credentials.
+- **Audit every submission, amendment, cancellation, and fill** with timestamp,
+  symbol, side, quantity, price, and the decision that produced it. Most
+  jurisdictions require this, and reconstruction after a bad session is
+  impossible without it.
+- **Understand the regulatory perimeter.** Algorithmic order routing is a
+  regulated activity in most markets (MiFID II RTS 6 in the EU, SEC Rule 15c3-5
+  in the US, among others), with obligations on pre-trade controls, testing,
+  and record keeping.
 
 ## Best Practices
 

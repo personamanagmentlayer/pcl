@@ -1,7 +1,10 @@
 ---
 name: iot-expert
-version: 1.0.0
-description: Expert-level IoT systems, embedded devices, edge computing, and IoT protocols
+version: 1.1.0
+description: >-
+  Expert-level IoT systems, embedded devices, edge computing, and IoT protocols. Use when
+  the user mentions embedded, edge computing, MQTT, sensors, or firmware, or when the task
+  involves IoT Architecture, IoT Protocols, Embedded Systems, or Device Design.
 category: domains
 tags: [iot, embedded, edge-computing, mqtt, sensors, firmware]
 allowed-tools:
@@ -17,6 +20,7 @@ Expert guidance for IoT systems, embedded devices, edge computing, sensor networ
 ## Core Concepts
 
 ### IoT Architecture
+
 - Device layer (sensors, actuators)
 - Edge computing layer
 - Network layer (connectivity)
@@ -25,6 +29,7 @@ Expert guidance for IoT systems, embedded devices, edge computing, sensor networ
 - Security across all layers
 
 ### IoT Protocols
+
 - MQTT (Message Queuing Telemetry Transport)
 - CoAP (Constrained Application Protocol)
 - HTTP/REST for IoT
@@ -33,6 +38,7 @@ Expert guidance for IoT systems, embedded devices, edge computing, sensor networ
 - Zigbee, Z-Wave for home automation
 
 ### Embedded Systems
+
 - Microcontroller programming
 - Real-time operating systems (RTOS)
 - Power management
@@ -142,8 +148,12 @@ class TemperatureSensor:
 #define DHTPIN 4
 #define DHTTYPE DHT22
 
-const char* ssid = "YourWiFiSSID";
-const char* password = "YourPassword";
+// Keep credentials out of the sketch: put them in a secrets.h that is
+// listed in .gitignore, so they are never committed with the firmware.
+#include "secrets.h"  // defines WIFI_SSID and WIFI_PASSWORD
+
+const char* ssid = WIFI_SSID;
+const char* password = WIFI_PASSWORD;
 const char* mqtt_server = "broker.example.com";
 
 WiFiClient espClient;
@@ -385,6 +395,7 @@ class DeviceManager:
 ## Best Practices
 
 ### Device Design
+
 - Implement power management for battery devices
 - Use deep sleep modes when idle
 - Handle network disconnections gracefully
@@ -393,6 +404,7 @@ class DeviceManager:
 - Plan for firmware updates (OTA)
 
 ### Security
+
 - Use TLS/SSL for MQTT connections
 - Implement device authentication
 - Encrypt sensitive data
@@ -401,6 +413,7 @@ class DeviceManager:
 - Network segmentation
 
 ### Data Management
+
 - Process data at edge when possible
 - Implement data buffering for offline scenarios
 - Use efficient data formats (e.g., Protocol Buffers)

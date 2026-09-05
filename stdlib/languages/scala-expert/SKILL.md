@@ -1,7 +1,10 @@
 ---
 name: scala-expert
-version: 1.0.0
-description: Expert-level Scala, functional programming, Akka, and reactive systems
+version: 1.1.0
+description: >-
+  Expert-level Scala, functional programming, Akka, and reactive systems. Use when the user
+  mentions functional programming, Akka, Cats, or ZIO, or when the task involves Scala
+  Fundamentals, Reactive Systems, or Scala Style.
 category: languages
 tags: [scala, functional-programming, akka, cats, zio]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for Scala development, functional programming, Akka actors, and 
 ## Core Concepts
 
 ### Scala Fundamentals
+
 - Immutability
 - Pattern matching
 - Case classes
@@ -26,6 +30,7 @@ Expert guidance for Scala development, functional programming, Akka actors, and 
 - For comprehensions
 
 ### Functional Programming
+
 - Higher-order functions
 - Monads (Option, Either, Try)
 - Functors and Applicatives
@@ -34,6 +39,7 @@ Expert guidance for Scala development, functional programming, Akka actors, and 
 - Referential transparency
 
 ### Reactive Systems
+
 - Akka actors
 - Akka Streams
 - Akka HTTP
@@ -371,6 +377,7 @@ val zioProgram: Task[Unit] = for {
 ## Best Practices
 
 ### Functional Programming
+
 - Prefer immutability
 - Use pure functions
 - Avoid side effects
@@ -380,6 +387,7 @@ val zioProgram: Task[Unit] = for {
 - Apply functional composition
 
 ### Scala Style
+
 - Follow naming conventions
 - Use case classes for data
 - Prefer vals over vars
@@ -389,6 +397,7 @@ val zioProgram: Task[Unit] = for {
 - Write idiomatic code
 
 ### Performance
+
 - Use lazy evaluation
 - Stream large datasets
 - Avoid unnecessary allocations

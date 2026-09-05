@@ -1,7 +1,11 @@
 ---
 name: blockchain-expert
-version: 1.0.0
-description: Expert-level blockchain, Web3, smart contracts, DeFi, and cryptocurrency development
+version: 1.1.0
+description: >-
+  Expert-level blockchain, Web3, smart contracts, DeFi, and cryptocurrency development. Use
+  when the user mentions Web3, smart contracts, DeFi, Ethereum, or Solidity, or when the
+  task involves Blockchain Fundamentals, Web3 & DeFi, Smart Contract Security, or Gas
+  Optimization.
 category: domains
 tags: [blockchain, web3, smart-contracts, defi, ethereum, solidity]
 allowed-tools:
@@ -17,6 +21,7 @@ Expert guidance for blockchain development, smart contracts, Web3 applications, 
 ## Core Concepts
 
 ### Blockchain Fundamentals
+
 - Distributed ledger technology
 - Consensus mechanisms (PoW, PoS, PoA)
 - Cryptographic hashing
@@ -25,6 +30,7 @@ Expert guidance for blockchain development, smart contracts, Web3 applications, 
 - Block structure and chain
 
 ### Smart Contracts
+
 - Solidity programming
 - Gas optimization
 - Security patterns
@@ -33,6 +39,7 @@ Expert guidance for blockchain development, smart contracts, Web3 applications, 
 - Contract interactions
 
 ### Web3 & DeFi
+
 - Decentralized applications (dApps)
 - DeFi protocols (AMM, lending, staking)
 - NFTs and token standards
@@ -301,74 +308,71 @@ import { ethers } from 'ethers';
 import { Contract, Provider, Signer } from 'ethers';
 
 class Web3Client {
-    private provider: Provider;
-    private signer?: Signer;
+  private provider: Provider;
+  private signer?: Signer;
 
-    constructor(rpcUrl: string) {
-        this.provider = new ethers.JsonRpcProvider(rpcUrl);
+  constructor(rpcUrl: string) {
+    this.provider = new ethers.JsonRpcProvider(rpcUrl);
+  }
+
+  async connectWallet(): Promise<string> {
+    // Connect to MetaMask
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      await provider.send('eth_requestAccounts', []);
+      this.signer = await provider.getSigner();
+      return await this.signer.getAddress();
     }
+    throw new Error('No wallet found');
+  }
 
-    async connectWallet(): Promise<string> {
-        // Connect to MetaMask
-        if (typeof window.ethereum !== 'undefined') {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            await provider.send("eth_requestAccounts", []);
-            this.signer = await provider.getSigner();
-            return await this.signer.getAddress();
-        }
-        throw new Error('No wallet found');
-    }
+  async getBalance(address: string): Promise<string> {
+    const balance = await this.provider.getBalance(address);
+    return ethers.formatEther(balance);
+  }
 
-    async getBalance(address: string): Promise<string> {
-        const balance = await this.provider.getBalance(address);
-        return ethers.formatEther(balance);
-    }
+  async sendTransaction(to: string, amount: string): Promise<string> {
+    if (!this.signer) throw new Error('Wallet not connected');
 
-    async sendTransaction(to: string, amount: string): Promise<string> {
-        if (!this.signer) throw new Error('Wallet not connected');
+    const tx = await this.signer.sendTransaction({
+      to,
+      value: ethers.parseEther(amount),
+    });
 
-        const tx = await this.signer.sendTransaction({
-            to,
-            value: ethers.parseEther(amount)
-        });
+    const receipt = await tx.wait();
+    return receipt?.hash || '';
+  }
 
-        const receipt = await tx.wait();
-        return receipt?.hash || '';
-    }
+  getContract(address: string, abi: any[]): Contract {
+    return new ethers.Contract(address, abi, this.signer || this.provider);
+  }
 
-    getContract(address: string, abi: any[]): Contract {
-        return new ethers.Contract(
-            address,
-            abi,
-            this.signer || this.provider
-        );
-    }
+  async callContract(
+    contractAddress: string,
+    abi: any[],
+    method: string,
+    args: any[]
+  ): Promise<any> {
+    const contract = this.getContract(contractAddress, abi);
+    return await contract[method](...args);
+  }
 
-    async callContract(
-        contractAddress: string,
-        abi: any[],
-        method: string,
-        args: any[]
-    ): Promise<any> {
-        const contract = this.getContract(contractAddress, abi);
-        return await contract[method](...args);
-    }
-
-    async estimateGas(
-        contractAddress: string,
-        abi: any[],
-        method: string,
-        args: any[]
-    ): Promise<bigint> {
-        const contract = this.getContract(contractAddress, abi);
-        return await contract[method].estimateGas(...args);
-    }
+  async estimateGas(
+    contractAddress: string,
+    abi: any[],
+    method: string,
+    args: any[]
+  ): Promise<bigint> {
+    const contract = this.getContract(contractAddress, abi);
+    return await contract[method].estimateGas(...args);
+  }
 }
 ```
 
 ## Best Practices
 
 ### Smart Contract Security
+
 - Use OpenZeppelin contracts for standards
 - Implement reentrancy guards
 - Check for integer overflow/underflow (use Solidity 0.8+)
@@ -378,6 +382,7 @@ class Web3Client {
 - Comprehensive testing and auditing
 
 ### Gas Optimization
+
 - Use `uint256` over smaller types
 - Pack storage variables
 - Use `calldata` for function parameters
@@ -386,6 +391,7 @@ class Web3Client {
 - Batch operations when possible
 
 ### Development
+
 - Use Hardhat/Foundry for development
 - Write comprehensive tests
 - Use test networks before mainnet

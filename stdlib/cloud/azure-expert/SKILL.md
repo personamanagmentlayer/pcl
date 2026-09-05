@@ -1,7 +1,9 @@
 ---
 name: azure-expert
-version: 1.0.0
-description: Expert-level Microsoft Azure cloud platform, services, and architecture
+version: 1.1.0
+description: >-
+  Expert-level Microsoft Azure cloud platform, services, and architecture. Use when the
+  user mentions cloud, Microsoft platforms, Azure Functions, or Cosmos DB.
 category: cloud
 tags: [azure, cloud, microsoft, azure-functions, cosmos-db]
 allowed-tools:

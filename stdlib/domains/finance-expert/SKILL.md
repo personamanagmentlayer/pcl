@@ -1,14 +1,16 @@
 ---
 name: finance-expert
-version: 1.0.0
-description: Expert-level financial systems, FinTech, banking, payments, and financial technology
+version: 2.0.0
+description: >-
+  Expert-level financial systems, FinTech, banking, payments, and financial technology. Use
+  when the user mentions fintech, banking, payments, trading, or accounting, or when the
+  task involves Financial Systems, FinTech Stack, Key Challenges, or Data Handling.
 category: domains
 tags: [finance, fintech, banking, payments, trading, accounting]
 allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash(*)
 ---
 
 # Finance Expert
@@ -18,6 +20,7 @@ Expert guidance for financial systems, FinTech applications, banking platforms, 
 ## Core Concepts
 
 ### Financial Systems
+
 - Core banking systems
 - Payment processing
 - Trading platforms
@@ -26,6 +29,7 @@ Expert guidance for financial systems, FinTech applications, banking platforms, 
 - Financial reporting
 
 ### FinTech Stack
+
 - Payment gateways (Stripe, PayPal, Square)
 - Banking APIs (Plaid, Yodlee)
 - Blockchain/crypto
@@ -34,6 +38,7 @@ Expert guidance for financial systems, FinTech applications, banking platforms, 
 - Digital wallets
 
 ### Key Challenges
+
 - Security and fraud prevention
 - Real-time processing
 - High availability (99.999%)
@@ -43,62 +48,112 @@ Expert guidance for financial systems, FinTech applications, banking platforms, 
 
 ## Payment Processing
 
+> **These examples move real money.** Read
+> [Money movement guardrails](#money-movement-guardrails) before running any of
+> them. Credentials come from the environment or a secrets manager, never from
+> source.
+
 ```python
 # Payment gateway integration (Stripe)
-import stripe
-from decimal import Decimal
+import os
+from decimal import Decimal, ROUND_HALF_UP
 
-stripe.api_key = "sk_test_..."
+import stripe
+
+# Never hardcode a key. Load it from the environment or a secrets manager, and
+# fail closed if it is absent rather than falling back to a default.
+stripe.api_key = os.environ["STRIPE_API_KEY"]
+WEBHOOK_SECRET = os.environ["STRIPE_WEBHOOK_SECRET"]
+
+
+def to_minor_units(amount: Decimal) -> int:
+    """Convert a decimal amount to integer minor units (cents).
+
+    int(amount * 100) truncates: Decimal("0.615") would silently become 61
+    instead of 62. Money must round explicitly, half-up, and only from Decimal
+    - never from float.
+    """
+    if not isinstance(amount, Decimal):
+        raise TypeError("monetary amounts must be Decimal, not %s" % type(amount).__name__)
+    if amount < 0:
+        raise ValueError("amount must not be negative")
+    return int((amount * 100).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
 
 class PaymentService:
-    def create_payment_intent(self, amount: Decimal, currency: str = "usd"):
-        """Create payment intent with idempotency"""
+    def create_payment_intent(
+        self, amount: Decimal, order_id: str, idempotency_key: str, currency: str = "usd"
+    ):
+        """Create a payment intent.
+
+        The idempotency key is supplied by the caller and derived from the
+        order, so a retried request cannot charge the customer twice. Stripe
+        replays the original response instead of creating a second intent.
+        """
         return stripe.PaymentIntent.create(
-            amount=int(amount * 100),  # Convert to cents
+            amount=to_minor_units(amount),
             currency=currency,
             payment_method_types=["card"],
-            metadata={"order_id": "12345"}
+            metadata={"order_id": order_id},
+            idempotency_key=idempotency_key,
         )
 
-    def process_refund(self, payment_intent_id: str, amount: Decimal = None):
-        """Process full or partial refund"""
+    def process_refund(
+        self, payment_intent_id: str, idempotency_key: str, amount: Decimal | None = None
+    ):
+        """Process a full or partial refund (idempotent, like the charge)."""
         return stripe.Refund.create(
             payment_intent=payment_intent_id,
-            amount=int(amount * 100) if amount else None
+            amount=to_minor_units(amount) if amount is not None else None,
+            idempotency_key=idempotency_key,
         )
 
-    def handle_webhook(self, payload: str, signature: str):
-        """Handle Stripe webhook events"""
+    def handle_webhook(self, payload: bytes, signature: str):
+        """Handle a Stripe webhook event.
+
+        Signature verification is authentication: a failure must be rejected,
+        never treated as a malformed payload. Returning 2xx on an unverified
+        event tells Stripe the forged event was accepted.
+        """
         try:
-            event = stripe.Webhook.construct_event(
-                payload, signature, webhook_secret
-            )
-
-            if event.type == "payment_intent.succeeded":
-                payment_intent = event.data.object
-                self.handle_successful_payment(payment_intent)
-            elif event.type == "payment_intent.payment_failed":
-                payment_intent = event.data.object
-                self.handle_failed_payment(payment_intent)
-
-            return {"status": "success"}
+            event = stripe.Webhook.construct_event(payload, signature, WEBHOOK_SECRET)
+        except stripe.error.SignatureVerificationError:
+            # Forged or replayed event - fail closed, log, do not process.
+            return {"status": "rejected"}, 400
         except ValueError:
-            return {"status": "invalid_payload"}
+            return {"status": "invalid_payload"}, 400
+
+        # Webhooks are delivered at least once: deduplicate on event.id before
+        # acting, or the same payment is booked twice.
+        if self.already_processed(event.id):
+            return {"status": "duplicate"}, 200
+
+        if event.type == "payment_intent.succeeded":
+            self.handle_successful_payment(event.data.object)
+        elif event.type == "payment_intent.payment_failed":
+            self.handle_failed_payment(event.data.object)
+
+        self.mark_processed(event.id)
+        return {"status": "success"}, 200
 ```
 
 ## Banking Integration
 
 ```python
 # Open Banking API integration (Plaid)
+import os
+
 from plaid import Client
 from plaid.errors import PlaidError
 
 class BankingService:
     def __init__(self):
+        # Credentials from the environment; sandbox unless the deployment
+        # explicitly opts into production.
         self.client = Client(
-            client_id="...",
-            secret="...",
-            environment="sandbox"
+            client_id=os.environ["PLAID_CLIENT_ID"],
+            secret=os.environ["PLAID_SECRET"],
+            environment=os.environ.get("PLAID_ENV", "sandbox"),
         )
 
     def create_link_token(self, user_id: str):
@@ -113,7 +168,12 @@ class BankingService:
         return response["link_token"]
 
     def exchange_public_token(self, public_token: str):
-        """Exchange public token for access token"""
+        """Exchange a public token for an access token.
+
+        The returned access token is a long-lived credential granting read
+        access to the user's bank accounts. Store it encrypted, scoped to the
+        user, never in logs, and revoke it when the user disconnects.
+        """
         response = self.client.Item.public_token.exchange(public_token)
         return {
             "access_token": response["access_token"],
@@ -258,9 +318,69 @@ class ComplianceService:
         }
 ```
 
+## Money movement guardrails
+
+This skill documents code that charges cards, issues refunds, and reads bank
+accounts. Treat every such call as an irreversible side effect and gate it
+accordingly. A Snyk audit classifies this capability as W009 (direct money
+access); these are the controls that make it acceptable.
+
+**Credentials**
+
+- Load keys from a secrets manager or the environment; never inline, never in
+  version control, never in logs or error messages.
+- Use restricted keys with the narrowest scope the operation needs. A service
+  that only creates charges must not hold a key that can issue payouts.
+- Rotate on a schedule and on any suspected exposure; keep test and live keys
+  in separate accounts so a misconfiguration cannot reach production funds.
+
+**Default to test mode**
+
+- Point at Stripe test keys and the Plaid sandbox unless the deployment has
+  explicitly opted into production. Make the production switch a deliberate,
+  reviewed configuration change, not a default.
+- Fail closed when the environment is ambiguous rather than guessing.
+
+**Authorisation before execution**
+
+- Require an explicit human approval step for any operation that moves money,
+  including refunds. An agent must not be able to complete a charge on its own
+  initiative.
+- Enforce per-transaction and per-window amount limits, and reject anything
+  above them rather than clamping silently.
+- Check authorisation per object, not per route: verify the caller owns the
+  order, the payment intent, and the bank item being acted on.
+
+**Correctness under retry**
+
+- Every mutating call carries a caller-supplied idempotency key derived from
+  the business action, so a retry cannot double-charge.
+- Webhooks are delivered at least once: deduplicate on event id before acting.
+- Verify webhook signatures and reject failures with 4xx. An unverified event
+  must never reach business logic.
+
+**Money arithmetic**
+
+- Represent amounts as `Decimal` or integer minor units, never `float`.
+- Round explicitly (`ROUND_HALF_UP`) when converting to minor units;
+  truncation loses fractions of a cent and the loss compounds.
+- Store the currency alongside every amount and refuse cross-currency
+  arithmetic.
+
+**Audit and detection**
+
+- Log every financial operation with actor, amount, currency, idempotency key,
+  and outcome, to append-only storage. Never log card data, access tokens, or
+  full account numbers.
+- Alert on refund spikes, repeated failures, and limit rejections; a log that
+  triggers nothing protects nothing.
+- Reconcile against the provider's records on a schedule; do not treat your own
+  database as the source of truth for money that moved.
+
 ## Best Practices
 
 ### Security
+
 - Never log sensitive financial data (PAN, CVV)
 - Use tokenization for card storage
 - Implement strong encryption (AES-256)
@@ -269,6 +389,7 @@ class ComplianceService:
 - Regular security audits
 
 ### Data Handling
+
 - Use Decimal type for money (never float)
 - Store amounts in smallest currency unit (cents)
 - Implement idempotency for all transactions
@@ -276,6 +397,7 @@ class ComplianceService:
 - Handle timezone conversions properly
 
 ### Transaction Processing
+
 - Implement two-phase commits
 - Use database transactions (ACID)
 - Handle network failures gracefully

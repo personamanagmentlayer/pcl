@@ -24,8 +24,10 @@ class SkillCatalogGenerator:
 
     # Maximum file size to prevent DoS (10MB)
     MAX_FILE_SIZE = 10 * 1024 * 1024
-    # Maximum description length
-    MAX_DESCRIPTION_LENGTH = 200
+    # Maximum description length. The catalog is the discovery surface, so it
+    # carries the full description including its activation trigger; the
+    # Agent Skills v1.0 ceiling is 1024 characters.
+    MAX_DESCRIPTION_LENGTH = 1024
 
     def __init__(self, stdlib_path: str) -> None:
         """
@@ -46,7 +48,11 @@ class SkillCatalogGenerator:
 
     def find_skill_files(self) -> List[Path]:
         """
-        Find all SKILL.md and *-expert.md files.
+        Find all skill entry points.
+
+        A skill is a directory holding a SKILL.md, one level under its
+        category: stdlib/<category>/<skill-name>/SKILL.md. Files under
+        references/ are supporting material, never entry points.
 
         Returns:
             List of unique Path objects for skill files
@@ -57,11 +63,7 @@ class SkillCatalogGenerator:
         skill_files: List[Path] = []
 
         try:
-            # Find SKILL.md files
-            skill_files.extend(self.stdlib_path.glob("**/SKILL.md"))
-
-            # Find *-expert.md files
-            skill_files.extend(self.stdlib_path.glob("**/*-expert.md"))
+            skill_files.extend(self.stdlib_path.glob("*/*/SKILL.md"))
         except PermissionError as e:
             print(f"Error: Permission denied accessing {self.stdlib_path}: {e}", file=sys.stderr)
             raise
@@ -162,8 +164,20 @@ class SkillCatalogGenerator:
                 # Try to find description in first paragraph
                 description = self._extract_description(content)
 
+            # Progressive disclosure: the bulk of a skill lives in references/,
+            # so size and example counts cover the whole skill, not SKILL.md alone.
+            references = sorted(file_path.parent.glob('references/*.md'))
+            whole = content
+            total_size = file_size
+            for ref in references:
+                try:
+                    whole += '\n' + ref.read_text(encoding='utf-8', errors='ignore')
+                    total_size += ref.stat().st_size
+                except (OSError, IOError):
+                    continue
+
             # Count lines of code examples
-            code_blocks = re.findall(r'```[\s\S]*?```', content)
+            code_blocks = re.findall(r'```[\s\S]*?```', whole)
             total_code_lines = sum(len(block.split('\n')) for block in code_blocks)
 
             # Sanitize and validate frontmatter fields
@@ -175,8 +189,11 @@ class SkillCatalogGenerator:
                 'tags': self._sanitize_list(frontmatter.get('tags', [])),
                 'allowed_tools': self._sanitize_list(frontmatter.get('allowed-tools', [])),
                 'path': str(relative_path).replace('\\', '/'),  # Normalize path separators
-                'file_size': file_size,
-                'total_lines': len(content.split('\n')),
+                'references': [
+                    f'references/{ref.name}' for ref in references
+                ],
+                'file_size': total_size,
+                'total_lines': len(whole.split('\n')),
                 'code_examples': len(code_blocks),
                 'code_lines': total_code_lines
             }

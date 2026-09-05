@@ -1,7 +1,11 @@
 ---
 name: javascript-expert
-version: 1.0.0
-description: Expert-level JavaScript development with modern ES2024+ features, Node.js, npm ecosystem, and best practices
+version: 1.1.0
+description: >-
+  Expert-level JavaScript development with modern ES2024+ features, Node.js, npm ecosystem,
+  and best practices. Use when the user mentions ECMAScript, ES2024, Node.js, npm, or web,
+  or when the task involves Modern JavaScript, Node.js Development, Modern Tooling, or
+  Functional Programming.
 category: languages
 author: PCL Team
 license: Apache-2.0
@@ -21,289 +25,20 @@ allowed-tools:
   - Glob
   - Grep
 requirements:
-  node: ">=18.0.0"
-  npm: ">=8.0.0"
+  node: '>=18.0.0'
+  npm: '>=8.0.0'
 ---
 
 # JavaScript Expert
 
 You are an expert JavaScript developer with deep knowledge of modern ECMAScript (ES2024+), Node.js, and the npm ecosystem. You write clean, performant, and maintainable JavaScript code following industry best practices.
 
-## Core Expertise
-
-### Modern JavaScript (ES2024+)
-
-**Latest Features:**
-```javascript
-// Top-level await
-const data = await fetch('/api/data').then(r => r.json());
-
-// Optional chaining and nullish coalescing
-const user = response?.data?.user ?? { name: 'Guest' };
-
-// Private class fields
-class User {
-  #password;
-
-  constructor(username, password) {
-    this.username = username;
-    this.#password = password;
-  }
-
-  authenticate(input) {
-    return this.#password === input;
-  }
-}
-
-// Array methods (findLast, at)
-const items = [1, 2, 3, 4, 5];
-const last = items.at(-1); // 5
-const lastEven = items.findLast(n => n % 2 === 0); // 4
-
-// Object.hasOwn (safer than hasOwnProperty)
-const obj = { name: 'Alice' };
-Object.hasOwn(obj, 'name'); // true
-
-// Array.prototype.toSorted (non-mutating)
-const original = [3, 1, 2];
-const sorted = original.toSorted(); // [1, 2, 3]
-console.log(original); // [3, 1, 2] - unchanged
-```
-
-**Async Patterns:**
-```javascript
-// Promise combinators
-const results = await Promise.allSettled([
-  fetchUser(),
-  fetchPosts(),
-  fetchComments()
-]);
-
-results.forEach(result => {
-  if (result.status === 'fulfilled') {
-    console.log('Success:', result.value);
-  } else {
-    console.error('Failed:', result.reason);
-  }
-});
-
-// Async iteration
-async function* generateData() {
-  for (let i = 0; i < 10; i++) {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    yield i;
-  }
-}
-
-for await (const num of generateData()) {
-  console.log(num);
-}
-
-// AbortController for cancellation
-const controller = new AbortController();
-const { signal } = controller;
-
-setTimeout(() => controller.abort(), 5000);
-
-try {
-  const response = await fetch('/api/data', { signal });
-  const data = await response.json();
-} catch (error) {
-  if (error.name === 'AbortError') {
-    console.log('Request was cancelled');
-  }
-}
-```
-
-### Node.js Development
-
-**Modern Module System:**
-```javascript
-// package.json
-{
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./utils": {
-      "import": "./dist/utils.js",
-      "require": "./dist/utils.cjs"
-    }
-  }
-}
-
-// ESM imports
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
-import { URL } from 'node:url';
-
-// __dirname equivalent in ESM
-const __dirname = new URL('.', import.meta.url).pathname;
-
-// Dynamic imports
-if (condition) {
-  const module = await import('./optional-module.js');
-  module.doSomething();
-}
-```
-
-**File System Operations:**
-```javascript
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { createReadStream, createWriteStream } from 'node:fs';
-import { pipeline } from 'node:stream/promises';
-
-// Read file
-const content = await readFile('data.json', 'utf-8');
-const data = JSON.parse(content);
-
-// Write file with error handling
-try {
-  await mkdir('output', { recursive: true });
-  await writeFile('output/result.json', JSON.stringify(data, null, 2));
-} catch (error) {
-  console.error('File operation failed:', error);
-}
-
-// Stream large files
-await pipeline(
-  createReadStream('large-input.txt'),
-  transform,
-  createWriteStream('large-output.txt')
-);
-```
-
-**HTTP Server (Built-in):**
-```javascript
-import { createServer } from 'node:http';
-
-const server = createServer((req, res) => {
-  if (req.method === 'GET' && req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ status: 'healthy' }));
-    return;
-  }
-
-  res.writeHead(404, { 'Content-Type': 'text/plain' });
-  res.end('Not Found');
-});
-
-server.listen(3000, () => {
-  console.log('Server running on http://localhost:3000');
-});
-```
-
-### Modern Tooling
-
-**Package Managers:**
-```bash
-# npm (traditional)
-npm install express
-npm run build
-
-# Bun (fast, modern)
-bun install
-bun run dev
-bun build ./index.ts --outdir ./dist
-
-# Deno (secure by default)
-deno run --allow-net server.ts
-deno task dev
-```
-
-**Build Tools:**
-```javascript
-// vite.config.js
-import { defineConfig } from 'vite';
-
-export default defineConfig({
-  build: {
-    lib: {
-      entry: 'src/index.js',
-      name: 'MyLib',
-      fileName: (format) => `my-lib.${format}.js`
-    },
-    rollupOptions: {
-      external: ['lodash'],
-      output: {
-        globals: {
-          lodash: '_'
-        }
-      }
-    }
-  }
-});
-```
-
-### Testing
-
-**Vitest (Modern, Fast):**
-```javascript
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { calculateTotal, fetchUser } from './utils.js';
-
-describe('calculateTotal', () => {
-  it('should sum numbers correctly', () => {
-    expect(calculateTotal([1, 2, 3])).toBe(6);
-  });
-
-  it('should handle empty arrays', () => {
-    expect(calculateTotal([])).toBe(0);
-  });
-});
-
-describe('fetchUser', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('should fetch user data', async () => {
-    const mockFetch = vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ id: 1, name: 'Alice' })
-      })
-    );
-
-    global.fetch = mockFetch;
-
-    const user = await fetchUser(1);
-    expect(user.name).toBe('Alice');
-    expect(mockFetch).toHaveBeenCalledWith('/api/users/1');
-  });
-});
-```
-
-**Jest (Popular):**
-```javascript
-// jest.config.js
-export default {
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.js$': 'babel-jest'
-  },
-  collectCoverageFrom: [
-    'src/**/*.js',
-    '!src/**/*.test.js'
-  ],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80
-    }
-  }
-};
-```
-
 ## Code Patterns
 
 ### Error Handling
 
 **Modern Error Handling:**
+
 ```javascript
 // Custom error classes
 class ValidationError extends Error {
@@ -364,30 +99,33 @@ if (result.ok) {
 ### Functional Programming
 
 **Immutability and Pure Functions:**
+
 ```javascript
 // Avoid mutations
 const addItem = (items, newItem) => [...items, newItem];
 const updateItem = (items, id, updates) =>
-  items.map(item => item.id === id ? { ...item, ...updates } : item);
+  items.map((item) => (item.id === id ? { ...item, ...updates } : item));
 
 // Composition
-const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
-const compose = (...fns) => x => fns.reduceRight((v, f) => f(v), x);
+const pipe =
+  (...fns) =>
+  (x) =>
+    fns.reduce((v, f) => f(v), x);
+const compose =
+  (...fns) =>
+  (x) =>
+    fns.reduceRight((v, f) => f(v), x);
 
-const addVAT = price => price * 1.2;
-const applyDiscount = discount => price => price * (1 - discount);
-const formatPrice = price => `$${price.toFixed(2)}`;
+const addVAT = (price) => price * 1.2;
+const applyDiscount = (discount) => (price) => price * (1 - discount);
+const formatPrice = (price) => `$${price.toFixed(2)}`;
 
-const calculatePrice = pipe(
-  addVAT,
-  applyDiscount(0.1),
-  formatPrice
-);
+const calculatePrice = pipe(addVAT, applyDiscount(0.1), formatPrice);
 
 console.log(calculatePrice(100)); // "$108.00"
 
 // Currying
-const multiply = a => b => a * b;
+const multiply = (a) => (b) => a * b;
 const double = multiply(2);
 console.log(double(5)); // 10
 
@@ -395,12 +133,12 @@ console.log(double(5)); // 10
 const users = [
   { name: 'Alice', age: 30, active: true },
   { name: 'Bob', age: 25, active: false },
-  { name: 'Charlie', age: 35, active: true }
+  { name: 'Charlie', age: 35, active: true },
 ];
 
 const activeUserNames = users
-  .filter(user => user.active)
-  .map(user => user.name);
+  .filter((user) => user.active)
+  .map((user) => user.name);
 
 const totalAge = users.reduce((sum, user) => sum + user.age, 0);
 ```
@@ -408,22 +146,23 @@ const totalAge = users.reduce((sum, user) => sum + user.age, 0);
 ### Asynchronous Patterns
 
 **Promise Patterns:**
+
 ```javascript
 // Parallel execution with error handling
 async function fetchAllData() {
   const [users, posts, comments] = await Promise.all([
-    fetchUsers().catch(e => {
+    fetchUsers().catch((e) => {
       console.error('Failed to fetch users:', e);
       return []; // Fallback
     }),
-    fetchPosts().catch(e => {
+    fetchPosts().catch((e) => {
       console.error('Failed to fetch posts:', e);
       return [];
     }),
-    fetchComments().catch(e => {
+    fetchComments().catch((e) => {
       console.error('Failed to fetch comments:', e);
       return [];
-    })
+    }),
   ]);
 
   return { users, posts, comments };
@@ -447,17 +186,18 @@ async function retry(fn, maxAttempts = 3, delay = 1000) {
     } catch (error) {
       if (attempt === maxAttempts) throw error;
       console.log(`Attempt ${attempt} failed, retrying...`);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 }
 
-const data = await retry(() => fetch('/api/data').then(r => r.json()));
+const data = await retry(() => fetch('/api/data').then((r) => r.json()));
 ```
 
 ### Object-Oriented Programming
 
 **Modern Classes:**
+
 ```javascript
 class EventEmitter {
   #listeners = new Map();
@@ -482,14 +222,16 @@ class EventEmitter {
   emit(event, ...args) {
     const callbacks = this.#listeners.get(event);
     if (callbacks) {
-      callbacks.forEach(callback => callback(...args));
+      callbacks.forEach((callback) => callback(...args));
     }
   }
 }
 
 // Usage
 const emitter = new EventEmitter();
-const unsubscribe = emitter.on('data', data => console.log('Received:', data));
+const unsubscribe = emitter.on('data', (data) =>
+  console.log('Received:', data)
+);
 emitter.emit('data', { id: 1 }); // Logs: Received: { id: 1 }
 unsubscribe();
 emitter.emit('data', { id: 2 }); // Nothing logged
@@ -498,6 +240,7 @@ emitter.emit('data', { id: 2 }); // Nothing logged
 ## Best Practices
 
 ### 1. Use Strict Mode
+
 ```javascript
 'use strict';
 
@@ -508,6 +251,7 @@ export function myFunction() {
 ```
 
 ### 2. Avoid Global Variables
+
 ```javascript
 // Bad
 var globalCounter = 0;
@@ -518,12 +262,13 @@ const createCounter = () => {
   return {
     increment: () => ++count,
     decrement: () => --count,
-    value: () => count
+    value: () => count,
   };
 };
 ```
 
 ### 3. Use const and let (Never var)
+
 ```javascript
 // Bad
 var x = 10;
@@ -536,17 +281,19 @@ y = 30; // Only if reassignment needed
 ```
 
 ### 4. Prefer Arrow Functions for Callbacks
+
 ```javascript
 // Bad
-array.map(function(item) {
+array.map(function (item) {
   return item * 2;
 });
 
 // Good
-array.map(item => item * 2);
+array.map((item) => item * 2);
 ```
 
 ### 5. Use Template Literals
+
 ```javascript
 // Bad
 const message = 'Hello, ' + name + '! You have ' + count + ' messages.';
@@ -556,6 +303,7 @@ const message = `Hello, ${name}! You have ${count} messages.`;
 ```
 
 ### 6. Destructuring
+
 ```javascript
 // Object destructuring
 const { name, age, email = 'none' } = user;
@@ -570,6 +318,7 @@ function createUser({ name, age, role = 'user' }) {
 ```
 
 ### 7. Default Parameters
+
 ```javascript
 function greet(name = 'Guest', greeting = 'Hello') {
   return `${greeting}, ${name}!`;
@@ -577,6 +326,7 @@ function greet(name = 'Guest', greeting = 'Hello') {
 ```
 
 ### 8. Rest and Spread Operators
+
 ```javascript
 // Rest parameters
 function sum(...numbers) {
@@ -588,113 +338,15 @@ const combined = [...array1, ...array2];
 const merged = { ...defaults, ...options };
 ```
 
-## Common Patterns
-
-### Module Pattern
-```javascript
-// calculator.js
-const PI = 3.14159;
-
-function add(a, b) {
-  return a + b;
-}
-
-function multiply(a, b) {
-  return a * b;
-}
-
-export { PI, add, multiply };
-
-// Or with default export
-export default class Calculator {
-  add(a, b) { return a + b; }
-  multiply(a, b) { return a * b; }
-}
-```
-
-### Factory Pattern
-```javascript
-function createUser(name, role) {
-  const permissions = role === 'admin'
-    ? ['read', 'write', 'delete']
-    : ['read'];
-
-  return {
-    name,
-    role,
-    permissions,
-    hasPermission(perm) {
-      return this.permissions.includes(perm);
-    }
-  };
-}
-
-const admin = createUser('Alice', 'admin');
-const user = createUser('Bob', 'user');
-```
-
-### Singleton Pattern
-```javascript
-class Database {
-  static #instance = null;
-
-  constructor() {
-    if (Database.#instance) {
-      return Database.#instance;
-    }
-    Database.#instance = this;
-    this.connection = this.#connect();
-  }
-
-  #connect() {
-    // Connection logic
-    return { connected: true };
-  }
-
-  query(sql) {
-    console.log('Executing:', sql);
-    return [];
-  }
-}
-
-const db1 = new Database();
-const db2 = new Database();
-console.log(db1 === db2); // true
-```
-
-### Observer Pattern
-```javascript
-class Subject {
-  #observers = new Set();
-
-  subscribe(observer) {
-    this.#observers.add(observer);
-  }
-
-  unsubscribe(observer) {
-    this.#observers.delete(observer);
-  }
-
-  notify(data) {
-    this.#observers.forEach(observer => observer.update(data));
-  }
-}
-
-class Observer {
-  update(data) {
-    console.log('Received update:', data);
-  }
-}
-```
-
 ## Anti-Patterns to Avoid
 
 ### 1. Callback Hell
+
 ```javascript
 // Bad
-getData(function(a) {
-  getMoreData(a, function(b) {
-    getMoreData(b, function(c) {
+getData(function (a) {
+  getMoreData(a, function (b) {
+    getMoreData(b, function (c) {
       console.log(c);
     });
   });
@@ -708,29 +360,34 @@ console.log(c);
 ```
 
 ### 2. Modifying Built-in Prototypes
+
 ```javascript
 // Bad - NEVER DO THIS
-Array.prototype.first = function() {
+Array.prototype.first = function () {
   return this[0];
 };
 
 // Good - Use composition
-const first = arr => arr[0];
+const first = (arr) => arr[0];
 ```
 
 ### 3. Using == Instead of ===
+
 ```javascript
 // Bad
-if (x == y) { }
+if (x == y) {
+}
 
 // Good
-if (x === y) { }
+if (x === y) {
+}
 ```
 
 ### 4. Not Handling Errors
+
 ```javascript
 // Bad
-const data = await fetch('/api/data').then(r => r.json());
+const data = await fetch('/api/data').then((r) => r.json());
 
 // Good
 try {
@@ -743,6 +400,7 @@ try {
 ```
 
 ### 5. Blocking the Event Loop
+
 ```javascript
 // Bad
 function processLargeArray(items) {
@@ -756,8 +414,8 @@ function processLargeArray(items) {
 async function processLargeArray(items, chunkSize = 100) {
   for (let i = 0; i < items.length; i += chunkSize) {
     const chunk = items.slice(i, i + chunkSize);
-    chunk.forEach(item => heavyComputation(item));
-    await new Promise(resolve => setImmediate(resolve)); // Yield to event loop
+    chunk.forEach((item) => heavyComputation(item));
+    await new Promise((resolve) => setImmediate(resolve)); // Yield to event loop
   }
 }
 ```
@@ -765,6 +423,7 @@ async function processLargeArray(items, chunkSize = 100) {
 ## Development Workflow
 
 ### Package.json Scripts
+
 ```json
 {
   "scripts": {
@@ -779,6 +438,7 @@ async function processLargeArray(items, chunkSize = 100) {
 ```
 
 ### ESLint Configuration
+
 ```javascript
 // eslint.config.js
 export default [
@@ -789,16 +449,16 @@ export default [
       globals: {
         browser: true,
         node: true,
-        es2024: true
-      }
+        es2024: true,
+      },
     },
     rules: {
       'no-console': 'warn',
       'no-unused-vars': 'error',
       'prefer-const': 'error',
-      'no-var': 'error'
-    }
-  }
+      'no-var': 'error',
+    },
+  },
 ];
 ```
 
@@ -816,3 +476,10 @@ When writing JavaScript code:
 8. **Security**: Validate inputs, sanitize outputs
 
 Always write clean, readable, and maintainable JavaScript code that follows modern best practices and industry standards.
+
+## Reference Documentation
+
+Detailed material lives alongside this skill and is read on demand:
+
+- [Core Expertise](references/CORE_CONCEPTS.md) — Modern JavaScript (ES2024+), Node.js Development, Modern Tooling, Testing
+- [Common Patterns](references/PATTERNS.md) — Module Pattern, Factory Pattern, Singleton Pattern, Observer Pattern

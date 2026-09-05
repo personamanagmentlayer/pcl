@@ -1,7 +1,10 @@
 ---
 name: standards-expert
-version: 1.0.0
-description: Expert-level ISO standards, quality management, compliance, and certification
+version: 1.1.0
+description: >-
+  Expert-level ISO standards, quality management, compliance, and certification. Use when
+  the user mentions ISO standards, quality management, compliance, or certification, or
+  when the task involves Compliance & Certification, Auditing, or Continuous Improvement.
 category: professional
 tags: [iso, standards, quality-management, compliance, certification]
 allowed-tools:
@@ -17,6 +20,7 @@ Expert guidance for ISO standards, quality management systems, compliance, and c
 ## Core Concepts
 
 ### ISO Standards
+
 - ISO 9001 (Quality Management)
 - ISO 27001 (Information Security)
 - ISO 14001 (Environmental Management)
@@ -25,6 +29,7 @@ Expert guidance for ISO standards, quality management systems, compliance, and c
 - ISO 22000 (Food Safety)
 
 ### Quality Management
+
 - Plan-Do-Check-Act (PDCA) cycle
 - Process approach
 - Risk-based thinking
@@ -33,6 +38,7 @@ Expert guidance for ISO standards, quality management systems, compliance, and c
 - Management review
 
 ### Compliance & Certification
+
 - Gap analysis
 - Internal audits
 - Corrective actions
@@ -413,6 +419,7 @@ class DocumentControl:
 ## Best Practices
 
 ### Implementation
+
 - Get management commitment
 - Conduct gap analysis first
 - Define clear scope
@@ -422,6 +429,7 @@ class DocumentControl:
 - Monitor effectiveness
 
 ### Auditing
+
 - Plan audits regularly
 - Use competent auditors
 - Focus on process effectiveness
@@ -431,6 +439,7 @@ class DocumentControl:
 - Share lessons learned
 
 ### Continuous Improvement
+
 - Regular management reviews
 - Monitor KPIs consistently
 - Respond to changes

@@ -1,7 +1,11 @@
 ---
 name: ai-engineer-expert
-version: 1.0.0
-description: Expert-level AI implementation, deployment, LLM integration, and production AI systems
+version: 1.1.0
+description: >-
+  Expert-level AI implementation, deployment, LLM integration, and production AI systems.
+  Use when the user mentions AI engineering, LLM, deployment, production AI, or
+  integration, or when the task involves LLM Patterns, LLM Integration, or Production
+  Systems.
 category: ai
 tags: [ai-engineering, llm, deployment, production-ai, integration]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for implementing AI systems, LLM integration, prompt engineering
 ## Core Concepts
 
 ### AI Engineering
+
 - LLM integration and orchestration
 - Prompt engineering and optimization
 - RAG (Retrieval-Augmented Generation)
@@ -26,6 +31,7 @@ Expert guidance for implementing AI systems, LLM integration, prompt engineering
 - AI agent systems
 
 ### Production AI
+
 - Model deployment strategies
 - API design for AI services
 - Rate limiting and cost control
@@ -34,6 +40,7 @@ Expert guidance for implementing AI systems, LLM integration, prompt engineering
 - Security and safety
 
 ### LLM Patterns
+
 - Chain-of-thought prompting
 - Few-shot learning
 - System/user message design
@@ -406,6 +413,7 @@ async def chat(request: ChatRequest, user_id: str = Depends(get_user_id)):
 ## Best Practices
 
 ### LLM Integration
+
 - Implement fallback providers
 - Use streaming for better UX
 - Cache responses where appropriate
@@ -414,6 +422,7 @@ async def chat(request: ChatRequest, user_id: str = Depends(get_user_id)):
 - Version prompts and track changes
 
 ### Production Systems
+
 - Implement circuit breakers
 - Add comprehensive logging
 - Monitor latency and errors
@@ -422,6 +431,7 @@ async def chat(request: ChatRequest, user_id: str = Depends(get_user_id)):
 - Test edge cases thoroughly
 
 ### Security
+
 - Validate and sanitize inputs
 - Implement authentication/authorization
 - Never expose API keys in logs

@@ -13,7 +13,13 @@
  * - Circular dependency detection
  */
 
-import { existsSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  writeFileSync,
+  rmSync,
+} from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { SkillResolver, SkillRefType } from '../../src/skills/skill-resolver';
@@ -126,7 +132,9 @@ let claudeSkillsDir: string;
 let stdlibDir: string;
 
 function setupTestDirs(): void {
-  testDir = join(tmpdir(), `pcl-skill-resolver-test-${Date.now()}`);
+  // Atomic creation with a random suffix and 0700 permissions; a predictable
+  // name under the shared temp directory is world-readable and racy.
+  testDir = mkdtempSync(join(tmpdir(), 'pcl-skill-resolver-test-'));
   claudeSkillsDir = join(testDir, '.claude', 'skills');
   stdlibDir = join(testDir, 'stdlib', 'skills');
 
@@ -608,6 +616,55 @@ describe('SkillResolver - Stdlib Resolution', () => {
     const result = await resolver.resolve('my_skill');
 
     expect(result.ok).toBe(true);
+  });
+
+  // The standard library stores each skill as its own directory, grouped by
+  // category. Resolving only `<stdlibDir>/<name>.md` made every stdlib skill
+  // unresolvable; these guard the layout the library actually uses.
+  it('should resolve a skill stored as <name>/SKILL.md', async () => {
+    const skillDir = join(stdlibDir, 'code-review-expert');
+    mkdirSync(skillDir, { recursive: true });
+    writeSkillFile(skillDir, 'SKILL.md', minimalSkillMd);
+
+    const result = await resolver.resolve('code-review-expert');
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.type).toBe(SkillRefType.STDLIB);
+      expect(result.value.source).toContain('SKILL.md');
+    }
+  });
+
+  it('should resolve a skill stored as <category>/<name>/SKILL.md', async () => {
+    const skillDir = join(stdlibDir, 'languages', 'python-expert');
+    mkdirSync(skillDir, { recursive: true });
+    writeSkillFile(skillDir, 'SKILL.md', minimalSkillMd);
+
+    const result = await resolver.resolve('python-expert');
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.source).toContain('python-expert');
+    }
+  });
+
+  it('should not treat a category directory as a skill', async () => {
+    mkdirSync(join(stdlibDir, 'languages'), { recursive: true });
+
+    const result = await resolver.resolve('languages');
+
+    expect(result.ok).toBe(false);
+  });
+
+  it('should reject a stdlib reference containing a path separator', async () => {
+    const skillDir = join(stdlibDir, 'languages', 'python-expert');
+    mkdirSync(skillDir, { recursive: true });
+    writeSkillFile(skillDir, 'SKILL.md', minimalSkillMd);
+
+    for (const ref of ['languages/python-expert', '..', '../secrets']) {
+      const result = await resolver.resolve(ref);
+      expect(result.ok).toBe(false);
+    }
   });
 });
 

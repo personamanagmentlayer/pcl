@@ -1,7 +1,10 @@
 ---
 name: django-expert
-version: 1.0.0
-description: Expert-level Django development for robust Python web applications with ORM, admin, and authentication
+version: 1.1.0
+description: >-
+  Expert-level Django development for robust Python web applications with ORM, admin, and
+  authentication. Use when the user mentions Python, web, ORM, MVC, or Django REST
+  Framework, or when the task involves Django Architecture.
 category: frameworks
 tags: [django, python, web, orm, mvc, rest-framework]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for Django - high-level Python web framework for building secure
 ## Core Concepts
 
 ### Django Architecture
+
 - MVT (Model-View-Template) pattern
 - ORM (Object-Relational Mapping)
 - Admin interface
@@ -27,6 +31,7 @@ Expert guidance for Django - high-level Python web framework for building secure
 - Forms and validation
 
 ### Key Components
+
 - Models (database tables)
 - Views (business logic)
 - Templates (presentation)

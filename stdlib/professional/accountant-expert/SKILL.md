@@ -1,7 +1,11 @@
 ---
 name: accountant-expert
-version: 1.0.0
-description: Expert-level accounting, tax, financial reporting, and accounting systems
+version: 1.1.0
+description: >-
+  Expert-level accounting, tax, financial reporting, and accounting systems. Use when the
+  user mentions accounting, tax, financial reporting, GAAP, or IFRS, or when the task
+  involves Accounting Principles, Financial Statements, Tax & Compliance, or Accounting
+  Systems.
 category: professional
 tags: [accounting, tax, financial-reporting, gaap, ifrs]
 allowed-tools:
@@ -17,6 +21,7 @@ Expert guidance for accounting systems, financial reporting, tax compliance, and
 ## Core Concepts
 
 ### Accounting Principles
+
 - GAAP (Generally Accepted Accounting Principles)
 - IFRS (International Financial Reporting Standards)
 - Double-entry bookkeeping
@@ -25,6 +30,7 @@ Expert guidance for accounting systems, financial reporting, tax compliance, and
 - Audit and assurance
 
 ### Financial Statements
+
 - Balance sheet (Statement of Financial Position)
 - Income statement (P&L)
 - Cash flow statement
@@ -32,6 +38,7 @@ Expert guidance for accounting systems, financial reporting, tax compliance, and
 - Notes to financial statements
 
 ### Tax & Compliance
+
 - Corporate tax planning
 - VAT/Sales tax management
 - Payroll tax compliance
@@ -299,6 +306,7 @@ class FinancialRatios:
 ## Best Practices
 
 ### Accounting Systems
+
 - Implement proper internal controls
 - Segregation of duties
 - Regular account reconciliations
@@ -308,6 +316,7 @@ class FinancialRatios:
 - Year-end closing procedures
 
 ### Financial Reporting
+
 - Follow GAAP/IFRS standards
 - Consistent accounting policies
 - Clear disclosure of estimates
@@ -316,6 +325,7 @@ class FinancialRatios:
 - Management discussion and analysis (MD&A)
 
 ### Tax Compliance
+
 - Maintain organized tax records
 - Track deductible expenses properly
 - Timely tax filing and payments

@@ -1,7 +1,11 @@
 ---
 name: microservices-expert
-version: 1.0.0
-description: Expert-level microservices architecture, patterns, service mesh, and distributed systems
+version: 1.1.0
+description: >-
+  Expert-level microservices architecture, patterns, service mesh, and distributed systems.
+  Use when the user mentions distributed systems, service mesh, or architecture, or when
+  the task involves Microservices Principles, Architecture Patterns, Communication, or Data
+  Management.
 category: api
 tags: [microservices, distributed-systems, service-mesh, architecture]
 allowed-tools:
@@ -17,6 +21,7 @@ Expert guidance for microservices architecture, design patterns, service communi
 ## Core Concepts
 
 ### Microservices Principles
+
 - Single responsibility per service
 - Independently deployable
 - Decentralized data management
@@ -25,6 +30,7 @@ Expert guidance for microservices architecture, design patterns, service communi
 - Evolutionary design
 
 ### Architecture Patterns
+
 - API Gateway
 - Service Discovery
 - Circuit Breaker
@@ -33,6 +39,7 @@ Expert guidance for microservices architecture, design patterns, service communi
 - CQRS
 
 ### Communication
+
 - Synchronous (HTTP/REST, gRPC)
 - Asynchronous (Message queues, Events)
 - Service mesh
@@ -443,6 +450,7 @@ event_bus.subscribe("order.created", handle_order_created)
 ## Best Practices
 
 ### Design
+
 - Keep services small and focused
 - Design for failure (circuit breakers, retries)
 - Use asynchronous communication when possible
@@ -452,6 +460,7 @@ event_bus.subscribe("order.created", handle_order_created)
 - Implement health checks
 
 ### Data Management
+
 - Database per service
 - Use eventual consistency
 - Implement saga pattern for distributed transactions
@@ -460,6 +469,7 @@ event_bus.subscribe("order.created", handle_order_created)
 - Avoid distributed joins
 
 ### Operations
+
 - Implement distributed tracing
 - Centralized logging
 - Monitor service health

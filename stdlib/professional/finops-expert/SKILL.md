@@ -1,14 +1,17 @@
 ---
 name: finops-expert
-version: 1.0.0
-description: Expert-level cloud financial operations, cost optimization, and cloud economics
+version: 2.0.0
+description: >-
+  Expert-level cloud financial operations, cost optimization, and cloud economics. Use when
+  the user mentions cloud cost, optimization, cloud economics, or AWS cost, or when the
+  task involves FinOps Fundamentals, Cost Management, FinOps Practices, or Cost Visibility.
 category: professional
 tags: [finops, cloud-cost, optimization, cloud-economics, aws-cost]
 allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash(*)
+  - Bash(python:*, python3:*, pip:*, pytest:*)
 ---
 
 # FinOps Expert
@@ -18,6 +21,7 @@ Expert guidance for cloud financial operations, cost optimization, resource mana
 ## Core Concepts
 
 ### FinOps Fundamentals
+
 - Cloud cost visibility
 - Usage optimization
 - Rate optimization
@@ -26,6 +30,7 @@ Expert guidance for cloud financial operations, cost optimization, resource mana
 - Showback and chargeback
 
 ### Cost Management
+
 - Reserved Instances (RIs)
 - Savings Plans
 - Spot instances
@@ -34,6 +39,7 @@ Expert guidance for cloud financial operations, cost optimization, resource mana
 - Storage lifecycle policies
 
 ### FinOps Practices
+
 - Tagging strategies
 - Budgets and alerts
 - Cost allocation
@@ -359,6 +365,7 @@ class BudgetManager:
 ## Best Practices
 
 ### Cost Visibility
+
 - Implement comprehensive tagging
 - Enable Cost Explorer
 - Set up cost allocation tags
@@ -367,6 +374,7 @@ class BudgetManager:
 - Monitor costs daily
 
 ### Optimization
+
 - Right-size resources regularly
 - Use Reserved Instances/Savings Plans
 - Leverage Spot instances for flexible workloads
@@ -375,6 +383,7 @@ class BudgetManager:
 - Use storage lifecycle policies
 
 ### Governance
+
 - Set budgets and alerts
 - Implement approval workflows
 - Regular cost reviews

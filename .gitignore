@@ -233,3 +233,7 @@ __marimo__/
 .claude/*
 # Project Management
 .roadmap/
+
+# Python bytecode from the stdlib maintenance scripts
+__pycache__/
+*.py[cod]

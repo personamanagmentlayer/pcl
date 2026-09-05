@@ -1,7 +1,11 @@
 ---
 name: research-expert
-version: 1.0.0
-description: Expert-level research methodology, academic writing, statistical analysis, and scientific investigation
+version: 1.1.0
+description: >-
+  Expert-level research methodology, academic writing, statistical analysis, and scientific
+  investigation. Use when the user mentions methodology, statistics, academic writing, or
+  experimental design, or when the task involves Research Design, Statistical Analysis, or
+  Data Analysis.
 category: scientific
 tags: [research, methodology, statistics, academic-writing, experimental-design]
 allowed-tools:
@@ -17,6 +21,7 @@ Expert guidance for research methodology, experimental design, statistical analy
 ## Core Concepts
 
 ### Research Design
+
 - Experimental vs observational studies
 - Randomized controlled trials (RCTs)
 - Cross-sectional, longitudinal, cohort studies
@@ -25,6 +30,7 @@ Expert guidance for research methodology, experimental design, statistical analy
 - Sample size determination
 
 ### Statistical Analysis
+
 - Descriptive statistics
 - Hypothesis testing
 - Confidence intervals
@@ -34,6 +40,7 @@ Expert guidance for research methodology, experimental design, statistical analy
 - Multiple testing correction
 
 ### Academic Writing
+
 - Literature review
 - Research proposals
 - Manuscript structure (IMR AD)
@@ -334,6 +341,7 @@ class LiteratureReview:
 ## Best Practices
 
 ### Research Design
+
 - Pre-register studies when possible
 - Calculate adequate sample sizes
 - Use appropriate controls
@@ -343,6 +351,7 @@ class LiteratureReview:
 - Document protocol deviations
 
 ### Data Analysis
+
 - Pre-specify analysis plan
 - Check statistical assumptions
 - Report effect sizes, not just p-values
@@ -352,6 +361,7 @@ class LiteratureReview:
 - Make data and code available
 
 ### Academic Writing
+
 - Follow journal guidelines
 - Use clear, precise language
 - Report methodology in detail

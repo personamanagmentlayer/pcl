@@ -1,14 +1,17 @@
 ---
 name: performance-expert
-version: 1.0.0
-description: Expert-level performance optimization, profiling, benchmarking, and tuning
+version: 2.0.0
+description: >-
+  Expert-level performance optimization, profiling, benchmarking, and tuning. Use when the
+  user mentions optimization, profiling, benchmarking, or scalability, or when the task
+  involves Performance Fundamentals, Optimization Areas, Profiling Tools, or General.
 category: devops
 tags: [performance, optimization, profiling, benchmarking, scalability]
 allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash(*)
+  - Bash(python:*, python3:*, pip:*, pytest:*)
 ---
 
 # Performance Expert
@@ -18,6 +21,7 @@ Expert guidance for performance optimization, profiling, benchmarking, and syste
 ## Core Concepts
 
 ### Performance Fundamentals
+
 - Response time vs throughput
 - Latency vs bandwidth
 - CPU, memory, I/O bottlenecks
@@ -26,6 +30,7 @@ Expert guidance for performance optimization, profiling, benchmarking, and syste
 - Load balancing
 
 ### Optimization Areas
+
 - Algorithm optimization
 - Database optimization
 - Network optimization
@@ -34,6 +39,7 @@ Expert guidance for performance optimization, profiling, benchmarking, and syste
 - Infrastructure tuning
 
 ### Profiling Tools
+
 - CPU profilers
 - Memory profilers
 - Network profilers
@@ -245,74 +251,74 @@ class CacheOptimizer:
 ```javascript
 // Debouncing for expensive operations
 function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
     };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 // Example: Debounce search input
 const searchInput = document.getElementById('search');
 const debouncedSearch = debounce((query) => {
-    // Expensive search operation
-    fetchSearchResults(query);
+  // Expensive search operation
+  fetchSearchResults(query);
 }, 300);
 
 searchInput.addEventListener('input', (e) => {
-    debouncedSearch(e.target.value);
+  debouncedSearch(e.target.value);
 });
 
 // Lazy loading images
 const lazyLoadImages = () => {
-    const images = document.querySelectorAll('img[data-src]');
+  const images = document.querySelectorAll('img[data-src]');
 
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                imageObserver.unobserve(img);
-            }
-        });
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+        imageObserver.unobserve(img);
+      }
     });
+  });
 
-    images.forEach(img => imageObserver.observe(img));
+  images.forEach((img) => imageObserver.observe(img));
 };
 
 // Virtual scrolling for large lists
 class VirtualScroller {
-    constructor(container, items, itemHeight) {
-        this.container = container;
-        this.items = items;
-        this.itemHeight = itemHeight;
-        this.visibleItems = Math.ceil(container.clientHeight / itemHeight);
-        this.render();
-    }
+  constructor(container, items, itemHeight) {
+    this.container = container;
+    this.items = items;
+    this.itemHeight = itemHeight;
+    this.visibleItems = Math.ceil(container.clientHeight / itemHeight);
+    this.render();
+  }
 
-    render() {
-        const scrollTop = this.container.scrollTop;
-        const startIndex = Math.floor(scrollTop / this.itemHeight);
-        const endIndex = startIndex + this.visibleItems;
+  render() {
+    const scrollTop = this.container.scrollTop;
+    const startIndex = Math.floor(scrollTop / this.itemHeight);
+    const endIndex = startIndex + this.visibleItems;
 
-        // Only render visible items
-        const visibleData = this.items.slice(startIndex, endIndex);
+    // Only render visible items
+    const visibleData = this.items.slice(startIndex, endIndex);
 
-        this.container.innerHTML = visibleData
-            .map(item => `<div style="height: ${this.itemHeight}px">${item}</div>`)
-            .join('');
-    }
+    this.container.innerHTML = visibleData
+      .map((item) => `<div style="height: ${this.itemHeight}px">${item}</div>`)
+      .join('');
+  }
 }
 
 // Code splitting with dynamic imports
 async function loadModule() {
-    const module = await import('./heavy-module.js');
-    module.init();
+  const module = await import('./heavy-module.js');
+  module.init();
 }
 ```
 
@@ -410,6 +416,7 @@ class PerformanceTest(HttpUser):
 ## Best Practices
 
 ### General
+
 - Measure before optimizing
 - Focus on bottlenecks
 - Use appropriate data structures
@@ -419,6 +426,7 @@ class PerformanceTest(HttpUser):
 - Implement pagination
 
 ### Database
+
 - Create proper indexes
 - Avoid N+1 queries
 - Use eager loading
@@ -428,6 +436,7 @@ class PerformanceTest(HttpUser):
 - Implement caching
 
 ### Frontend
+
 - Minimize bundle size
 - Code splitting
 - Lazy loading
@@ -437,6 +446,7 @@ class PerformanceTest(HttpUser):
 - Debounce/throttle events
 
 ### Backend
+
 - Use async for I/O
 - Implement caching
 - Connection pooling

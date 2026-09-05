@@ -1,14 +1,14 @@
 # PCL Standard Library (stdlib)
 
-**Version**: 2.0.0
+**Version**: 3.1.0
 **Status**: ✅ Production Ready
-**Total Skills**: 173 Expert-Level Skills
+**Total Skills**: 191 Expert-Level Skills
 
 ---
 
 ## 🎯 What is the Standard Library?
 
-The **PCL Standard Library** is a comprehensive collection of **173 expert-level skills** for AI agent personas, providing deep domain expertise across programming languages, frameworks, cloud platforms, data systems, security, and industry verticals.
+The **PCL Standard Library** is a comprehensive collection of **191 expert-level skills** for AI agent personas, providing deep domain expertise across programming languages, frameworks, cloud platforms, data systems, security, and industry verticals.
 
 Each skill represents **expert-level mastery** in a specific domain with:
 
@@ -20,29 +20,31 @@ Each skill represents **expert-level mastery** in a specific domain with:
 
 ## 📊 Library Statistics
 
-- **Total Skills**: 173 expert-level skills
-- **Categories**: 14 major domains
-- **Total Content**: ~120,000+ lines of expert knowledge
+- **Total Skills**: 191 expert-level skills
+- **Categories**: 15 major domains
+- **Total Content**: ~114,000 lines of expert knowledge (48,000 in skill entry
+  points, 66,000 in on-demand reference documents)
 - **Coverage**: Languages, Frameworks, Cloud, Data, Security, DevOps, Industries, and more
 
 ## 🗂️ Skill Categories
 
 | Category              | Count | Examples                                                               |
 | --------------------- | ----- | ---------------------------------------------------------------------- |
-| **Languages**         | 22    | Python, TypeScript, Rust, Go, Java, Kotlin, Scala, Haskell, Julia, Zig |
-| **Frameworks**        | 21    | React, Vue, Angular, Next.js, Django, Spring Boot, Flutter, Tauri      |
-| **DevOps**            | 17    | Kubernetes, Docker, Terraform, ArgoCD, Prometheus, Grafana, Istio      |
-| **Domains**           | 76    | Healthcare, Finance, Legal, Manufacturing, Energy, AgTech, Web3        |
-| **Data & Analytics**  | 14    | Snowflake, Databricks, Airflow, dbt, Tableau, Power BI, Kafka          |
+| **Domains**           | 58    | Healthcare, Finance, LegalTech, Manufacturing, Energy, AgTech, Web3    |
+| **Workflows**         | 4     | TDD, refactoring, debugging, code review — procedures, not knowledge   |
+| **Languages**         | 23    | Python, TypeScript, Rust, Go, Java, Kotlin, Scala, Haskell, Julia, Zig |
+| **DevOps**            | 16    | Kubernetes, Docker, Terraform, ArgoCD, Prometheus, Grafana, Istio      |
+| **Frameworks**        | 15    | React, Vue, Angular, Next.js, Django, Spring Boot, Flutter, Tauri      |
+| **Data & Analytics**  | 17    | Snowflake, Databricks, Airflow, dbt, Tableau, Power BI, Kafka          |
 | **Security**          | 12    | Penetration Testing, Zero Trust, GDPR, SOC2, Cryptography              |
-| **QA & Testing**      | 12    | Playwright, Cypress, Jest, Selenium, Load Testing, Chaos Engineering   |
+| **Tools**             | 12    | Git, Slack, Teams, Discord, WebRTC, Video Streaming, Code Review       |
+| **QA & Testing**      | 7     | Playwright, Cypress, Jest, Selenium, Load Testing, Chaos Engineering   |
 | **API & Integration** | 6     | REST, GraphQL, gRPC, Microservices, API Design                         |
+| **Professional**      | 5     | Banking, Legal, Accounting, FinOps, Standards                          |
+| **AI & ML**           | 7     | Machine Learning, AI Architecture, Data Science                        |
 | **Cloud Platforms**   | 4     | AWS, Azure, GCP, Cloudflare                                            |
-| **AI & ML**           | 4     | Machine Learning, AI Architecture, Data Science                        |
-| **Tools**             | 5     | Slack, Teams, Discord, WebRTC, Video Streaming                         |
-| **Professional**      | 6     | Banking, Legal, Accounting, FinOps, Auditing                           |
 | **Scientific**        | 3     | Quantum Computing, Bioinformatics, Research                            |
-| **Design**            | 1     | System & UX Design                                                     |
+| **Design**            | 2     | System & UX Design                                                     |
 
 See [SKILLS_INVENTORY.md](SKILLS_INVENTORY.md) for the complete skill list.
 
@@ -52,11 +54,14 @@ See [SKILLS_INVENTORY.md](SKILLS_INVENTORY.md) for the complete skill list.
 
 ```bash
 # List all skills
-find stdlib -name "SKILL.md" -o -name "*-expert.md"
+find stdlib -name SKILL.md
 
-# Search for specific domain
-find stdlib -name "*react*"
-find stdlib -name "*kubernetes*"
+# Search for a specific domain
+find stdlib -type d -name "*react*"
+find stdlib -type d -name "*kubernetes*"
+
+# Machine-readable index
+cat stdlib/catalog/skill-index.json
 ```
 
 ### 2. Load Skills into a Persona
@@ -406,9 +411,13 @@ skills = ["penetration-testing-expert", "zero-trust-expert"]
 
 ## 📊 Documentation
 
-- **[SKILLS_INVENTORY.md](SKILLS_INVENTORY.md)** - Complete skill list organized by category
+- **[CHANGELOG.md](CHANGELOG.md)** - Per-skill versioning and migration notes
+- **[SKILLS_INVENTORY.md](SKILLS_INVENTORY.md)** - Complete skill list with sizes and reference files
 - **[DIRECTORY_STRUCTURE.md](DIRECTORY_STRUCTURE.md)** - File organization and structure
-- **[COMPLETE_LIBRARY_MANIFEST.md](COMPLETE_LIBRARY_MANIFEST.md)** - Full manifest with statistics
+- **[catalog/](catalog/)** - Machine-readable index (JSON + YAML)
+
+Both documents are generated; rerun `python scripts/generate-skill-inventory.py`
+after changing the tree rather than editing them.
 
 ## 🔧 Development & Contributing
 
@@ -425,10 +434,70 @@ cp -r stdlib/languages/python-expert stdlib/languages/my-skill
 3. **Validate the skill**:
 
 ```bash
-python scripts/validate-skill.py stdlib/languages/my-skill
+python scripts/validate-skills.py
+```
+
+### Maintenance commands
+
+```bash
+python scripts/validate-skills.py           # conformance gate (must pass)
+python scripts/split-skill-references.py    # keep SKILL.md under 500 lines
+python scripts/generate-skill-catalog.py    # rebuild catalog/
+python scripts/generate-skill-inventory.py  # rebuild inventory + structure docs
 ```
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
+
+## 📈 What's New in v3.1.0
+
+**17 new skills**, taking the library from 174 to 191 and adding a fifteenth
+category. Chosen by cross-referencing coverage gaps against observed usage —
+developer survey data and the install rankings of public agent-skill registries.
+
+- **`workflows/` (new category, 4 skills)** — `tdd-workflow`,
+  `refactoring-workflow`, `debugging-workflow`, `code-review-workflow`.
+  Procedures rather than knowledge: the shape that dominates real agent-skill
+  usage and that the library had none of.
+- **Applied AI (3)** — `llm-engineering-expert`, `rag-expert`,
+  `agent-engineering-expert`. The largest coverage gap: the library mentioned
+  LLMs in tags but had no skill on prompting, retrieval or tool use.
+- **Capabilities (2)** — `document-processing-expert` (PDF, DOCX, XLSX, PPTX in
+  one skill), `browser-automation-expert` (distinct from `playwright-expert`,
+  which is for testing your own application).
+- **Data (3)** — `mysql-expert` (the second most used database, previously
+  absent), `analytical-databases-expert`, `stream-processing-expert`.
+- **Security (3)** — `secrets-management-expert`,
+  `supply-chain-security-expert` (OWASP A03 2025), `identity-access-expert`
+  (OWASP A01).
+- **Interface (1)** — `accessibility-expert`. The `design/` category held only
+  software architecture; WCAG conformance had no home.
+- **Meta (1)** — `skill-router`, for finding and composing skills across 191.
+
+Grouping was deliberate: five vector stores live inside `rag-expert`, four
+document formats inside `document-processing-expert`. Roughly fifty topics are
+covered by seventeen skills, with per-tool detail in `references/`.
+
+## 📈 What's New in v3.0.0
+
+**Agent Skills v1.0 conformance.** Every skill now passes
+`scripts/validate-skills.py`. **This release has breaking changes** — one skill
+removed, five moved, seven with capabilities withdrawn. See
+[CHANGELOG.md](CHANGELOG.md) for the migration notes.
+
+- **Uniform layout** — all 174 skills live at
+  `stdlib/<category>/<name>/SKILL.md`; 71 flat files were converted, and 5
+  directories renamed to match their declared `name:`.
+- **Repaired metadata** — 20 skills had an unparseable frontmatter block (an
+  H1 preceded it, and the key was `skill_id:` instead of `name:`), so tooling
+  saw no metadata at all; 21 more were missing `version:`.
+- **Discoverable descriptions** — every description states an explicit
+  `Use when ...` trigger naming the keywords and tasks that select the skill.
+- **Progressive disclosure** — 127 oversized skills were split, moving bulk
+  material into `references/` read on demand. A `SKILL.md` now averages 277
+  lines instead of 644, so activating a skill costs a fraction of the context
+  it did.
+- **Deduplicated** — the two overlapping legal-technology skills were merged
+  into `legaltech-expert`.
 
 ## 📈 What's New in v2.0.0
 

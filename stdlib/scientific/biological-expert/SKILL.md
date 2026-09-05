@@ -1,7 +1,11 @@
 ---
 name: biological-expert
-version: 1.0.0
-description: Expert-level biology, biotechnology, genetics, bioinformatics, and computational biology
+version: 1.1.0
+description: >-
+  Expert-level biology, biotechnology, genetics, bioinformatics, and computational biology.
+  Use when the user mentions biology, biotechnology, genetics, bioinformatics, or genomics,
+  or when the task involves Molecular Biology, Genomics & Bioinformatics, Systems Biology,
+  or Data Analysis.
 category: scientific
 tags: [biology, biotechnology, genetics, bioinformatics, genomics]
 allowed-tools:
@@ -18,6 +22,7 @@ Expert guidance for biology, biotechnology, genetics, bioinformatics, and comput
 ## Core Concepts
 
 ### Molecular Biology
+
 - DNA, RNA, and protein structure
 - Central dogma (transcription, translation)
 - Gene expression and regulation
@@ -26,6 +31,7 @@ Expert guidance for biology, biotechnology, genetics, bioinformatics, and comput
 - Protein folding and structure
 
 ### Genomics & Bioinformatics
+
 - DNA sequencing (Sanger, NGS, long-read)
 - Genome assembly and annotation
 - Sequence alignment (BLAST, BLAT)
@@ -34,6 +40,7 @@ Expert guidance for biology, biotechnology, genetics, bioinformatics, and comput
 - Phylogenetic analysis
 
 ### Systems Biology
+
 - Metabolic pathways
 - Protein-protein interactions
 - Gene regulatory networks
@@ -322,6 +329,7 @@ class RNASeqAnalyzer:
 ## Best Practices
 
 ### Data Analysis
+
 - Use appropriate statistical tests
 - Account for multiple testing correction
 - Validate results with independent methods
@@ -330,6 +338,7 @@ class RNASeqAnalyzer:
 - Maintain reproducible workflows
 
 ### Sequence Analysis
+
 - Quality control of sequencing data
 - Use appropriate reference genomes
 - Validate variant calls
@@ -338,6 +347,7 @@ class RNASeqAnalyzer:
 - Benchmark against known datasets
 
 ### Computational Biology
+
 - Use efficient data structures for large datasets
 - Parallelize computationally intensive tasks
 - Validate biological interpretations

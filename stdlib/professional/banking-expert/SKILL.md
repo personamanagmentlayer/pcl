@@ -1,7 +1,10 @@
 ---
 name: banking-expert
-version: 1.0.0
-description: Expert-level banking systems, core banking, regulations, and banking technology
+version: 1.1.0
+description: >-
+  Expert-level banking systems, core banking, regulations, and banking technology. Use when
+  the user mentions finance, core banking, regulations, or payments, or when the task
+  involves Banking Systems or Key Technologies.
 category: professional
 tags: [banking, finance, core-banking, regulations, payments]
 allowed-tools:
@@ -17,6 +20,7 @@ Expert guidance for banking systems, core banking platforms, regulatory complian
 ## Core Concepts
 
 ### Banking Systems
+
 - Core banking systems (CBS)
 - Account management
 - Transaction processing
@@ -25,6 +29,7 @@ Expert guidance for banking systems, core banking platforms, regulatory complian
 - Risk management systems
 
 ### Regulations
+
 - Basel III/IV capital requirements
 - Know Your Customer (KYC)
 - Anti-Money Laundering (AML)
@@ -33,6 +38,7 @@ Expert guidance for banking systems, core banking platforms, regulatory complian
 - Dodd-Frank Act
 
 ### Key Technologies
+
 - Real-time payment processing
 - Mobile banking
 - Open banking APIs

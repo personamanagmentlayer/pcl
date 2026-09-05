@@ -1,7 +1,10 @@
 ---
 name: spring-boot-expert
-version: 1.0.0
-description: Expert-level Spring Boot, Spring Framework, REST APIs, and microservices development
+version: 1.1.0
+description: >-
+  Expert-level Spring Boot, Spring Framework, REST APIs, and microservices development. Use
+  when the user mentions Java, Spring framework, REST APIs, or microservices, or when the
+  task involves Spring Boot Fundamentals.
 category: frameworks
 tags: [spring-boot, java, spring-framework, rest-api, microservices]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for Spring Boot development, Spring Framework, building REST API
 ## Core Concepts
 
 ### Spring Boot Fundamentals
+
 - Auto-configuration
 - Dependency injection
 - Spring Boot Starters
@@ -26,6 +30,7 @@ Expert guidance for Spring Boot development, Spring Framework, building REST API
 - Spring Boot Actuator
 
 ### Spring Framework
+
 - Spring Core (IoC, DI)
 - Spring Data JPA
 - Spring Security
@@ -34,6 +39,7 @@ Expert guidance for Spring Boot development, Spring Framework, building REST API
 - Spring Transaction Management
 
 ### Microservices
+
 - Service discovery
 - API Gateway
 - Circuit breakers
@@ -263,146 +269,6 @@ public interface UserMapper {
 }
 ```
 
-## Spring Security with JWT
-
-```java
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-@RequiredArgsConstructor
-public class SecurityConfig {
-
-    private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("/actuator/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-}
-
-@Component
-@RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
-
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        final String jwt = authHeader.substring(7);
-        final String userEmail = jwtService.extractUsername(jwt);
-
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
-        }
-
-        filterChain.doFilter(request, response);
-    }
-}
-
-@Service
-@RequiredArgsConstructor
-public class JwtService {
-
-    @Value("${jwt.secret}")
-    private String secretKey;
-
-    @Value("${jwt.expiration}")
-    private long jwtExpiration;
-
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public String generateToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, jwtExpiration);
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
-    ) {
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-}
-```
-
 ## Exception Handling
 
 ```java
@@ -508,104 +374,12 @@ server:
 
 jwt:
   secret: ${JWT_SECRET:your-secret-key-here}
-  expiration: 3600000  # 1 hour
+  expiration: 3600000 # 1 hour
 
 logging:
   level:
     root: INFO
     com.example: DEBUG
-```
-
-## Testing
-
-```java
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:application-test.properties")
-class UserControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @BeforeEach
-    void setUp() {
-        userRepository.deleteAll();
-    }
-
-    @Test
-    void shouldCreateUser() throws Exception {
-        UserCreateDto dto = new UserCreateDto("test@example.com", "password123");
-
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.email").value("test@example.com"));
-    }
-
-    @Test
-    void shouldGetUser() throws Exception {
-        User user = createTestUser();
-
-        mockMvc.perform(get("/api/users/{id}", user.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(user.getEmail()));
-    }
-
-    @Test
-    void shouldReturnNotFoundForInvalidId() throws Exception {
-        mockMvc.perform(get("/api/users/999"))
-                .andExpect(status().isNotFound());
-    }
-
-    private User createTestUser() {
-        User user = new User();
-        user.setEmail("test@example.com");
-        user.setPassword("hashed-password");
-        return userRepository.save(user);
-    }
-}
-
-// Service unit test
-@ExtendWith(MockitoExtension.class)
-class UserServiceTest {
-
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private UserMapper userMapper;
-
-    @InjectMocks
-    private UserService userService;
-
-    @Test
-    void shouldCreateUser() {
-        UserCreateDto dto = new UserCreateDto("test@example.com", "password123");
-        User user = new User();
-        UserDto expected = new UserDto(1L, "test@example.com", LocalDateTime.now());
-
-        when(userRepository.existsByEmail(dto.email())).thenReturn(false);
-        when(passwordEncoder.encode(dto.password())).thenReturn("hashed");
-        when(userRepository.save(any(User.class))).thenReturn(user);
-        when(userMapper.toDto(user)).thenReturn(expected);
-
-        UserDto result = userService.create(dto);
-
-        assertNotNull(result);
-        assertEquals(expected.email(), result.email());
-        verify(userRepository).save(any(User.class));
-    }
-}
 ```
 
 ## Best Practices
@@ -632,6 +406,13 @@ class UserServiceTest {
 ❌ Hardcoded configuration
 ❌ No transaction management
 ❌ Missing validation
+
+## Reference Documentation
+
+Detailed material lives alongside this skill and is read on demand:
+
+- [Spring Security with JWT](references/SPRING_SECURITY_WITH_JWT.md)
+- [Testing](references/TESTING.md)
 
 ## Resources
 

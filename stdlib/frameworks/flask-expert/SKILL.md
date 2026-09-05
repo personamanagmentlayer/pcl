@@ -1,7 +1,10 @@
 ---
 name: flask-expert
-version: 1.0.0
-description: Expert-level Flask web development, REST APIs, extensions, and production deployment
+version: 1.1.0
+description: >-
+  Expert-level Flask web development, REST APIs, extensions, and production deployment. Use
+  when the user mentions Python, web framework, REST APIs, or Jinja2, or when the task
+  involves Flask Fundamentals or Flask Extensions.
 category: frameworks
 tags: [flask, python, web-framework, rest-api, jinja2]
 allowed-tools:
@@ -18,6 +21,7 @@ Expert guidance for Flask web development, building REST APIs, using extensions,
 ## Core Concepts
 
 ### Flask Fundamentals
+
 - Routing and views
 - Request/response handling
 - Templates with Jinja2
@@ -26,6 +30,7 @@ Expert guidance for Flask web development, building REST APIs, using extensions,
 - Configuration management
 
 ### Flask Extensions
+
 - Flask-SQLAlchemy (ORM)
 - Flask-Migrate (database migrations)
 - Flask-Login (authentication)
@@ -35,6 +40,7 @@ Expert guidance for Flask web development, building REST APIs, using extensions,
 - Flask-Limiter (rate limiting)
 
 ### Best Practices
+
 - Application structure
 - Error handling
 - Testing
@@ -113,118 +119,6 @@ class Post(db.Model):
             'author': self.author.to_dict(),
             'created_at': self.created_at.isoformat()
         }
-```
-
-## REST API with Flask-RESTful
-
-```python
-from flask import Blueprint
-from flask_restful import Api, Resource, reqparse, fields, marshal_with
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from .models import db, User, Post
-
-api_bp = Blueprint('api', __name__)
-api = Api(api_bp)
-
-# Request parsers
-user_parser = reqparse.RequestParser()
-user_parser.add_argument('email', type=str, required=True, help='Email is required')
-user_parser.add_argument('password', type=str, required=True, help='Password is required')
-
-post_parser = reqparse.RequestParser()
-post_parser.add_argument('title', type=str, required=True)
-post_parser.add_argument('content', type=str, required=True)
-
-# Response marshalling
-user_fields = {
-    'id': fields.Integer,
-    'email': fields.String,
-    'created_at': fields.DateTime(dt_format='iso8601')
-}
-
-post_fields = {
-    'id': fields.Integer,
-    'title': fields.String,
-    'content': fields.String,
-    'author': fields.Nested(user_fields),
-    'created_at': fields.DateTime(dt_format='iso8601')
-}
-
-# Resources
-class UserListResource(Resource):
-    @marshal_with(user_fields)
-    def get(self):
-        """Get all users"""
-        page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', 20, type=int)
-
-        users = User.query.paginate(page=page, per_page=per_page)
-        return users.items
-
-    def post(self):
-        """Create new user"""
-        args = user_parser.parse_args()
-
-        if User.query.filter_by(email=args['email']).first():
-            return {'message': 'Email already exists'}, 400
-
-        user = User(email=args['email'])
-        user.set_password(args['password'])
-
-        db.session.add(user)
-        db.session.commit()
-
-        return user.to_dict(), 201
-
-class UserResource(Resource):
-    @marshal_with(user_fields)
-    def get(self, user_id):
-        """Get user by ID"""
-        user = User.query.get_or_404(user_id)
-        return user
-
-    @jwt_required()
-    def delete(self, user_id):
-        """Delete user"""
-        current_user_id = get_jwt_identity()
-
-        if current_user_id != user_id:
-            return {'message': 'Unauthorized'}, 403
-
-        user = User.query.get_or_404(user_id)
-        db.session.delete(user)
-        db.session.commit()
-
-        return '', 204
-
-class PostListResource(Resource):
-    @marshal_with(post_fields)
-    def get(self):
-        """Get all posts"""
-        posts = Post.query.order_by(Post.created_at.desc()).all()
-        return posts
-
-    @jwt_required()
-    def post(self):
-        """Create new post"""
-        args = post_parser.parse_args()
-        current_user_id = get_jwt_identity()
-
-        post = Post(
-            title=args['title'],
-            content=args['content'],
-            user_id=current_user_id
-        )
-
-        db.session.add(post)
-        db.session.commit()
-
-        return post.to_dict(), 201
-
-# Register resources
-api.add_resource(UserListResource, '/users')
-api.add_resource(UserResource, '/users/<int:user_id>')
-api.add_resource(PostListResource, '/posts')
 ```
 
 ## Authentication with JWT
@@ -566,6 +460,12 @@ gunicorn -w 4 \
 ❌ No authentication
 ❌ Exposing sensitive data
 ❌ Not using blueprints
+
+## Reference Documentation
+
+Detailed material lives alongside this skill and is read on demand:
+
+- [REST API with Flask-RESTful](references/REST_API_WITH_FLASK_RESTFUL.md)
 
 ## Resources
 

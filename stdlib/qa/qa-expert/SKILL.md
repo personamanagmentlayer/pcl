@@ -1,14 +1,17 @@
 ---
 name: qa-expert
-version: 1.0.0
-description: Expert-level quality assurance, testing strategies, automation, and QA processes
+version: 2.0.0
+description: >-
+  Expert-level quality assurance, testing strategies, automation, and QA processes. Use
+  when the user mentions testing, test automation, quality assurance, or Selenium, or when
+  the task involves Testing Types, QA Processes, Test Strategy, or Defect Management.
 category: qa
 tags: [qa, testing, test-automation, quality-assurance, selenium]
 allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash(*)
+  - Bash(python:*, python3:*, pip:*, pytest:*)
 ---
 
 # Quality Assurance Expert
@@ -18,6 +21,7 @@ Expert guidance for quality assurance, testing strategies, test automation, and 
 ## Core Concepts
 
 ### Testing Types
+
 - Unit testing
 - Integration testing
 - System testing
@@ -27,6 +31,7 @@ Expert guidance for quality assurance, testing strategies, test automation, and 
 - Security testing
 
 ### Test Automation
+
 - Selenium WebDriver
 - Cypress, Playwright
 - API testing (Postman, REST Assured)
@@ -35,6 +40,7 @@ Expert guidance for quality assurance, testing strategies, test automation, and 
 - Test frameworks (JUnit, pytest, Jest)
 
 ### QA Processes
+
 - Test planning
 - Test case design
 - Defect management
@@ -390,6 +396,7 @@ class DefectTracker:
 ## Best Practices
 
 ### Test Strategy
+
 - Define clear test objectives
 - Use risk-based testing
 - Maintain test coverage metrics
@@ -399,6 +406,7 @@ class DefectTracker:
 - Review and update test cases
 
 ### Automation
+
 - Follow Page Object Model
 - Make tests independent
 - Use explicit waits
@@ -408,6 +416,7 @@ class DefectTracker:
 - Monitor test stability
 
 ### Defect Management
+
 - Write clear bug reports
 - Include reproduction steps
 - Attach screenshots/logs

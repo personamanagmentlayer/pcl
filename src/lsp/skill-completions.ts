@@ -10,9 +10,10 @@ import {
   InsertTextFormat,
   MarkupKind,
 } from 'vscode-languageserver/node';
-import { readdir, readFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { existsSync } from 'fs';
+import { findSkillFiles } from '../skills/skill-discovery';
 import { parseSkillMd } from '../skills/skill-loader';
 
 /**
@@ -286,12 +287,10 @@ export class SkillCompletionProvider {
       }
 
       try {
-        const files = await readdir(dir);
-        const mdFiles = files.filter((f) => f.endsWith('.md'));
+        const skillFiles = await findSkillFiles(dir);
 
-        for (const file of mdFiles) {
+        for (const filePath of skillFiles) {
           try {
-            const filePath = join(dir, file);
             const content = await readFile(filePath, 'utf-8');
             const skill = parseSkillMd(content);
 
@@ -342,8 +341,8 @@ export class SkillCompletionProvider {
     // Project skills directory
     dirs.push(join(docDir, 'skills'));
 
-    // Standard library
-    dirs.push(join(docDir, 'stdlib', 'skills'));
+    // Standard library: skills live under stdlib/<category>/<name>/SKILL.md
+    dirs.push(join(docDir, 'stdlib'));
 
     return dirs;
   }

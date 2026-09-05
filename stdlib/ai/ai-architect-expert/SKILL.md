@@ -1,7 +1,11 @@
 ---
 name: ai-architect-expert
-version: 1.0.0
-description: Expert-level AI system design, MLOps, architecture patterns, and AI infrastructure
+version: 1.1.0
+description: >-
+  Expert-level AI system design, MLOps, architecture patterns, and AI infrastructure. Use
+  when the user mentions AI architecture, MLOps, system design, AI infrastructure, or
+  scalability, or when the task involves AI System Architecture, MLOps Infrastructure,
+  Scalability Patterns, or Architecture Design.
 category: ai
 tags: [ai-architecture, mlops, system-design, ai-infrastructure, scalability]
 allowed-tools:
@@ -17,6 +21,7 @@ Expert guidance for designing AI systems, MLOps architecture, scalable ML infras
 ## Core Concepts
 
 ### AI System Architecture
+
 - Model serving architectures
 - Real-time vs batch inference
 - Feature stores
@@ -25,6 +30,7 @@ Expert guidance for designing AI systems, MLOps architecture, scalable ML infras
 - Data versioning
 
 ### MLOps Infrastructure
+
 - CI/CD for ML
 - Model monitoring and observability
 - A/B testing frameworks
@@ -33,6 +39,7 @@ Expert guidance for designing AI systems, MLOps architecture, scalable ML infras
 - Cost optimization
 
 ### Scalability Patterns
+
 - Distributed training
 - Model parallelism
 - Data parallelism
@@ -340,6 +347,7 @@ class ModelMonitor:
 ## Best Practices
 
 ### Architecture Design
+
 - Separate training and serving infrastructure
 - Use feature stores for consistency
 - Implement model versioning from day one
@@ -348,6 +356,7 @@ class ModelMonitor:
 - Build monitoring into the architecture
 
 ### MLOps
+
 - Automate model retraining pipelines
 - Implement CI/CD for models
 - Version everything (data, code, models)
@@ -356,6 +365,7 @@ class ModelMonitor:
 - Implement gradual rollout (canary/blue-green)
 
 ### Infrastructure
+
 - Use GPU efficiently (batching, mixed precision)
 - Implement caching for repeated predictions
 - Consider model compression (quantization, pruning)
