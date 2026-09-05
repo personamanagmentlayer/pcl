@@ -5,7 +5,14 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import { Client, type ClientOptions } from '@elastic/elasticsearch';
+import { Client } from '@elastic/elasticsearch';
+
+// Derived from the constructor rather than imported: @elastic/elasticsearch
+// exports ClientOptions from its CommonJS entry point but not from its ESM one,
+// and this project resolves modules as a bundler would, so the named import
+// fails. Deriving the type works with either entry and survives upstream
+// reshuffling of the exports map.
+type ClientOptions = ConstructorParameters<typeof Client>[0];
 import type { SearchBackend, SearchOptions, SearchResult } from '../interfaces';
 
 export interface ElasticsearchConfig {
