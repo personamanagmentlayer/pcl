@@ -1,17 +1,17 @@
 version: 2.0.0
 generated: '2026-09-05'
 statistics:
-  total_skills: 174
-  total_categories: 14
-  total_code_lines: 88048
-  total_file_size: 3144253
-  avg_lines_per_skill: 669
+  total_skills: 191
+  total_categories: 15
+  total_code_lines: 91641
+  total_file_size: 3498663
+  avg_lines_per_skill: 661
   categories:
-    ai: 4
+    ai: 7
     api: 6
     cloud: 4
-    data: 14
-    design: 1
+    data: 17
+    design: 2
     devops: 16
     domains: 58
     frameworks: 15
@@ -19,14 +19,18 @@ statistics:
     professional: 5
     qa: 7
     scientific: 3
-    security: 9
-    tools: 9
+    security: 12
+    tools: 12
+    workflows: 4
 tags:
 - 3d
 - 5g
 - 5g-edge
+- a11y
+- abac
 - abap
 - academic-writing
+- accessibility
 - accounting
 - actions
 - actuarial
@@ -36,6 +40,7 @@ tags:
 - adaptive-learning
 - adas
 - aerospace
+- agents
 - aggregation
 - agriculture
 - agtech
@@ -54,6 +59,7 @@ tags:
 - angular
 - animal-husbandry
 - ansible
+- anti-bot
 - apex
 - api
 - api-design
@@ -69,6 +75,7 @@ tags:
 - ar
 - architecture
 - argocd
+- aria
 - aspnet
 - assessment
 - ast
@@ -80,6 +87,7 @@ tags:
 - audit
 - auditing
 - authentication
+- authorisation
 - automation
 - automotive
 - autonomous-navigation
@@ -103,6 +111,7 @@ tags:
 - bioprocessing
 - biotech
 - biotechnology
+- bisection
 - block-kit
 - blockchain
 - bot-development
@@ -110,6 +119,7 @@ tags:
 - breeding
 - broadcast
 - browser
+- browser-automation
 - browser-testing
 - bss
 - building
@@ -127,18 +137,23 @@ tags:
 - carbon-tracking
 - cargo
 - case-management
+- catalog
 - category-theory
 - cats
+- cdc
 - cdn
 - certificates
 - certification
 - chaos-engineering
 - chaos-monkey
 - charts
+- chunking
 - ci-cd
+- ci-cd-security
 - cicd
 - claims
 - cleantech
+- clickhouse
 - clinical-trials
 - clm
 - clojure
@@ -151,10 +166,12 @@ tags:
 - cloudflare
 - cmdb
 - cms
+- code-quality
 - code-review
 - codegen
 - codeql
 - collaboration
+- columnar
 - combine
 - communication
 - community
@@ -165,6 +182,7 @@ tags:
 - compliance
 - component-testing
 - composer
+- composition
 - composition-api
 - comptime
 - concurrency
@@ -181,14 +199,20 @@ tags:
 - continuous-deployment
 - continuous-improvement
 - contracts
+- contrast
 - control-systems
 - controls
 - core-async
 - core-banking
 - coroutines
+- correctness
 - cosmos-db
+- cost-optimisation
+- coupling
 - course-management
 - cpp
+- crawling
+- credentials
 - crm
 - crop-management
 - crop-monitoring
@@ -227,11 +251,14 @@ tags:
 - dataverse
 - dax
 - dbt
+- debezium
+- debugging
 - declarative
 - deep-learning
 - defi
 - delta-lake
 - demand-planning
+- dependencies
 - dependency-injection
 - deployment
 - desktop
@@ -245,11 +272,14 @@ tags:
 - discord-moderation
 - discordjs
 - discordpy
+- discovery
 - distributed-systems
 - django
 - docker
 - document-automation
 - documentation
+- documents
+- docx
 - domain-driven
 - domain-modeling
 - dotnet
@@ -257,6 +287,8 @@ tags:
 - drm
 - drug-development
 - dsl
+- duckdb
+- duplication
 - dynamics-crm
 - dynamics365
 - e-discovery
@@ -276,6 +308,7 @@ tags:
 - email-marketing
 - embb
 - embedded
+- embeddings
 - employee-engagement
 - emscripten
 - encryption
@@ -292,10 +325,14 @@ tags:
 - ethersjs
 - ethical-hacking
 - eu-regulation
+- evaluation
 - event-driven
+- event-time
+- exactly-once
 - experimental-design
 - exploitation
 - express
+- extraction
 - faas
 - failure-injection
 - farm-management
@@ -303,6 +340,7 @@ tags:
 - fastapi
 - fault-tolerance
 - fda
+- feedback
 - ffmpeg
 - fhir
 - finance
@@ -313,17 +351,21 @@ tags:
 - firestore
 - firmware
 - fixtures
+- flaky-tests
 - flask
 - fleet
 - flight
+- flink
 - flutter
 - fog-computing
 - force-platform
 - forecasting
 - forensics
+- forms
 - frontend
 - full-stack
 - full-text-search
+- function-calling
 - functional
 - functional-programming
 - gaap
@@ -356,11 +398,15 @@ tags:
 - graphql
 - green-tech
 - gremlin
+- grounding
 - grpc
+- guardrails
 - gxp
+- hallucination
 - hana
 - haskell
 - hcm
+- headless
 - health-analytics
 - healthcare
 - healthtech
@@ -376,6 +422,7 @@ tags:
 - hpc
 - hr
 - hris
+- hybrid-search
 - iac
 - ice
 - identity
@@ -384,12 +431,15 @@ tags:
 - immutability
 - incident-management
 - incident-response
+- inclusive-design
+- indexing
 - industry40
 - influencer-marketing
 - infosec
 - infrastructure
 - infrastructure-as-code
 - inmemory
+- innodb
 - insurance
 - insurtech
 - integration
@@ -419,13 +469,16 @@ tags:
 - jsx
 - julia
 - jvm
+- jwt
 - k6
 - k8s
 - kafka
 - kafka-streams
 - key-management
+- keyboard-navigation
 - keyvalue
 - kibana
+- kms
 - knowledge-base
 - knowledge-engineering
 - kotlin
@@ -442,6 +495,7 @@ tags:
 - lead-management
 - learning-analytics
 - least-privilege
+- legacy-code
 - legal
 - legal-research
 - legal-tech
@@ -476,6 +530,7 @@ tags:
 - macros
 - maintenance
 - manufacturing
+- mariadb
 - maritime
 - marketing
 - marketing-automation
@@ -493,6 +548,7 @@ tags:
 - mes
 - messaging
 - messaging-extensions
+- meta
 - meta-programming
 - metaprogramming
 - metasploit
@@ -519,6 +575,8 @@ tags:
 - motion-planning
 - mqtt
 - mtls
+- multi-agent
+- multi-tenancy
 - multimedia
 - multiplatform
 - multiplayer
@@ -542,9 +600,13 @@ tags:
 - numerical-analysis
 - numpy
 - nuxt
+- oauth
 - observability
+- ocr
 - odata
+- office
 - office365
+- oidc
 - olap
 - omnichannel
 - online-education
@@ -561,6 +623,7 @@ tags:
 - package-manager
 - page-object-model
 - pandas
+- parquet
 - parser
 - patient-monitoring
 - patterns
@@ -568,6 +631,7 @@ tags:
 - payroll
 - pcl
 - pcl-development
+- pdf
 - peer-to-peer
 - pentest
 - pentesting
@@ -577,6 +641,7 @@ tags:
 - performance-testing
 - performance-tuning
 - persona-control-language
+- pgvector
 - pharmaceutical
 - pharmacovigilance
 - phoenix
@@ -604,6 +669,7 @@ tags:
 - power-query
 - powerapps
 - powerbi
+- pptx
 - precision-agriculture
 - prism-analytics
 - privacy
@@ -616,14 +682,19 @@ tags:
 - progressive-enhancement
 - project-management
 - prometheus
+- prompt-engineering
+- prompt-injection
 - promql
 - property
 - property-management
 - proptech
 - protobuf
+- provenance
 - psd2
 - psr
 - pubsub
+- pull-request
+- puppeteer
 - pure-functions
 - pydantic
 - pyspark
@@ -636,6 +707,7 @@ tags:
 - qms
 - quality
 - quality-assurance
+- quality-gate
 - quality-management
 - quant
 - quantum-algorithms
@@ -644,11 +716,14 @@ tags:
 - quantum-information
 - quantum-ml
 - qubits
+- query-optimisation
 - query-optimization
 - r
 - rac
+- rag
 - rails
 - ranch-management
+- rbac
 - react
 - react-native
 - reactive
@@ -658,7 +733,10 @@ tags:
 - real-time-communication
 - recovery
 - recruitment
+- red-green-refactor
 - redis
+- refactoring
+- regression
 - regtech
 - regulations
 - regulatory
@@ -669,7 +747,9 @@ tags:
 - renewable
 - renewable-energy
 - repl
+- replication
 - reporting
+- reranking
 - research
 - reservation
 - resilience
@@ -679,6 +759,7 @@ tags:
 - rest-api
 - rest-framework
 - retail
+- retrieval
 - revenue-management
 - reverse-proxy
 - rfc
@@ -688,8 +769,11 @@ tags:
 - robo-advisor
 - robotics
 - roles
+- root-cause-analysis
 - ros
 - ros2
+- rotation
+- routing
 - rpc
 - rspec
 - ruby
@@ -703,18 +787,26 @@ tags:
 - sales-automation
 - salesforce
 - salesforce-api
+- saml
+- sandboxing
 - sap
 - sap-integration
 - sast
+- sbom
+- sca
 - scada
 - scala
 - scalability
 - scheduling
 - schema
+- schema-migration
 - scientific-computing
 - scm
+- scraping
+- screen-readers
 - sdn
 - search
+- secrets
 - security
 - security-architecture
 - security-framework
@@ -732,17 +824,20 @@ tags:
 - service-mesh
 - service-portal
 - servicenow
+- sessions
 - sharepoint
 - sharepoint-framework
 - sharepoint-online
 - shipping
 - siem
 - signaling
+- sigstore
 - sinatra
 - site-collections
 - site-reliability
 - six-sigma
 - skill-creation
+- skill-selection
 - sla
 - slack
 - slack-api
@@ -751,6 +846,7 @@ tags:
 - slam
 - slash-commands
 - slo
+- slsa
 - smart-buildings
 - smart-contracts
 - smart-grid
@@ -762,8 +858,10 @@ tags:
 - solidity
 - soql
 - spark
+- spark-streaming
 - spatial-computing
 - spfx
+- spreadsheets
 - spring
 - spring-boot
 - spring-framework
@@ -772,7 +870,9 @@ tags:
 - sre
 - ssg
 - ssl
+- sso
 - ssr
+- stack-trace
 - standards
 - state-management
 - static-analysis
@@ -780,6 +880,7 @@ tags:
 - stl
 - streaming
 - stress-testing
+- structured-output
 - student-analytics
 - student-engagement
 - stun
@@ -806,6 +907,7 @@ tags:
 - teams-app
 - teams-bot
 - teams-toolkit
+- technical-debt
 - telecom
 - telematics
 - telemedicine
@@ -814,11 +916,14 @@ tags:
 - terraform
 - test-automation
 - test-coverage
+- test-first
 - testing
 - threat-detection
 - ticketing
 - tidyverse
 - tls
+- tokens
+- tool-use
 - trace-viewer
 - traces
 - trading
@@ -841,6 +946,8 @@ tags:
 - unreal-engine
 - urllc
 - utilities
+- vault
+- vector-search
 - vehicle
 - vercel
 - version-control
@@ -863,11 +970,14 @@ tags:
 - vulnerability
 - vulnerability-assessment
 - vulnerability-detection
+- vulnerability-management
 - waf
 - warehouse
 - wasi
 - wasm
 - wasmtime
+- watermarks
+- wcag
 - wearables
 - web
 - web-framework
@@ -879,6 +989,7 @@ tags:
 - webdriver
 - webrtc
 - widgets
+- windowing
 - windows
 - workday
 - workday-integration
@@ -887,6 +998,7 @@ tags:
 - workflow
 - workflows
 - xcode
+- xlsx
 - xpath
 - xr
 - zero-trust
@@ -895,6 +1007,42 @@ tags:
 categories:
   ai:
   - &id005
+    name: agent-engineering-expert
+    version: 1.0.0
+    category: ai
+    description: 'Build LLM agents that use tools safely: tool design, the agent loop,
+      memory, MCP servers, multi-agent orchestration, sandboxing and prompt-injection
+      defence. Use when the user mentions AI agents, tool use or function calling,
+      MCP or Model Context Protocol, autonomous workflows, multi-agent systems, LangChain
+      or Ollama, agent memory, or when the task involves giving a model the ability
+      to act rather than only to answer.'
+    tags:
+    - agents
+    - tool-use
+    - function-calling
+    - mcp
+    - orchestration
+    - multi-agent
+    - memory
+    - prompt-injection
+    - sandboxing
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, pytest:*, npm:*, npx:*, docker:*)
+    - Grep
+    - Glob
+    - WebSearch
+    path: ai/agent-engineering-expert/SKILL.md
+    references:
+    - references/ORCHESTRATION.md
+    - references/SECURITY.md
+    file_size: 29160
+    total_lines: 764
+    code_examples: 24
+    code_lines: 311
+  - &id007
     name: ai-architect-expert
     version: 1.1.0
     category: ai
@@ -918,7 +1066,7 @@ categories:
     total_lines: 393
     code_examples: 4
     code_lines: 285
-  - &id006
+  - &id008
     name: ai-engineer-expert
     version: 1.1.0
     category: ai
@@ -943,7 +1091,7 @@ categories:
     total_lines: 459
     code_examples: 5
     code_lines: 347
-  - &id038
+  - &id043
     name: data-science-expert
     version: 1.1.0
     category: ai
@@ -969,7 +1117,42 @@ categories:
     total_lines: 408
     code_examples: 4
     code_lines: 299
-  - &id101
+  - &id099
+    name: llm-engineering-expert
+    version: 1.0.0
+    category: ai
+    description: 'Build reliable applications on large language models: prompt design,
+      structured output, evaluation, guardrails, and cost and latency control. Use
+      when the user mentions LLMs, prompts, prompt engineering, few-shot examples,
+      structured or JSON output, function calling, hallucination, model evaluation,
+      token costs, streaming, or when the task involves choosing a model, writing
+      a system prompt, or making model output dependable enough for production.'
+    tags:
+    - llm
+    - prompt-engineering
+    - structured-output
+    - evaluation
+    - guardrails
+    - hallucination
+    - tokens
+    - cost-optimisation
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, pytest:*, npm:*, npx:*)
+    - Grep
+    - Glob
+    - WebSearch
+    path: ai/llm-engineering-expert/SKILL.md
+    references:
+    - references/EVALUATION.md
+    - references/PROMPT_PATTERNS.md
+    file_size: 24159
+    total_lines: 677
+    code_examples: 18
+    code_lines: 262
+  - &id110
     name: ml-expert
     version: 1.1.0
     category: ai
@@ -994,8 +1177,44 @@ categories:
     total_lines: 371
     code_examples: 4
     code_lines: 262
+  - &id136
+    name: rag-expert
+    version: 1.0.0
+    category: ai
+    description: 'Design retrieval-augmented generation systems: chunking, embeddings,
+      vector and hybrid search, reranking, grounding and evaluation. Use when the
+      user mentions RAG, retrieval, semantic search, embeddings, vector databases,
+      pgvector, Chroma, Qdrant, Pinecone, chunking or reranking, wants an assistant
+      answering over their own documents, or when the task involves grounding answers
+      in sources, citation, or fixing a retrieval system that returns irrelevant results.'
+    tags:
+    - rag
+    - retrieval
+    - embeddings
+    - vector-search
+    - hybrid-search
+    - reranking
+    - chunking
+    - grounding
+    - pgvector
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, pytest:*, psql:*, docker:*)
+    - Grep
+    - Glob
+    - WebSearch
+    path: ai/rag-expert/SKILL.md
+    references:
+    - references/ADVANCED_RETRIEVAL.md
+    - references/VECTOR_STORES.md
+    file_size: 24824
+    total_lines: 623
+    code_examples: 18
+    code_lines: 175
   api:
-  - &id011
+  - &id014
     name: api-design-expert
     version: 1.1.0
     category: api
@@ -1019,7 +1238,7 @@ categories:
     total_lines: 492
     code_examples: 6
     code_lines: 368
-  - &id056
+  - &id063
     name: fastapi-expert
     version: 1.1.0
     category: api
@@ -1045,7 +1264,7 @@ categories:
     total_lines: 299
     code_examples: 7
     code_lines: 220
-  - &id068
+  - &id075
     name: graphql-expert
     version: 1.1.0
     category: api
@@ -1075,7 +1294,7 @@ categories:
     total_lines: 969
     code_examples: 14
     code_lines: 800
-  - &id069
+  - &id076
     name: grpc-expert
     version: 1.1.0
     category: api
@@ -1099,7 +1318,7 @@ categories:
     total_lines: 434
     code_examples: 4
     code_lines: 328
-  - &id099
+  - &id108
     name: microservices-expert
     version: 1.1.0
     category: api
@@ -1122,7 +1341,7 @@ categories:
     total_lines: 498
     code_examples: 5
     code_lines: 386
-  - &id108
+  - &id118
     name: openapi-expert
     version: 1.1.0
     category: api
@@ -1150,7 +1369,7 @@ categories:
     code_examples: 6
     code_lines: 430
   cloud:
-  - &id015
+  - &id018
     name: aws-expert
     version: 1.1.0
     category: cloud
@@ -1178,7 +1397,7 @@ categories:
     total_lines: 735
     code_examples: 22
     code_lines: 559
-  - &id016
+  - &id019
     name: azure-expert
     version: 1.1.0
     category: cloud
@@ -1202,7 +1421,7 @@ categories:
     total_lines: 177
     code_examples: 4
     code_lines: 111
-  - &id026
+  - &id030
     name: cloudflare-expert
     version: 1.1.0
     category: cloud
@@ -1228,7 +1447,7 @@ categories:
     total_lines: 638
     code_examples: 8
     code_lines: 501
-  - &id063
+  - &id070
     name: gcp-expert
     version: 1.1.0
     category: cloud
@@ -1252,7 +1471,7 @@ categories:
     code_examples: 5
     code_lines: 122
   data:
-  - &id007
+  - &id009
     name: airflow-expert
     version: 1.1.0
     category: data
@@ -1282,7 +1501,41 @@ categories:
     total_lines: 917
     code_examples: 17
     code_lines: 751
-  - &id037
+  - &id010
+    name: analytical-databases-expert
+    version: 1.0.0
+    category: data
+    description: 'Design and query columnar analytical stores: DuckDB, ClickHouse
+      and cloud warehouses, including file formats, partitioning, sort keys and cost
+      control. Use when the user mentions DuckDB, ClickHouse, Parquet, columnar storage,
+      OLAP, a data warehouse or lakehouse, analytical queries over large tables, or
+      when the task involves aggregating billions of rows, choosing between a warehouse
+      and an embedded engine, or making a reporting query fast enough.'
+    tags:
+    - olap
+    - duckdb
+    - clickhouse
+    - parquet
+    - columnar
+    - analytics
+    - data-warehouse
+    - lakehouse
+    - aggregation
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, duckdb:*, clickhouse-client:*, docker:*)
+    - Grep
+    - Glob
+    path: data/analytical-databases-expert/SKILL.md
+    references:
+    - references/MODELLING.md
+    file_size: 19409
+    total_lines: 496
+    code_examples: 14
+    code_lines: 174
+  - &id042
     name: data-mesh-expert
     version: 1.1.0
     category: data
@@ -1312,7 +1565,7 @@ categories:
     total_lines: 1055
     code_examples: 12
     code_lines: 901
-  - &id039
+  - &id044
     name: databricks-expert
     version: 1.1.0
     category: data
@@ -1342,7 +1595,7 @@ categories:
     total_lines: 779
     code_examples: 18
     code_lines: 613
-  - &id040
+  - &id045
     name: dbt-expert
     version: 1.1.0
     category: data
@@ -1372,7 +1625,7 @@ categories:
     total_lines: 989
     code_examples: 22
     code_lines: 805
-  - &id051
+  - &id058
     name: elasticsearch-expert
     version: 2.0.0
     category: data
@@ -1396,7 +1649,7 @@ categories:
     total_lines: 189
     code_examples: 3
     code_lines: 128
-  - &id085
+  - &id093
     name: kafka-expert
     version: 1.1.0
     category: data
@@ -1420,7 +1673,7 @@ categories:
     total_lines: 127
     code_examples: 3
     code_lines: 65
-  - &id093
+  - &id102
     name: looker-expert
     version: 1.1.0
     category: data
@@ -1449,7 +1702,7 @@ categories:
     total_lines: 966
     code_examples: 18
     code_lines: 795
-  - &id102
+  - &id111
     name: mongodb-expert
     version: 1.1.0
     category: data
@@ -1477,7 +1730,41 @@ categories:
     total_lines: 706
     code_examples: 29
     code_lines: 542
-  - &id116
+  - &id113
+    name: mysql-expert
+    version: 1.0.0
+    category: data
+    description: 'MySQL and MariaDB administration and development: InnoDB internals,
+      indexing, query tuning, replication, and online schema change. Use when the
+      user mentions MySQL, MariaDB, InnoDB, `my.cnf`, slow queries, `EXPLAIN`, binlog
+      or replication lag, gtid, Percona or pt-online-schema-change, or when the task
+      involves designing a MySQL schema, diagnosing lock contention, or migrating
+      a large table without downtime.'
+    tags:
+    - mysql
+    - mariadb
+    - innodb
+    - sql
+    - indexing
+    - replication
+    - query-optimisation
+    - schema-migration
+    - database
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(mysql:*, mysqldump:*, mysqladmin:*, docker:*, pt-online-schema-change:*)
+    - Grep
+    - Glob
+    path: data/mysql-expert/SKILL.md
+    references:
+    - references/OPERATIONS.md
+    file_size: 20053
+    total_lines: 535
+    code_examples: 26
+    code_lines: 209
+  - &id126
     name: postgresql-expert
     version: 1.1.0
     category: data
@@ -1505,7 +1792,7 @@ categories:
     total_lines: 814
     code_examples: 24
     code_lines: 667
-  - &id117
+  - &id127
     name: powerbi-expert
     version: 1.1.0
     category: data
@@ -1535,7 +1822,7 @@ categories:
     total_lines: 907
     code_examples: 24
     code_lines: 719
-  - &id129
+  - &id140
     name: redis-expert
     version: 1.1.0
     category: data
@@ -1563,7 +1850,7 @@ categories:
     total_lines: 773
     code_examples: 21
     code_lines: 585
-  - &id148
+  - &id162
     name: snowflake-expert
     version: 1.1.0
     category: data
@@ -1592,7 +1879,7 @@ categories:
     total_lines: 745
     code_examples: 23
     code_lines: 562
-  - &id152
+  - &id166
     name: sql-expert
     version: 1.1.0
     category: data
@@ -1620,7 +1907,41 @@ categories:
     total_lines: 894
     code_examples: 22
     code_lines: 759
-  - &id159
+  - &id170
+    name: stream-processing-expert
+    version: 1.0.0
+    category: data
+    description: 'Build continuous data pipelines over event streams: windowing, watermarks,
+      exactly-once semantics, stateful processing and change data capture. Use when
+      the user mentions stream processing, Flink, Spark Structured Streaming, CDC
+      or Debezium, event time versus processing time, watermarks, tumbling or sliding
+      windows, late-arriving data, or when the task involves replicating a database
+      into a stream or computing continuous aggregates.'
+    tags:
+    - streaming
+    - flink
+    - spark-streaming
+    - cdc
+    - debezium
+    - watermarks
+    - windowing
+    - exactly-once
+    - event-time
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, docker:*, kafka-topics:*, flink:*, spark-submit:*)
+    - Grep
+    - Glob
+    path: data/stream-processing-expert/SKILL.md
+    references:
+    - references/OPERATIONS.md
+    file_size: 20720
+    total_lines: 535
+    code_examples: 19
+    code_lines: 196
+  - &id175
     name: tableau-expert
     version: 1.1.0
     category: data
@@ -1651,7 +1972,41 @@ categories:
     code_examples: 23
     code_lines: 616
   design:
-  - &id041
+  - &id002
+    name: accessibility-expert
+    version: 1.0.0
+    category: design
+    description: 'Build interfaces usable by everyone: WCAG 2.2 conformance, semantic
+      HTML, ARIA, keyboard navigation, screen readers and accessible forms. Use when
+      the user mentions accessibility, a11y, WCAG, ARIA, screen readers, keyboard
+      navigation, colour contrast, focus management, the European Accessibility Act
+      or Section 508, or when the task involves making a component, form, modal or
+      data table usable without a mouse or with assistive technology.'
+    tags:
+    - accessibility
+    - a11y
+    - wcag
+    - aria
+    - screen-readers
+    - keyboard-navigation
+    - contrast
+    - inclusive-design
+    - forms
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(npm:*, npx:*, node:*)
+    - Grep
+    - Glob
+    path: design/accessibility-expert/SKILL.md
+    references:
+    - references/COMPONENTS.md
+    file_size: 21465
+    total_lines: 694
+    code_examples: 30
+    code_lines: 339
+  - &id047
     name: design-expert
     version: 1.1.0
     category: design
@@ -1676,7 +2031,7 @@ categories:
     code_examples: 5
     code_lines: 240
   devops:
-  - &id010
+  - &id013
     name: ansible-expert
     version: 1.1.0
     category: devops
@@ -1705,7 +2060,7 @@ categories:
     total_lines: 861
     code_examples: 21
     code_lines: 667
-  - &id012
+  - &id015
     name: argocd-expert
     version: 1.1.0
     category: devops
@@ -1734,7 +2089,7 @@ categories:
     total_lines: 782
     code_examples: 29
     code_lines: 605
-  - &id023
+  - &id027
     name: cicd-expert
     version: 1.1.0
     category: devops
@@ -1763,7 +2118,7 @@ categories:
     total_lines: 885
     code_examples: 11
     code_lines: 721
-  - &id042
+  - &id048
     name: devops-expert
     version: 2.0.0
     category: devops
@@ -1787,7 +2142,7 @@ categories:
     total_lines: 497
     code_examples: 5
     code_lines: 383
-  - &id045
+  - &id051
     name: docker-expert
     version: 1.1.0
     category: devops
@@ -1810,7 +2165,7 @@ categories:
     total_lines: 625
     code_examples: 22
     code_lines: 451
-  - &id067
+  - &id074
     name: grafana-expert
     version: 1.1.0
     category: devops
@@ -1839,7 +2194,7 @@ categories:
     total_lines: 918
     code_examples: 29
     code_lines: 743
-  - &id073
+  - &id080
     name: helm-expert
     version: 1.1.0
     category: devops
@@ -1868,7 +2223,7 @@ categories:
     total_lines: 770
     code_examples: 24
     code_lines: 615
-  - &id080
+  - &id088
     name: istio-expert
     version: 1.1.0
     category: devops
@@ -1898,7 +2253,7 @@ categories:
     total_lines: 768
     code_examples: 24
     code_lines: 609
-  - &id087
+  - &id095
     name: kubernetes-expert
     version: 1.1.0
     category: devops
@@ -1927,7 +2282,7 @@ categories:
     total_lines: 1032
     code_examples: 33
     code_lines: 845
-  - &id090
+  - &id098
     name: linkerd-expert
     version: 1.1.0
     category: devops
@@ -1956,7 +2311,7 @@ categories:
     total_lines: 746
     code_examples: 36
     code_lines: 548
-  - &id103
+  - &id112
     name: monitoring-expert
     version: 1.1.0
     category: devops
@@ -1987,7 +2342,7 @@ categories:
     total_lines: 910
     code_examples: 15
     code_lines: 728
-  - &id105
+  - &id115
     name: nginx-expert
     version: 1.1.0
     category: devops
@@ -2015,7 +2370,7 @@ categories:
     total_lines: 801
     code_examples: 32
     code_lines: 630
-  - &id112
+  - &id122
     name: performance-expert
     version: 2.0.0
     category: devops
@@ -2040,7 +2395,7 @@ categories:
     total_lines: 474
     code_examples: 5
     code_lines: 352
-  - &id118
+  - &id128
     name: prometheus-expert
     version: 1.1.0
     category: devops
@@ -2069,7 +2424,7 @@ categories:
     total_lines: 758
     code_examples: 21
     code_lines: 608
-  - &id153
+  - &id167
     name: sre-expert
     version: 2.0.0
     category: devops
@@ -2095,7 +2450,7 @@ categories:
     total_lines: 482
     code_examples: 4
     code_lines: 370
-  - &id163
+  - &id180
     name: terraform-expert
     version: 1.1.0
     category: devops
@@ -2156,7 +2511,7 @@ categories:
     total_lines: 747
     code_examples: 2
     code_lines: 560
-  - &id003
+  - &id004
     name: aerospace-expert
     version: 1.1.0
     category: domains
@@ -2183,7 +2538,7 @@ categories:
     total_lines: 781
     code_examples: 3
     code_lines: 646
-  - &id004
+  - &id006
     name: agtech-expert
     version: 1.1.0
     category: domains
@@ -2215,7 +2570,7 @@ categories:
     total_lines: 832
     code_examples: 1
     code_lines: 609
-  - &id014
+  - &id017
     name: automotive-expert
     version: 1.1.0
     category: domains
@@ -2241,7 +2596,7 @@ categories:
     total_lines: 781
     code_examples: 3
     code_lines: 646
-  - &id019
+  - &id022
     name: biotech-expert
     version: 1.1.0
     category: domains
@@ -2272,7 +2627,7 @@ categories:
     total_lines: 652
     code_examples: 2
     code_lines: 444
-  - &id020
+  - &id023
     name: blockchain-expert
     version: 1.1.0
     category: domains
@@ -2297,7 +2652,7 @@ categories:
     total_lines: 419
     code_examples: 3
     code_lines: 313
-  - &id021
+  - &id025
     name: business-intelligence-expert
     version: 1.1.0
     category: domains
@@ -2326,7 +2681,7 @@ categories:
     total_lines: 906
     code_examples: 3
     code_lines: 700
-  - &id024
+  - &id028
     name: cleantech-expert
     version: 1.1.0
     category: domains
@@ -2358,7 +2713,7 @@ categories:
     total_lines: 842
     code_examples: 1
     code_lines: 611
-  - &id029
+  - &id034
     name: construction-expert
     version: 1.1.0
     category: domains
@@ -2383,7 +2738,7 @@ categories:
     total_lines: 639
     code_examples: 3
     code_lines: 504
-  - &id033
+  - &id038
     name: customer-support-expert
     version: 1.1.0
     category: domains
@@ -2411,7 +2766,7 @@ categories:
     total_lines: 709
     code_examples: 3
     code_lines: 523
-  - &id034
+  - &id039
     name: cybersecurity-expert
     version: 1.1.0
     category: domains
@@ -2442,7 +2797,7 @@ categories:
     total_lines: 843
     code_examples: 3
     code_lines: 643
-  - &id046
+  - &id053
     name: dynamics365-expert
     version: 1.1.0
     category: domains
@@ -2476,7 +2831,7 @@ categories:
     total_lines: 718
     code_examples: 3
     code_lines: 532
-  - &id047
+  - &id054
     name: e-learning-expert
     version: 1.1.0
     category: domains
@@ -2504,7 +2859,7 @@ categories:
     total_lines: 821
     code_examples: 3
     code_lines: 627
-  - &id048
+  - &id055
     name: edge-computing-expert
     version: 1.1.0
     category: domains
@@ -2533,7 +2888,7 @@ categories:
     total_lines: 889
     code_examples: 2
     code_lines: 692
-  - &id049
+  - &id056
     name: edtech-expert
     version: 1.1.0
     category: domains
@@ -2563,7 +2918,7 @@ categories:
     total_lines: 813
     code_examples: 1
     code_lines: 543
-  - &id050
+  - &id057
     name: education-expert
     version: 2.0.0
     category: domains
@@ -2586,7 +2941,7 @@ categories:
     total_lines: 414
     code_examples: 4
     code_lines: 321
-  - &id054
+  - &id061
     name: energy-expert
     version: 1.1.0
     category: domains
@@ -2612,7 +2967,7 @@ categories:
     total_lines: 630
     code_examples: 4
     code_lines: 497
-  - &id055
+  - &id062
     name: farming-expert
     version: 2.0.0
     category: domains
@@ -2636,7 +2991,7 @@ categories:
     total_lines: 411
     code_examples: 4
     code_lines: 319
-  - &id057
+  - &id064
     name: finance-expert
     version: 2.0.0
     category: domains
@@ -2661,7 +3016,7 @@ categories:
     total_lines: 423
     code_examples: 5
     code_lines: 252
-  - &id059
+  - &id066
     name: fintech-expert
     version: 1.1.0
     category: domains
@@ -2693,7 +3048,7 @@ categories:
     total_lines: 724
     code_examples: 1
     code_lines: 522
-  - &id062
+  - &id069
     name: gaming-expert
     version: 1.1.0
     category: domains
@@ -2723,7 +3078,7 @@ categories:
     total_lines: 796
     code_examples: 4
     code_lines: 599
-  - &id071
+  - &id078
     name: healthcare-expert
     version: 2.0.0
     category: domains
@@ -2749,7 +3104,7 @@ categories:
     total_lines: 516
     code_examples: 4
     code_lines: 397
-  - &id072
+  - &id079
     name: healthtech-expert
     version: 1.1.0
     category: domains
@@ -2778,7 +3133,7 @@ categories:
     total_lines: 896
     code_examples: 1
     code_lines: 620
-  - &id074
+  - &id081
     name: hospitality-expert
     version: 1.1.0
     category: domains
@@ -2803,7 +3158,7 @@ categories:
     total_lines: 706
     code_examples: 3
     code_lines: 572
-  - &id075
+  - &id082
     name: hr-tech-expert
     version: 1.1.0
     category: domains
@@ -2831,7 +3186,7 @@ categories:
     total_lines: 661
     code_examples: 3
     code_lines: 478
-  - &id077
+  - &id085
     name: insurance-expert
     version: 1.1.0
     category: domains
@@ -2858,7 +3213,7 @@ categories:
     total_lines: 728
     code_examples: 3
     code_lines: 594
-  - &id079
+  - &id087
     name: iot-expert
     version: 1.1.0
     category: domains
@@ -2883,7 +3238,7 @@ categories:
     total_lines: 441
     code_examples: 4
     code_lines: 334
-  - &id089
+  - &id097
     name: legaltech-expert
     version: 1.1.0
     category: domains
@@ -2915,7 +3270,7 @@ categories:
     total_lines: 989
     code_examples: 1
     code_lines: 594
-  - &id092
+  - &id101
     name: logistics-expert
     version: 2.0.0
     category: domains
@@ -2939,7 +3294,7 @@ categories:
     total_lines: 483
     code_examples: 4
     code_lines: 392
-  - &id094
+  - &id103
     name: manufacturing-expert
     version: 1.1.0
     category: domains
@@ -2965,7 +3320,7 @@ categories:
     total_lines: 752
     code_examples: 4
     code_lines: 619
-  - &id095
+  - &id104
     name: maritime-expert
     version: 1.1.0
     category: domains
@@ -2991,7 +3346,7 @@ categories:
     total_lines: 588
     code_examples: 3
     code_lines: 453
-  - &id096
+  - &id105
     name: marketing-expert
     version: 1.1.0
     category: domains
@@ -3019,7 +3374,7 @@ categories:
     total_lines: 695
     code_examples: 3
     code_lines: 506
-  - &id097
+  - &id106
     name: media-expert
     version: 1.1.0
     category: domains
@@ -3045,7 +3400,7 @@ categories:
     total_lines: 608
     code_examples: 3
     code_lines: 463
-  - &id098
+  - &id107
     name: metaverse-expert
     version: 1.1.0
     category: domains
@@ -3076,7 +3431,7 @@ categories:
     total_lines: 980
     code_examples: 3
     code_lines: 777
-  - &id100
+  - &id109
     name: microsoft365-expert
     version: 1.1.0
     category: domains
@@ -3110,7 +3465,7 @@ categories:
     total_lines: 658
     code_examples: 4
     code_lines: 471
-  - &id109
+  - &id119
     name: oracle-expert
     version: 1.1.0
     category: domains
@@ -3144,7 +3499,7 @@ categories:
     total_lines: 576
     code_examples: 4
     code_lines: 389
-  - &id113
+  - &id123
     name: pharmaceutical-expert
     version: 1.1.0
     category: domains
@@ -3173,7 +3528,7 @@ categories:
     total_lines: 550
     code_examples: 2
     code_lines: 354
-  - &id119
+  - &id129
     name: proptech-expert
     version: 1.1.0
     category: domains
@@ -3203,7 +3558,7 @@ categories:
     total_lines: 766
     code_examples: 1
     code_lines: 569
-  - &id122
+  - &id132
     name: quality-management-expert
     version: 1.1.0
     category: domains
@@ -3231,7 +3586,7 @@ categories:
     total_lines: 757
     code_examples: 3
     code_lines: 560
-  - &id123
+  - &id133
     name: quantum-algorithms-expert
     version: 1.1.0
     category: domains
@@ -3261,7 +3616,7 @@ categories:
     total_lines: 739
     code_examples: 1
     code_lines: 543
-  - &id128
+  - &id139
     name: real-estate-expert
     version: 1.1.0
     category: domains
@@ -3287,7 +3642,7 @@ categories:
     total_lines: 803
     code_examples: 3
     code_lines: 669
-  - &id130
+  - &id142
     name: regtech-expert
     version: 1.1.0
     category: domains
@@ -3316,7 +3671,7 @@ categories:
     total_lines: 806
     code_examples: 1
     code_lines: 606
-  - &id133
+  - &id145
     name: retail-expert
     version: 1.1.0
     category: domains
@@ -3342,7 +3697,7 @@ categories:
     total_lines: 744
     code_examples: 3
     code_lines: 609
-  - &id134
+  - &id146
     name: robotics-expert
     version: 1.1.0
     category: domains
@@ -3373,7 +3728,7 @@ categories:
     total_lines: 927
     code_examples: 3
     code_lines: 727
-  - &id137
+  - &id149
     name: sales-expert
     version: 1.1.0
     category: domains
@@ -3401,7 +3756,7 @@ categories:
     total_lines: 739
     code_examples: 3
     code_lines: 544
-  - &id138
+  - &id150
     name: salesforce-expert
     version: 1.1.0
     category: domains
@@ -3436,7 +3791,7 @@ categories:
     total_lines: 512
     code_examples: 6
     code_lines: 322
-  - &id139
+  - &id151
     name: sap-expert
     version: 1.1.0
     category: domains
@@ -3470,7 +3825,7 @@ categories:
     total_lines: 448
     code_examples: 5
     code_lines: 270
-  - &id143
+  - &id156
     name: serverless-expert
     version: 1.1.0
     category: domains
@@ -3500,7 +3855,7 @@ categories:
     total_lines: 820
     code_examples: 2
     code_lines: 621
-  - &id144
+  - &id157
     name: servicenow-expert
     version: 1.1.0
     category: domains
@@ -3531,7 +3886,7 @@ categories:
     total_lines: 483
     code_examples: 8
     code_lines: 303
-  - &id145
+  - &id158
     name: sharepoint-expert
     version: 1.1.0
     category: domains
@@ -3565,7 +3920,7 @@ categories:
     total_lines: 631
     code_examples: 4
     code_lines: 446
-  - &id150
+  - &id164
     name: social-media-expert
     version: 1.1.0
     category: domains
@@ -3592,7 +3947,7 @@ categories:
     total_lines: 774
     code_examples: 3
     code_lines: 582
-  - &id155
+  - &id169
     name: stockbreeder-expert
     version: 2.0.0
     category: domains
@@ -3616,7 +3971,7 @@ categories:
     total_lines: 466
     code_examples: 4
     code_lines: 373
-  - &id156
+  - &id171
     name: supply-chain-expert
     version: 1.1.0
     category: domains
@@ -3646,7 +4001,7 @@ categories:
     total_lines: 740
     code_examples: 3
     code_lines: 545
-  - &id162
+  - &id179
     name: telecommunications-expert
     version: 1.1.0
     category: domains
@@ -3672,7 +4027,7 @@ categories:
     total_lines: 730
     code_examples: 3
     code_lines: 595
-  - &id165
+  - &id182
     name: trading-expert
     version: 1.1.0
     category: domains
@@ -3698,7 +4053,7 @@ categories:
     total_lines: 437
     code_examples: 4
     code_lines: 316
-  - &id169
+  - &id186
     name: web3-expert
     version: 1.1.0
     category: domains
@@ -3730,7 +4085,7 @@ categories:
     total_lines: 850
     code_examples: 3
     code_lines: 646
-  - &id170
+  - &id187
     name: webassembly-expert
     version: 1.1.0
     category: domains
@@ -3761,7 +4116,7 @@ categories:
     total_lines: 764
     code_examples: 3
     code_lines: 563
-  - &id172
+  - &id189
     name: workday-expert
     version: 1.1.0
     category: domains
@@ -3796,7 +4151,7 @@ categories:
     code_examples: 4
     code_lines: 336
   frameworks:
-  - &id008
+  - &id011
     name: android-expert
     version: 1.1.0
     category: frameworks
@@ -3826,7 +4181,7 @@ categories:
     total_lines: 750
     code_examples: 7
     code_lines: 553
-  - &id009
+  - &id012
     name: angular-expert
     version: 1.1.0
     category: frameworks
@@ -3857,7 +4212,7 @@ categories:
     total_lines: 996
     code_examples: 6
     code_lines: 777
-  - &id044
+  - &id050
     name: django-expert
     version: 1.1.0
     category: frameworks
@@ -3882,7 +4237,7 @@ categories:
     total_lines: 421
     code_examples: 9
     code_lines: 336
-  - &id052
+  - &id059
     name: electron-expert
     version: 1.1.0
     category: frameworks
@@ -3912,7 +4267,7 @@ categories:
     total_lines: 767
     code_examples: 6
     code_lines: 560
-  - &id060
+  - &id067
     name: flask-expert
     version: 1.1.0
     category: frameworks
@@ -3937,7 +4292,7 @@ categories:
     total_lines: 593
     code_examples: 9
     code_lines: 476
-  - &id061
+  - &id068
     name: flutter-expert
     version: 1.1.0
     category: frameworks
@@ -3966,7 +4321,7 @@ categories:
     total_lines: 530
     code_examples: 7
     code_lines: 331
-  - &id078
+  - &id086
     name: ios-expert
     version: 1.1.0
     category: frameworks
@@ -3996,7 +4351,7 @@ categories:
     total_lines: 681
     code_examples: 7
     code_lines: 475
-  - &id104
+  - &id114
     name: nextjs-expert
     version: 1.1.0
     category: frameworks
@@ -4028,7 +4383,7 @@ categories:
     total_lines: 923
     code_examples: 7
     code_lines: 711
-  - &id126
+  - &id137
     name: react-expert
     version: 1.1.0
     category: frameworks
@@ -4057,7 +4412,7 @@ categories:
     total_lines: 949
     code_examples: 18
     code_lines: 820
-  - &id127
+  - &id138
     name: react-native-expert
     version: 1.1.0
     category: frameworks
@@ -4087,7 +4442,7 @@ categories:
     total_lines: 668
     code_examples: 7
     code_lines: 452
-  - &id131
+  - &id143
     name: remix-expert
     version: 1.1.0
     category: frameworks
@@ -4119,7 +4474,7 @@ categories:
     total_lines: 985
     code_examples: 7
     code_lines: 763
-  - &id151
+  - &id165
     name: spring-boot-expert
     version: 1.1.0
     category: frameworks
@@ -4145,7 +4500,7 @@ categories:
     total_lines: 664
     code_examples: 7
     code_lines: 547
-  - &id157
+  - &id173
     name: svelte-expert
     version: 1.1.0
     category: frameworks
@@ -4176,7 +4531,7 @@ categories:
     total_lines: 897
     code_examples: 7
     code_lines: 685
-  - &id160
+  - &id176
     name: tauri-expert
     version: 1.1.0
     category: frameworks
@@ -4205,7 +4560,7 @@ categories:
     total_lines: 760
     code_examples: 11
     code_lines: 543
-  - &id168
+  - &id185
     name: vue-expert
     version: 1.1.0
     category: frameworks
@@ -4238,7 +4593,7 @@ categories:
     code_examples: 6
     code_lines: 705
   languages:
-  - &id025
+  - &id029
     name: clojure-expert
     version: 1.1.0
     category: languages
@@ -4270,7 +4625,7 @@ categories:
     total_lines: 776
     code_examples: 6
     code_lines: 548
-  - &id030
+  - &id035
     name: cpp-expert
     version: 1.1.0
     category: languages
@@ -4300,7 +4655,7 @@ categories:
     total_lines: 703
     code_examples: 14
     code_lines: 562
-  - &id032
+  - &id037
     name: csharp-expert
     version: 1.1.0
     category: languages
@@ -4328,7 +4683,7 @@ categories:
     total_lines: 1030
     code_examples: 23
     code_lines: 887
-  - &id036
+  - &id041
     name: dart-expert
     version: 1.1.0
     category: languages
@@ -4352,7 +4707,7 @@ categories:
     total_lines: 500
     code_examples: 6
     code_lines: 393
-  - &id053
+  - &id060
     name: elixir-expert
     version: 1.1.0
     category: languages
@@ -4378,7 +4733,7 @@ categories:
     total_lines: 549
     code_examples: 7
     code_lines: 419
-  - &id066
+  - &id073
     name: go-expert
     version: 1.1.0
     category: languages
@@ -4407,7 +4762,7 @@ categories:
     total_lines: 953
     code_examples: 26
     code_lines: 798
-  - &id070
+  - &id077
     name: haskell-expert
     version: 1.1.0
     category: languages
@@ -4439,7 +4794,7 @@ categories:
     total_lines: 746
     code_examples: 6
     code_lines: 522
-  - &id081
+  - &id089
     name: java-expert
     version: 1.1.0
     category: languages
@@ -4468,7 +4823,7 @@ categories:
     total_lines: 944
     code_examples: 27
     code_lines: 787
-  - &id082
+  - &id090
     name: javascript-expert
     version: 1.1.0
     category: languages
@@ -4499,7 +4854,7 @@ categories:
     total_lines: 875
     code_examples: 32
     code_lines: 686
-  - &id084
+  - &id092
     name: julia-expert
     version: 1.1.0
     category: languages
@@ -4530,7 +4885,7 @@ categories:
     total_lines: 703
     code_examples: 6
     code_lines: 500
-  - &id086
+  - &id094
     name: kotlin-expert
     version: 1.1.0
     category: languages
@@ -4555,7 +4910,7 @@ categories:
     total_lines: 401
     code_examples: 6
     code_lines: 290
-  - &id106
+  - &id116
     name: nim-expert
     version: 1.1.0
     category: languages
@@ -4585,7 +4940,7 @@ categories:
     total_lines: 558
     code_examples: 6
     code_lines: 361
-  - &id107
+  - &id117
     name: nodejs-expert
     version: 1.1.0
     category: languages
@@ -4615,7 +4970,7 @@ categories:
     total_lines: 858
     code_examples: 23
     code_lines: 713
-  - &id110
+  - &id120
     name: pcl-expert
     version: 1.1.0
     category: languages
@@ -4654,7 +5009,7 @@ categories:
     total_lines: 924
     code_examples: 27
     code_lines: 681
-  - &id114
+  - &id124
     name: php-expert
     version: 1.1.0
     category: languages
@@ -4682,7 +5037,7 @@ categories:
     total_lines: 999
     code_examples: 21
     code_lines: 834
-  - &id120
+  - &id130
     name: python-expert
     version: 1.1.0
     category: languages
@@ -4711,7 +5066,7 @@ categories:
     total_lines: 843
     code_examples: 24
     code_lines: 695
-  - &id125
+  - &id135
     name: r-expert
     version: 1.1.0
     category: languages
@@ -4736,7 +5091,7 @@ categories:
     total_lines: 437
     code_examples: 11
     code_lines: 311
-  - &id135
+  - &id147
     name: ruby-expert
     version: 1.1.0
     category: languages
@@ -4763,7 +5118,7 @@ categories:
     total_lines: 758
     code_examples: 15
     code_lines: 602
-  - &id136
+  - &id148
     name: rust-expert
     version: 1.1.0
     category: languages
@@ -4791,7 +5146,7 @@ categories:
     total_lines: 1037
     code_examples: 27
     code_lines: 880
-  - &id140
+  - &id152
     name: scala-expert
     version: 1.1.0
     category: languages
@@ -4815,7 +5170,7 @@ categories:
     total_lines: 425
     code_examples: 6
     code_lines: 309
-  - &id158
+  - &id174
     name: swift-expert
     version: 1.1.0
     category: languages
@@ -4843,7 +5198,7 @@ categories:
     total_lines: 655
     code_examples: 13
     code_lines: 504
-  - &id166
+  - &id183
     name: typescript-expert
     version: 1.1.0
     category: languages
@@ -4870,7 +5225,7 @@ categories:
     total_lines: 521
     code_examples: 23
     code_lines: 352
-  - &id174
+  - &id191
     name: zig-expert
     version: 1.1.0
     category: languages
@@ -4901,7 +5256,7 @@ categories:
     code_examples: 6
     code_lines: 286
   professional:
-  - &id002
+  - &id003
     name: accountant-expert
     version: 1.1.0
     category: professional
@@ -4925,7 +5280,7 @@ categories:
     total_lines: 352
     code_examples: 4
     code_lines: 245
-  - &id017
+  - &id020
     name: banking-expert
     version: 1.1.0
     category: professional
@@ -4948,7 +5303,7 @@ categories:
     total_lines: 301
     code_examples: 4
     code_lines: 211
-  - &id058
+  - &id065
     name: finops-expert
     version: 2.0.0
     category: professional
@@ -4973,7 +5328,7 @@ categories:
     total_lines: 410
     code_examples: 3
     code_lines: 306
-  - &id088
+  - &id096
     name: lawyer-expert
     version: 1.1.0
     category: professional
@@ -4997,7 +5352,7 @@ categories:
     total_lines: 327
     code_examples: 3
     code_lines: 223
-  - &id154
+  - &id168
     name: standards-expert
     version: 1.1.0
     category: professional
@@ -5022,7 +5377,7 @@ categories:
     code_examples: 4
     code_lines: 358
   qa:
-  - &id022
+  - &id026
     name: chaos-engineering-expert
     version: 1.1.0
     category: qa
@@ -5056,7 +5411,7 @@ categories:
     total_lines: 555
     code_examples: 4
     code_lines: 368
-  - &id035
+  - &id040
     name: cypress-expert
     version: 1.1.0
     category: qa
@@ -5091,7 +5446,7 @@ categories:
     total_lines: 632
     code_examples: 7
     code_lines: 436
-  - &id083
+  - &id091
     name: jest-expert
     version: 1.1.0
     category: qa
@@ -5124,7 +5479,7 @@ categories:
     total_lines: 775
     code_examples: 8
     code_lines: 577
-  - &id091
+  - &id100
     name: load-testing-expert
     version: 1.1.0
     category: qa
@@ -5158,7 +5513,7 @@ categories:
     total_lines: 532
     code_examples: 4
     code_lines: 346
-  - &id115
+  - &id125
     name: playwright-expert
     version: 1.1.0
     category: qa
@@ -5193,7 +5548,7 @@ categories:
     total_lines: 593
     code_examples: 6
     code_lines: 400
-  - &id121
+  - &id131
     name: qa-expert
     version: 2.0.0
     category: qa
@@ -5218,7 +5573,7 @@ categories:
     total_lines: 445
     code_examples: 4
     code_lines: 333
-  - &id142
+  - &id155
     name: selenium-expert
     version: 1.1.0
     category: qa
@@ -5254,7 +5609,7 @@ categories:
     code_examples: 6
     code_lines: 396
   scientific:
-  - &id018
+  - &id021
     name: biological-expert
     version: 1.1.0
     category: scientific
@@ -5279,7 +5634,7 @@ categories:
     total_lines: 375
     code_examples: 4
     code_lines: 266
-  - &id124
+  - &id134
     name: quantum-expert
     version: 1.1.0
     category: scientific
@@ -5303,7 +5658,7 @@ categories:
     total_lines: 343
     code_examples: 3
     code_lines: 238
-  - &id132
+  - &id144
     name: research-expert
     version: 1.1.0
     category: scientific
@@ -5328,7 +5683,7 @@ categories:
     code_examples: 3
     code_lines: 281
   security:
-  - &id013
+  - &id016
     name: audit-expert
     version: 1.1.0
     category: security
@@ -5357,7 +5712,7 @@ categories:
     total_lines: 895
     code_examples: 8
     code_lines: 743
-  - &id028
+  - &id033
     name: codeql-expert
     version: 1.1.0
     category: security
@@ -5383,7 +5738,7 @@ categories:
     total_lines: 251
     code_examples: 8
     code_lines: 163
-  - &id031
+  - &id036
     name: cryptography-expert
     version: 1.1.0
     category: security
@@ -5415,7 +5770,7 @@ categories:
     total_lines: 655
     code_examples: 5
     code_lines: 439
-  - &id064
+  - &id071
     name: gdpr-expert
     version: 1.1.0
     category: security
@@ -5445,7 +5800,42 @@ categories:
     total_lines: 392
     code_examples: 4
     code_lines: 199
-  - &id076
+  - &id083
+    name: identity-access-expert
+    version: 1.0.0
+    category: security
+    description: 'Design authentication and authorisation: OAuth 2.1 and OpenID Connect,
+      session and token handling, RBAC and ABAC, and multi-tenant access control.
+      Use when the user mentions OAuth, OIDC, SAML, SSO, JWT, refresh tokens, PKCE,
+      login flows, sessions, roles and permissions, RBAC or ABAC, or when the task
+      involves securing an API, implementing sign-in, or fixing a broken access control
+      finding.'
+    tags:
+    - oauth
+    - oidc
+    - saml
+    - jwt
+    - sso
+    - rbac
+    - abac
+    - authorisation
+    - sessions
+    - multi-tenancy
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, npm:*, npx:*, openssl:*, curl:*)
+    - Grep
+    - Glob
+    path: security/identity-access-expert/SKILL.md
+    references:
+    - references/PATTERNS.md
+    file_size: 22039
+    total_lines: 601
+    code_examples: 18
+    code_lines: 316
+  - &id084
     name: incident-response-expert
     version: 1.1.0
     category: security
@@ -5474,7 +5864,7 @@ categories:
     total_lines: 108
     code_examples: 2
     code_lines: 38
-  - &id111
+  - &id121
     name: penetration-testing-expert
     version: 1.1.0
     category: security
@@ -5505,7 +5895,40 @@ categories:
     total_lines: 575
     code_examples: 6
     code_lines: 348
-  - &id141
+  - &id153
+    name: secrets-management-expert
+    version: 1.0.0
+    category: security
+    description: 'Store, distribute, rotate and revoke credentials without ever placing
+      them in source: vaults, cloud secret managers, KMS envelope encryption and dynamic
+      credentials. Use when the user mentions secrets, API keys, credentials, HashiCorp
+      Vault, KMS, key rotation, a leaked or committed secret, .env files, sealed secrets,
+      or when the task involves getting a password out of code, encrypting data at
+      rest, or responding to an exposure.'
+    tags:
+    - secrets
+    - vault
+    - kms
+    - credentials
+    - rotation
+    - encryption
+    - least-privilege
+    - key-management
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(vault:*, aws:*, az:*, gcloud:*, kubectl:*, sops:*, gitleaks:*, git:*, openssl:*)
+    - Grep
+    - Glob
+    path: security/secrets-management-expert/SKILL.md
+    references:
+    - references/ENCRYPTION.md
+    file_size: 20177
+    total_lines: 533
+    code_examples: 18
+    code_lines: 196
+  - &id154
     name: security-expert
     version: 1.1.0
     category: security
@@ -5534,7 +5957,7 @@ categories:
     total_lines: 815
     code_examples: 13
     code_lines: 647
-  - &id149
+  - &id163
     name: soc2-expert
     version: 1.1.0
     category: security
@@ -5564,7 +5987,42 @@ categories:
     total_lines: 400
     code_examples: 2
     code_lines: 231
-  - &id173
+  - &id172
+    name: supply-chain-security-expert
+    version: 1.0.0
+    category: security
+    description: 'Secure the path from dependency to deployed artefact: SBOMs, dependency
+      scanning, build provenance, artefact signing and CI/CD integrity. Use when the
+      user mentions supply chain security, SBOM, CycloneDX or SPDX, SCA or dependency
+      scanning, Sigstore or cosign, SLSA, provenance and attestation, a compromised
+      or typosquatted package, or when the task involves hardening a build pipeline
+      or answering a vendor security questionnaire about dependencies.'
+    tags:
+    - supply-chain
+    - sbom
+    - sca
+    - slsa
+    - sigstore
+    - provenance
+    - dependencies
+    - ci-cd-security
+    - vulnerability-management
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(npm:*, pip:*, syft:*, grype:*, cosign:*, docker:*, git:*, osv-scanner:*,
+      trivy:*)
+    - Grep
+    - Glob
+    path: security/supply-chain-security-expert/SKILL.md
+    references:
+    - references/RESPONSE.md
+    file_size: 19341
+    total_lines: 539
+    code_examples: 21
+    code_lines: 192
+  - &id190
     name: zero-trust-expert
     version: 1.1.0
     category: security
@@ -5595,7 +6053,41 @@ categories:
     code_examples: 4
     code_lines: 570
   tools:
-  - &id027
+  - &id024
+    name: browser-automation-expert
+    version: 1.0.0
+    category: tools
+    description: 'Drive a real browser to navigate, extract data and complete flows
+      on sites without an API: scraping, crawling, authentication, dynamic content
+      and anti-bot handling. Use when the user mentions web scraping, crawling, browser
+      automation, Puppeteer or headless Chrome, wants data pulled from a website,
+      needs a login or checkout flow driven programmatically, or when the task involves
+      rendering JavaScript pages, screenshots, or extracting structured data from
+      HTML.'
+    tags:
+    - browser-automation
+    - scraping
+    - crawling
+    - playwright
+    - puppeteer
+    - headless
+    - extraction
+    - anti-bot
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, npm:*, npx:*, node:*, docker:*)
+    - Grep
+    - Glob
+    path: tools/browser-automation-expert/SKILL.md
+    references:
+    - references/RECIPES.md
+    file_size: 18722
+    total_lines: 552
+    code_examples: 23
+    code_lines: 267
+  - &id031
     name: code-review-expert
     version: 1.1.0
     category: tools
@@ -5618,7 +6110,7 @@ categories:
     total_lines: 525
     code_examples: 20
     code_lines: 173
-  - &id043
+  - &id049
     name: discord-expert
     version: 1.1.0
     category: tools
@@ -5654,7 +6146,43 @@ categories:
     total_lines: 597
     code_examples: 2
     code_lines: 415
-  - &id065
+  - &id052
+    name: document-processing-expert
+    version: 1.0.0
+    category: tools
+    description: 'Read, generate and modify office documents and PDFs from code: PDF
+      extraction and forms, Word documents, Excel workbooks and PowerPoint decks.
+      Use when the user mentions PDF, DOCX, XLSX, PPTX, Word, Excel, PowerPoint or
+      spreadsheets, wants data extracted from documents, needs a report or invoice
+      generated as a file, must fill a form, or when the task involves parsing scanned
+      documents, merging or splitting files, or producing a document a person will
+      open.'
+    tags:
+    - pdf
+    - docx
+    - xlsx
+    - pptx
+    - documents
+    - extraction
+    - reporting
+    - ocr
+    - spreadsheets
+    - office
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(python:*, python3:*, pip:*, pdftotext:*, qpdf:*, libreoffice:*)
+    - Grep
+    - Glob
+    path: tools/document-processing-expert/SKILL.md
+    references:
+    - references/LIBRARIES.md
+    file_size: 19412
+    total_lines: 539
+    code_examples: 19
+    code_lines: 252
+  - &id072
     name: git-expert
     version: 1.1.0
     category: tools
@@ -5681,7 +6209,7 @@ categories:
     total_lines: 751
     code_examples: 31
     code_lines: 580
-  - &id146
+  - &id159
     name: skill-creator-expert
     version: 1.1.0
     category: tools
@@ -5708,7 +6236,34 @@ categories:
     total_lines: 877
     code_examples: 9
     code_lines: 708
-  - &id147
+  - &id160
+    name: skill-router
+    version: 1.0.0
+    category: tools
+    description: Find the right skill in the PCL standard library and compose several
+      when a task spans domains. Use when the user asks which skill applies, cannot
+      find a capability, wants to know what the library covers, is starting a task
+      that spans several domains, or when the task involves choosing between overlapping
+      skills, discovering skills by keyword, or deciding whether a new skill is needed.
+    tags:
+    - discovery
+    - routing
+    - skill-selection
+    - composition
+    - catalog
+    - meta
+    allowed_tools:
+    - Read
+    - Grep
+    - Glob
+    - Bash(python:*, jq:*)
+    path: tools/skill-router/SKILL.md
+    references: []
+    file_size: 10508
+    total_lines: 202
+    code_examples: 2
+    code_lines: 17
+  - &id161
     name: slack-expert
     version: 1.1.0
     category: tools
@@ -5742,7 +6297,7 @@ categories:
     total_lines: 617
     code_examples: 3
     code_lines: 433
-  - &id161
+  - &id178
     name: teams-expert
     version: 1.1.0
     category: tools
@@ -5775,7 +6330,7 @@ categories:
     total_lines: 538
     code_examples: 3
     code_lines: 355
-  - &id164
+  - &id181
     name: testing-expert
     version: 1.1.0
     category: tools
@@ -5804,7 +6359,7 @@ categories:
     total_lines: 1093
     code_examples: 22
     code_lines: 938
-  - &id167
+  - &id184
     name: video-streaming-expert
     version: 1.1.0
     category: tools
@@ -5841,7 +6396,7 @@ categories:
     total_lines: 709
     code_examples: 5
     code_lines: 516
-  - &id171
+  - &id188
     name: webrtc-expert
     version: 1.1.0
     category: tools
@@ -5876,6 +6431,141 @@ categories:
     total_lines: 709
     code_examples: 7
     code_lines: 517
+  workflows:
+  - &id032
+    name: code-review-workflow
+    version: 1.0.0
+    category: workflows
+    description: Review a change in a fixed order — context, correctness, security,
+      then style — and write feedback that is actionable and ranked by severity. Use
+      when the user asks for a code review, wants a pull request or diff reviewed
+      before merge, asks whether a change is safe to ship, or when the task involves
+      reviewing a patch, giving review feedback, triaging review comments, or setting
+      review standards for a team.
+    tags:
+    - code-review
+    - pull-request
+    - feedback
+    - quality-gate
+    - correctness
+    - security-review
+    - workflow
+    allowed_tools:
+    - Read
+    - Bash(git:*, gh:*, npm:*, npx:*, pytest:*, go:*, cargo:*)
+    - Grep
+    - Glob
+    path: workflows/code-review-workflow/SKILL.md
+    references:
+    - references/CHECKLISTS.md
+    file_size: 15043
+    total_lines: 376
+    code_examples: 5
+    code_lines: 41
+  - &id046
+    name: debugging-workflow
+    version: 1.0.0
+    category: workflows
+    description: Find the cause of a defect by hypothesis and bisection rather than
+      by guessing, then fix it behind a regression test. Use when the user reports
+      a bug, a crash, a test that fails intermittently, a performance regression or
+      a production incident, asks why code behaves unexpectedly, or when the task
+      involves reproducing a failure, isolating a root cause, git bisect, flaky tests,
+      or reading a stack trace.
+    tags:
+    - debugging
+    - root-cause-analysis
+    - bisection
+    - flaky-tests
+    - stack-trace
+    - observability
+    - regression
+    - workflow
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(npm:*, npx:*, pnpm:*, yarn:*, pytest:*, python:*, python3:*, go:*, cargo:*,
+      git:*, docker:*)
+    - Grep
+    - Glob
+    path: workflows/debugging-workflow/SKILL.md
+    references:
+    - references/PRODUCTION.md
+    - references/TOOLKIT.md
+    file_size: 24366
+    total_lines: 700
+    code_examples: 26
+    code_lines: 228
+  - &id141
+    name: refactoring-workflow
+    version: 1.0.0
+    category: workflows
+    description: Improve the structure of existing code without changing its behaviour,
+      in small verified steps under a green test suite. Use when the user asks to
+      refactor, clean up, restructure or simplify code, wants to reduce duplication
+      or coupling, is preparing a codebase for a feature it cannot currently accommodate,
+      or when the task involves extracting functions, splitting modules, breaking
+      dependencies, or paying down technical debt.
+    tags:
+    - refactoring
+    - technical-debt
+    - code-quality
+    - architecture
+    - coupling
+    - duplication
+    - workflow
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(npm:*, npx:*, pnpm:*, yarn:*, pytest:*, python:*, python3:*, go:*, cargo:*,
+      mvn:*, gradle:*, git:*)
+    - Grep
+    - Glob
+    path: workflows/refactoring-workflow/SKILL.md
+    references:
+    - references/LARGE_SCALE.md
+    - references/TRANSFORMATIONS.md
+    file_size: 22660
+    total_lines: 658
+    code_examples: 16
+    code_lines: 165
+  - &id177
+    name: tdd-workflow
+    version: 1.0.0
+    category: workflows
+    description: 'Drive implementation through a test-first loop: write a failing
+      test, make it pass with the simplest change, then refactor under a green suite.
+      Use when the user asks for TDD or test-driven development, wants tests written
+      before the code, is adding behaviour to code that has tests, is fixing a bug
+      and wants a regression test first, or when the task involves red-green-refactor,
+      characterisation tests, or working safely on untested legacy code.'
+    tags:
+    - tdd
+    - testing
+    - test-first
+    - red-green-refactor
+    - unit-tests
+    - regression
+    - legacy-code
+    - workflow
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash(npm:*, npx:*, pnpm:*, yarn:*, pytest:*, python:*, python3:*, go:*, cargo:*,
+      mvn:*, gradle:*)
+    - Grep
+    - Glob
+    path: workflows/tdd-workflow/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    - references/LEGACY_CODE.md
+    file_size: 22352
+    total_lines: 691
+    code_examples: 30
+    code_lines: 253
 skills:
 - *id001
 - *id002
@@ -6051,3 +6741,20 @@ skills:
 - *id172
 - *id173
 - *id174
+- *id175
+- *id176
+- *id177
+- *id178
+- *id179
+- *id180
+- *id181
+- *id182
+- *id183
+- *id184
+- *id185
+- *id186
+- *id187
+- *id188
+- *id189
+- *id190
+- *id191

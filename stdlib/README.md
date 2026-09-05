@@ -1,14 +1,14 @@
 # PCL Standard Library (stdlib)
 
-**Version**: 3.0.0
+**Version**: 3.1.0
 **Status**: ✅ Production Ready
-**Total Skills**: 174 Expert-Level Skills
+**Total Skills**: 191 Expert-Level Skills
 
 ---
 
 ## 🎯 What is the Standard Library?
 
-The **PCL Standard Library** is a comprehensive collection of **174 expert-level skills** for AI agent personas, providing deep domain expertise across programming languages, frameworks, cloud platforms, data systems, security, and industry verticals.
+The **PCL Standard Library** is a comprehensive collection of **191 expert-level skills** for AI agent personas, providing deep domain expertise across programming languages, frameworks, cloud platforms, data systems, security, and industry verticals.
 
 Each skill represents **expert-level mastery** in a specific domain with:
 
@@ -20,8 +20,8 @@ Each skill represents **expert-level mastery** in a specific domain with:
 
 ## 📊 Library Statistics
 
-- **Total Skills**: 174 expert-level skills
-- **Categories**: 14 major domains
+- **Total Skills**: 191 expert-level skills
+- **Categories**: 15 major domains
 - **Total Content**: ~114,000 lines of expert knowledge (48,000 in skill entry
   points, 66,000 in on-demand reference documents)
 - **Coverage**: Languages, Frameworks, Cloud, Data, Security, DevOps, Industries, and more
@@ -31,19 +31,20 @@ Each skill represents **expert-level mastery** in a specific domain with:
 | Category              | Count | Examples                                                               |
 | --------------------- | ----- | ---------------------------------------------------------------------- |
 | **Domains**           | 58    | Healthcare, Finance, LegalTech, Manufacturing, Energy, AgTech, Web3    |
+| **Workflows**         | 4     | TDD, refactoring, debugging, code review — procedures, not knowledge   |
 | **Languages**         | 23    | Python, TypeScript, Rust, Go, Java, Kotlin, Scala, Haskell, Julia, Zig |
 | **DevOps**            | 16    | Kubernetes, Docker, Terraform, ArgoCD, Prometheus, Grafana, Istio      |
 | **Frameworks**        | 15    | React, Vue, Angular, Next.js, Django, Spring Boot, Flutter, Tauri      |
-| **Data & Analytics**  | 14    | Snowflake, Databricks, Airflow, dbt, Tableau, Power BI, Kafka          |
-| **Security**          | 9     | Penetration Testing, Zero Trust, GDPR, SOC2, Cryptography              |
-| **Tools**             | 9     | Git, Slack, Teams, Discord, WebRTC, Video Streaming, Code Review       |
+| **Data & Analytics**  | 17    | Snowflake, Databricks, Airflow, dbt, Tableau, Power BI, Kafka          |
+| **Security**          | 12    | Penetration Testing, Zero Trust, GDPR, SOC2, Cryptography              |
+| **Tools**             | 12    | Git, Slack, Teams, Discord, WebRTC, Video Streaming, Code Review       |
 | **QA & Testing**      | 7     | Playwright, Cypress, Jest, Selenium, Load Testing, Chaos Engineering   |
 | **API & Integration** | 6     | REST, GraphQL, gRPC, Microservices, API Design                         |
 | **Professional**      | 5     | Banking, Legal, Accounting, FinOps, Standards                          |
-| **AI & ML**           | 4     | Machine Learning, AI Architecture, Data Science                        |
+| **AI & ML**           | 7     | Machine Learning, AI Architecture, Data Science                        |
 | **Cloud Platforms**   | 4     | AWS, Azure, GCP, Cloudflare                                            |
 | **Scientific**        | 3     | Quantum Computing, Bioinformatics, Research                            |
-| **Design**            | 1     | System & UX Design                                                     |
+| **Design**            | 2     | System & UX Design                                                     |
 
 See [SKILLS_INVENTORY.md](SKILLS_INVENTORY.md) for the complete skill list.
 
@@ -446,6 +447,35 @@ python scripts/generate-skill-inventory.py  # rebuild inventory + structure docs
 ```
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
+
+## 📈 What's New in v3.1.0
+
+**17 new skills**, taking the library from 174 to 191 and adding a fifteenth
+category. Chosen by cross-referencing coverage gaps against observed usage —
+developer survey data and the install rankings of public agent-skill registries.
+
+- **`workflows/` (new category, 4 skills)** — `tdd-workflow`,
+  `refactoring-workflow`, `debugging-workflow`, `code-review-workflow`.
+  Procedures rather than knowledge: the shape that dominates real agent-skill
+  usage and that the library had none of.
+- **Applied AI (3)** — `llm-engineering-expert`, `rag-expert`,
+  `agent-engineering-expert`. The largest coverage gap: the library mentioned
+  LLMs in tags but had no skill on prompting, retrieval or tool use.
+- **Capabilities (2)** — `document-processing-expert` (PDF, DOCX, XLSX, PPTX in
+  one skill), `browser-automation-expert` (distinct from `playwright-expert`,
+  which is for testing your own application).
+- **Data (3)** — `mysql-expert` (the second most used database, previously
+  absent), `analytical-databases-expert`, `stream-processing-expert`.
+- **Security (3)** — `secrets-management-expert`,
+  `supply-chain-security-expert` (OWASP A03 2025), `identity-access-expert`
+  (OWASP A01).
+- **Interface (1)** — `accessibility-expert`. The `design/` category held only
+  software architecture; WCAG conformance had no home.
+- **Meta (1)** — `skill-router`, for finding and composing skills across 191.
+
+Grouping was deliberate: five vector stores live inside `rag-expert`, four
+document formats inside `document-processing-expert`. Roughly fifty topics are
+covered by seventeen skills, with per-tool detail in `references/`.
 
 ## 📈 What's New in v3.0.0
 

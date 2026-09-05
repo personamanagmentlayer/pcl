@@ -1,6 +1,6 @@
 # PCL Standard Library — Skills Inventory
 
-**174 expert skills** across 14 categories.
+**191 expert skills** across 15 categories.
 
 Generated from the contents of `stdlib/` by
 `scripts/generate-skill-inventory.py`. Do not edit by hand — rerun the
@@ -22,8 +22,8 @@ This is the Agent Skills v1.0 layout. `SKILL.md` stays within a 500-line
 budget so activation stays cheap; the bulk of each skill lives in
 `references/` and is read only when needed (progressive disclosure).
 
-- Skill entry points: **174** (49,205 lines)
-- Reference documents: **144** (67,373 lines)
+- Skill entry points: **191** (54,054 lines)
+- Reference documents: **166** (72,239 lines)
 
 Conformance is enforced by `scripts/validate-skills.py`; the machine-readable
 index lives in `stdlib/catalog/`.
@@ -36,19 +36,20 @@ index lives in `stdlib/catalog/`.
 | ----------------------------------------- | ------: | ---------: |
 | Business & Technology Domains (`domains`) |      58 |         48 |
 | Programming Languages (`languages`)       |      23 |         22 |
+| Data & Databases (`data`)                 |      17 |         16 |
 | DevOps & Infrastructure (`devops`)        |      16 |         17 |
 | Frameworks & Platforms (`frameworks`)     |      15 |         15 |
-| Data & Databases (`data`)                 |      14 |         13 |
-| Security & Compliance (`security`)        |       9 |          7 |
-| Tools & Meta-Programming (`tools`)        |       9 |          9 |
+| Security & Compliance (`security`)        |      12 |         10 |
+| Tools & Meta-Programming (`tools`)        |      12 |         11 |
+| AI & Machine Learning (`ai`)              |       7 |          6 |
 | QA & Testing (`qa`)                       |       7 |          6 |
 | APIs & Services (`api`)                   |       6 |          4 |
 | Professional Services (`professional`)    |       5 |          0 |
-| AI & Machine Learning (`ai`)              |       4 |          0 |
 | Cloud Platforms (`cloud`)                 |       4 |          3 |
+| Engineering Workflows (`workflows`)       |       4 |          7 |
 | Scientific & Research (`scientific`)      |       3 |          0 |
-| Design (`design`)                         |       1 |          0 |
-| **Total**                                 | **174** |    **144** |
+| Design (`design`)                         |       2 |          1 |
+| **Total**                                 | **191** |    **166** |
 
 ---
 
@@ -145,6 +146,28 @@ index lives in `stdlib/catalog/`.
 |  22 | `typescript-expert` | 1.1.0   |      356 | PATTERNS.md (165)                                        |
 |  23 | `zig-expert`        | 1.1.0   |      479 | —                                                        |
 
+### Data & Databases — `data/` (17)
+
+|   # | Skill                         | Version | SKILL.md | References                                              |
+| --: | ----------------------------- | ------- | -------: | ------------------------------------------------------- |
+|   1 | `airflow-expert`              | 1.1.0   |      147 | CORE_CONCEPTS.md (770)                                  |
+|   2 | `analytical-databases-expert` | 1.0.0   |      274 | MODELLING.md (222)                                      |
+|   3 | `data-mesh-expert`            | 1.1.0   |      141 | CORE_CONCEPTS.md (914)                                  |
+|   4 | `databricks-expert`           | 1.1.0   |      143 | CORE_CONCEPTS.md (636)                                  |
+|   5 | `dbt-expert`                  | 1.1.0   |      136 | CORE_CONCEPTS.md (853)                                  |
+|   6 | `elasticsearch-expert`        | 2.0.0   |      189 | —                                                       |
+|   7 | `kafka-expert`                | 1.1.0   |      127 | —                                                       |
+|   8 | `looker-expert`               | 1.1.0   |      161 | CORE_CONCEPTS.md (805)                                  |
+|   9 | `mongodb-expert`              | 1.1.0   |      110 | CORE_CONCEPTS.md (596)                                  |
+|  10 | `mysql-expert`                | 1.0.0   |      293 | OPERATIONS.md (242)                                     |
+|  11 | `postgresql-expert`           | 1.1.0   |      109 | CORE_CONCEPTS.md (705)                                  |
+|  12 | `powerbi-expert`              | 1.1.0   |      149 | CORE_CONCEPTS.md (758)                                  |
+|  13 | `redis-expert`                | 1.1.0   |      284 | BEST_PRACTICES.md (61), NODE_JS_CLIENT_IOREDIS.md (428) |
+|  14 | `snowflake-expert`            | 1.1.0   |      139 | CORE_CONCEPTS.md (606)                                  |
+|  15 | `sql-expert`                  | 1.1.0   |      125 | CORE_CONCEPTS.md (769)                                  |
+|  16 | `stream-processing-expert`    | 1.0.0   |      310 | OPERATIONS.md (225)                                     |
+|  17 | `tableau-expert`              | 1.1.0   |      135 | CORE_CONCEPTS.md (669)                                  |
+
 ### DevOps & Infrastructure — `devops/` (16)
 
 |   # | Skill                | Version | SKILL.md | References                                                  |
@@ -186,52 +209,51 @@ index lives in `stdlib/catalog/`.
 |  14 | `tauri-expert`        | 1.1.0   |      213 | EXAMPLES.md (547)                                  |
 |  15 | `vue-expert`          | 1.1.0   |      184 | EXAMPLES.md (729)                                  |
 
-### Data & Databases — `data/` (14)
+### Security & Compliance — `security/` (12)
 
-|   # | Skill                  | Version | SKILL.md | References                                              |
-| --: | ---------------------- | ------- | -------: | ------------------------------------------------------- |
-|   1 | `airflow-expert`       | 1.1.0   |      147 | CORE_CONCEPTS.md (770)                                  |
-|   2 | `data-mesh-expert`     | 1.1.0   |      141 | CORE_CONCEPTS.md (914)                                  |
-|   3 | `databricks-expert`    | 1.1.0   |      143 | CORE_CONCEPTS.md (636)                                  |
-|   4 | `dbt-expert`           | 1.1.0   |      136 | CORE_CONCEPTS.md (853)                                  |
-|   5 | `elasticsearch-expert` | 2.0.0   |      189 | —                                                       |
-|   6 | `kafka-expert`         | 1.1.0   |      127 | —                                                       |
-|   7 | `looker-expert`        | 1.1.0   |      161 | CORE_CONCEPTS.md (805)                                  |
-|   8 | `mongodb-expert`       | 1.1.0   |      110 | CORE_CONCEPTS.md (596)                                  |
-|   9 | `postgresql-expert`    | 1.1.0   |      109 | CORE_CONCEPTS.md (705)                                  |
-|  10 | `powerbi-expert`       | 1.1.0   |      149 | CORE_CONCEPTS.md (758)                                  |
-|  11 | `redis-expert`         | 1.1.0   |      284 | BEST_PRACTICES.md (61), NODE_JS_CLIENT_IOREDIS.md (428) |
-|  12 | `snowflake-expert`     | 1.1.0   |      139 | CORE_CONCEPTS.md (606)                                  |
-|  13 | `sql-expert`           | 1.1.0   |      125 | CORE_CONCEPTS.md (769)                                  |
-|  14 | `tableau-expert`       | 1.1.0   |      135 | CORE_CONCEPTS.md (669)                                  |
+|   # | Skill                          | Version | SKILL.md | References                                                                   |
+| --: | ------------------------------ | ------- | -------: | ---------------------------------------------------------------------------- |
+|   1 | `audit-expert`                 | 1.1.0   |      194 | COMPLIANCE_AUDITING.md (381), SECURITY_CODE_REVIEW.md (320)                  |
+|   2 | `codeql-expert`                | 1.1.0   |      251 | —                                                                            |
+|   3 | `cryptography-expert`          | 1.1.0   |      195 | EXAMPLES.md (460)                                                            |
+|   4 | `gdpr-expert`                  | 1.1.0   |      392 | —                                                                            |
+|   5 | `identity-access-expert`       | 1.0.0   |      305 | PATTERNS.md (296)                                                            |
+|   6 | `incident-response-expert`     | 1.1.0   |      108 | —                                                                            |
+|   7 | `penetration-testing-expert`   | 1.1.0   |      205 | EXAMPLES.md (370)                                                            |
+|   8 | `secrets-management-expert`    | 1.0.0   |      319 | ENCRYPTION.md (214)                                                          |
+|   9 | `security-expert`              | 1.1.0   |      350 | AUTHENTICATION_AUTHORIZATION.md (235), OWASP_TOP_10_VULNERABILITIES.md (230) |
+|  10 | `soc2-expert`                  | 1.1.0   |      400 | —                                                                            |
+|  11 | `supply-chain-security-expert` | 1.0.0   |      339 | RESPONSE.md (200)                                                            |
+|  12 | `zero-trust-expert`            | 1.1.0   |      191 | EXAMPLES.md (588)                                                            |
 
-### Security & Compliance — `security/` (9)
+### Tools & Meta-Programming — `tools/` (12)
 
-|   # | Skill                        | Version | SKILL.md | References                                                                   |
-| --: | ---------------------------- | ------- | -------: | ---------------------------------------------------------------------------- |
-|   1 | `audit-expert`               | 1.1.0   |      194 | COMPLIANCE_AUDITING.md (381), SECURITY_CODE_REVIEW.md (320)                  |
-|   2 | `codeql-expert`              | 1.1.0   |      251 | —                                                                            |
-|   3 | `cryptography-expert`        | 1.1.0   |      195 | EXAMPLES.md (460)                                                            |
-|   4 | `gdpr-expert`                | 1.1.0   |      392 | —                                                                            |
-|   5 | `incident-response-expert`   | 1.1.0   |      108 | —                                                                            |
-|   6 | `penetration-testing-expert` | 1.1.0   |      205 | EXAMPLES.md (370)                                                            |
-|   7 | `security-expert`            | 1.1.0   |      350 | AUTHENTICATION_AUTHORIZATION.md (235), OWASP_TOP_10_VULNERABILITIES.md (230) |
-|   8 | `soc2-expert`                | 1.1.0   |      400 | —                                                                            |
-|   9 | `zero-trust-expert`          | 1.1.0   |      191 | EXAMPLES.md (588)                                                            |
+|   # | Skill                        | Version | SKILL.md | References                        |
+| --: | ---------------------------- | ------- | -------: | --------------------------------- |
+|   1 | `browser-automation-expert`  | 1.0.0   |      309 | RECIPES.md (243)                  |
+|   2 | `code-review-expert`         | 1.1.0   |      339 | REVIEW_GUIDELINES.md (186)        |
+|   3 | `discord-expert`             | 1.1.0   |      170 | EXAMPLES.md (427)                 |
+|   4 | `document-processing-expert` | 1.0.0   |      296 | LIBRARIES.md (243)                |
+|   5 | `git-expert`                 | 1.1.0   |      177 | CORE_CONCEPTS.md (574)            |
+|   6 | `skill-creator-expert`       | 1.1.0   |      271 | SKILL_CREATION_FRAMEWORK.md (606) |
+|   7 | `skill-router`               | 1.0.0   |      202 | —                                 |
+|   8 | `slack-expert`               | 1.1.0   |      169 | EXAMPLES.md (448)                 |
+|   9 | `teams-expert`               | 1.1.0   |      168 | EXAMPLES.md (370)                 |
+|  10 | `testing-expert`             | 1.1.0   |      252 | CORE_CONCEPTS.md (841)            |
+|  11 | `video-streaming-expert`     | 1.1.0   |      172 | EXAMPLES.md (537)                 |
+|  12 | `webrtc-expert`              | 1.1.0   |      169 | EXAMPLES.md (540)                 |
 
-### Tools & Meta-Programming — `tools/` (9)
+### AI & Machine Learning — `ai/` (7)
 
-|   # | Skill                    | Version | SKILL.md | References                        |
-| --: | ------------------------ | ------- | -------: | --------------------------------- |
-|   1 | `code-review-expert`     | 1.1.0   |      339 | REVIEW_GUIDELINES.md (186)        |
-|   2 | `discord-expert`         | 1.1.0   |      170 | EXAMPLES.md (427)                 |
-|   3 | `git-expert`             | 1.1.0   |      177 | CORE_CONCEPTS.md (574)            |
-|   4 | `skill-creator-expert`   | 1.1.0   |      271 | SKILL_CREATION_FRAMEWORK.md (606) |
-|   5 | `slack-expert`           | 1.1.0   |      169 | EXAMPLES.md (448)                 |
-|   6 | `teams-expert`           | 1.1.0   |      168 | EXAMPLES.md (370)                 |
-|   7 | `testing-expert`         | 1.1.0   |      252 | CORE_CONCEPTS.md (841)            |
-|   8 | `video-streaming-expert` | 1.1.0   |      172 | EXAMPLES.md (537)                 |
-|   9 | `webrtc-expert`          | 1.1.0   |      169 | EXAMPLES.md (540)                 |
+|   # | Skill                      | Version | SKILL.md | References                                          |
+| --: | -------------------------- | ------- | -------: | --------------------------------------------------- |
+|   1 | `agent-engineering-expert` | 1.0.0   |      292 | ORCHESTRATION.md (231), SECURITY.md (241)           |
+|   2 | `ai-architect-expert`      | 1.1.0   |      393 | —                                                   |
+|   3 | `ai-engineer-expert`       | 1.1.0   |      459 | —                                                   |
+|   4 | `data-science-expert`      | 1.1.0   |      408 | —                                                   |
+|   5 | `llm-engineering-expert`   | 1.0.0   |      278 | EVALUATION.md (186), PROMPT_PATTERNS.md (213)       |
+|   6 | `ml-expert`                | 1.1.0   |      371 | —                                                   |
+|   7 | `rag-expert`               | 1.0.0   |      290 | ADVANCED_RETRIEVAL.md (185), VECTOR_STORES.md (148) |
 
 ### QA & Testing — `qa/` (7)
 
@@ -266,15 +288,6 @@ index lives in `stdlib/catalog/`.
 |   4 | `lawyer-expert`     | 1.1.0   |      327 | —          |
 |   5 | `standards-expert`  | 1.1.0   |      468 | —          |
 
-### AI & Machine Learning — `ai/` (4)
-
-|   # | Skill                 | Version | SKILL.md | References |
-| --: | --------------------- | ------- | -------: | ---------- |
-|   1 | `ai-architect-expert` | 1.1.0   |      393 | —          |
-|   2 | `ai-engineer-expert`  | 1.1.0   |      459 | —          |
-|   3 | `data-science-expert` | 1.1.0   |      408 | —          |
-|   4 | `ml-expert`           | 1.1.0   |      371 | —          |
-
 ### Cloud Platforms — `cloud/` (4)
 
 |   # | Skill               | Version | SKILL.md | References                                                  |
@@ -284,6 +297,15 @@ index lives in `stdlib/catalog/`.
 |   3 | `cloudflare-expert` | 1.1.0   |      426 | DURABLE_OBJECTS.md (95), REQUEST_RESPONSE_HANDLING.md (117) |
 |   4 | `gcp-expert`        | 1.1.0   |      190 | —                                                           |
 
+### Engineering Workflows — `workflows/` (4)
+
+|   # | Skill                  | Version | SKILL.md | References                                     |
+| --: | ---------------------- | ------- | -------: | ---------------------------------------------- |
+|   1 | `code-review-workflow` | 1.0.0   |      229 | CHECKLISTS.md (147)                            |
+|   2 | `debugging-workflow`   | 1.0.0   |      279 | PRODUCTION.md (209), TOOLKIT.md (212)          |
+|   3 | `refactoring-workflow` | 1.0.0   |      240 | LARGE_SCALE.md (183), TRANSFORMATIONS.md (235) |
+|   4 | `tdd-workflow`         | 1.0.0   |      237 | EXAMPLES.md (268), LEGACY_CODE.md (186)        |
+
 ### Scientific & Research — `scientific/` (3)
 
 |   # | Skill               | Version | SKILL.md | References |
@@ -292,11 +314,12 @@ index lives in `stdlib/catalog/`.
 |   2 | `quantum-expert`    | 1.1.0   |      343 | —          |
 |   3 | `research-expert`   | 1.1.0   |      390 | —          |
 
-### Design — `design/` (1)
+### Design — `design/` (2)
 
-|   # | Skill           | Version | SKILL.md | References |
-| --: | --------------- | ------- | -------: | ---------- |
-|   1 | `design-expert` | 1.1.0   |      352 | —          |
+|   # | Skill                  | Version | SKILL.md | References          |
+| --: | ---------------------- | ------- | -------: | ------------------- |
+|   1 | `accessibility-expert` | 1.0.0   |      357 | COMPONENTS.md (337) |
+|   2 | `design-expert`        | 1.1.0   |      352 | —                   |
 
 ---
 

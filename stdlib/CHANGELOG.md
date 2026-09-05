@@ -10,6 +10,90 @@ version is declared in the `version:` field of its `SKILL.md`.
 
 ---
 
+## Library 3.1.0 — 2026-09-05
+
+Seventeen new skills, 174 → 191, and a fifteenth category. No breaking changes:
+everything here is additive.
+
+Selection was driven by cross-referencing the library's coverage against
+observed usage — Stack Overflow and GitHub Octoverse survey data for
+technologies, and install rankings on public agent-skill registries for the
+_shape_ of skills people actually use.
+
+### Added — `workflows/` (new category)
+
+The registries' most-installed skills are procedures, not domain knowledge. The
+library had 174 skills of the form `<domain>-expert` and none of the form
+"what do I do, in what order". These four close that gap and introduce the
+`<activity>-workflow` naming convention:
+
+| Skill                  | Covers                                                      |
+| ---------------------- | ----------------------------------------------------------- |
+| `tdd-workflow`         | Red-green-refactor, characterisation tests, legacy seams    |
+| `refactoring-workflow` | Transformation catalogue, parallel change, strangler fig    |
+| `debugging-workflow`   | Hypothesis and bisection, flaky tests, production debugging |
+| `code-review-workflow` | Review order, severity, per-change-type checklists          |
+
+`code-review-workflow` complements the existing `code-review-expert` rather than
+replacing it: the workflow is the procedure, the expert is the judgement inside
+it. Consider merging them if the split proves confusing in use.
+
+### Added — applied AI
+
+The library referenced LLMs in tags but had no skill covering them. `pgvector`
+appeared zero times across 174 skills; `LangChain` once; `MCP` twice, despite
+the repository shipping an MCP integration guide.
+
+- `llm-engineering-expert` — prompt design, structured output, evaluation
+  harnesses, guardrails, cost and latency
+- `rag-expert` — chunking, hybrid retrieval, reranking, grounding, with five
+  vector stores as references rather than as five skills
+- `agent-engineering-expert` — tool design, the bounded loop, memory, MCP,
+  multi-agent orchestration, and prompt-injection defence by capability
+  separation
+
+### Added — capabilities, data, security, interface, meta
+
+- `document-processing-expert` — PDF, DOCX, XLSX and PPTX in one skill with four
+  references; the most standardised skill category in the ecosystem and entirely
+  absent here
+- `browser-automation-expert` — driving a browser as a client against third-party
+  sites, including the legal and ethical checks. Distinct from `playwright-expert`,
+  which covers browsers as a testing tool against your own application
+- `mysql-expert` — the second most widely used database, previously absent while
+  several far rarer stores had skills
+- `analytical-databases-expert` — DuckDB, ClickHouse, Parquet, warehouse cost control
+- `stream-processing-expert` — Flink, Spark Structured Streaming, CDC, watermarks
+- `secrets-management-expert` — vaults, KMS envelope encryption, rotation,
+  leak response, post-quantum migration planning
+- `supply-chain-security-expert` — SBOM, SCA, SLSA provenance, signing (OWASP A03)
+- `identity-access-expert` — OAuth 2.1/OIDC, sessions, RBAC/ABAC, multi-tenancy
+  (OWASP A01)
+- `accessibility-expert` — WCAG 2.2, ARIA, keyboard, screen readers. The
+  `design/` category previously held only `design-expert`, which despite its name
+  covers software architecture, leaving accessibility with no home
+- `skill-router` — finding and composing skills across 191, and the disambiguation
+  table for overlapping pairs
+
+### Grouping
+
+Skills were grouped by _decision context_ rather than by technology, so the
+library grows by 17 rather than by roughly 50. Five vector stores share one
+mental model and live inside `rag-expert`; four document formats live inside
+`document-processing-expert`. Per-tool detail sits in `references/`, read on
+demand, which the progressive-disclosure work in 3.0.0 made cheap.
+
+Four gaps were addressed by extending existing skills instead of adding new
+ones: PyTorch and TensorFlow belong in `ml-expert`, OpenTelemetry in
+`monitoring-expert`, Pulumi and Crossplane in `terraform-expert`. Those
+extensions are not in this release.
+
+### Known limitation
+
+Unchanged from 3.0.0: skill versions are still not read at runtime.
+
+---
+
 ## Library 3.0.0 — 2026-09-04
 
 Agent Skills v1.0 conformance pass across all 174 skills. **This release

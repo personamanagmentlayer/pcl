@@ -18,6 +18,22 @@
       ]
     },
     {
+      "category": "design",
+      "name": "accessibility-expert",
+      "path": "design/accessibility-expert/SKILL.md",
+      "tags": [
+        "accessibility",
+        "a11y",
+        "wcag",
+        "aria",
+        "screen-readers",
+        "keyboard-navigation",
+        "contrast",
+        "inclusive-design",
+        "forms"
+      ]
+    },
+    {
       "category": "professional",
       "name": "accountant-expert",
       "path": "professional/accountant-expert/SKILL.md",
@@ -34,6 +50,22 @@
         "maintenance",
         "safety",
         "atc"
+      ]
+    },
+    {
+      "category": "ai",
+      "name": "agent-engineering-expert",
+      "path": "ai/agent-engineering-expert/SKILL.md",
+      "tags": [
+        "agents",
+        "tool-use",
+        "function-calling",
+        "mcp",
+        "orchestration",
+        "multi-agent",
+        "memory",
+        "prompt-injection",
+        "sandboxing"
       ]
     },
     {
@@ -85,6 +117,22 @@
         "workflow",
         "scheduling",
         "data-pipeline"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "analytical-databases-expert",
+      "path": "data/analytical-databases-expert/SKILL.md",
+      "tags": [
+        "olap",
+        "duckdb",
+        "clickhouse",
+        "parquet",
+        "columnar",
+        "analytics",
+        "data-warehouse",
+        "lakehouse",
+        "aggregation"
       ]
     },
     {
@@ -237,6 +285,21 @@
       ]
     },
     {
+      "category": "tools",
+      "name": "browser-automation-expert",
+      "path": "tools/browser-automation-expert/SKILL.md",
+      "tags": [
+        "browser-automation",
+        "scraping",
+        "crawling",
+        "playwright",
+        "puppeteer",
+        "headless",
+        "extraction",
+        "anti-bot"
+      ]
+    },
+    {
       "category": "domains",
       "name": "business-intelligence-expert",
       "path": "domains/business-intelligence-expert/SKILL.md",
@@ -328,6 +391,20 @@
         "best-practices",
         "collaboration",
         "security"
+      ]
+    },
+    {
+      "category": "workflows",
+      "name": "code-review-workflow",
+      "path": "workflows/code-review-workflow/SKILL.md",
+      "tags": [
+        "code-review",
+        "pull-request",
+        "feedback",
+        "quality-gate",
+        "correctness",
+        "security-review",
+        "workflow"
       ]
     },
     {
@@ -497,6 +574,21 @@
       ]
     },
     {
+      "category": "workflows",
+      "name": "debugging-workflow",
+      "path": "workflows/debugging-workflow/SKILL.md",
+      "tags": [
+        "debugging",
+        "root-cause-analysis",
+        "bisection",
+        "flaky-tests",
+        "stack-trace",
+        "observability",
+        "regression",
+        "workflow"
+      ]
+    },
+    {
       "category": "design",
       "name": "design-expert",
       "path": "design/design-expert/SKILL.md",
@@ -544,6 +636,23 @@
       "name": "docker-expert",
       "path": "devops/docker-expert/SKILL.md",
       "tags": ["devops", "containers", "docker", "infrastructure"]
+    },
+    {
+      "category": "tools",
+      "name": "document-processing-expert",
+      "path": "tools/document-processing-expert/SKILL.md",
+      "tags": [
+        "pdf",
+        "docx",
+        "xlsx",
+        "pptx",
+        "documents",
+        "extraction",
+        "reporting",
+        "ocr",
+        "spreadsheets",
+        "office"
+      ]
     },
     {
       "category": "domains",
@@ -908,6 +1017,23 @@
     },
     {
       "category": "security",
+      "name": "identity-access-expert",
+      "path": "security/identity-access-expert/SKILL.md",
+      "tags": [
+        "oauth",
+        "oidc",
+        "saml",
+        "jwt",
+        "sso",
+        "rbac",
+        "abac",
+        "authorisation",
+        "sessions",
+        "multi-tenancy"
+      ]
+    },
+    {
+      "category": "security",
       "name": "incident-response-expert",
       "path": "security/incident-response-expert/SKILL.md",
       "tags": [
@@ -1075,6 +1201,21 @@
       ]
     },
     {
+      "category": "ai",
+      "name": "llm-engineering-expert",
+      "path": "ai/llm-engineering-expert/SKILL.md",
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "structured-output",
+        "evaluation",
+        "guardrails",
+        "hallucination",
+        "tokens",
+        "cost-optimisation"
+      ]
+    },
+    {
       "category": "qa",
       "name": "load-testing-expert",
       "path": "qa/load-testing-expert/SKILL.md",
@@ -1235,6 +1376,22 @@
         "metrics",
         "alerting",
         "traces"
+      ]
+    },
+    {
+      "category": "data",
+      "name": "mysql-expert",
+      "path": "data/mysql-expert/SKILL.md",
+      "tags": [
+        "mysql",
+        "mariadb",
+        "innodb",
+        "sql",
+        "indexing",
+        "replication",
+        "query-optimisation",
+        "schema-migration",
+        "database"
       ]
     },
     {
@@ -1507,6 +1664,22 @@
       "tags": ["r", "statistics", "data-analysis", "ggplot2", "tidyverse"]
     },
     {
+      "category": "ai",
+      "name": "rag-expert",
+      "path": "ai/rag-expert/SKILL.md",
+      "tags": [
+        "rag",
+        "retrieval",
+        "embeddings",
+        "vector-search",
+        "hybrid-search",
+        "reranking",
+        "chunking",
+        "grounding",
+        "pgvector"
+      ]
+    },
+    {
       "category": "frameworks",
       "name": "react-expert",
       "path": "frameworks/react-expert/SKILL.md",
@@ -1537,6 +1710,20 @@
       "name": "redis-expert",
       "path": "data/redis-expert/SKILL.md",
       "tags": ["redis", "cache", "pubsub", "inmemory", "keyvalue", "nosql"]
+    },
+    {
+      "category": "workflows",
+      "name": "refactoring-workflow",
+      "path": "workflows/refactoring-workflow/SKILL.md",
+      "tags": [
+        "refactoring",
+        "technical-debt",
+        "code-quality",
+        "architecture",
+        "coupling",
+        "duplication",
+        "workflow"
+      ]
     },
     {
       "category": "domains",
@@ -1680,6 +1867,21 @@
     },
     {
       "category": "security",
+      "name": "secrets-management-expert",
+      "path": "security/secrets-management-expert/SKILL.md",
+      "tags": [
+        "secrets",
+        "vault",
+        "kms",
+        "credentials",
+        "rotation",
+        "encryption",
+        "least-privilege",
+        "key-management"
+      ]
+    },
+    {
+      "category": "security",
       "name": "security-expert",
       "path": "security/security-expert/SKILL.md",
       "tags": [
@@ -1771,6 +1973,19 @@
         "domain-modeling",
         "knowledge-engineering",
         "pcl-development"
+      ]
+    },
+    {
+      "category": "tools",
+      "name": "skill-router",
+      "path": "tools/skill-router/SKILL.md",
+      "tags": [
+        "discovery",
+        "routing",
+        "skill-selection",
+        "composition",
+        "catalog",
+        "meta"
       ]
     },
     {
@@ -1881,6 +2096,22 @@
       ]
     },
     {
+      "category": "data",
+      "name": "stream-processing-expert",
+      "path": "data/stream-processing-expert/SKILL.md",
+      "tags": [
+        "streaming",
+        "flink",
+        "spark-streaming",
+        "cdc",
+        "debezium",
+        "watermarks",
+        "windowing",
+        "exactly-once",
+        "event-time"
+      ]
+    },
+    {
       "category": "domains",
       "name": "supply-chain-expert",
       "path": "domains/supply-chain-expert/SKILL.md",
@@ -1893,6 +2124,22 @@
         "supplier-management",
         "warehouse",
         "scm"
+      ]
+    },
+    {
+      "category": "security",
+      "name": "supply-chain-security-expert",
+      "path": "security/supply-chain-security-expert/SKILL.md",
+      "tags": [
+        "supply-chain",
+        "sbom",
+        "sca",
+        "slsa",
+        "sigstore",
+        "provenance",
+        "dependencies",
+        "ci-cd-security",
+        "vulnerability-management"
       ]
     },
     {
@@ -1947,6 +2194,21 @@
         "web",
         "cross-platform",
         "performance"
+      ]
+    },
+    {
+      "category": "workflows",
+      "name": "tdd-workflow",
+      "path": "workflows/tdd-workflow/SKILL.md",
+      "tags": [
+        "tdd",
+        "testing",
+        "test-first",
+        "red-green-refactor",
+        "unit-tests",
+        "regression",
+        "legacy-code",
+        "workflow"
       ]
     },
     {
@@ -2161,6 +2423,6 @@
       ]
     }
   ],
-  "total_skills": 174,
+  "total_skills": 191,
   "version": "2.0.0"
 }

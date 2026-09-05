@@ -37,6 +37,7 @@ CATEGORY_LABELS = {
     'scientific': 'Scientific & Research',
     'security': 'Security & Compliance',
     'tools': 'Tools & Meta-Programming',
+    'workflows': 'Engineering Workflows',
 }
 
 
