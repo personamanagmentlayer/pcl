@@ -13,7 +13,13 @@
  * - Circular dependency detection
  */
 
-import { existsSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  writeFileSync,
+  rmSync,
+} from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { SkillResolver, SkillRefType } from '../../src/skills/skill-resolver';
@@ -126,7 +132,9 @@ let claudeSkillsDir: string;
 let stdlibDir: string;
 
 function setupTestDirs(): void {
-  testDir = join(tmpdir(), `pcl-skill-resolver-test-${Date.now()}`);
+  // Atomic creation with a random suffix and 0700 permissions; a predictable
+  // name under the shared temp directory is world-readable and racy.
+  testDir = mkdtempSync(join(tmpdir(), 'pcl-skill-resolver-test-'));
   claudeSkillsDir = join(testDir, '.claude', 'skills');
   stdlibDir = join(testDir, 'stdlib', 'skills');
 

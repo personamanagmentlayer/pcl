@@ -7,7 +7,13 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { mkdirSync, rmSync, writeFileSync, existsSync } from 'node:fs';
+import {
+  mkdtempSync,
+  mkdirSync,
+  rmSync,
+  writeFileSync,
+  existsSync,
+} from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { findSkillFiles } from '../../src/skills/skill-discovery';
@@ -21,8 +27,10 @@ function write(relative: string, content = '# skill\n'): void {
 }
 
 beforeEach(() => {
-  root = join(tmpdir(), `pcl-skill-discovery-${Date.now()}-${Math.random()}`);
-  mkdirSync(root, { recursive: true });
+  // mkdtempSync creates the directory atomically with a random suffix and
+  // 0700 permissions. join(tmpdir(), <predictable name>) is world-readable
+  // and racy: another user can pre-create or symlink the path.
+  root = mkdtempSync(join(tmpdir(), 'pcl-skill-discovery-'));
 });
 
 afterEach(() => {
