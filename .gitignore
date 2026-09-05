@@ -8,7 +8,8 @@ jspm_packages/
 bower_components/
 
 # Package manager files
-package-lock.json
+# The lockfile is committed on purpose: `npm ci` and the CI workflows depend on
+# it for reproducible installs. Only the lockfiles of other managers are ignored.
 yarn.lock
 pnpm-lock.yaml
 .pnpm-store/
@@ -166,15 +167,8 @@ Thumbs.db
 # ============================================
 # IDEs & Editors
 # ============================================
-# VSCode (keeping shared workspace settings only)
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-# Exclude personal preferences
-.vscode/keybindings.json
-.vscode/README.md
+# VSCode - editor configuration is personal, not shared
+.vscode/
 *.code-workspace
 
 # JetBrains IDEs
@@ -231,14 +225,15 @@ __marimo__/
 .pypirc
 
 #pcl
+.pcl/
+# Claude Code workspace - local configuration and agent definitions
+.claude/CLAUDE.md
 .claude/settings.local.json
+.claude/agents/
+.claude/*
 # Project Management
 .roadmap/
-.claude/settings.local.json
 
 # Python bytecode from the stdlib maintenance scripts
 __pycache__/
 *.py[cod]
-
-# Local PCL runtime state
-.pcl/
