@@ -225,9 +225,11 @@ __marimo__/
 .pypirc
 
 #pcl
+.pcl/
 # Claude Code workspace - local configuration and agent definitions
 .claude/CLAUDE.md
 .claude/settings.local.json
 .claude/agents/
+.claude/*
 # Project Management
 .roadmap/
