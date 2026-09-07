@@ -115,7 +115,7 @@ jobs:
 
       - name: Gitleaks Scan
         if: steps.check-license.outputs.license_available == 'true'
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         continue-on-error: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
