@@ -57,15 +57,15 @@ function createMockRuntime(): Runtime {
   const pclCode = `
     persona Developer {
       intent: "Help with code"
-      tone: professional
-      skills: [coding, debugging]
-      constraints: ["Be concise"]
+      tone: technical
+      skills { "coding", "debugging" }
+      constraints { "Be concise" }
     }
 
     persona Analyst {
       intent: "Analyze data"
-      tone: analytical
-      skills: [data-analysis, statistics]
+      tone: technical
+      skills { "data-analysis", "statistics" }
     }
 
     team CodeReview {
@@ -78,6 +78,17 @@ function createMockRuntime(): Runtime {
   if (!parseResult.ok) {
     throw new Error(
       `Failed to parse test PCL: ${parseResult.error.map((e) => e.message).join(', ')}`
+    );
+  }
+
+  // Error recovery keeps `ok` true while silently dropping the declarations it
+  // could not parse, which would leave the runtime empty and every assertion
+  // below failing for the wrong reason.
+  if (parseResult.value.errors.length > 0) {
+    throw new Error(
+      `Test PCL parsed with errors: ${parseResult.value.errors
+        .map((e) => e.message)
+        .join(', ')}`
     );
   }
 
@@ -1109,7 +1120,7 @@ describe('PclServer - Team Resources', () => {
       jsonrpc: '2.0',
       method: McpMethod.ResourcesRead,
       params: {
-        uri: 'pcl://team/code-review',
+        uri: 'pcl://team/CodeReview',
       },
       id: 1,
     });

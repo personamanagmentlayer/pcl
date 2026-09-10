@@ -1,14 +1,14 @@
 # PCL Standard Library (stdlib)
 
-**Version**: 3.1.0
+**Version**: 3.2.0
 **Status**: ✅ Production Ready
-**Total Skills**: 191 Expert-Level Skills
+**Total Skills**: 193 Expert-Level Skills
 
 ---
 
 ## 🎯 What is the Standard Library?
 
-The **PCL Standard Library** is a comprehensive collection of **191 expert-level skills** for AI agent personas, providing deep domain expertise across programming languages, frameworks, cloud platforms, data systems, security, and industry verticals.
+The **PCL Standard Library** is a comprehensive collection of **193 expert-level skills** for AI agent personas, providing deep domain expertise across programming languages, frameworks, cloud platforms, data systems, security, and industry verticals.
 
 Each skill represents **expert-level mastery** in a specific domain with:
 
@@ -20,7 +20,7 @@ Each skill represents **expert-level mastery** in a specific domain with:
 
 ## 📊 Library Statistics
 
-- **Total Skills**: 191 expert-level skills
+- **Total Skills**: 193 expert-level skills
 - **Categories**: 15 major domains
 - **Total Content**: ~114,000 lines of expert knowledge (48,000 in skill entry
   points, 66,000 in on-demand reference documents)
@@ -28,23 +28,23 @@ Each skill represents **expert-level mastery** in a specific domain with:
 
 ## 🗂️ Skill Categories
 
-| Category              | Count | Examples                                                               |
-| --------------------- | ----- | ---------------------------------------------------------------------- |
-| **Domains**           | 58    | Healthcare, Finance, LegalTech, Manufacturing, Energy, AgTech, Web3    |
-| **Workflows**         | 4     | TDD, refactoring, debugging, code review — procedures, not knowledge   |
-| **Languages**         | 23    | Python, TypeScript, Rust, Go, Java, Kotlin, Scala, Haskell, Julia, Zig |
-| **DevOps**            | 16    | Kubernetes, Docker, Terraform, ArgoCD, Prometheus, Grafana, Istio      |
-| **Frameworks**        | 15    | React, Vue, Angular, Next.js, Django, Spring Boot, Flutter, Tauri      |
-| **Data & Analytics**  | 17    | Snowflake, Databricks, Airflow, dbt, Tableau, Power BI, Kafka          |
-| **Security**          | 12    | Penetration Testing, Zero Trust, GDPR, SOC2, Cryptography              |
-| **Tools**             | 12    | Git, Slack, Teams, Discord, WebRTC, Video Streaming, Code Review       |
-| **QA & Testing**      | 7     | Playwright, Cypress, Jest, Selenium, Load Testing, Chaos Engineering   |
-| **API & Integration** | 6     | REST, GraphQL, gRPC, Microservices, API Design                         |
-| **Professional**      | 5     | Banking, Legal, Accounting, FinOps, Standards                          |
-| **AI & ML**           | 7     | Machine Learning, AI Architecture, Data Science                        |
-| **Cloud Platforms**   | 4     | AWS, Azure, GCP, Cloudflare                                            |
-| **Scientific**        | 3     | Quantum Computing, Bioinformatics, Research                            |
-| **Design**            | 2     | System & UX Design                                                     |
+| Category              | Count | Examples                                                                        |
+| --------------------- | ----- | ------------------------------------------------------------------------------- |
+| **Domains**           | 58    | Healthcare, Finance, LegalTech, Manufacturing, Energy, AgTech, Web3             |
+| **Workflows**         | 4     | TDD, refactoring, debugging, code review — procedures, not knowledge            |
+| **Languages**         | 23    | Python, TypeScript, Rust, Go, Java, Kotlin, Scala, Haskell, Julia, Zig          |
+| **DevOps**            | 16    | Kubernetes, Docker, Terraform, ArgoCD, Prometheus, Grafana, Istio               |
+| **Frameworks**        | 17    | React, Vue, Angular, Next.js, NestJS, Vite, Django, Spring Boot, Flutter, Tauri |
+| **Data & Analytics**  | 17    | Snowflake, Databricks, Airflow, dbt, Tableau, Power BI, Kafka                   |
+| **Security**          | 12    | Penetration Testing, Zero Trust, GDPR, SOC2, Cryptography                       |
+| **Tools**             | 12    | Git, Slack, Teams, Discord, WebRTC, Video Streaming, Code Review                |
+| **QA & Testing**      | 7     | Playwright, Cypress, Jest, Selenium, Load Testing, Chaos Engineering            |
+| **API & Integration** | 6     | REST, GraphQL, gRPC, Microservices, API Design                                  |
+| **Professional**      | 5     | Banking, Legal, Accounting, FinOps, Standards                                   |
+| **AI & ML**           | 7     | Machine Learning, AI Architecture, Data Science                                 |
+| **Cloud Platforms**   | 4     | AWS, Azure, GCP, Cloudflare                                                     |
+| **Scientific**        | 3     | Quantum Computing, Bioinformatics, Research                                     |
+| **Design**            | 2     | System & UX Design                                                              |
 
 See [SKILLS_INVENTORY.md](SKILLS_INVENTORY.md) for the complete skill list.
 
@@ -447,6 +447,18 @@ python scripts/generate-skill-inventory.py  # rebuild inventory + structure docs
 ```
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
+
+## 📈 What's New in v3.2.0
+
+**Two new skills**, taking the library from 191 to 193, both in `frameworks/`:
+
+- **`nestjs-expert`** — modules, providers and dependency injection, guards,
+  pipes and interceptors, TypeORM/Prisma persistence, microservices transports,
+  and testing with `@nestjs/testing`. The most-installed Node.js backend
+  framework had no prior representation.
+- **`vitejs-expert`** — native ESM dev server, HMR, the plugin API, Rollup
+  production builds, library mode, and Vitest integration. Vite was already
+  referenced from `vue-expert` but had no skill of its own.
 
 ## 📈 What's New in v3.1.0
 

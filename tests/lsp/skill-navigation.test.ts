@@ -13,14 +13,32 @@ import { tmpdir } from 'node:os';
 describe('SkillNavigationProvider', () => {
   let provider: SkillNavigationProvider;
   let testDir: string;
+  let homeBackup: { HOME?: string; USERPROFILE?: string };
 
   beforeEach(async () => {
     provider = new SkillNavigationProvider();
-    testDir = join(tmpdir(), `pcl-test-nav-${Date.now()}`);
+    testDir = join(
+      tmpdir(),
+      `pcl-test-nav-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+    );
     await mkdir(testDir, { recursive: true });
+
+    // The provider also searches <home>/.claude/skills; pin it inside the
+    // sandbox so the developer's real skills cannot influence assertions.
+    homeBackup = {
+      HOME: process.env.HOME,
+      USERPROFILE: process.env.USERPROFILE,
+    };
+    process.env.HOME = testDir;
+    process.env.USERPROFILE = testDir;
   });
 
   afterEach(async () => {
+    process.env.HOME = homeBackup.HOME;
+    process.env.USERPROFILE = homeBackup.USERPROFILE;
+    if (process.env.HOME === undefined) delete process.env.HOME;
+    if (process.env.USERPROFILE === undefined) delete process.env.USERPROFILE;
+
     if (existsSync(testDir)) {
       await rm(testDir, { recursive: true, force: true });
     }
@@ -91,7 +109,10 @@ description: In .claude directory
     });
 
     it('should handle skills in parent directory', async () => {
-      const parentSkills = join(testDir, '..', '.claude', 'skills');
+      // Document lives in testDir/subdir, so its parent .claude/skills is
+      // testDir/.claude/skills (writing to testDir/.. would leak into the
+      // shared temp directory and never be cleaned up).
+      const parentSkills = join(testDir, '.claude', 'skills');
       await mkdir(parentSkills, { recursive: true });
 
       const skillPath = join(parentSkills, 'parent-skill.md');

@@ -1,10 +1,10 @@
 version: 2.0.0
-generated: '2026-09-05'
+generated: '2026-09-09'
 statistics:
-  total_skills: 191
+  total_skills: 193
   total_categories: 15
-  total_code_lines: 91641
-  total_file_size: 3498663
+  total_code_lines: 92533
+  total_file_size: 3665480
   avg_lines_per_skill: 661
   categories:
     ai: 7
@@ -14,7 +14,7 @@ statistics:
     design: 2
     devops: 16
     domains: 58
-    frameworks: 15
+    frameworks: 17
     languages: 23
     professional: 5
     qa: 7
@@ -122,7 +122,9 @@ tags:
 - browser-automation
 - browser-testing
 - bss
+- build-tool
 - building
+- bundler
 - business-apps
 - business-intelligence
 - business-process
@@ -321,6 +323,7 @@ tags:
 - erp
 - es2024
 - esg
+- esm
 - ethereum
 - ethersjs
 - ethical-hacking
@@ -416,6 +419,7 @@ tags:
 - hipaa
 - hl7
 - hls
+- hmr
 - hooks
 - hospitality
 - hotel
@@ -584,6 +588,7 @@ tags:
 - mvc
 - mysql
 - nested-routing
+- nestjs
 - network-slicing
 - networking
 - neural-networks
@@ -769,6 +774,7 @@ tags:
 - robo-advisor
 - robotics
 - roles
+- rollup
 - root-cause-analysis
 - ros
 - ros2
@@ -962,6 +968,9 @@ tags:
 - virtual-worlds
 - visual-testing
 - visualization
+- vite
+- vitejs
+- vitest
 - voice-bot
 - vqe
 - vr
@@ -1038,7 +1047,7 @@ categories:
     references:
     - references/ORCHESTRATION.md
     - references/SECURITY.md
-    file_size: 29160
+    file_size: 29921
     total_lines: 764
     code_examples: 24
     code_lines: 311
@@ -1062,7 +1071,7 @@ categories:
     - Edit
     path: ai/ai-architect-expert/SKILL.md
     references: []
-    file_size: 11161
+    file_size: 11553
     total_lines: 393
     code_examples: 4
     code_lines: 285
@@ -1087,7 +1096,7 @@ categories:
     - Bash(python:*)
     path: ai/ai-engineer-expert/SKILL.md
     references: []
-    file_size: 13228
+    file_size: 13686
     total_lines: 459
     code_examples: 5
     code_lines: 347
@@ -1113,7 +1122,7 @@ categories:
     - Bash(python:*)
     path: ai/data-science-expert/SKILL.md
     references: []
-    file_size: 12666
+    file_size: 13073
     total_lines: 408
     code_examples: 4
     code_lines: 299
@@ -1148,7 +1157,7 @@ categories:
     references:
     - references/EVALUATION.md
     - references/PROMPT_PATTERNS.md
-    file_size: 24159
+    file_size: 24833
     total_lines: 677
     code_examples: 18
     code_lines: 262
@@ -1173,11 +1182,11 @@ categories:
     - Bash(python:*)
     path: ai/ml-expert/SKILL.md
     references: []
-    file_size: 10872
+    file_size: 11242
     total_lines: 371
     code_examples: 4
     code_lines: 262
-  - &id136
+  - &id137
     name: rag-expert
     version: 1.0.0
     category: ai
@@ -1209,7 +1218,7 @@ categories:
     references:
     - references/ADVANCED_RETRIEVAL.md
     - references/VECTOR_STORES.md
-    file_size: 24824
+    file_size: 25444
     total_lines: 623
     code_examples: 18
     code_lines: 175
@@ -1234,7 +1243,7 @@ categories:
     - Edit
     path: api/api-design-expert/SKILL.md
     references: []
-    file_size: 13496
+    file_size: 13987
     total_lines: 492
     code_examples: 6
     code_lines: 368
@@ -1260,7 +1269,7 @@ categories:
     - Bash(python:*, pip:*, uvicorn:*)
     path: api/fastapi-expert/SKILL.md
     references: []
-    file_size: 8034
+    file_size: 8332
     total_lines: 299
     code_examples: 7
     code_lines: 220
@@ -1290,7 +1299,7 @@ categories:
     - references/BEST_PRACTICES.md
     - references/MODERN_GRAPHQL_DEVELOPMENT.md
     - references/PATTERNS.md
-    file_size: 21483
+    file_size: 22448
     total_lines: 969
     code_examples: 14
     code_lines: 800
@@ -1314,7 +1323,7 @@ categories:
     - Edit
     path: api/grpc-expert/SKILL.md
     references: []
-    file_size: 10327
+    file_size: 10760
     total_lines: 434
     code_examples: 4
     code_lines: 328
@@ -1337,11 +1346,11 @@ categories:
     - Edit
     path: api/microservices-expert/SKILL.md
     references: []
-    file_size: 14279
+    file_size: 14776
     total_lines: 498
     code_examples: 5
     code_lines: 386
-  - &id118
+  - &id119
     name: openapi-expert
     version: 1.1.0
     category: api
@@ -1364,7 +1373,7 @@ categories:
     path: api/openapi-expert/SKILL.md
     references:
     - references/BASIC_OPENAPI_SPECIFICATION.md
-    file_size: 11250
+    file_size: 11770
     total_lines: 522
     code_examples: 6
     code_lines: 430
@@ -1393,7 +1402,7 @@ categories:
     path: cloud/aws-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 17760
+    file_size: 18493
     total_lines: 735
     code_examples: 22
     code_lines: 559
@@ -1417,7 +1426,7 @@ categories:
     - Bash(az:*)
     path: cloud/azure-expert/SKILL.md
     references: []
-    file_size: 4023
+    file_size: 4199
     total_lines: 177
     code_examples: 4
     code_lines: 111
@@ -1443,7 +1452,7 @@ categories:
     references:
     - references/DURABLE_OBJECTS.md
     - references/REQUEST_RESPONSE_HANDLING.md
-    file_size: 14432
+    file_size: 15067
     total_lines: 638
     code_examples: 8
     code_lines: 501
@@ -1466,7 +1475,7 @@ categories:
     - Bash(gcloud:*)
     path: cloud/gcp-expert/SKILL.md
     references: []
-    file_size: 4083
+    file_size: 4272
     total_lines: 190
     code_examples: 5
     code_lines: 122
@@ -1497,7 +1506,7 @@ categories:
     path: data/airflow-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 23649
+    file_size: 24564
     total_lines: 917
     code_examples: 17
     code_lines: 751
@@ -1531,7 +1540,7 @@ categories:
     path: data/analytical-databases-expert/SKILL.md
     references:
     - references/MODELLING.md
-    file_size: 19409
+    file_size: 19903
     total_lines: 496
     code_examples: 14
     code_lines: 174
@@ -1561,7 +1570,7 @@ categories:
     path: data/data-mesh-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 30909
+    file_size: 31962
     total_lines: 1055
     code_examples: 12
     code_lines: 901
@@ -1591,7 +1600,7 @@ categories:
     path: data/databricks-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 20577
+    file_size: 21354
     total_lines: 779
     code_examples: 18
     code_lines: 613
@@ -1621,7 +1630,7 @@ categories:
     path: data/dbt-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 21459
+    file_size: 22446
     total_lines: 989
     code_examples: 22
     code_lines: 805
@@ -1645,7 +1654,7 @@ categories:
     - Bash(python:*, python3:*, pip:*, pytest:*)
     path: data/elasticsearch-expert/SKILL.md
     references: []
-    file_size: 3980
+    file_size: 4168
     total_lines: 189
     code_examples: 3
     code_lines: 128
@@ -1669,7 +1678,7 @@ categories:
     - Bash(kafka:*)
     path: data/kafka-expert/SKILL.md
     references: []
-    file_size: 2845
+    file_size: 2971
     total_lines: 127
     code_examples: 3
     code_lines: 65
@@ -1698,7 +1707,7 @@ categories:
     path: data/looker-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 20724
+    file_size: 21688
     total_lines: 966
     code_examples: 18
     code_lines: 795
@@ -1726,7 +1735,7 @@ categories:
     path: data/mongodb-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 13647
+    file_size: 14351
     total_lines: 706
     code_examples: 29
     code_lines: 542
@@ -1760,11 +1769,11 @@ categories:
     path: data/mysql-expert/SKILL.md
     references:
     - references/OPERATIONS.md
-    file_size: 20053
+    file_size: 20586
     total_lines: 535
     code_examples: 26
     code_lines: 209
-  - &id126
+  - &id127
     name: postgresql-expert
     version: 1.1.0
     category: data
@@ -1788,11 +1797,11 @@ categories:
     path: data/postgresql-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 18739
+    file_size: 19551
     total_lines: 814
     code_examples: 24
     code_lines: 667
-  - &id127
+  - &id128
     name: powerbi-expert
     version: 1.1.0
     category: data
@@ -1818,11 +1827,11 @@ categories:
     path: data/powerbi-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 21285
+    file_size: 22190
     total_lines: 907
     code_examples: 24
     code_lines: 719
-  - &id140
+  - &id141
     name: redis-expert
     version: 1.1.0
     category: data
@@ -1846,11 +1855,11 @@ categories:
     references:
     - references/BEST_PRACTICES.md
     - references/NODE_JS_CLIENT_IOREDIS.md
-    file_size: 17460
+    file_size: 18230
     total_lines: 773
     code_examples: 21
     code_lines: 585
-  - &id162
+  - &id163
     name: snowflake-expert
     version: 1.1.0
     category: data
@@ -1875,11 +1884,11 @@ categories:
     path: data/snowflake-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 18529
+    file_size: 19272
     total_lines: 745
     code_examples: 23
     code_lines: 562
-  - &id166
+  - &id167
     name: sql-expert
     version: 1.1.0
     category: data
@@ -1903,11 +1912,11 @@ categories:
     path: data/sql-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 21040
+    file_size: 21932
     total_lines: 894
     code_examples: 22
     code_lines: 759
-  - &id170
+  - &id171
     name: stream-processing-expert
     version: 1.0.0
     category: data
@@ -1937,11 +1946,11 @@ categories:
     path: data/stream-processing-expert/SKILL.md
     references:
     - references/OPERATIONS.md
-    file_size: 20720
+    file_size: 21253
     total_lines: 535
     code_examples: 19
     code_lines: 196
-  - &id175
+  - &id176
     name: tableau-expert
     version: 1.1.0
     category: data
@@ -1967,7 +1976,7 @@ categories:
     path: data/tableau-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 17314
+    file_size: 18116
     total_lines: 804
     code_examples: 23
     code_lines: 616
@@ -2002,7 +2011,7 @@ categories:
     path: design/accessibility-expert/SKILL.md
     references:
     - references/COMPONENTS.md
-    file_size: 21465
+    file_size: 22157
     total_lines: 694
     code_examples: 30
     code_lines: 339
@@ -2026,7 +2035,7 @@ categories:
     - Edit
     path: design/design-expert/SKILL.md
     references: []
-    file_size: 8891
+    file_size: 9242
     total_lines: 352
     code_examples: 5
     code_lines: 240
@@ -2056,7 +2065,7 @@ categories:
     - references/BEST_PRACTICES.md
     - references/PLAYBOOKS.md
     - references/ROLES.md
-    file_size: 19142
+    file_size: 19999
     total_lines: 861
     code_examples: 21
     code_lines: 667
@@ -2085,7 +2094,7 @@ categories:
     path: devops/argocd-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 16297
+    file_size: 17077
     total_lines: 782
     code_examples: 29
     code_lines: 605
@@ -2114,7 +2123,7 @@ categories:
     references:
     - references/GITHUB_ACTIONS.md
     - references/JENKINS.md
-    file_size: 21020
+    file_size: 21902
     total_lines: 885
     code_examples: 11
     code_lines: 721
@@ -2138,7 +2147,7 @@ categories:
     - Bash(python:*, python3:*, pip:*, pytest:*)
     path: devops/devops-expert/SKILL.md
     references: []
-    file_size: 13518
+    file_size: 14014
     total_lines: 497
     code_examples: 5
     code_lines: 383
@@ -2161,7 +2170,7 @@ categories:
     path: devops/docker-expert/SKILL.md
     references:
     - references/PATTERNS.md
-    file_size: 12833
+    file_size: 13456
     total_lines: 625
     code_examples: 22
     code_lines: 451
@@ -2190,7 +2199,7 @@ categories:
     path: devops/grafana-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 19620
+    file_size: 20536
     total_lines: 918
     code_examples: 29
     code_lines: 743
@@ -2219,7 +2228,7 @@ categories:
     path: devops/helm-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 16826
+    file_size: 17594
     total_lines: 770
     code_examples: 24
     code_lines: 615
@@ -2249,7 +2258,7 @@ categories:
     path: devops/istio-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 14902
+    file_size: 15668
     total_lines: 768
     code_examples: 24
     code_lines: 609
@@ -2278,7 +2287,7 @@ categories:
     path: devops/kubernetes-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 20338
+    file_size: 21368
     total_lines: 1032
     code_examples: 33
     code_lines: 845
@@ -2307,7 +2316,7 @@ categories:
     path: devops/linkerd-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 14817
+    file_size: 15561
     total_lines: 746
     code_examples: 36
     code_lines: 548
@@ -2338,11 +2347,11 @@ categories:
     references:
     - references/APPLICATION_INSTRUMENTATION.md
     - references/PROMETHEUS.md
-    file_size: 21479
+    file_size: 22386
     total_lines: 910
     code_examples: 15
     code_lines: 728
-  - &id115
+  - &id116
     name: nginx-expert
     version: 1.1.0
     category: devops
@@ -2366,11 +2375,11 @@ categories:
     path: devops/nginx-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 17003
+    file_size: 17802
     total_lines: 801
     code_examples: 32
     code_lines: 630
-  - &id122
+  - &id123
     name: performance-expert
     version: 2.0.0
     category: devops
@@ -2391,11 +2400,11 @@ categories:
     - Bash(python:*, python3:*, pip:*, pytest:*)
     path: devops/performance-expert/SKILL.md
     references: []
-    file_size: 11933
+    file_size: 12406
     total_lines: 474
     code_examples: 5
     code_lines: 352
-  - &id128
+  - &id129
     name: prometheus-expert
     version: 1.1.0
     category: devops
@@ -2420,11 +2429,11 @@ categories:
     path: devops/prometheus-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 20043
+    file_size: 20799
     total_lines: 758
     code_examples: 21
     code_lines: 608
-  - &id167
+  - &id168
     name: sre-expert
     version: 2.0.0
     category: devops
@@ -2446,11 +2455,11 @@ categories:
     - Bash(python:*, python3:*, pip:*, pytest:*)
     path: devops/sre-expert/SKILL.md
     references: []
-    file_size: 14001
+    file_size: 14482
     total_lines: 482
     code_examples: 4
     code_lines: 370
-  - &id180
+  - &id181
     name: terraform-expert
     version: 1.1.0
     category: devops
@@ -2474,7 +2483,7 @@ categories:
     path: devops/terraform-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 21257
+    file_size: 22302
     total_lines: 1047
     code_examples: 27
     code_lines: 895
@@ -2507,7 +2516,7 @@ categories:
     path: domains/5g-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 25055
+    file_size: 25800
     total_lines: 747
     code_examples: 2
     code_lines: 560
@@ -2534,7 +2543,7 @@ categories:
     path: domains/aerospace-expert/SKILL.md
     references:
     - references/FLIGHT_MANAGEMENT_SYSTEM.md
-    file_size: 26323
+    file_size: 27102
     total_lines: 781
     code_examples: 3
     code_lines: 646
@@ -2566,7 +2575,7 @@ categories:
     path: domains/agtech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 26450
+    file_size: 27280
     total_lines: 832
     code_examples: 1
     code_lines: 609
@@ -2592,7 +2601,7 @@ categories:
     path: domains/automotive-expert/SKILL.md
     references:
     - references/FLEET_MANAGEMENT_SYSTEM.md
-    file_size: 26132
+    file_size: 26911
     total_lines: 781
     code_examples: 3
     code_lines: 646
@@ -2623,7 +2632,7 @@ categories:
     path: domains/biotech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 19957
+    file_size: 20607
     total_lines: 652
     code_examples: 2
     code_lines: 444
@@ -2648,7 +2657,7 @@ categories:
     - Edit
     path: domains/blockchain-expert/SKILL.md
     references: []
-    file_size: 11706
+    file_size: 12124
     total_lines: 419
     code_examples: 3
     code_lines: 313
@@ -2677,7 +2686,7 @@ categories:
     path: domains/business-intelligence-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 28842
+    file_size: 29746
     total_lines: 906
     code_examples: 3
     code_lines: 700
@@ -2709,7 +2718,7 @@ categories:
     path: domains/cleantech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 28758
+    file_size: 29598
     total_lines: 842
     code_examples: 1
     code_lines: 611
@@ -2734,7 +2743,7 @@ categories:
     path: domains/construction-expert/SKILL.md
     references:
     - references/PROJECT_MANAGEMENT_SYSTEM.md
-    file_size: 21222
+    file_size: 21859
     total_lines: 639
     code_examples: 3
     code_lines: 504
@@ -2762,7 +2771,7 @@ categories:
     path: domains/customer-support-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 23623
+    file_size: 24330
     total_lines: 709
     code_examples: 3
     code_lines: 523
@@ -2793,7 +2802,7 @@ categories:
     path: domains/cybersecurity-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 28598
+    file_size: 29439
     total_lines: 843
     code_examples: 3
     code_lines: 643
@@ -2827,7 +2836,7 @@ categories:
     path: domains/dynamics365-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 23087
+    file_size: 23803
     total_lines: 718
     code_examples: 3
     code_lines: 532
@@ -2855,7 +2864,7 @@ categories:
     path: domains/e-learning-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 27361
+    file_size: 28180
     total_lines: 821
     code_examples: 3
     code_lines: 627
@@ -2884,7 +2893,7 @@ categories:
     path: domains/edge-computing-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 28815
+    file_size: 29702
     total_lines: 889
     code_examples: 2
     code_lines: 692
@@ -2914,7 +2923,7 @@ categories:
     path: domains/edtech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 26201
+    file_size: 27012
     total_lines: 813
     code_examples: 1
     code_lines: 543
@@ -2937,7 +2946,7 @@ categories:
     - Edit
     path: domains/education-expert/SKILL.md
     references: []
-    file_size: 12454
+    file_size: 12867
     total_lines: 414
     code_examples: 4
     code_lines: 321
@@ -2963,7 +2972,7 @@ categories:
     path: domains/energy-expert/SKILL.md
     references:
     - references/SMART_GRID_MONITORING_SYSTEM.md
-    file_size: 20315
+    file_size: 20943
     total_lines: 630
     code_examples: 4
     code_lines: 497
@@ -2987,7 +2996,7 @@ categories:
     - Edit
     path: domains/farming-expert/SKILL.md
     references: []
-    file_size: 13590
+    file_size: 14000
     total_lines: 411
     code_examples: 4
     code_lines: 319
@@ -3012,7 +3021,7 @@ categories:
     - Edit
     path: domains/finance-expert/SKILL.md
     references: []
-    file_size: 14623
+    file_size: 15045
     total_lines: 423
     code_examples: 5
     code_lines: 252
@@ -3044,7 +3053,7 @@ categories:
     path: domains/fintech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 22721
+    file_size: 23443
     total_lines: 724
     code_examples: 1
     code_lines: 522
@@ -3074,7 +3083,7 @@ categories:
     path: domains/gaming-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 25144
+    file_size: 25938
     total_lines: 796
     code_examples: 4
     code_lines: 599
@@ -3100,7 +3109,7 @@ categories:
     path: domains/healthcare-expert/SKILL.md
     references:
     - references/ELECTRONIC_HEALTH_RECORD_SYSTEM.md
-    file_size: 14613
+    file_size: 15127
     total_lines: 516
     code_examples: 4
     code_lines: 397
@@ -3129,7 +3138,7 @@ categories:
     path: domains/healthtech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 29350
+    file_size: 30244
     total_lines: 896
     code_examples: 1
     code_lines: 620
@@ -3154,7 +3163,7 @@ categories:
     path: domains/hospitality-expert/SKILL.md
     references:
     - references/PROPERTY_MANAGEMENT_SYSTEM.md
-    file_size: 22663
+    file_size: 23367
     total_lines: 706
     code_examples: 3
     code_lines: 572
@@ -3182,7 +3191,7 @@ categories:
     path: domains/hr-tech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 21691
+    file_size: 22350
     total_lines: 661
     code_examples: 3
     code_lines: 478
@@ -3209,7 +3218,7 @@ categories:
     path: domains/insurance-expert/SKILL.md
     references:
     - references/POLICY_ADMINISTRATION_SYSTEM.md
-    file_size: 23301
+    file_size: 24027
     total_lines: 728
     code_examples: 3
     code_lines: 594
@@ -3234,7 +3243,7 @@ categories:
     - Edit
     path: domains/iot-expert/SKILL.md
     references: []
-    file_size: 12451
+    file_size: 12891
     total_lines: 441
     code_examples: 4
     code_lines: 334
@@ -3266,7 +3275,7 @@ categories:
     path: domains/legaltech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 31997
+    file_size: 32984
     total_lines: 989
     code_examples: 1
     code_lines: 594
@@ -3290,7 +3299,7 @@ categories:
     - Edit
     path: domains/logistics-expert/SKILL.md
     references: []
-    file_size: 13983
+    file_size: 14465
     total_lines: 483
     code_examples: 4
     code_lines: 392
@@ -3316,7 +3325,7 @@ categories:
     path: domains/manufacturing-expert/SKILL.md
     references:
     - references/MANUFACTURING_EXECUTION_SYSTEM_MES.md
-    file_size: 24772
+    file_size: 25522
     total_lines: 752
     code_examples: 4
     code_lines: 619
@@ -3342,7 +3351,7 @@ categories:
     path: domains/maritime-expert/SKILL.md
     references:
     - references/VESSEL_TRACKING_SYSTEM.md
-    file_size: 19662
+    file_size: 20248
     total_lines: 588
     code_examples: 3
     code_lines: 453
@@ -3370,7 +3379,7 @@ categories:
     path: domains/marketing-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 22863
+    file_size: 23556
     total_lines: 695
     code_examples: 3
     code_lines: 506
@@ -3396,7 +3405,7 @@ categories:
     path: domains/media-expert/SKILL.md
     references:
     - references/CONTENT_MANAGEMENT_SYSTEM.md
-    file_size: 18761
+    file_size: 19367
     total_lines: 608
     code_examples: 3
     code_lines: 463
@@ -3427,7 +3436,7 @@ categories:
     path: domains/metaverse-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 32443
+    file_size: 33421
     total_lines: 980
     code_examples: 3
     code_lines: 777
@@ -3461,11 +3470,11 @@ categories:
     path: domains/microsoft365-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 18583
+    file_size: 19239
     total_lines: 658
     code_examples: 4
     code_lines: 471
-  - &id119
+  - &id120
     name: oracle-expert
     version: 1.1.0
     category: domains
@@ -3495,11 +3504,11 @@ categories:
     path: domains/oracle-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 16197
+    file_size: 16771
     total_lines: 576
     code_examples: 4
     code_lines: 389
-  - &id123
+  - &id124
     name: pharmaceutical-expert
     version: 1.1.0
     category: domains
@@ -3524,11 +3533,11 @@ categories:
     path: domains/pharmaceutical-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 18320
+    file_size: 18868
     total_lines: 550
     code_examples: 2
     code_lines: 354
-  - &id129
+  - &id130
     name: proptech-expert
     version: 1.1.0
     category: domains
@@ -3554,11 +3563,11 @@ categories:
     path: domains/proptech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 24076
+    file_size: 24840
     total_lines: 766
     code_examples: 1
     code_lines: 569
-  - &id132
+  - &id133
     name: quality-management-expert
     version: 1.1.0
     category: domains
@@ -3582,11 +3591,11 @@ categories:
     path: domains/quality-management-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 24750
+    file_size: 25505
     total_lines: 757
     code_examples: 3
     code_lines: 560
-  - &id133
+  - &id134
     name: quantum-algorithms-expert
     version: 1.1.0
     category: domains
@@ -3612,11 +3621,11 @@ categories:
     path: domains/quantum-algorithms-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 22496
+    file_size: 23233
     total_lines: 739
     code_examples: 1
     code_lines: 543
-  - &id139
+  - &id140
     name: real-estate-expert
     version: 1.1.0
     category: domains
@@ -3638,11 +3647,11 @@ categories:
     path: domains/real-estate-expert/SKILL.md
     references:
     - references/PROPERTY_LISTING_SYSTEM.md
-    file_size: 26251
+    file_size: 27052
     total_lines: 803
     code_examples: 3
     code_lines: 669
-  - &id142
+  - &id143
     name: regtech-expert
     version: 1.1.0
     category: domains
@@ -3667,11 +3676,11 @@ categories:
     path: domains/regtech-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 25997
+    file_size: 26801
     total_lines: 806
     code_examples: 1
     code_lines: 606
-  - &id145
+  - &id146
     name: retail-expert
     version: 1.1.0
     category: domains
@@ -3693,11 +3702,11 @@ categories:
     path: domains/retail-expert/SKILL.md
     references:
     - references/POINT_OF_SALE_SYSTEM.md
-    file_size: 24077
+    file_size: 24819
     total_lines: 744
     code_examples: 3
     code_lines: 609
-  - &id146
+  - &id147
     name: robotics-expert
     version: 1.1.0
     category: domains
@@ -3724,11 +3733,11 @@ categories:
     path: domains/robotics-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 28808
+    file_size: 29733
     total_lines: 927
     code_examples: 3
     code_lines: 727
-  - &id149
+  - &id150
     name: sales-expert
     version: 1.1.0
     category: domains
@@ -3752,11 +3761,11 @@ categories:
     path: domains/sales-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 25396
+    file_size: 26133
     total_lines: 739
     code_examples: 3
     code_lines: 544
-  - &id150
+  - &id151
     name: salesforce-expert
     version: 1.1.0
     category: domains
@@ -3787,11 +3796,11 @@ categories:
     path: domains/salesforce-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 14883
+    file_size: 15393
     total_lines: 512
     code_examples: 6
     code_lines: 322
-  - &id151
+  - &id152
     name: sap-expert
     version: 1.1.0
     category: domains
@@ -3821,11 +3830,11 @@ categories:
     - WebSearch
     path: domains/sap-expert/SKILL.md
     references: []
-    file_size: 12244
+    file_size: 12691
     total_lines: 448
     code_examples: 5
     code_lines: 270
-  - &id156
+  - &id157
     name: serverless-expert
     version: 1.1.0
     category: domains
@@ -3851,11 +3860,11 @@ categories:
     path: domains/serverless-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 22799
+    file_size: 23617
     total_lines: 820
     code_examples: 2
     code_lines: 621
-  - &id157
+  - &id158
     name: servicenow-expert
     version: 1.1.0
     category: domains
@@ -3882,11 +3891,11 @@ categories:
     - WebSearch
     path: domains/servicenow-expert/SKILL.md
     references: []
-    file_size: 13615
+    file_size: 14097
     total_lines: 483
     code_examples: 8
     code_lines: 303
-  - &id158
+  - &id159
     name: sharepoint-expert
     version: 1.1.0
     category: domains
@@ -3916,11 +3925,11 @@ categories:
     path: domains/sharepoint-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 18135
+    file_size: 18764
     total_lines: 631
     code_examples: 4
     code_lines: 446
-  - &id164
+  - &id165
     name: social-media-expert
     version: 1.1.0
     category: domains
@@ -3943,11 +3952,11 @@ categories:
     path: domains/social-media-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 25656
+    file_size: 26428
     total_lines: 774
     code_examples: 3
     code_lines: 582
-  - &id169
+  - &id170
     name: stockbreeder-expert
     version: 2.0.0
     category: domains
@@ -3967,11 +3976,11 @@ categories:
     - Edit
     path: domains/stockbreeder-expert/SKILL.md
     references: []
-    file_size: 15063
+    file_size: 15528
     total_lines: 466
     code_examples: 4
     code_lines: 373
-  - &id171
+  - &id172
     name: supply-chain-expert
     version: 1.1.0
     category: domains
@@ -3997,11 +4006,11 @@ categories:
     path: domains/supply-chain-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 24176
+    file_size: 24914
     total_lines: 740
     code_examples: 3
     code_lines: 545
-  - &id179
+  - &id180
     name: telecommunications-expert
     version: 1.1.0
     category: domains
@@ -4023,11 +4032,11 @@ categories:
     path: domains/telecommunications-expert/SKILL.md
     references:
     - references/NETWORK_MANAGEMENT_SYSTEM.md
-    file_size: 22940
+    file_size: 23668
     total_lines: 730
     code_examples: 3
     code_lines: 595
-  - &id182
+  - &id183
     name: trading-expert
     version: 1.1.0
     category: domains
@@ -4049,11 +4058,11 @@ categories:
     - Bash(python:*)
     path: domains/trading-expert/SKILL.md
     references: []
-    file_size: 15698
+    file_size: 16134
     total_lines: 437
     code_examples: 4
     code_lines: 316
-  - &id186
+  - &id188
     name: web3-expert
     version: 1.1.0
     category: domains
@@ -4081,11 +4090,11 @@ categories:
     path: domains/web3-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 27393
+    file_size: 28241
     total_lines: 850
     code_examples: 3
     code_lines: 646
-  - &id187
+  - &id189
     name: webassembly-expert
     version: 1.1.0
     category: domains
@@ -4112,11 +4121,11 @@ categories:
     path: domains/webassembly-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 21422
+    file_size: 22184
     total_lines: 764
     code_examples: 3
     code_lines: 563
-  - &id189
+  - &id191
     name: workday-expert
     version: 1.1.0
     category: domains
@@ -4146,7 +4155,7 @@ categories:
     path: domains/workday-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 18332
+    file_size: 18855
     total_lines: 525
     code_examples: 4
     code_lines: 336
@@ -4177,7 +4186,7 @@ categories:
     path: frameworks/android-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 20729
+    file_size: 21477
     total_lines: 750
     code_examples: 7
     code_lines: 553
@@ -4208,7 +4217,7 @@ categories:
     path: frameworks/angular-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 24578
+    file_size: 25572
     total_lines: 996
     code_examples: 6
     code_lines: 777
@@ -4233,7 +4242,7 @@ categories:
     - Bash(python:*, django-admin:*, manage.py:*)
     path: frameworks/django-expert/SKILL.md
     references: []
-    file_size: 11339
+    file_size: 11759
     total_lines: 421
     code_examples: 9
     code_lines: 336
@@ -4263,7 +4272,7 @@ categories:
     path: frameworks/electron-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 19624
+    file_size: 20389
     total_lines: 767
     code_examples: 6
     code_lines: 560
@@ -4288,7 +4297,7 @@ categories:
     path: frameworks/flask-expert/SKILL.md
     references:
     - references/REST_API_WITH_FLASK_RESTFUL.md
-    file_size: 15324
+    file_size: 15915
     total_lines: 593
     code_examples: 9
     code_lines: 476
@@ -4317,7 +4326,7 @@ categories:
     path: frameworks/flutter-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 14432
+    file_size: 14960
     total_lines: 530
     code_examples: 7
     code_lines: 331
@@ -4347,11 +4356,44 @@ categories:
     path: frameworks/ios-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 19569
+    file_size: 20248
     total_lines: 681
     code_examples: 7
     code_lines: 475
   - &id114
+    name: nestjs-expert
+    version: 1.0.0
+    category: frameworks
+    description: Expert knowledge in NestJS framework, modular architecture, dependency
+      injection, TypeORM/Prisma persistence, microservices transports, and enterprise-grade
+      Node.js backend development. Use when the user mentions NestJS, Nest CLI, decorators,
+      dependency injection, guards, interceptors, or backend microservices, or when
+      the task involves NestJS Fundamentals, Providers and Modules, Microservices,
+      or Testing.
+    tags:
+    - nestjs
+    - nodejs
+    - typescript
+    - dependency-injection
+    - microservices
+    - backend
+    - rest
+    - graphql
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Glob
+    - Grep
+    path: frameworks/nestjs-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 24921
+    total_lines: 843
+    code_examples: 30
+    code_lines: 587
+  - &id115
     name: nextjs-expert
     version: 1.1.0
     category: frameworks
@@ -4379,11 +4421,11 @@ categories:
     path: frameworks/nextjs-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 21684
+    file_size: 22605
     total_lines: 923
     code_examples: 7
     code_lines: 711
-  - &id137
+  - &id138
     name: react-expert
     version: 1.1.0
     category: frameworks
@@ -4408,11 +4450,11 @@ categories:
     path: frameworks/react-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 21745
+    file_size: 22692
     total_lines: 949
     code_examples: 18
     code_lines: 820
-  - &id138
+  - &id139
     name: react-native-expert
     version: 1.1.0
     category: frameworks
@@ -4438,11 +4480,11 @@ categories:
     path: frameworks/react-native-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 17746
+    file_size: 18412
     total_lines: 668
     code_examples: 7
     code_lines: 452
-  - &id143
+  - &id144
     name: remix-expert
     version: 1.1.0
     category: frameworks
@@ -4470,11 +4512,11 @@ categories:
     path: frameworks/remix-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 24069
+    file_size: 25052
     total_lines: 985
     code_examples: 7
     code_lines: 763
-  - &id165
+  - &id166
     name: spring-boot-expert
     version: 1.1.0
     category: frameworks
@@ -4496,11 +4538,11 @@ categories:
     references:
     - references/SPRING_SECURITY_WITH_JWT.md
     - references/TESTING.md
-    file_size: 18442
+    file_size: 19103
     total_lines: 664
     code_examples: 7
     code_lines: 547
-  - &id173
+  - &id174
     name: svelte-expert
     version: 1.1.0
     category: frameworks
@@ -4527,11 +4569,11 @@ categories:
     path: frameworks/svelte-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 19014
+    file_size: 19909
     total_lines: 897
     code_examples: 7
     code_lines: 685
-  - &id176
+  - &id177
     name: tauri-expert
     version: 1.1.0
     category: frameworks
@@ -4556,11 +4598,45 @@ categories:
     path: frameworks/tauri-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 20218
+    file_size: 20976
     total_lines: 760
     code_examples: 11
     code_lines: 543
-  - &id185
+  - &id186
+    name: vitejs-expert
+    version: 1.0.0
+    category: frameworks
+    description: Expert knowledge in Vite build tooling, native ESM dev servers, Hot
+      Module Replacement, Rollup-based production builds, and the Vite plugin ecosystem
+      for React, Vue, Svelte, and library projects. Use when the user mentions Vite,
+      vite.config, HMR, ESM dev server, Rollup, or Vitest, or when the task involves
+      Vite Fundamentals, Configuration and Plugins, Build Optimization, or Library
+      Mode.
+    tags:
+    - vite
+    - vitejs
+    - esm
+    - hmr
+    - rollup
+    - bundler
+    - build-tool
+    - vitest
+    - frontend
+    allowed_tools:
+    - Read
+    - Write
+    - Edit
+    - Bash
+    - Glob
+    - Grep
+    path: frameworks/vitejs-expert/SKILL.md
+    references:
+    - references/EXAMPLES.md
+    file_size: 15960
+    total_lines: 524
+    code_examples: 23
+    code_lines: 305
+  - &id187
     name: vue-expert
     version: 1.1.0
     category: frameworks
@@ -4588,7 +4664,7 @@ categories:
     path: frameworks/vue-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 19975
+    file_size: 20886
     total_lines: 913
     code_examples: 6
     code_lines: 705
@@ -4621,7 +4697,7 @@ categories:
     path: languages/clojure-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 17333
+    file_size: 18107
     total_lines: 776
     code_examples: 6
     code_lines: 548
@@ -4651,7 +4727,7 @@ categories:
     references:
     - references/BEST_PRACTICES.md
     - references/MODERN_C_SYNTAX.md
-    file_size: 16319
+    file_size: 17019
     total_lines: 703
     code_examples: 14
     code_lines: 562
@@ -4679,7 +4755,7 @@ categories:
     path: languages/csharp-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 25366
+    file_size: 26394
     total_lines: 1030
     code_examples: 23
     code_lines: 887
@@ -4703,7 +4779,7 @@ categories:
     - Bash(dart:*, flutter:*)
     path: languages/dart-expert/SKILL.md
     references: []
-    file_size: 10307
+    file_size: 10806
     total_lines: 500
     code_examples: 6
     code_lines: 393
@@ -4729,7 +4805,7 @@ categories:
     path: languages/elixir-expert/SKILL.md
     references:
     - references/PHOENIX_FRAMEWORK.md
-    file_size: 10810
+    file_size: 11357
     total_lines: 549
     code_examples: 7
     code_lines: 419
@@ -4758,7 +4834,7 @@ categories:
     path: languages/go-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 18974
+    file_size: 19925
     total_lines: 953
     code_examples: 26
     code_lines: 798
@@ -4790,7 +4866,7 @@ categories:
     path: languages/haskell-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 17316
+    file_size: 18060
     total_lines: 746
     code_examples: 6
     code_lines: 522
@@ -4819,7 +4895,7 @@ categories:
     path: languages/java-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 23105
+    file_size: 24047
     total_lines: 944
     code_examples: 27
     code_lines: 787
@@ -4850,7 +4926,7 @@ categories:
     references:
     - references/CORE_CONCEPTS.md
     - references/PATTERNS.md
-    file_size: 17820
+    file_size: 18692
     total_lines: 875
     code_examples: 32
     code_lines: 686
@@ -4881,7 +4957,7 @@ categories:
     path: languages/julia-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 15703
+    file_size: 16404
     total_lines: 703
     code_examples: 6
     code_lines: 500
@@ -4906,11 +4982,11 @@ categories:
     - Bash(kotlin:*, gradle:*)
     path: languages/kotlin-expert/SKILL.md
     references: []
-    file_size: 9485
+    file_size: 9885
     total_lines: 401
     code_examples: 6
     code_lines: 290
-  - &id116
+  - &id117
     name: nim-expert
     version: 1.1.0
     category: languages
@@ -4936,11 +5012,11 @@ categories:
     path: languages/nim-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 13463
+    file_size: 14019
     total_lines: 558
     code_examples: 6
     code_lines: 361
-  - &id117
+  - &id118
     name: nodejs-expert
     version: 1.1.0
     category: languages
@@ -4966,11 +5042,11 @@ categories:
     path: languages/nodejs-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 17945
+    file_size: 18801
     total_lines: 858
     code_examples: 23
     code_lines: 713
-  - &id120
+  - &id121
     name: pcl-expert
     version: 1.1.0
     category: languages
@@ -5005,11 +5081,11 @@ categories:
     references:
     - references/BEST_PRACTICES.md
     - references/CORE_CONCEPTS.md
-    file_size: 22031
+    file_size: 22952
     total_lines: 924
     code_examples: 27
     code_lines: 681
-  - &id124
+  - &id125
     name: php-expert
     version: 1.1.0
     category: languages
@@ -5033,11 +5109,11 @@ categories:
     references:
     - references/LARAVEL_FRAMEWORK.md
     - references/MODERN_PHP_8_SYNTAX.md
-    file_size: 22569
+    file_size: 23565
     total_lines: 999
     code_examples: 21
     code_lines: 834
-  - &id130
+  - &id131
     name: python-expert
     version: 1.1.0
     category: languages
@@ -5062,11 +5138,11 @@ categories:
     path: languages/python-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 19828
+    file_size: 20669
     total_lines: 843
     code_examples: 24
     code_lines: 695
-  - &id135
+  - &id136
     name: r-expert
     version: 1.1.0
     category: languages
@@ -5087,11 +5163,11 @@ categories:
     - Bash(R:*, Rscript:*)
     path: languages/r-expert/SKILL.md
     references: []
-    file_size: 8437
+    file_size: 8873
     total_lines: 437
     code_examples: 11
     code_lines: 311
-  - &id147
+  - &id148
     name: ruby-expert
     version: 1.1.0
     category: languages
@@ -5114,11 +5190,11 @@ categories:
     path: languages/ruby-expert/SKILL.md
     references:
     - references/RUBY_ON_RAILS.md
-    file_size: 17557
+    file_size: 18313
     total_lines: 758
     code_examples: 15
     code_lines: 602
-  - &id148
+  - &id149
     name: rust-expert
     version: 1.1.0
     category: languages
@@ -5142,11 +5218,11 @@ categories:
     path: languages/rust-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 20947
+    file_size: 21982
     total_lines: 1037
     code_examples: 27
     code_lines: 880
-  - &id152
+  - &id153
     name: scala-expert
     version: 1.1.0
     category: languages
@@ -5166,11 +5242,11 @@ categories:
     - Bash(scala:*, sbt:*)
     path: languages/scala-expert/SKILL.md
     references: []
-    file_size: 9240
+    file_size: 9664
     total_lines: 425
     code_examples: 6
     code_lines: 309
-  - &id174
+  - &id175
     name: swift-expert
     version: 1.1.0
     category: languages
@@ -5194,11 +5270,11 @@ categories:
     path: languages/swift-expert/SKILL.md
     references:
     - references/SWIFT_SYNTAX.md
-    file_size: 14791
+    file_size: 15444
     total_lines: 655
     code_examples: 13
     code_lines: 504
-  - &id183
+  - &id184
     name: typescript-expert
     version: 1.1.0
     category: languages
@@ -5221,11 +5297,11 @@ categories:
     path: languages/typescript-expert/SKILL.md
     references:
     - references/PATTERNS.md
-    file_size: 11809
+    file_size: 12328
     total_lines: 521
     code_examples: 23
     code_lines: 352
-  - &id191
+  - &id193
     name: zig-expert
     version: 1.1.0
     category: languages
@@ -5251,7 +5327,7 @@ categories:
     - Grep
     path: languages/zig-expert/SKILL.md
     references: []
-    file_size: 12379
+    file_size: 12857
     total_lines: 479
     code_examples: 6
     code_lines: 286
@@ -5276,7 +5352,7 @@ categories:
     - Edit
     path: professional/accountant-expert/SKILL.md
     references: []
-    file_size: 11814
+    file_size: 12165
     total_lines: 352
     code_examples: 4
     code_lines: 245
@@ -5299,7 +5375,7 @@ categories:
     - Edit
     path: professional/banking-expert/SKILL.md
     references: []
-    file_size: 8905
+    file_size: 9205
     total_lines: 301
     code_examples: 4
     code_lines: 211
@@ -5324,7 +5400,7 @@ categories:
     - Bash(python:*, python3:*, pip:*, pytest:*)
     path: professional/finops-expert/SKILL.md
     references: []
-    file_size: 13145
+    file_size: 13554
     total_lines: 410
     code_examples: 3
     code_lines: 306
@@ -5348,11 +5424,11 @@ categories:
     - Edit
     path: professional/lawyer-expert/SKILL.md
     references: []
-    file_size: 9653
+    file_size: 9979
     total_lines: 327
     code_examples: 3
     code_lines: 223
-  - &id168
+  - &id169
     name: standards-expert
     version: 1.1.0
     category: professional
@@ -5372,7 +5448,7 @@ categories:
     - Edit
     path: professional/standards-expert/SKILL.md
     references: []
-    file_size: 13791
+    file_size: 14258
     total_lines: 468
     code_examples: 4
     code_lines: 358
@@ -5407,7 +5483,7 @@ categories:
     path: qa/chaos-engineering-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 15218
+    file_size: 15771
     total_lines: 555
     code_examples: 4
     code_lines: 368
@@ -5442,7 +5518,7 @@ categories:
     path: qa/cypress-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 16242
+    file_size: 16872
     total_lines: 632
     code_examples: 7
     code_lines: 436
@@ -5475,7 +5551,7 @@ categories:
     path: qa/jest-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 18999
+    file_size: 19772
     total_lines: 775
     code_examples: 8
     code_lines: 577
@@ -5509,11 +5585,11 @@ categories:
     path: qa/load-testing-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 16263
+    file_size: 16793
     total_lines: 532
     code_examples: 4
     code_lines: 346
-  - &id125
+  - &id126
     name: playwright-expert
     version: 1.1.0
     category: qa
@@ -5544,11 +5620,11 @@ categories:
     path: qa/playwright-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 16514
+    file_size: 17105
     total_lines: 593
     code_examples: 6
     code_lines: 400
-  - &id131
+  - &id132
     name: qa-expert
     version: 2.0.0
     category: qa
@@ -5569,11 +5645,11 @@ categories:
     - Bash(python:*, python3:*, pip:*, pytest:*)
     path: qa/qa-expert/SKILL.md
     references: []
-    file_size: 12313
+    file_size: 12757
     total_lines: 445
     code_examples: 4
     code_lines: 333
-  - &id155
+  - &id156
     name: selenium-expert
     version: 1.1.0
     category: qa
@@ -5604,7 +5680,7 @@ categories:
     path: qa/selenium-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 16486
+    file_size: 17071
     total_lines: 587
     code_examples: 6
     code_lines: 396
@@ -5630,11 +5706,11 @@ categories:
     - Bash(python:*)
     path: scientific/biological-expert/SKILL.md
     references: []
-    file_size: 11335
+    file_size: 11709
     total_lines: 375
     code_examples: 4
     code_lines: 266
-  - &id134
+  - &id135
     name: quantum-expert
     version: 1.1.0
     category: scientific
@@ -5654,11 +5730,11 @@ categories:
     - Bash(python:*)
     path: scientific/quantum-expert/SKILL.md
     references: []
-    file_size: 9155
+    file_size: 9497
     total_lines: 343
     code_examples: 3
     code_lines: 238
-  - &id144
+  - &id145
     name: research-expert
     version: 1.1.0
     category: scientific
@@ -5678,7 +5754,7 @@ categories:
     - Edit
     path: scientific/research-expert/SKILL.md
     references: []
-    file_size: 11440
+    file_size: 11829
     total_lines: 390
     code_examples: 3
     code_lines: 281
@@ -5708,7 +5784,7 @@ categories:
     references:
     - references/COMPLIANCE_AUDITING.md
     - references/SECURITY_CODE_REVIEW.md
-    file_size: 22499
+    file_size: 23391
     total_lines: 895
     code_examples: 8
     code_lines: 743
@@ -5734,7 +5810,7 @@ categories:
     - Bash(codeql:*, gh:*)
     path: security/codeql-expert/SKILL.md
     references: []
-    file_size: 5898
+    file_size: 6148
     total_lines: 251
     code_examples: 8
     code_lines: 163
@@ -5766,7 +5842,7 @@ categories:
     path: security/cryptography-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 20248
+    file_size: 20901
     total_lines: 655
     code_examples: 5
     code_lines: 439
@@ -5796,7 +5872,7 @@ categories:
     - Grep
     path: security/gdpr-expert/SKILL.md
     references: []
-    file_size: 12481
+    file_size: 12872
     total_lines: 392
     code_examples: 4
     code_lines: 199
@@ -5831,7 +5907,7 @@ categories:
     path: security/identity-access-expert/SKILL.md
     references:
     - references/PATTERNS.md
-    file_size: 22039
+    file_size: 22638
     total_lines: 601
     code_examples: 18
     code_lines: 316
@@ -5860,11 +5936,11 @@ categories:
     - Grep
     path: security/incident-response-expert/SKILL.md
     references: []
-    file_size: 3012
+    file_size: 3119
     total_lines: 108
     code_examples: 2
     code_lines: 38
-  - &id121
+  - &id122
     name: penetration-testing-expert
     version: 1.1.0
     category: security
@@ -5891,11 +5967,11 @@ categories:
     path: security/penetration-testing-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 17420
+    file_size: 17993
     total_lines: 575
     code_examples: 6
     code_lines: 348
-  - &id153
+  - &id154
     name: secrets-management-expert
     version: 1.0.0
     category: security
@@ -5924,11 +6000,11 @@ categories:
     path: security/secrets-management-expert/SKILL.md
     references:
     - references/ENCRYPTION.md
-    file_size: 20177
+    file_size: 20708
     total_lines: 533
     code_examples: 18
     code_lines: 196
-  - &id154
+  - &id155
     name: security-expert
     version: 1.1.0
     category: security
@@ -5953,11 +6029,11 @@ categories:
     references:
     - references/AUTHENTICATION_AUTHORIZATION.md
     - references/OWASP_TOP_10_VULNERABILITIES.md
-    file_size: 20320
+    file_size: 21132
     total_lines: 815
     code_examples: 13
     code_lines: 647
-  - &id163
+  - &id164
     name: soc2-expert
     version: 1.1.0
     category: security
@@ -5983,11 +6059,11 @@ categories:
     - Grep
     path: security/soc2-expert/SKILL.md
     references: []
-    file_size: 12455
+    file_size: 12854
     total_lines: 400
     code_examples: 2
     code_lines: 231
-  - &id172
+  - &id173
     name: supply-chain-security-expert
     version: 1.0.0
     category: security
@@ -6018,11 +6094,11 @@ categories:
     path: security/supply-chain-security-expert/SKILL.md
     references:
     - references/RESPONSE.md
-    file_size: 19341
+    file_size: 19878
     total_lines: 539
     code_examples: 21
     code_lines: 192
-  - &id190
+  - &id192
     name: zero-trust-expert
     version: 1.1.0
     category: security
@@ -6048,7 +6124,7 @@ categories:
     path: security/zero-trust-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 22781
+    file_size: 23558
     total_lines: 779
     code_examples: 4
     code_lines: 570
@@ -6083,7 +6159,7 @@ categories:
     path: tools/browser-automation-expert/SKILL.md
     references:
     - references/RECIPES.md
-    file_size: 18722
+    file_size: 19272
     total_lines: 552
     code_examples: 23
     code_lines: 267
@@ -6106,7 +6182,7 @@ categories:
     path: tools/code-review-expert/SKILL.md
     references:
     - references/REVIEW_GUIDELINES.md
-    file_size: 12921
+    file_size: 13444
     total_lines: 525
     code_examples: 20
     code_lines: 173
@@ -6142,7 +6218,7 @@ categories:
     path: tools/discord-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 16650
+    file_size: 17245
     total_lines: 597
     code_examples: 2
     code_lines: 415
@@ -6178,7 +6254,7 @@ categories:
     path: tools/document-processing-expert/SKILL.md
     references:
     - references/LIBRARIES.md
-    file_size: 19412
+    file_size: 19949
     total_lines: 539
     code_examples: 19
     code_lines: 252
@@ -6205,11 +6281,11 @@ categories:
     path: tools/git-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 16032
+    file_size: 16781
     total_lines: 751
     code_examples: 31
     code_lines: 580
-  - &id159
+  - &id160
     name: skill-creator-expert
     version: 1.1.0
     category: tools
@@ -6232,11 +6308,11 @@ categories:
     path: tools/skill-creator-expert/SKILL.md
     references:
     - references/SKILL_CREATION_FRAMEWORK.md
-    file_size: 22505
+    file_size: 23380
     total_lines: 877
     code_examples: 9
     code_lines: 708
-  - &id160
+  - &id161
     name: skill-router
     version: 1.0.0
     category: tools
@@ -6259,11 +6335,11 @@ categories:
     - Bash(python:*, jq:*)
     path: tools/skill-router/SKILL.md
     references: []
-    file_size: 10508
+    file_size: 10709
     total_lines: 202
     code_examples: 2
     code_lines: 17
-  - &id161
+  - &id162
     name: slack-expert
     version: 1.1.0
     category: tools
@@ -6293,11 +6369,11 @@ categories:
     path: tools/slack-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 16584
+    file_size: 17199
     total_lines: 617
     code_examples: 3
     code_lines: 433
-  - &id178
+  - &id179
     name: teams-expert
     version: 1.1.0
     category: tools
@@ -6326,11 +6402,11 @@ categories:
     path: tools/teams-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 14111
+    file_size: 14647
     total_lines: 538
     code_examples: 3
     code_lines: 355
-  - &id181
+  - &id182
     name: testing-expert
     version: 1.1.0
     category: tools
@@ -6355,11 +6431,11 @@ categories:
     path: tools/testing-expert/SKILL.md
     references:
     - references/CORE_CONCEPTS.md
-    file_size: 28592
+    file_size: 29683
     total_lines: 1093
     code_examples: 22
     code_lines: 938
-  - &id184
+  - &id185
     name: video-streaming-expert
     version: 1.1.0
     category: tools
@@ -6392,11 +6468,11 @@ categories:
     path: tools/video-streaming-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 18819
+    file_size: 19526
     total_lines: 709
     code_examples: 5
     code_lines: 516
-  - &id188
+  - &id190
     name: webrtc-expert
     version: 1.1.0
     category: tools
@@ -6427,7 +6503,7 @@ categories:
     path: tools/webrtc-expert/SKILL.md
     references:
     - references/EXAMPLES.md
-    file_size: 17625
+    file_size: 18332
     total_lines: 709
     code_examples: 7
     code_lines: 517
@@ -6458,7 +6534,7 @@ categories:
     path: workflows/code-review-workflow/SKILL.md
     references:
     - references/CHECKLISTS.md
-    file_size: 15043
+    file_size: 15417
     total_lines: 376
     code_examples: 5
     code_lines: 41
@@ -6493,11 +6569,11 @@ categories:
     references:
     - references/PRODUCTION.md
     - references/TOOLKIT.md
-    file_size: 24366
+    file_size: 25063
     total_lines: 700
     code_examples: 26
     code_lines: 228
-  - &id141
+  - &id142
     name: refactoring-workflow
     version: 1.0.0
     category: workflows
@@ -6527,11 +6603,11 @@ categories:
     references:
     - references/LARGE_SCALE.md
     - references/TRANSFORMATIONS.md
-    file_size: 22660
+    file_size: 23315
     total_lines: 658
     code_examples: 16
     code_lines: 165
-  - &id177
+  - &id178
     name: tdd-workflow
     version: 1.0.0
     category: workflows
@@ -6562,7 +6638,7 @@ categories:
     references:
     - references/EXAMPLES.md
     - references/LEGACY_CODE.md
-    file_size: 22352
+    file_size: 23040
     total_lines: 691
     code_examples: 30
     code_lines: 253
@@ -6758,3 +6834,5 @@ skills:
 - *id189
 - *id190
 - *id191
+- *id192
+- *id193

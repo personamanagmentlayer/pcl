@@ -11,7 +11,7 @@ import {
   MarkupKind,
 } from 'vscode-languageserver/node';
 import { readFile } from 'fs/promises';
-import { join, dirname } from 'path';
+import { join, dirname, resolve } from 'path';
 import { existsSync } from 'fs';
 import { findSkillFiles } from '../skills/skill-discovery';
 import { parseSkillMd } from '../skills/skill-loader';
@@ -277,9 +277,18 @@ export class SkillCompletionProvider {
       }
     }
 
-    // Discover skills
+    // Discover skills. Search directories can overlap (a document sitting in
+    // the home directory makes <docDir>/.claude/skills and
+    // <home>/.claude/skills the same path), so both the directories and the
+    // resulting files are de-duplicated to avoid emitting the same completion
+    // item twice.
     const skills: SkillInfo[] = [];
-    const searchDirs = this.getSkillSearchDirectories(documentPath);
+    const seenFiles = new Set<string>();
+    const searchDirs = [
+      ...new Set(
+        this.getSkillSearchDirectories(documentPath).map((d) => resolve(d))
+      ),
+    ];
 
     for (const dir of searchDirs) {
       if (!existsSync(dir)) {
@@ -290,6 +299,12 @@ export class SkillCompletionProvider {
         const skillFiles = await findSkillFiles(dir);
 
         for (const filePath of skillFiles) {
+          const resolvedPath = resolve(filePath);
+          if (seenFiles.has(resolvedPath)) {
+            continue;
+          }
+          seenFiles.add(resolvedPath);
+
           try {
             const content = await readFile(filePath, 'utf-8');
             const skill = parseSkillMd(content);

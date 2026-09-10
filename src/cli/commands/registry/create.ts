@@ -11,7 +11,8 @@ import { parse } from '../../../parser';
 import { createRegistry } from '../../config/registry';
 import { formatSuccess, formatError, formatWarning } from '../../utils/output';
 import { formatArtifactDetails } from '../../utils/output';
-import type { ArtifactType } from '../../../registry/interfaces';
+import { ArtifactType } from '../../../registry/interfaces';
+import type * as AST from '../../../ast';
 
 export interface CreateOptions {
   backend?: string;
@@ -51,10 +52,8 @@ export async function createCommand(
       process.exit(1);
     }
 
-    const ast = parseResult.value;
-
     // Extract artifact metadata from AST
-    const metadata = extractMetadata(ast, filePath);
+    const metadata = extractMetadata(parseResult.value.program, filePath);
 
     if (dryRun) {
       console.log(formatWarning('Dry run mode - artifact will not be created'));
@@ -170,10 +169,7 @@ export async function createCommand(
 /**
  * Extract artifact metadata from PCL AST
  */
-function extractMetadata(
-  ast: any,
-  filePath: string
-): {
+interface ExtractedMetadata {
   type: ArtifactType;
   name: string;
   version: string;
@@ -185,84 +181,123 @@ function extractMetadata(
   license?: string;
   skills?: string[];
   slug?: string;
-} {
-  // Default metadata
-  const metadata: any = {
-    type: 'persona' as ArtifactType,
+}
+
+/** Property names copied straight from a declaration into the metadata */
+const STRING_PROPERTIES = {
+  version: 'version',
+  description: 'description',
+  author: 'author',
+  authorEmail: 'authorEmail',
+  organization: 'organization',
+  license: 'license',
+  slug: 'slug',
+} as const;
+
+/**
+ * Read a string out of a property initializer. Only literals carry a value
+ * that can be published; anything computed is ignored rather than guessed at.
+ */
+function literalString(
+  expression: AST.Expression | null | undefined
+): string | undefined {
+  if (!expression) {
+    return undefined;
+  }
+
+  if (expression.kind === 'StringLiteral') {
+    return (expression as AST.StringLiteral).value;
+  }
+
+  if (expression.kind === 'NumberLiteral') {
+    return String((expression as AST.NumberLiteral).value);
+  }
+
+  return undefined;
+}
+
+/** Collect the string values of a `tags { ... }` block */
+function tagValues(block: AST.TagBlock): string[] {
+  return block.items.map((item) =>
+    item.kind === 'StringTag' ? item.value : item.name.name
+  );
+}
+
+/** Collect the string values of a `skills { ... }` block */
+function skillValues(block: AST.SkillBlock): string[] {
+  return block.items.map((item) => {
+    if (item.kind === 'StringSkill') {
+      return item.value;
+    }
+    if (item.kind === 'IdentifierSkill') {
+      return item.name.name;
+    }
+    return item.ref.parts.map((part) => part.name).join('::');
+  });
+}
+
+/**
+ * Extract artifact metadata from a parsed PCL program.
+ *
+ * The first persona, team, workflow or skill declaration in the file
+ * determines the artifact type and name.
+ */
+function extractMetadata(
+  program: AST.Program,
+  filePath: string
+): ExtractedMetadata {
+  const metadata: ExtractedMetadata = {
+    type: ArtifactType.PERSONA,
     name: 'Unnamed Artifact',
     version: '1.0.0',
     tags: [],
   };
 
-  // Extract from AST structure
-  if (ast.type === 'Program' && ast.body) {
-    for (const node of ast.body) {
-      // Extract persona definition
-      if (node.type === 'PersonaDeclaration') {
-        metadata.type = 'persona';
-        metadata.name = node.name || metadata.name;
+  const DECLARATION_TYPES: Record<string, ArtifactType> = {
+    PersonaDeclaration: ArtifactType.PERSONA,
+    TeamDeclaration: ArtifactType.TEAM,
+    WorkflowDeclaration: ArtifactType.WORKFLOW,
+    SkillDeclaration: ArtifactType.SKILL,
+  };
 
-        // Extract metadata from persona properties
-        if (node.properties) {
-          for (const prop of node.properties) {
-            switch (prop.key) {
-              case 'version':
-                metadata.version = prop.value;
-                break;
-              case 'description':
-                metadata.description = prop.value;
-                break;
-              case 'tags':
-                metadata.tags = Array.isArray(prop.value)
-                  ? prop.value
-                  : [prop.value];
-                break;
-              case 'author':
-                metadata.author = prop.value;
-                break;
-              case 'authorEmail':
-                metadata.authorEmail = prop.value;
-                break;
-              case 'organization':
-                metadata.organization = prop.value;
-                break;
-              case 'license':
-                metadata.license = prop.value;
-                break;
-              case 'slug':
-                metadata.slug = prop.value;
-                break;
-            }
-          }
+  for (const statement of program.statements) {
+    const artifactType = DECLARATION_TYPES[statement.kind];
+    if (!artifactType) {
+      continue;
+    }
+
+    const declaration = statement as unknown as {
+      id?: AST.Identifier;
+      body?: { members?: readonly { kind: string }[] };
+    };
+
+    metadata.type = artifactType;
+    metadata.name = declaration.id?.name ?? metadata.name;
+
+    for (const member of declaration.body?.members ?? []) {
+      if (member.kind === 'PropertyDeclaration') {
+        const property = member as unknown as AST.PropertyDeclaration;
+        const key = property.name.name;
+        const value = literalString(property.initializer);
+
+        if (value !== undefined && key in STRING_PROPERTIES) {
+          metadata[key as keyof typeof STRING_PROPERTIES] = value;
         }
-
-        // Extract skills
-        if (node.skills && Array.isArray(node.skills)) {
-          metadata.skills = node.skills.map((s: any) => s.name || s);
-        }
+        continue;
       }
 
-      // Extract team definition
-      if (node.type === 'TeamDeclaration') {
-        metadata.type = 'team';
-        metadata.name = node.name || metadata.name;
-        // Extract team-specific metadata...
+      if (member.kind === 'TagBlock') {
+        metadata.tags = tagValues(member as unknown as AST.TagBlock);
+        continue;
       }
 
-      // Extract workflow definition
-      if (node.type === 'WorkflowDeclaration') {
-        metadata.type = 'workflow';
-        metadata.name = node.name || metadata.name;
-        // Extract workflow-specific metadata...
-      }
-
-      // Extract skill definition
-      if (node.type === 'SkillDeclaration') {
-        metadata.type = 'skill';
-        metadata.name = node.name || metadata.name;
-        // Extract skill-specific metadata...
+      if (member.kind === 'SkillBlock') {
+        metadata.skills = skillValues(member as unknown as AST.SkillBlock);
       }
     }
+
+    // The first declaration wins: a file describes one artifact.
+    break;
   }
 
   // Fallback: try to infer from file name

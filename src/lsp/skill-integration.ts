@@ -310,10 +310,9 @@ export class SkillLSPIntegration {
       };
     }
 
-    // Check for skill property context (YAML frontmatter)
-    if (/^[a-z-]+:\s*$/.test(lineText.trim())) {
-      return { type: 'skill-property', prefix: '' };
-    }
+    // Specific property values must be tested before the generic property
+    // check below, which would otherwise match every `<key>:` line and make
+    // these branches unreachable.
 
     // Check for category context
     if (/category:\s*$/.test(beforeCursor)) {
@@ -330,6 +329,11 @@ export class SkillLSPIntegration {
       return { type: 'skill-tool', prefix: '' };
     }
 
+    // Check for skill property context (YAML frontmatter)
+    if (/^[a-z-]+:\s*$/.test(lineText.trim())) {
+      return { type: 'skill-property', prefix: '' };
+    }
+
     return { type: 'none', prefix: '' };
   }
 
@@ -338,6 +342,13 @@ export class SkillLSPIntegration {
    */
   private uriToPath(uri: string): string {
     // Simple conversion - in production, use proper URI parsing
+    // Only file:// documents map to a path. Rewriting an arbitrary scheme
+    // would silently yield a bogus path that later reads treat as real, so
+    // reject it instead of degrading.
+    if (!uri.startsWith('file://')) {
+      throw new Error(`Unsupported document URI scheme: ${uri}`);
+    }
+
     return uri.replace('file://', '').replace(/^\/([A-Z]):/, '$1:');
   }
 
@@ -345,7 +356,13 @@ export class SkillLSPIntegration {
    * Check if document is a skill file
    */
   isSkillFile(documentUri: string): boolean {
-    const path = this.uriToPath(documentUri);
+    let path: string;
+    try {
+      path = this.uriToPath(documentUri);
+    } catch {
+      return false; // Not a file document, so not a skill file
+    }
+
     return (
       path.endsWith('.md') &&
       (path.includes('skills') || path.includes('.claude'))

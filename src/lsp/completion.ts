@@ -65,8 +65,10 @@ export class CompletionProvider {
         items.push(...generatePropertyCompletions(context));
       }
 
-      // 4. Property values (if after colon)
-      if (context.afterColon && context.wordBeingTyped) {
+      // 4. Property values (if after colon). Requiring a non-empty
+      // wordBeingTyped here would hide the allowed values in the most common
+      // case: completion triggered right after `property: `.
+      if (context.afterColon) {
         const propertyName = this.extractPropertyName(context.lineText);
         if (propertyName) {
           const valueCompletions = getPropertyValueCompletions(propertyName);

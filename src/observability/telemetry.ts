@@ -96,6 +96,13 @@ const DEFAULT_CONFIG: TelemetryConfig = {
 
 let sdk: NodeSDK | null = null;
 let prometheusExporter: PrometheusExporter | null = null;
+/**
+ * Whether a diagnostic logger has already been registered. The OpenTelemetry
+ * global diag API reports re-registration through the global error handler, so
+ * re-initialising telemetry (hot reload, several entry points, a test suite)
+ * would otherwise emit spurious errors and clobber the existing logger.
+ */
+let diagLoggerRegistered = false;
 let isInitialized = false;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -138,11 +145,12 @@ export function initTelemetry(config: Partial<TelemetryConfig> = {}): void {
   };
 
   // Setup diagnostic logging if console exporter is enabled
-  if (fullConfig.exporters.console?.enabled) {
+  if (fullConfig.exporters.console?.enabled && !diagLoggerRegistered) {
     const logLevel = mapLogLevel(
       fullConfig.exporters.console.logLevel || 'info'
     );
     diag.setLogger(new DiagConsoleLogger(), logLevel);
+    diagLoggerRegistered = true;
   }
 
   // Create resource identifying this service
@@ -226,6 +234,13 @@ export async function shutdown(): Promise<void> {
     if (prometheusExporter) {
       await prometheusExporter.shutdown();
       prometheusExporter = null;
+    }
+
+    // Release the global diagnostic logger too, so a later init() can
+    // register its own without tripping the re-registration warning.
+    if (diagLoggerRegistered) {
+      diag.disable();
+      diagLoggerRegistered = false;
     }
 
     isInitialized = false;

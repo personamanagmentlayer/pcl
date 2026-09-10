@@ -1,6 +1,6 @@
 # PCL Standard Library — Skills Inventory
 
-**191 expert skills** across 15 categories.
+**193 expert skills** across 15 categories.
 
 Generated from the contents of `stdlib/` by
 `scripts/generate-skill-inventory.py`. Do not edit by hand — rerun the
@@ -22,8 +22,8 @@ This is the Agent Skills v1.0 layout. `SKILL.md` stays within a 500-line
 budget so activation stays cheap; the bulk of each skill lives in
 `references/` and is read only when needed (progressive disclosure).
 
-- Skill entry points: **191** (54,054 lines)
-- Reference documents: **166** (72,239 lines)
+- Skill entry points: **193** (54,408 lines)
+- Reference documents: **168** (73,252 lines)
 
 Conformance is enforced by `scripts/validate-skills.py`; the machine-readable
 index lives in `stdlib/catalog/`.
@@ -37,8 +37,8 @@ index lives in `stdlib/catalog/`.
 | Business & Technology Domains (`domains`) |      58 |         48 |
 | Programming Languages (`languages`)       |      23 |         22 |
 | Data & Databases (`data`)                 |      17 |         16 |
+| Frameworks & Platforms (`frameworks`)     |      17 |         17 |
 | DevOps & Infrastructure (`devops`)        |      16 |         17 |
-| Frameworks & Platforms (`frameworks`)     |      15 |         15 |
 | Security & Compliance (`security`)        |      12 |         10 |
 | Tools & Meta-Programming (`tools`)        |      12 |         11 |
 | AI & Machine Learning (`ai`)              |       7 |          6 |
@@ -49,7 +49,7 @@ index lives in `stdlib/catalog/`.
 | Engineering Workflows (`workflows`)       |       4 |          7 |
 | Scientific & Research (`scientific`)      |       3 |          0 |
 | Design (`design`)                         |       2 |          1 |
-| **Total**                                 | **191** |    **166** |
+| **Total**                                 | **193** |    **168** |
 
 ---
 
@@ -168,6 +168,28 @@ index lives in `stdlib/catalog/`.
 |  16 | `stream-processing-expert`    | 1.0.0   |      310 | OPERATIONS.md (225)                                     |
 |  17 | `tableau-expert`              | 1.1.0   |      135 | CORE_CONCEPTS.md (669)                                  |
 
+### Frameworks & Platforms — `frameworks/` (17)
+
+|   # | Skill                 | Version | SKILL.md | References                                         |
+| --: | --------------------- | ------- | -------: | -------------------------------------------------- |
+|   1 | `android-expert`      | 1.1.0   |      206 | EXAMPLES.md (544)                                  |
+|   2 | `angular-expert`      | 1.1.0   |      195 | EXAMPLES.md (801)                                  |
+|   3 | `django-expert`       | 1.1.0   |      421 | —                                                  |
+|   4 | `electron-expert`     | 1.1.0   |      210 | EXAMPLES.md (557)                                  |
+|   5 | `flask-expert`        | 1.1.0   |      477 | REST_API_WITH_FLASK_RESTFUL.md (116)               |
+|   6 | `flutter-expert`      | 1.1.0   |      205 | EXAMPLES.md (325)                                  |
+|   7 | `ios-expert`          | 1.1.0   |      222 | EXAMPLES.md (459)                                  |
+|   8 | `nestjs-expert`       | 1.0.0   |      190 | EXAMPLES.md (653)                                  |
+|   9 | `nextjs-expert`       | 1.1.0   |      185 | EXAMPLES.md (738)                                  |
+|  10 | `react-expert`        | 1.1.0   |      189 | CORE_CONCEPTS.md (760)                             |
+|  11 | `react-native-expert` | 1.1.0   |      225 | EXAMPLES.md (443)                                  |
+|  12 | `remix-expert`        | 1.1.0   |      195 | EXAMPLES.md (790)                                  |
+|  13 | `spring-boot-expert`  | 1.1.0   |      424 | SPRING_SECURITY_WITH_JWT.md (144), TESTING.md (96) |
+|  14 | `svelte-expert`       | 1.1.0   |      187 | EXAMPLES.md (710)                                  |
+|  15 | `tauri-expert`        | 1.1.0   |      213 | EXAMPLES.md (547)                                  |
+|  16 | `vitejs-expert`       | 1.0.0   |      164 | EXAMPLES.md (360)                                  |
+|  17 | `vue-expert`          | 1.1.0   |      184 | EXAMPLES.md (729)                                  |
+
 ### DevOps & Infrastructure — `devops/` (16)
 
 |   # | Skill                | Version | SKILL.md | References                                                  |
@@ -188,26 +210,6 @@ index lives in `stdlib/catalog/`.
 |  14 | `prometheus-expert`  | 1.1.0   |      223 | CORE_CONCEPTS.md (535)                                      |
 |  15 | `sre-expert`         | 2.0.0   |      482 | —                                                           |
 |  16 | `terraform-expert`   | 1.1.0   |      241 | CORE_CONCEPTS.md (806)                                      |
-
-### Frameworks & Platforms — `frameworks/` (15)
-
-|   # | Skill                 | Version | SKILL.md | References                                         |
-| --: | --------------------- | ------- | -------: | -------------------------------------------------- |
-|   1 | `android-expert`      | 1.1.0   |      206 | EXAMPLES.md (544)                                  |
-|   2 | `angular-expert`      | 1.1.0   |      195 | EXAMPLES.md (801)                                  |
-|   3 | `django-expert`       | 1.1.0   |      421 | —                                                  |
-|   4 | `electron-expert`     | 1.1.0   |      210 | EXAMPLES.md (557)                                  |
-|   5 | `flask-expert`        | 1.1.0   |      477 | REST_API_WITH_FLASK_RESTFUL.md (116)               |
-|   6 | `flutter-expert`      | 1.1.0   |      205 | EXAMPLES.md (325)                                  |
-|   7 | `ios-expert`          | 1.1.0   |      222 | EXAMPLES.md (459)                                  |
-|   8 | `nextjs-expert`       | 1.1.0   |      185 | EXAMPLES.md (738)                                  |
-|   9 | `react-expert`        | 1.1.0   |      189 | CORE_CONCEPTS.md (760)                             |
-|  10 | `react-native-expert` | 1.1.0   |      225 | EXAMPLES.md (443)                                  |
-|  11 | `remix-expert`        | 1.1.0   |      195 | EXAMPLES.md (790)                                  |
-|  12 | `spring-boot-expert`  | 1.1.0   |      424 | SPRING_SECURITY_WITH_JWT.md (144), TESTING.md (96) |
-|  13 | `svelte-expert`       | 1.1.0   |      187 | EXAMPLES.md (710)                                  |
-|  14 | `tauri-expert`        | 1.1.0   |      213 | EXAMPLES.md (547)                                  |
-|  15 | `vue-expert`          | 1.1.0   |      184 | EXAMPLES.md (729)                                  |
 
 ### Security & Compliance — `security/` (12)
 
@@ -332,4 +334,4 @@ python scripts/generate-skill-catalog.py   # rebuild stdlib/catalog/
 python scripts/generate-skill-inventory.py # rebuild this file
 ```
 
-**Last generated:** 2026-09-05
+**Last generated:** 2026-09-09

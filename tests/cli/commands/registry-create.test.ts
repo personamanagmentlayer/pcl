@@ -1,26 +1,68 @@
 /**
  * Comprehensive Test Suite: PCL Registry Create Command
  * Tests artifact creation, metadata extraction, and publishing
+ *
+ * NOTE: the parser is deliberately NOT mocked. An earlier version of this
+ * suite fed `createCommand` a hand-written AST shape (`type: 'Program'`,
+ * `body`, `properties`, `prop.key`) that the real parser never produces, so it
+ * kept passing while metadata extraction was broken in production. Running the
+ * real parser over real PCL source is what makes these tests meaningful.
  */
 
 import { existsSync, readFileSync } from 'fs';
-import { resolve } from 'path';
 import { createCommand } from '../../../src/cli/commands/registry/create';
-import { parse } from '../../../src/parser';
-import type { Artifact } from '../../../src/registry/interfaces';
 
 // Mock modules
 vi.mock('fs');
-vi.mock('../../../src/parser');
 vi.mock('../../../src/cli/config/registry', () => ({
   createRegistry: vi.fn(),
 }));
+
+/** A persona covering every metadata field the command extracts */
+const DEVELOPER_PCL = `persona Developer {
+  version: "2.0.0"
+  description: "A developer persona"
+  author: "Jane Doe"
+  authorEmail: "jane@example.com"
+  organization: "Acme"
+  license: "MIT"
+  slug: "developer"
+  tags { "coding", "development" }
+  skills { "typescript", "testing" }
+}`;
+
+const MINIMAL_PCL = `persona TEST {
+  description: "Minimal persona"
+}`;
 
 describe('PCL Registry Create Command', () => {
   let consoleLogSpy: any;
   let consoleErrorSpy: any;
   let processExitSpy: any;
   let mockRegistry: any;
+
+  /** Point the command at a source file with the given contents */
+  const givenFile = (source: string) => {
+    vi.mocked(existsSync).mockReturnValue(true);
+    vi.mocked(readFileSync).mockReturnValue(source as never);
+  };
+
+  /** Registry that accepts everything, echoing back what it was given */
+  const givenEmptyRegistry = () => {
+    mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
+    mockRegistry.create.mockImplementation(async (input: any) => ({
+      ok: true,
+      value: {
+        id: 'test-id',
+        ...input,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    }));
+  };
+
+  /** The metadata object handed to registry.create */
+  const createdMetadata = () => mockRegistry.create.mock.calls[0][0].metadata;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -65,33 +107,8 @@ describe('PCL Registry Create Command', () => {
     });
 
     it('should read PCL file when it exists', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       await createCommand('test.pcl');
 
@@ -102,33 +119,8 @@ describe('PCL Registry Create Command', () => {
     });
 
     it('should resolve absolute path correctly', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       await createCommand('relative/path/test.pcl');
 
@@ -140,12 +132,7 @@ describe('PCL Registry Create Command', () => {
 
   describe('PCL Parsing', () => {
     it('should exit on parse errors', async () => {
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue('invalid syntax');
-      vi.mocked(parse).mockReturnValue({
-        ok: false,
-        error: [{ message: 'Unexpected token', line: 1, column: 1 }],
-      } as any);
+      givenFile('persona { this is not valid PCL');
 
       await expect(createCommand('test.pcl')).rejects.toThrow(
         'process.exit(1)'
@@ -157,33 +144,8 @@ describe('PCL Registry Create Command', () => {
     });
 
     it('should parse valid PCL successfully', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       await createCommand('test.pcl');
 
@@ -195,41 +157,8 @@ describe('PCL Registry Create Command', () => {
 
   describe('Metadata Extraction', () => {
     it('should extract persona metadata', async () => {
-      const mockSource = 'persona Developer {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'Developer',
-              properties: [
-                { key: 'version', value: '2.0.0' },
-                { key: 'description', value: 'A developer persona' },
-                { key: 'tags', value: ['coding', 'development'] },
-              ],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'dev-id',
-          type: 'persona',
-          metadata: {
-            name: 'Developer',
-            version: '2.0.0',
-            description: 'A developer persona',
-          },
-        },
-      });
+      givenFile(DEVELOPER_PCL);
+      givenEmptyRegistry();
 
       await createCommand('developer.pcl');
 
@@ -245,202 +174,117 @@ describe('PCL Registry Create Command', () => {
       );
     });
 
+    it('should extract tags', async () => {
+      givenFile(DEVELOPER_PCL);
+      givenEmptyRegistry();
+
+      await createCommand('developer.pcl');
+
+      expect(createdMetadata().tags).toEqual(['coding', 'development']);
+    });
+
     it('should extract author information', async () => {
-      const mockSource = 'persona TEST {}';
+      givenFile(DEVELOPER_PCL);
+      givenEmptyRegistry();
 
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [
-                { key: 'author', value: 'John Doe' },
-                { key: 'authorEmail', value: 'john@example.com' },
-                { key: 'organization', value: 'ACME Corp' },
-              ],
-            },
-          ],
-        },
-      } as any);
+      await createCommand('developer.pcl');
 
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
-
-      await createCommand('test.pcl');
-
-      expect(mockRegistry.create).toHaveBeenCalledWith(
-        expect.objectContaining({
-          metadata: expect.objectContaining({
-            author: 'John Doe',
-            authorEmail: 'john@example.com',
-            organization: 'ACME Corp',
-          }),
-        })
-      );
+      const metadata = createdMetadata();
+      expect(metadata.author).toBe('Jane Doe');
+      expect(metadata.authorEmail).toBe('jane@example.com');
+      expect(metadata.organization).toBe('Acme');
+      expect(metadata.license).toBe('MIT');
     });
 
     it('should extract skills from persona', async () => {
-      const mockSource = 'persona TEST {}';
+      givenFile(DEVELOPER_PCL);
+      givenEmptyRegistry();
 
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              skills: [{ name: 'coding' }, { name: 'debugging' }],
-              properties: [],
-            },
-          ],
-        },
-      } as any);
+      await createCommand('developer.pcl');
 
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      expect(createdMetadata().skills).toEqual(['typescript', 'testing']);
+    });
+
+    it('should default the version when none is declared', async () => {
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       await createCommand('test.pcl');
 
-      expect(mockRegistry.create).toHaveBeenCalledWith(
-        expect.objectContaining({
-          metadata: expect.objectContaining({
-            skills: ['coding', 'debugging'],
-          }),
-        })
-      );
+      expect(createdMetadata().version).toBe('1.0.0');
     });
 
     it('should detect team artifacts', async () => {
-      const mockSource = 'team DevTeam {}';
+      givenFile(`persona Worker { description: "w" }
+team Reviewers {
+  members: [Worker]
+}`);
+      givenEmptyRegistry();
 
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'TeamDeclaration',
-              name: 'DevTeam',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
+      await createCommand('team.pcl');
 
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'team-id',
-          type: 'team',
-          metadata: { name: 'DevTeam', version: '1.0.0' },
-        },
-      });
+      // The first declaration in the file determines the artifact
+      expect(mockRegistry.create).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'persona' })
+      );
+    });
+
+    it('should detect a team when it is the only declaration', async () => {
+      givenFile(`team Reviewers {
+  members: [Worker]
+}`);
+      givenEmptyRegistry();
 
       await createCommand('team.pcl');
 
       expect(mockRegistry.create).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'team',
+          metadata: expect.objectContaining({ name: 'Reviewers' }),
         })
       );
     });
 
-    it('should infer name from filename when not specified', async () => {
-      const mockSource = 'persona {}';
+    it('should detect workflow artifacts', async () => {
+      givenFile(`workflow Pipeline {
+  steps: Worker
+}`);
+      givenEmptyRegistry();
 
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'Code Reviewer', version: '1.0.0' },
-        },
-      });
-
-      await createCommand('code-reviewer.pcl');
+      await createCommand('flow.pcl');
 
       expect(mockRegistry.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          metadata: expect.objectContaining({
-            name: expect.stringContaining('Code'),
-          }),
+          type: 'workflow',
+          metadata: expect.objectContaining({ name: 'Pipeline' }),
         })
       );
+    });
+
+    it('should infer name from filename when no declaration is present', async () => {
+      givenFile('// only a comment, no declaration\n');
+      givenEmptyRegistry();
+
+      await createCommand('my-cool-persona.pcl');
+
+      expect(createdMetadata().name).toBe('My Cool Persona');
     });
   });
 
   describe('Duplicate Detection', () => {
+    const existingArtifact = {
+      id: 'existing-id',
+      metadata: { name: 'Developer', slug: 'developer', version: '1.0.0' },
+    };
+
     it('should prevent duplicate artifacts without force flag', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [{ key: 'slug', value: 'test-persona' }],
-            },
-          ],
-        },
-      } as any);
-
+      givenFile(DEVELOPER_PCL);
       mockRegistry.find.mockResolvedValue({
         ok: true,
-        value: [
-          {
-            id: 'existing-id',
-            metadata: { slug: 'test-persona', name: 'TEST' },
-          },
-        ],
+        value: [existingArtifact],
       });
 
-      await expect(createCommand('test.pcl')).rejects.toThrow(
+      await expect(createCommand('developer.pcl')).rejects.toThrow(
         'process.exit(1)'
       );
 
@@ -450,146 +294,57 @@ describe('PCL Registry Create Command', () => {
     });
 
     it('should allow duplicate with force flag', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [{ key: 'slug', value: 'test-persona' }],
-            },
-          ],
-        },
-      } as any);
-
+      givenFile(DEVELOPER_PCL);
       mockRegistry.find.mockResolvedValue({
         ok: true,
-        value: [
-          {
-            id: 'existing-id',
-            metadata: { slug: 'test-persona', name: 'TEST' },
-          },
-        ],
+        value: [existingArtifact],
       });
-
       mockRegistry.create.mockResolvedValue({
         ok: true,
-        value: {
-          id: 'new-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
+        value: { id: 'new-id', metadata: { name: 'Developer' } },
       });
 
-      await createCommand('test.pcl', { force: true });
+      await createCommand('developer.pcl', { force: true });
 
+      expect(mockRegistry.create).toHaveBeenCalled();
       expect(consoleLogSpy).toHaveBeenCalledWith(
         expect.stringContaining('Overwriting existing artifact')
       );
     });
 
     it('should handle find errors gracefully', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
+      givenFile(DEVELOPER_PCL);
       mockRegistry.find.mockResolvedValue({
         ok: false,
-        error: new Error('Database error'),
+        error: new Error('Search failed'),
       });
-
       mockRegistry.create.mockResolvedValue({
         ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
+        value: { id: 'test-id', metadata: { name: 'Developer' } },
       });
 
-      await createCommand('test.pcl');
+      // A failed duplicate lookup must not block creation
+      await createCommand('developer.pcl');
 
-      // Should continue despite find error
       expect(mockRegistry.create).toHaveBeenCalled();
     });
   });
 
   describe('Artifact Creation', () => {
     it('should create artifact successfully', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       await createCommand('test.pcl');
 
+      expect(mockRegistry.create).toHaveBeenCalled();
       expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Created artifact: test-id')
+        expect.stringContaining('Created artifact')
       );
     });
 
     it('should handle creation errors', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
+      givenFile(MINIMAL_PCL);
       mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
       mockRegistry.create.mockResolvedValue({
         ok: false,
@@ -606,109 +361,55 @@ describe('PCL Registry Create Command', () => {
     });
 
     it('should include source in artifact', async () => {
-      const mockSource = 'persona TEST { intent: "Test" }';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       await createCommand('test.pcl');
 
-      expect(mockRegistry.create).toHaveBeenCalledWith(
-        expect.objectContaining({
-          source: mockSource,
-        })
-      );
+      expect(mockRegistry.create.mock.calls[0][0].source).toBe(MINIMAL_PCL);
+    });
+
+    it('should create unpublished and undeleted by default', async () => {
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
+
+      await createCommand('test.pcl');
+
+      const input = mockRegistry.create.mock.calls[0][0];
+      expect(input.published).toBe(false);
+      expect(input.deleted).toBe(false);
     });
   });
 
   describe('Publishing', () => {
     it('should publish artifact when --publish flag is set', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
+      givenFile(DEVELOPER_PCL);
       mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
       mockRegistry.create.mockResolvedValue({
         ok: true,
         value: {
           id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
+          metadata: { name: 'Developer', version: '2.0.0' },
         },
       });
-      mockRegistry.publish.mockResolvedValue({ ok: true, value: true });
+      mockRegistry.publish.mockResolvedValue({ ok: true, value: undefined });
 
-      await createCommand('test.pcl', { publish: true });
+      await createCommand('developer.pcl', { publish: true });
 
-      expect(mockRegistry.publish).toHaveBeenCalledWith('test-id', '1.0.0');
+      expect(mockRegistry.publish).toHaveBeenCalledWith('test-id', '2.0.0');
       expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Artifact published successfully')
+        expect.stringContaining('published successfully')
       );
     });
 
     it('should handle publish errors', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
+      givenFile(DEVELOPER_PCL);
       mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
       mockRegistry.create.mockResolvedValue({
         ok: true,
         value: {
           id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
+          metadata: { name: 'Developer', version: '2.0.0' },
         },
       });
       mockRegistry.publish.mockResolvedValue({
@@ -717,7 +418,7 @@ describe('PCL Registry Create Command', () => {
       });
 
       await expect(
-        createCommand('test.pcl', { publish: true })
+        createCommand('developer.pcl', { publish: true })
       ).rejects.toThrow('process.exit(1)');
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
@@ -726,33 +427,8 @@ describe('PCL Registry Create Command', () => {
     });
 
     it('should not publish by default', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       await createCommand('test.pcl');
 
@@ -762,28 +438,10 @@ describe('PCL Registry Create Command', () => {
 
   describe('Dry Run Mode', () => {
     it('should not create artifact in dry run mode', async () => {
-      const mockSource = 'persona TEST {}';
+      givenFile(DEVELOPER_PCL);
+      givenEmptyRegistry();
 
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [
-                { key: 'version', value: '2.0.0' },
-                { key: 'description', value: 'Test persona' },
-              ],
-            },
-          ],
-        },
-      } as any);
-
-      await createCommand('test.pcl', { dryRun: true });
+      await createCommand('developer.pcl', { dryRun: true });
 
       expect(mockRegistry.create).not.toHaveBeenCalled();
       expect(consoleLogSpy).toHaveBeenCalledWith(
@@ -792,76 +450,38 @@ describe('PCL Registry Create Command', () => {
     });
 
     it('should display extracted metadata in dry run', async () => {
-      const mockSource = 'persona TEST {}';
+      givenFile(DEVELOPER_PCL);
+      givenEmptyRegistry();
 
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
+      await createCommand('developer.pcl', { dryRun: true });
 
-      await createCommand('test.pcl', { dryRun: true });
-
-      expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Extracted Metadata')
-      );
+      const printed = consoleLogSpy.mock.calls
+        .map((c: any[]) => c[0])
+        .join('\n');
+      expect(printed).toContain('Developer');
+      expect(printed).toContain('2.0.0');
+      expect(printed).toContain('coding');
     });
   });
 
   describe('Backend Selection', () => {
     it('should use specified backend', async () => {
-      const mockSource = 'persona TEST {}';
-
-      vi.mocked(existsSync).mockReturnValue(true);
-      vi.mocked(readFileSync).mockReturnValue(mockSource);
-      vi.mocked(parse).mockReturnValue({
-        ok: true,
-        value: {
-          type: 'Program',
-          body: [
-            {
-              type: 'PersonaDeclaration',
-              name: 'TEST',
-              properties: [],
-            },
-          ],
-        },
-      } as any);
-
-      mockRegistry.find.mockResolvedValue({ ok: true, value: [] });
-      mockRegistry.create.mockResolvedValue({
-        ok: true,
-        value: {
-          id: 'test-id',
-          type: 'persona',
-          metadata: { name: 'TEST', version: '1.0.0' },
-        },
-      });
+      givenFile(MINIMAL_PCL);
+      givenEmptyRegistry();
 
       const { createRegistry } =
         await import('../../../src/cli/config/registry');
 
-      await createCommand('test.pcl', { backend: 'memory' });
+      await createCommand('test.pcl', { backend: 'sqlite' });
 
-      expect(createRegistry).toHaveBeenCalledWith('memory');
+      expect(createRegistry).toHaveBeenCalledWith('sqlite');
     });
   });
 
   describe('Error Handling', () => {
     it('should handle unexpected errors gracefully', async () => {
-      vi.mocked(existsSync).mockImplementation(() => {
-        throw new Error('Filesystem error');
-      });
+      givenFile(MINIMAL_PCL);
+      mockRegistry.find.mockRejectedValue(new Error('Connection lost'));
 
       await expect(createCommand('test.pcl')).rejects.toThrow(
         'process.exit(1)'

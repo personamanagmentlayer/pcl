@@ -434,10 +434,19 @@ describe('ConnectionPool', () => {
 
       const conn1 = await pool.acquire('example.com');
 
-      pool.acquire('example.com'); // Will be pending
+      // Stays pending until the pool is cleared/destroyed, which rejects it.
+      // The rejection must be observed, or it surfaces as an unhandled
+      // rejection and fails the run.
+      const pendingAcquire = pool.acquire('example.com');
+      const pendingSettled = expect(pendingAcquire).rejects.toThrow(
+        'Connection pool cleared'
+      );
 
       const stats = pool.getStats();
       expect(stats.pending).toBe(1);
+
+      pool.clear();
+      await pendingSettled;
     });
 
     it('should count connections by host', async () => {
@@ -566,9 +575,16 @@ describe('ConnectionPool', () => {
 
       const conn = await pool.acquire('example.com');
 
-      pool.acquire('example.com'); // Will be pending
+      // Stays pending until the pool is cleared/destroyed, which rejects it.
+      // The rejection must be observed, or it surfaces as an unhandled
+      // rejection and fails the run.
+      const pendingAcquire = pool.acquire('example.com');
+      const pendingSettled = expect(pendingAcquire).rejects.toThrow(
+        'Connection pool cleared'
+      );
 
       pool.clear();
+      await pendingSettled;
 
       expect(pool.getStats().pending).toBe(0);
     });

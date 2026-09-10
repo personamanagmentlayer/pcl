@@ -242,6 +242,22 @@ function formatArtifactsTable(artifacts: Artifact[]): string {
 /**
  * Format artifact details (full information)
  */
+/**
+ * Render a timestamp, tolerating a missing or unparseable value: displaying an
+ * artifact must never throw, or a successful write would be reported as a
+ * failure.
+ */
+function formatTimestamp(value: Date | string | undefined): string {
+  if (!value) {
+    return chalk.dim('(unknown)');
+  }
+
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? chalk.dim('(unknown)')
+    : date.toLocaleString();
+}
+
 export function formatArtifactDetails(artifact: Artifact): string {
   const lines: string[] = [];
 
@@ -275,7 +291,7 @@ export function formatArtifactDetails(artifact: Artifact): string {
   }
 
   // Tags
-  if (artifact.metadata.tags.length > 0) {
+  if (artifact.metadata.tags && artifact.metadata.tags.length > 0) {
     lines.push(chalk.bold('Tags:'));
     lines.push('  ' + artifact.metadata.tags.join(', '));
     lines.push('');
@@ -289,31 +305,35 @@ export function formatArtifactDetails(artifact: Artifact): string {
   }
 
   // Statistics
-  lines.push(chalk.bold('Statistics:'));
-  lines.push(
-    formatKeyValue(
-      {
-        Downloads: artifact.stats.downloads,
-        Stars: artifact.stats.stars,
-        Views: artifact.stats.views,
-      },
-      { indent: 2 }
-    )
-  );
-  lines.push('');
+  if (artifact.stats) {
+    lines.push(chalk.bold('Statistics:'));
+    lines.push(
+      formatKeyValue(
+        {
+          Downloads: artifact.stats.downloads,
+          Stars: artifact.stats.stars,
+          Views: artifact.stats.views,
+        },
+        { indent: 2 }
+      )
+    );
+    lines.push('');
+  }
 
   // Timestamps
-  lines.push(chalk.bold('Timestamps:'));
-  lines.push(
-    formatKeyValue(
-      {
-        Created: new Date(artifact.createdAt).toLocaleString(),
-        Updated: new Date(artifact.updatedAt).toLocaleString(),
-      },
-      { indent: 2 }
-    )
-  );
-  lines.push('');
+  if (artifact.createdAt || artifact.updatedAt) {
+    lines.push(chalk.bold('Timestamps:'));
+    lines.push(
+      formatKeyValue(
+        {
+          Created: formatTimestamp(artifact.createdAt),
+          Updated: formatTimestamp(artifact.updatedAt),
+        },
+        { indent: 2 }
+      )
+    );
+    lines.push('');
+  }
 
   // Status
   lines.push(chalk.bold('Status:'));

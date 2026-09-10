@@ -30,7 +30,25 @@ import {
 export interface McpClientConfig {
   readonly name: string;
   readonly version: string;
+  /**
+   * How long to wait for a response before failing a request, in milliseconds.
+   * Defaults to 30s. A server that never answers must not hang the caller
+   * forever, nor leave the request pending in memory.
+   */
+  readonly requestTimeoutMs?: number;
+  /**
+   * How long disconnect() waits for the shutdown acknowledgement, in
+   * milliseconds. Defaults to 5s: closing must stay responsive even when the
+   * server has stopped answering.
+   */
+  readonly shutdownTimeoutMs?: number;
 }
+
+/** Default request timeout (ms) */
+const DEFAULT_REQUEST_TIMEOUT_MS = 30_000;
+
+/** Default shutdown acknowledgement timeout (ms) */
+const DEFAULT_SHUTDOWN_TIMEOUT_MS = 5_000;
 
 /**
  * PCL MCP Client Implementation
@@ -40,8 +58,16 @@ export class PclMcpClient implements McpClient {
 
   private transport: McpTransport | null = null;
   private requestId = 0;
-  private pendingRequests = new Map<number, (response: McpResponse) => void>();
+  private pendingRequests = new Map<
+    number,
+    {
+      resolve: (response: McpResponse) => void;
+      reject: (error: Error) => void;
+    }
+  >();
   private serverInfo: McpInitializeResult | null = null;
+  private readonly requestTimeoutMs: number;
+  private readonly shutdownTimeoutMs: number;
 
   constructor(config: McpClientConfig) {
     this.info = {
@@ -49,6 +75,10 @@ export class PclMcpClient implements McpClient {
       version: config.version,
       protocolVersion: MCP_VERSION,
     };
+    this.requestTimeoutMs =
+      config.requestTimeoutMs ?? DEFAULT_REQUEST_TIMEOUT_MS;
+    this.shutdownTimeoutMs =
+      config.shutdownTimeoutMs ?? DEFAULT_SHUTDOWN_TIMEOUT_MS;
   }
 
   /**
@@ -93,13 +123,28 @@ export class PclMcpClient implements McpClient {
     }
 
     try {
-      // Send shutdown request
-      await this.sendRequest(McpMethod.Shutdown);
+      // Send shutdown request. A server that never answers must not keep the
+      // client from closing, so failures here are reported but not fatal.
+      await this.sendRequest(McpMethod.Shutdown, undefined, {
+        timeoutMs: this.shutdownTimeoutMs,
+      });
     } finally {
       await this.transport.close();
       this.transport = null;
       this.serverInfo = null;
-      this.pendingRequests.clear();
+      this.failPendingRequests(new Error('Client disconnected'));
+    }
+  }
+
+  /**
+   * Fail every in-flight request. Dropping the handlers instead would leave
+   * their callers awaiting a promise that can never settle.
+   */
+  private failPendingRequests(error: Error): void {
+    const pending = Array.from(this.pendingRequests.values());
+    this.pendingRequests.clear();
+    for (const { reject } of pending) {
+      reject(error);
     }
   }
 
@@ -201,7 +246,11 @@ export class PclMcpClient implements McpClient {
   /**
    * Send a JSON-RPC request and wait for response
    */
-  private async sendRequest<T>(method: string, params?: unknown): Promise<T> {
+  private async sendRequest<T>(
+    method: string,
+    params?: unknown,
+    options?: { timeoutMs?: number }
+  ): Promise<T> {
     if (!this.transport) {
       throw new Error('Not connected');
     }
@@ -214,16 +263,30 @@ export class PclMcpClient implements McpClient {
       id
     );
 
-    // Create promise for response
-    const responsePromise = new Promise<McpResponse>((resolve) => {
-      this.pendingRequests.set(id, resolve);
+    // Create promise for response, bounded by the request timeout so an
+    // unresponsive server cannot block the caller or leak the pending entry.
+    const timeoutMs = options?.timeoutMs ?? this.requestTimeoutMs;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const responsePromise = new Promise<McpResponse>((resolve, reject) => {
+      this.pendingRequests.set(id, { resolve, reject });
+
+      timer = setTimeout(() => {
+        this.pendingRequests.delete(id);
+        reject(new Error(`Request timed out after ${timeoutMs}ms: ${method}`));
+      }, timeoutMs);
+      // Do not hold the process open just for this timer
+      timer.unref?.();
     });
 
     // Send request
-    await this.transport.send(request as McpRequest);
-
-    // Wait for response
-    const response = await responsePromise;
+    let response: McpResponse;
+    try {
+      await this.transport.send(request as McpRequest);
+      response = await responsePromise;
+    } finally {
+      clearTimeout(timer);
+      this.pendingRequests.delete(id);
+    }
 
     // Check for errors
     if (!isJsonRpcSuccessResponse(response)) {
@@ -265,7 +328,7 @@ export class PclMcpClient implements McpClient {
 
     if (handler) {
       this.pendingRequests.delete(response.id as number);
-      handler(response);
+      handler.resolve(response);
     }
   }
 

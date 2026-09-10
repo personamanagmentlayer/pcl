@@ -252,7 +252,11 @@ describe('OllamaProvider', () => {
 
       await provider.complete(request);
 
-      const fetchCall = mockFetch.mock.calls[0];
+      // initialize() already fetched the model list, so select the chat call
+      // by URL rather than assuming it is the first one.
+      const fetchCall = mockFetch.mock.calls.find((call: any[]) =>
+        String(call[0]).includes('/api/chat')
+      );
       const body = JSON.parse(fetchCall[1].body);
       expect(body.messages[0].role).toBe('system');
     });
@@ -275,7 +279,11 @@ describe('OllamaProvider', () => {
 
       await provider.complete(request);
 
-      const fetchCall = mockFetch.mock.calls[0];
+      // initialize() already fetched the model list, so select the chat call
+      // by URL rather than assuming it is the first one.
+      const fetchCall = mockFetch.mock.calls.find((call: any[]) =>
+        String(call[0]).includes('/api/chat')
+      );
       const body = JSON.parse(fetchCall[1].body);
       expect(body.options.temperature).toBe(0.8);
     });
@@ -299,7 +307,11 @@ describe('OllamaProvider', () => {
 
       await provider.complete(request);
 
-      const fetchCall = mockFetch.mock.calls[0];
+      // initialize() already fetched the model list, so select the chat call
+      // by URL rather than assuming it is the first one.
+      const fetchCall = mockFetch.mock.calls.find((call: any[]) =>
+        String(call[0]).includes('/api/chat')
+      );
       const body = JSON.parse(fetchCall[1].body);
       expect(body.options.top_p).toBe(0.9);
       expect(body.options.top_k).toBe(40);
@@ -323,7 +335,11 @@ describe('OllamaProvider', () => {
 
       await provider.complete(request);
 
-      const fetchCall = mockFetch.mock.calls[0];
+      // initialize() already fetched the model list, so select the chat call
+      // by URL rather than assuming it is the first one.
+      const fetchCall = mockFetch.mock.calls.find((call: any[]) =>
+        String(call[0]).includes('/api/chat')
+      );
       const body = JSON.parse(fetchCall[1].body);
       expect(body.options.stop).toEqual(['\n\n', 'END']);
     });
@@ -576,7 +592,11 @@ describe('OllamaProvider', () => {
 
       await provider.complete(request);
 
-      const fetchCall = mockFetch.mock.calls[0];
+      // initialize() already fetched the model list, so select the chat call
+      // by URL rather than assuming it is the first one.
+      const fetchCall = mockFetch.mock.calls.find((call: any[]) =>
+        String(call[0]).includes('/api/chat')
+      );
       const body = JSON.parse(fetchCall[1]?.body || '{}');
       expect(body.messages).toHaveLength(3);
     });

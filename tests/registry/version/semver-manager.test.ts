@@ -11,7 +11,7 @@
  * - Deprecation tracking
  */
 
-import { SemverManager } from '../../src/registry/version/semver-manager';
+import { SemverManager } from '../../../src/registry/version/semver-manager';
 
 describe('SemverManager', () => {
   let manager: SemverManager;

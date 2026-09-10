@@ -23,7 +23,9 @@ describe('PCL Init Command', () => {
   let processExitSpy: any;
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    // resetAllMocks (not clearAllMocks) also drops implementations, so a
+    // mockRejectedValue set by one test cannot leak into the next.
+    vi.resetAllMocks();
     consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     processExitSpy = vi.spyOn(process, 'exit').mockImplementation(((

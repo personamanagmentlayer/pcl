@@ -809,8 +809,10 @@ describe('AnthropicProvider', () => {
       const sonnet = models.find((m) => m.id === 'claude-3-5-sonnet-20241022');
       const haiku = models.find((m) => m.id === 'claude-3-5-haiku-20241022');
 
-      expect(sonnet!.description).toContain('intelligent');
-      expect(haiku!.description).toContain('fast');
+      // Match case-insensitively: the shipped description reads "Fastest
+      // model, great for quick responses".
+      expect(sonnet!.description).toMatch(/intelligent/i);
+      expect(haiku!.description).toMatch(/fast/i);
     });
   });
 });

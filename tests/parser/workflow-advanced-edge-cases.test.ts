@@ -643,9 +643,10 @@ describe('Advanced Workflow Operators', () => {
     });
 
     it('should recover from incomplete loop', () => {
+      // `loop <body> times <count>` with the count missing
       const input = `
       workflow Error {
-        steps: loop 3 times
+        steps: loop A times
       }`;
       const parser = new Parser(input, { errorRecovery: true });
       const result = parser.parse();

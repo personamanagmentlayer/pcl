@@ -60,14 +60,16 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   }
 
   // Create package object
+  // Defaults first: spreading them last would let DEFAULT_PACKAGE.version
+  // silently override an explicit --version.
   const pkg: PCLPackage = {
+    ...DEFAULT_PACKAGE,
     name: options.name || inferPackageName(cwd),
-    version: options.version || '1.0.0',
+    version: options.version || DEFAULT_PACKAGE.version || '1.0.0',
     description: options.description || '',
     license: options.license || 'MIT',
     author: options.author || '',
     main: 'index.pcl',
-    ...DEFAULT_PACKAGE,
   };
 
   // Validate package
@@ -120,13 +122,17 @@ function inferPackageName(cwd: string): string {
   const dirName = parts.at(-1);
 
   // Convert to valid package name
-  return dirName
+  const sanitized = dirName
     ? dirName
         .toLowerCase()
         .replaceAll(/[^a-z0-9-_.~]/g, '-')
         .replace(/^[-_.~]+/, '')
         .replace(/[-_.~]+$/, '')
-    : 'my-pcl-project';
+    : '';
+
+  // Sanitizing can consume the whole name (a directory called "~!@#$%"),
+  // which would write an empty, invalid name into pcl.json.
+  return sanitized || 'my-pcl-project';
 }
 
 /**

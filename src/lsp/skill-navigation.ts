@@ -121,18 +121,50 @@ export class SkillNavigationProvider {
     const lines = content.split('\n');
 
     for (let i = 0; i < lines.length; i++) {
-      if (lines[i].includes(skillName) && lines[i].includes('dependencies')) {
-        return {
-          uri: URI.file(filePath).toString(),
-          range: {
-            start: { line: i, character: 0 },
-            end: { line: i, character: lines[i].length },
-          },
-        };
+      const keyMatch = lines[i].match(/^\s*dependencies\s*:(.*)$/);
+      if (!keyMatch) {
+        continue;
+      }
+
+      // Inline form: `dependencies: base-skill, other-skill`
+      const inline = keyMatch[1]
+        .split(',')
+        .map((d) => d.trim())
+        .filter((d) => d.length > 0);
+      if (inline.includes(skillName)) {
+        return this.lineLocation(filePath, lines, i);
+      }
+
+      // List form: the entries follow on their own `- name` lines
+      for (let j = i + 1; j < lines.length; j++) {
+        const itemMatch = lines[j].match(/^\s*-\s*(.+?)\s*$/);
+        if (!itemMatch) {
+          break; // End of the dependencies block
+        }
+        if (itemMatch[1] === skillName) {
+          return this.lineLocation(filePath, lines, j);
+        }
       }
     }
 
     return null;
+  }
+
+  /**
+   * Build a Location covering a whole line of a file
+   */
+  private lineLocation(
+    filePath: string,
+    lines: string[],
+    lineIndex: number
+  ): Location {
+    return {
+      uri: URI.file(filePath).toString(),
+      range: {
+        start: { line: lineIndex, character: 0 },
+        end: { line: lineIndex, character: lines[lineIndex].length },
+      },
+    };
   }
 
   /**

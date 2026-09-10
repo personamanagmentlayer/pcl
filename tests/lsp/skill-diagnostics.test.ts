@@ -103,9 +103,10 @@ Test
         (d) => d.severity === DiagnosticSeverity.Error
       );
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors.some((e) => e.message.includes('Compilation Error'))).toBe(
-        true
-      );
+      // A missing `name` fails at parse time, before compilation is reached,
+      // so the diagnostic is reported as a Parse Error.
+      expect(errors.some((e) => e.message.includes('Parse Error'))).toBe(true);
+      expect(errors.some((e) => e.message.includes('name'))).toBe(true);
     });
 
     it('should include compilation warnings', async () => {
@@ -305,21 +306,30 @@ Instructions without examples
     });
 
     it('should not warn when examples are present', async () => {
+      // Examples live in the markdown body (### heading + fenced code block),
+      // which is the format extractExamples reads and toSkillMd writes.
       const content = `---
 name: with-examples
 description: Skill with examples
-examples:
-  - description: First example
-    input: Test input
-    expected: Test output
-  - description: Second example
-    input: Another input
-    expected: Another output
 ---
 
 # Instructions
 
 Instructions with examples
+
+## Examples
+
+### First example
+
+\`\`\`
+Test input
+\`\`\`
+
+### Second example
+
+\`\`\`
+Another input
+\`\`\`
 `;
 
       const filePath = join(testDir, 'examples.md');

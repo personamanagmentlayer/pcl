@@ -1250,6 +1250,18 @@ export class SemanticAnalyzer {
         ) {
           intent = (prop.initializer as AST.StringLiteral).value;
         }
+
+        // Type-check computed values: without this, expressions in persona
+        // properties bypass semantic analysis entirely. Bare identifiers are
+        // deliberately excluded — in a property position they are enum-like
+        // literals (`tone: friendly`), not references to resolve.
+        if (
+          prop.initializer &&
+          (prop.initializer.kind === 'BinaryExpression' ||
+            prop.initializer.kind === 'UnaryExpression')
+        ) {
+          this.checkExpression(prop.initializer);
+        }
       }
     }
 
@@ -1984,6 +1996,16 @@ export class SemanticAnalyzer {
           }
           memberNames.add(personaName);
           memberList.push(personaName);
+
+          // A spawn of zero instances contributes no member to the team
+          if (ref.ref.type === 'spawn' && ref.ref.count.value === 0) {
+            this.warning(
+              `Spawn count is 0: no instance of '${personaName}' will join the team`,
+              ref.span,
+              ErrorCode.SEMANTIC_UNREACHABLE_CODE,
+              `Use a positive count, or remove '${personaName}' from the members list`
+            );
+          }
 
           const persona = this.currentScope.lookup(personaName);
           if (!persona) {
@@ -2764,6 +2786,28 @@ export class SemanticAnalyzer {
     return symbol.type;
   }
 
+  /**
+   * Warn when the right-hand operand of `/` or `%` is a literal zero. Only the
+   * constant case is decidable at compile time; dynamic divisors stay a
+   * runtime concern.
+   */
+  private checkConstantZeroDivisor(
+    expr: AST.BinaryExpression,
+    operation: 'Division' | 'Modulo'
+  ): void {
+    if (
+      expr.right.kind === 'NumberLiteral' &&
+      (expr.right as AST.NumberLiteral).value === 0
+    ) {
+      this.warning(
+        `${operation} by zero: this expression is always invalid`,
+        expr.span,
+        ErrorCode.SEMANTIC_DIVISION_BY_ZERO,
+        'Use a non-zero divisor, or guard the expression at runtime'
+      );
+    }
+  }
+
   private inferBinaryExpression(expr: AST.BinaryExpression): Type {
     const leftType = this.inferExpressionType(expr.left);
     const rightType = this.inferExpressionType(expr.right);
@@ -2785,9 +2829,17 @@ export class SemanticAnalyzer {
           return BuiltinTypes.Int;
         }
         return BuiltinTypes.Float;
+      case '%':
+        this.checkConstantZeroDivisor(expr, 'Modulo');
+        if (
+          leftType.isAssignableTo(BuiltinTypes.Int) &&
+          rightType.isAssignableTo(BuiltinTypes.Int)
+        ) {
+          return BuiltinTypes.Int;
+        }
+        return BuiltinTypes.Float;
       case '-':
       case '*':
-      case '%':
       case '**':
         // Return Int if both operands are Int, otherwise Float
         if (
@@ -2798,6 +2850,7 @@ export class SemanticAnalyzer {
         }
         return BuiltinTypes.Float;
       case '/':
+        this.checkConstantZeroDivisor(expr, 'Division');
         // Division always returns Float
         return BuiltinTypes.Float;
 

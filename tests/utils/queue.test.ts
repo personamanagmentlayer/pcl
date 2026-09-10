@@ -339,11 +339,15 @@ describe('ConcurrencyQueue', () => {
       const queue = new ConcurrencyQueue({ concurrency: 1 });
 
       const promise1 = queue.add(delayedTask('running', 50));
-      queue.add(delayedTask('pending', 10));
+      // Still queued when clear() runs, so it gets rejected. Observe it, or
+      // the rejection surfaces as an unhandled error for the whole run.
+      const promise2 = queue.add(delayedTask('pending', 10));
+      const pendingSettled = expect(promise2).rejects.toThrow('Queue cleared');
 
       await delay(10);
 
       queue.clear();
+      await pendingSettled;
 
       const result = await promise1;
       expect(result).toBe('running');
@@ -401,10 +405,14 @@ describe('ConcurrencyQueue', () => {
       const queue = new ConcurrencyQueue({ concurrency: 1 });
 
       queue.add(delayedTask(1, 50));
-      queue.add(delayedTask(2, 10));
+      // Queued behind the running task, so clear() rejects it; observe the
+      // rejection instead of leaving it unhandled.
+      const queued = queue.add(delayedTask(2, 10));
+      const queuedSettled = expect(queued).rejects.toThrow('Queue cleared');
 
       await delay(10);
       queue.clear();
+      await queuedSettled;
 
       await queue.drain();
 

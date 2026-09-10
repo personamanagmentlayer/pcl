@@ -10,6 +10,24 @@ version is declared in the `version:` field of its `SKILL.md`.
 
 ---
 
+## Library 3.2.0 — 2026-09-09
+
+Two new skills in `frameworks/`, 191 → 193. No breaking changes: additive only.
+
+### Added
+
+| Skill           | Covers                                                                                               |
+| --------------- | ---------------------------------------------------------------------------------------------------- |
+| `nestjs-expert` | Modules/providers/DI, guards, pipes, interceptors, TypeORM/Prisma, microservices transports, testing |
+| `vitejs-expert` | Native ESM dev server, HMR, plugin API, Rollup production builds, library mode, Vitest integration   |
+
+Both close gaps in the JS/TS ecosystem coverage: NestJS is the most-installed
+Node.js backend framework without prior representation, and Vite is the de
+facto build tool already referenced from `vue-expert` but never documented on
+its own terms.
+
+---
+
 ## Library 3.1.0 — 2026-09-05
 
 Seventeen new skills, 174 → 191, and a fifteenth category. No breaking changes:

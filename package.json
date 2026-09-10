@@ -94,6 +94,8 @@
     "test:quick": "node tests/test-working.mjs",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:http": "vitest run --config vitest.http.config.ts",
+    "test:benchmarks": "vitest run --config vitest.benchmarks.config.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",

@@ -1096,6 +1096,7 @@ export const ErrorCode = {
   SEMANTIC_TYPE_MISMATCH: 'E_SEMANTIC_007',
   SEMANTIC_TOO_MANY_BRANCHES: 'E_SEMANTIC_008',
   SEMANTIC_CONFLICT_ORDER: 'E_SEMANTIC_009',
+  SEMANTIC_DIVISION_BY_ZERO: 'E_SEMANTIC_010',
 } as const;
 
 export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode];

@@ -13,8 +13,11 @@ export default defineConfig({
     exclude: [
       'tests/**/*.mjs',
       'tests/**/*.integration.test.ts', // Skip API integration tests by default
-      'tests/http/**/*.test.ts', // Skip HTTP server tests (they hang in CI)
-      'tests/benchmarks/**/*.test.ts', // Skip benchmarks in CI (run with ENABLE_BENCHMARKS=true)
+      'tests/http/**/*.test.ts', // HTTP server tests can hang: `npm run test:http`
+      // Benchmarks are timing-sensitive and skipped unless explicitly enabled
+      ...(process.env.ENABLE_BENCHMARKS === 'true'
+        ? []
+        : ['tests/benchmarks/**/*.test.ts']),
     ],
     globalTeardown: './tests/setup/global-teardown.ts',
     coverage: {
@@ -24,24 +27,44 @@ export default defineConfig({
       exclude: [
         'src/cli/**',
         'src/**/*.d.ts',
-        'src/**/index.ts', // Re-export files
-        'src/types/index.ts',
+        // Genuine barrel files (re-exports only). NOTE: `src/**/index.ts` must
+        // NOT be excluded wholesale — the lexer, parser, semantic analyzer,
+        // AST, codegen and type system are all implemented inside index.ts
+        // files, and excluding them hid ~15k lines of the compiler core from
+        // every coverage report.
+        'src/index.ts',
+        'src/lsp/index.ts',
+        'src/mcp/index.ts',
+        'src/registry/index.ts',
+        'src/skills/index.ts',
+        'src/observability/index.ts',
+        'src/providers/index.ts',
+        'src/http/routes/index.ts',
+        'src/runtime/providers/index.ts',
+        'src/runtime/events/index.ts',
+        'src/runtime/events/adapters/index.ts',
+        'src/runtime/events/handlers/index.ts',
+        'src/runtime/analytics/index.ts',
+        'src/runtime/confidence/index.ts',
+        'src/runtime/routing/index.ts',
       ],
-      // Progressive thresholds - increase as test coverage improves
-      // Target: 90% for production (per CLAUDE.md)
-      // Current baseline: 28.76% lines, 32.07% functions, 69.81% branches
+      // Thresholds sit just under the measured values so a regression fails
+      // the build. Target: 90% for production (per CLAUDE.md).
+      // Measured 2026-09-05: 71.9% lines, 78.8% functions, 83.5% branches.
       thresholds: {
-        lines: 28, // Current baseline - prevent regression
-        functions: 32, // Current baseline - prevent regression
-        branches: 69, // Current baseline - prevent regression
-        statements: 28, // Current baseline - prevent regression
+        lines: 70,
+        functions: 77,
+        branches: 82,
+        statements: 70,
         // Roadmap to 90% (see docs/testing/COVERAGE_ROADMAP.md):
-        // - Q1 2026: 50% (add provider tests)
-        // - Q2 2026: 70% (add integration tests)
-        // - Q3 2026: 90% (comprehensive coverage)
+        // - 80% once src/http is covered by the main suite
+        // - 90% comprehensive coverage
       },
       all: true,
       clean: true,
+      // Always emit the report, including when tests fail — otherwise a single
+      // failing test leaves you with no coverage data at all.
+      reportOnFailure: true,
     },
     testTimeout: 10000,
     hookTimeout: 10000,

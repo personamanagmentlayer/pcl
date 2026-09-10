@@ -378,6 +378,13 @@ export class Lexer {
   private startLine: number = 1;
   private startColumn: number = 1;
 
+  /**
+   * Brace depth inside each open template substitution. An entry is pushed on
+   * `${` and popped on the `}` that closes it, so the scanner knows when a
+   * closing brace ends an interpolation and template text resumes.
+   */
+  private readonly templateSubstitutions: number[] = [];
+
   private readonly tokens: Token[] = [];
   private readonly errors: PCLError[] = [];
 
@@ -489,8 +496,23 @@ export class Lexer {
       case ']':
         return this.makeToken(TokenType.RBRACKET, c);
       case '{':
+        if (this.templateSubstitutions.length > 0) {
+          this.templateSubstitutions[this.templateSubstitutions.length - 1]++;
+        }
         return this.makeToken(TokenType.LBRACE, c);
       case '}':
+        if (this.templateSubstitutions.length > 0) {
+          const depth =
+            this.templateSubstitutions[this.templateSubstitutions.length - 1];
+          if (depth === 0) {
+            // This brace closes the interpolation: the rest of the template
+            // resumes here as a MIDDLE (another `${` follows) or TAIL segment.
+            this.templateSubstitutions.pop();
+            return this.scanTemplateContinuation();
+          }
+          this.templateSubstitutions[this.templateSubstitutions.length - 1] =
+            depth - 1;
+        }
         return this.makeToken(TokenType.RBRACE, c);
       case ',':
         return this.makeToken(TokenType.COMMA, c);
@@ -653,6 +675,13 @@ export class Lexer {
 
       // Strings
       case '"':
+        // Triple-quoted block string (see docs/reference/SYNTAX.md). The
+        // opening quote is already consumed, so two more mean `"""`.
+        if (this.peek() === '"' && this.peekNext() === '"') {
+          this.advance();
+          this.advance();
+          return this.scanTripleQuotedString();
+        }
         return this.scanString('"');
       case "'":
         return this.scanString("'");
@@ -801,6 +830,100 @@ export class Lexer {
     };
   }
 
+  /**
+   * Scan a `"""..."""` block string. Content is taken literally (newlines
+   * included) so multi-line prompts keep their formatting; the opening
+   * delimiter has already been consumed.
+   */
+  private scanTripleQuotedString(): Token {
+    const content: string[] = [];
+
+    while (!this.isAtEnd()) {
+      if (
+        this.peek() === '"' &&
+        this.peekNext() === '"' &&
+        this.input[this.pos + 2] === '"'
+      ) {
+        this.advance();
+        this.advance();
+        this.advance();
+
+        const value = content.join('');
+        return {
+          ...this.makeToken(TokenType.STRING, value),
+          raw: `"""${value}"""`,
+          escaped: value,
+        };
+      }
+
+      const c = this.peek();
+      if (c === '\n') {
+        this.line++;
+        this.column = 0;
+      }
+      content.push(c);
+      this.advance();
+    }
+
+    return this.errorToken('Unterminated block string literal (missing """)');
+  }
+
+  /**
+   * Scan template text following the `}` that closed an interpolation.
+   * Emits TEMPLATE_MIDDLE when another `${` follows, TEMPLATE_TAIL at the
+   * closing backtick. The `}` itself has already been consumed.
+   */
+  private scanTemplateContinuation(): Token {
+    const parts: string[] = [];
+    const raw: string[] = ['}'];
+
+    while (!this.isAtEnd()) {
+      const c = this.peek();
+
+      if (c === '`') {
+        raw.push(this.advance());
+        return {
+          ...this.makeToken(TokenType.TEMPLATE_TAIL, parts.join('')),
+          raw: raw.join(''),
+        };
+      }
+
+      if (c === '$' && this.peekNext() === '{') {
+        raw.push(this.advance()); // $
+        raw.push(this.advance()); // {
+        this.templateSubstitutions.push(0);
+        return {
+          ...this.makeToken(TokenType.TEMPLATE_MIDDLE, parts.join('')),
+          raw: raw.join(''),
+        };
+      }
+
+      if (c === '\\') {
+        raw.push(c);
+        this.advance();
+        const escape = this.peek();
+        raw.push(escape);
+        this.advance();
+        const result = this.processEscape(escape);
+        if (result.error) {
+          return this.errorToken(result.error);
+        }
+        parts.push(result.value!);
+        continue;
+      }
+
+      if (c === '\n') {
+        this.line++;
+        this.column = 0;
+      }
+      raw.push(c);
+      parts.push(c);
+      this.advance();
+    }
+
+    return this.errorToken('Unterminated template literal');
+  }
+
   private scanTemplateString(): Token {
     // Already consumed opening backtick
     const parts: string[] = [];
@@ -820,7 +943,10 @@ export class Lexer {
         raw.push(this.advance()); // $
         raw.push(this.advance()); // {
 
-        // For now, just mark it - parser will handle nested expressions
+        // The substitution's tokens are scanned normally; the matching `}`
+        // hands control back via scanTemplateContinuation().
+        this.templateSubstitutions.push(0);
+
         return {
           ...this.makeToken(TokenType.TEMPLATE_HEAD, parts.join('')),
           raw: raw.join(''),
@@ -942,6 +1068,13 @@ export class Lexer {
           raw += this.advance();
         }
         const cleanValue = raw.replaceAll('_', '');
+        // `0x` with no digits is not a number; accepting it silently turns
+        // typos (and `0xWorker`-style spawn counts) into bogus literals.
+        if (cleanValue.length <= 2) {
+          return this.errorToken(
+            'Malformed hexadecimal literal: expected at least one digit after "0x"'
+          );
+        }
         return {
           ...this.makeToken(TokenType.NUMBER_HEX, cleanValue),
           raw,

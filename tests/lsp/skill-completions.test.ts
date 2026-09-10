@@ -14,15 +14,35 @@ import { tmpdir } from 'node:os';
 describe('SkillCompletionProvider', () => {
   let provider: SkillCompletionProvider;
   let testDir: string;
+  let homeBackup: { HOME?: string; USERPROFILE?: string };
 
   beforeEach(async () => {
     provider = new SkillCompletionProvider();
-    // Create unique test directory
-    testDir = join(tmpdir(), `pcl-test-${Date.now()}`);
+    // Create unique test directory (Date.now() alone collides between tests
+    // started within the same millisecond)
+    testDir = join(
+      tmpdir(),
+      `pcl-test-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+    );
     await mkdir(testDir, { recursive: true });
+
+    // The provider also searches <home>/.claude/skills. Without this the real
+    // developer's skills leak into the assertions and make results
+    // machine-dependent.
+    homeBackup = {
+      HOME: process.env.HOME,
+      USERPROFILE: process.env.USERPROFILE,
+    };
+    process.env.HOME = testDir;
+    process.env.USERPROFILE = testDir;
   });
 
   afterEach(async () => {
+    process.env.HOME = homeBackup.HOME;
+    process.env.USERPROFILE = homeBackup.USERPROFILE;
+    if (process.env.HOME === undefined) delete process.env.HOME;
+    if (process.env.USERPROFILE === undefined) delete process.env.USERPROFILE;
+
     // Clean up test directory
     if (existsSync(testDir)) {
       await rm(testDir, { recursive: true, force: true });

@@ -259,9 +259,10 @@ describe('PclMcpClient - Connection', () => {
     );
 
     expect(initializedNotification).toBeDefined();
-    expect(
-      'id' in initializedNotification! && initializedNotification!.id
-    ).toBeUndefined();
+    // A JSON-RPC notification carries no id at all (the previous form,
+    // `'id' in x && x.id`, evaluates to false when absent — never undefined —
+    // so it could only pass if the key were present with an undefined value).
+    expect('id' in initializedNotification!).toBe(false);
   });
 
   it('should store server info after connect', async () => {
@@ -342,10 +343,14 @@ describe('PclMcpClient - Disconnection', () => {
     // Start a request but don't respond
     transport.autoRespond = false;
     const toolCallPromise = client.callTool('test', {});
+    const settled = expect(toolCallPromise).rejects.toThrow(
+      'Client disconnected'
+    );
 
-    await client.disconnect();
+    await expect(client.disconnect()).rejects.toThrow();
 
-    // The promise should still be pending but client is disconnected
+    // In-flight callers must be failed, not left awaiting forever
+    await settled;
     expect(client.isConnected()).toBe(false);
   });
 
@@ -722,8 +727,10 @@ describe('PclMcpClient - Request/Response Handling', () => {
       version: '1.0.0',
     });
     transport = new MockTransport();
-    transport.autoRespond = false;
+    // Connect first, then take manual control of responses: disabling
+    // auto-respond beforehand would leave the initialize handshake unanswered.
     await client.connect(transport);
+    transport.autoRespond = false;
   });
 
   it('should match responses to requests by ID', async () => {
@@ -997,11 +1004,15 @@ describe('PclMcpClient - Error Scenarios', () => {
       version: '1.0.0',
     });
     transport = new MockTransport();
-    transport.autoRespond = false;
+    // Connect first, then take manual control of responses: disabling
+    // auto-respond beforehand would leave the initialize handshake unanswered.
     await client.connect(transport);
+    transport.autoRespond = false;
   });
 
   it('should throw on operations when not connected', async () => {
+    // Let the shutdown handshake complete so disconnect stays quick
+    transport.autoRespond = true;
     await client.disconnect();
 
     await expect(client.listTools()).rejects.toThrow('Not connected');
@@ -1069,13 +1080,17 @@ describe('PclMcpClient - Error Scenarios', () => {
 
   it('should handle responses arriving after timeout', async () => {
     const toolCallPromise = client.callTool('slow-tool', {});
+    const settled = expect(toolCallPromise).rejects.toThrow(
+      'Client disconnected'
+    );
 
     const request = transport.sentMessages
       .filter((msg) => msg.method === McpMethod.ToolsCall)
       .pop();
 
     // Disconnect before response
-    await client.disconnect();
+    await expect(client.disconnect()).rejects.toThrow();
+    await settled;
 
     // Late response should be ignored
     transport.simulateResponse(
@@ -1107,8 +1122,8 @@ describe('PclMcpClient - Edge Cases', () => {
   it('should handle large response payloads', async () => {
     const client = new PclMcpClient({ name: 'test', version: '1.0.0' });
     const transport = new MockTransport();
-    transport.autoRespond = false;
     await client.connect(transport);
+    transport.autoRespond = false;
 
     const toolCallPromise = client.callTool('large-response', {});
 
@@ -1163,7 +1178,6 @@ describe('PclMcpClient - Edge Cases', () => {
   it('should handle numeric and boolean request IDs', async () => {
     const client = new PclMcpClient({ name: 'test', version: '1.0.0' });
     const transport = new MockTransport();
-    transport.autoRespond = false;
     await client.connect(transport);
 
     await client.callTool('test', {});

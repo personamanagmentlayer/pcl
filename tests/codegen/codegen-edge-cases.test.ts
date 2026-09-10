@@ -26,7 +26,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toContain('newlines');
           expect(code).toContain('tabs');
         }
@@ -46,7 +48,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -70,7 +74,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toContain('Title');
         }
       }
@@ -86,7 +92,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -108,7 +116,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           // Should contain computed values
           expect(code).toBeDefined();
         }
@@ -133,7 +143,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -156,7 +168,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -178,11 +192,14 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
+          const code = generate(parseResult.value.program, {
             target: 'typescript',
           });
-          expect(code).toContain('export');
-          expect(code).toContain('interface');
+          // The TypeScript target emits a typed config object plus a persona
+          // class (no interface declaration).
+          expect(code).toContain('export const DeveloperConfig');
+          expect(code).toContain('export class DeveloperPersona');
+          expect(code).toContain('as const');
         }
       }
     });
@@ -204,7 +221,7 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
+          const code = generate(parseResult.value.program, {
             target: 'typescript',
           });
           expect(code).toBeDefined();
@@ -226,7 +243,7 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
+          const code = generate(parseResult.value.program, {
             target: 'typescript',
           });
           expect(code).toBeDefined();
@@ -253,9 +270,8 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
-            target: 'system-prompt',
-            enhance: true,
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
           });
           expect(code).toBeDefined();
         }
@@ -276,9 +292,8 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
-            target: 'system-prompt',
-            enhance: true,
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
           });
           expect(code).toBeDefined();
           expect(code.length).toBeGreaterThan(0);
@@ -303,9 +318,8 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
-            target: 'system-prompt',
-            enhance: true,
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
           });
           expect(code).toBeDefined();
         }
@@ -327,8 +341,8 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
-            target: 'system-prompt',
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
           });
           expect(typeof code).toBe('string');
         }
@@ -348,7 +362,7 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
+          const code = generate(parseResult.value.program, {
             target: 'json',
           });
           expect(() => JSON.parse(code)).not.toThrow();
@@ -370,7 +384,7 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
+          const code = generate(parseResult.value.program, {
             target: 'markdown',
           });
           expect(code).toContain('#');
@@ -396,7 +410,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -419,7 +435,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -441,14 +459,19 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
     });
   });
 
-  describe('Source Map Generation', () => {
+  // Source map generation is a deferred feature: GeneratorOptions has no
+  // `sourceMap` field and the compiler emits no .map files. Kept as a
+  // placeholder so the gap stays visible instead of silently disappearing.
+  describe.skip('Source Map Generation (not implemented)', () => {
     it('should generate source maps', () => {
       const input = `
       persona Test {
@@ -462,7 +485,7 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
+          const code = generate(parseResult.value.program, {
             sourceMap: true,
           });
           expect(code).toBeDefined();
@@ -486,7 +509,7 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable, {
+          const code = generate(parseResult.value.program, {
             sourceMap: true,
           });
           expect(code).toBeDefined();
@@ -510,7 +533,9 @@ describe('Code Generation Edge Cases', () => {
 
         if (semanticResult.ok) {
           // Should generate code even with semantic errors
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -526,7 +551,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -543,7 +570,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           expect(code).toBeDefined();
         }
       }
@@ -567,7 +596,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           const duration = performance.now() - start;
 
           expect(code).toBeDefined();
@@ -591,7 +622,9 @@ describe('Code Generation Edge Cases', () => {
         expect(semanticResult.ok).toBe(true);
 
         if (semanticResult.ok) {
-          const code = generate(semanticResult.value.symbolTable);
+          const code = generate(parseResult.value.program, {
+            target: 'prompt',
+          });
           const duration = performance.now() - start;
 
           expect(code).toBeDefined();

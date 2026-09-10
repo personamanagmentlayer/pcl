@@ -1396,6 +1396,21 @@
     },
     {
       "category": "frameworks",
+      "name": "nestjs-expert",
+      "path": "frameworks/nestjs-expert/SKILL.md",
+      "tags": [
+        "nestjs",
+        "nodejs",
+        "typescript",
+        "dependency-injection",
+        "microservices",
+        "backend",
+        "rest",
+        "graphql"
+      ]
+    },
+    {
+      "category": "frameworks",
       "name": "nextjs-expert",
       "path": "frameworks/nextjs-expert/SKILL.md",
       "tags": [
@@ -2311,6 +2326,22 @@
     },
     {
       "category": "frameworks",
+      "name": "vitejs-expert",
+      "path": "frameworks/vitejs-expert/SKILL.md",
+      "tags": [
+        "vite",
+        "vitejs",
+        "esm",
+        "hmr",
+        "rollup",
+        "bundler",
+        "build-tool",
+        "vitest",
+        "frontend"
+      ]
+    },
+    {
+      "category": "frameworks",
       "name": "vue-expert",
       "path": "frameworks/vue-expert/SKILL.md",
       "tags": [
@@ -2423,6 +2454,6 @@
       ]
     }
   ],
-  "total_skills": 191,
+  "total_skills": 193,
   "version": "2.0.0"
 }

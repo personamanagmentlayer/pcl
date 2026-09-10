@@ -16,6 +16,18 @@ export interface StdioTransportConfig {
    * Enable debug logging to stderr
    */
   readonly debug?: boolean;
+
+  /**
+   * Stream to read incoming messages from. Defaults to process.stdin.
+   * Injecting the streams keeps the transport usable over any pair of pipes
+   * (a child process, a socket) instead of only the current process's stdio.
+   */
+  readonly input?: NodeJS.ReadableStream;
+
+  /**
+   * Stream to write outgoing messages to. Defaults to process.stdout.
+   */
+  readonly output?: NodeJS.WritableStream;
 }
 
 /**
@@ -26,9 +38,13 @@ export class StdioTransport implements McpTransport {
   private connected = false;
   private messageHandler: ((message: McpResponse) => void) | null = null;
   private readonly debug: boolean;
+  private readonly input: NodeJS.ReadableStream;
+  private readonly output: NodeJS.WritableStream;
 
   constructor(config: StdioTransportConfig = {}) {
     this.debug = config.debug ?? false;
+    this.input = config.input ?? stdin;
+    this.output = config.output ?? stdout;
   }
 
   /**
@@ -46,7 +62,7 @@ export class StdioTransport implements McpTransport {
     }
 
     // Write JSON message followed by newline
-    stdout.write(json + '\n');
+    this.output.write(json + '\n');
   }
 
   /**
@@ -89,7 +105,7 @@ export class StdioTransport implements McpTransport {
 
     // Create readline interface for line-by-line reading
     this.readline = createInterface({
-      input: stdin,
+      input: this.input,
       output: undefined, // Don't echo to stdout
       terminal: false,
     });

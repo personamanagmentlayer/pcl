@@ -1,0 +1,282 @@
+# Chart of accounts — <Acme Wallet>
+#
+# Copy to accounts/chart-of-accounts.yaml. This file is FINANCE'S ARTIFACT: engineering owns the
+# mechanism, finance owns the plan. A PR that adds an account without the finance owner's review is
+# a control failure (M11), not a schema change.
+#
+# Before editing, check whether your jurisdiction imposes a statutory chart (France PCG, Spain PGC,
+# Germany SKR03/04). If it does, you MAP to it — you do not design one.
+#
+# Codes are PERMANENT IDENTIFIERS, not labels. Renaming an account is fine; reusing or repointing a
+# code silently misclassifies history and every comparative report ever run.
+#
+# THE NUMBERING BELOW IS THIS TEMPLATE'S PLAN, NOT A STANDARD. The worked examples in the skill's
+# `references/` files number their accounts locally so each narrative stays self-contained; a code
+# there will not always be the code here. Once you adopt a plan, it becomes the only one: reconcile
+# every posting rule (`POSTING-RULES.template.md`) and every report against this file, and treat a
+# code that appears in the code base but not here as a defect (M19).
+#
+# ─────────────────────────────────────────────────────────────────────────────────────────────────
+# THE THREE DECISIONS YOU MUST MAKE BEFORE FILLING THIS IN
+#
+# 1. CONTROL ACCOUNT + DIMENSION, or ONE LEDGER ACCOUNT PER USER?
+#    Per-user accounts give you O(users) rows in `accounts` — a chart no human can own or review,
+#    and a control total that is a sum over millions of rows. Control account + a `dimension` on the
+#    line keeps the chart ~200 readable lines and turns the sub-ledger into a partitioned-index
+#    problem, which databases are good at. Rule of thumb: ~10 subjects → account per subject;
+#    ~10^6 (wallets, marketplace sellers) → CONTROL + DIMENSION, as used below; ~10^9 → control +
+#    dimension + sharding on hash(subject). Whichever you choose, the sub-ledger total must equal
+#    the control balance as an asserted, alerted invariant (M1, M17).
+#
+# 2. ONE ACCOUNT PER CURRENCY, or CURRENCY ON THE LINE?
+#    Both are used below, deliberately. Cash accounts are one per currency because they are
+#    physically distinct bank accounts that reconcile to distinct statements (M9). Control accounts
+#    carry `currency: multi` and the currency on the line, because a wallet is not a bank account
+#    and 30 currencies would mean 30 near-duplicate accounts. Either way, balances are computed and
+#    reported PER CURRENCY — never summed across (M6).
+#
+# 3. HOW MANY DIMENSIONS?
+#    Every dimension is an index, a report axis and a thing that can be null when it should not be.
+#    Three is a healthy budget: one subject key (account_id / merchant_id), one legal-entity key,
+#    one optional analysis key. Do not add `product`, `channel` and `campaign` here — those belong
+#    in the analytics layer, which reads from postings (M19) and does not get to shape the books.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────
+# THE ACCOUNT SCHEMA
+#
+# Required on every account: code, name, type, normal_balance, currency, control, dimensions,
+# description, reconciles_to.
+#
+# Three further fields carry their value from `meta.account_defaults` and are written out only where
+# they differ from it — a plan in which every line repeats `parent: null, postable: true` is a plan
+# nobody reads. They are not optional: the validation block below depends on all three.
+#
+#   parent    Code of the rollup account this one sits under, or null for a root. A rollup code is
+#             the shared numeric PREFIX of its children (1000/1001/1002 → 100), so the hierarchy is
+#             legible from the codes alone. A rollup whose children differ in `currency` is a
+#             PRESENTATION node only: reporting through it requires translation at a declared rate
+#             (M6) and is never a raw sum of balances held in different currencies.
+#   postable  May an entry name this account? Parents are `postable: false` and REJECT postings;
+#             every leg of every posting rule targets a postable leaf.
+#   dormant   `true` means: no posting rule targets this account, and that is deliberate — statutory,
+#             migration-only, or reached solely by approved manual journals. Every dormant account
+#             carries a one-line `dormant_reason`. CI does not flag a dormant account; it flags an
+#             account that is neither referenced nor dormant, because that one is either dead or a
+#             rule someone has not written yet.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────
+
+meta:
+  entity: "<Acme Payments Ltd (IE), company no. 123456>"
+  functional_currency: EUR # the currency the books are kept in; not the same as transaction currencies
+  reporting_currency: EUR
+  standard: IFRS # IFRS | US-GAAP | <local statutory>
+  version: "1.3"
+  effective_from: "2026-09-01"
+  owner: "<M. Duarte, Financial Controller>" # a person, never a team alias
+  approved_by: "<S. Whitfield, CFO>"
+  transaction_currencies: [EUR, GBP, USD]
+  account_defaults: { parent: null, postable: true, dormant: false }
+  notes: "Postings are permitted to leaf accounts only. 9xxx are off-balance-sheet memoranda."
+
+accounts:
+  # ── 1000–1999 ASSETS ───────────────────────────────────────────────────────────────────────────
+  # 100 / 105 rollups · 10xx cash · 12xx receivables · 13xx tax assets · 15xx clearing and
+  # in-transit · 19xx suspense
+  - { code: "100", name: "Cash at bank — all currencies (rollup)", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity], postable: false,
+      description: "Presentation rollup over 1000/1001/1002. Reports through it TRANSLATE at a declared rate (M6); it is never a raw sum of EUR, GBP and USD balances. Rejects postings.",
+      reconciles_to: null }
+  - { code: "1000", name: "Cash at bank — EUR", type: asset, normal_balance: debit,
+      currency: EUR, control: false, dimensions: [entity], parent: "100",
+      description: "Operating current account. Cash the entity owns, not money sitting at the PSP, and not client money — that is swept to 1050 by SG-01.",
+      reconciles_to: "bank:camt053:<IBAN-EUR>" }
+  - { code: "1001", name: "Cash at bank — GBP", type: asset, normal_balance: debit,
+      currency: GBP, control: false, dimensions: [entity], parent: "100",
+      description: "As 1000, GBP. One account per currency because each has its own statement.",
+      reconciles_to: "bank:camt053:<IBAN-GBP>" }
+  - { code: "1002", name: "Cash at bank — USD", type: asset, normal_balance: debit,
+      currency: USD, control: false, dimensions: [entity], parent: "100",
+      description: "As 1000, USD. USD is a declared transaction currency, so it needs its own bank account and its own statement — a USD balance parked in the EUR account is a cross-currency sum waiting to happen (M6).",
+      reconciles_to: "bank:camt053:<IBAN-USD>" }
+  - { code: "105", name: "Safeguarded client funds — all currencies (rollup)", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity], postable: false,
+      description: "Presentation rollup over 1050/1051/1052. The safeguarding CONTROL is never run here: it runs per currency on the leaves. Rejects postings.",
+      reconciles_to: null }
+  - { code: "1050", name: "Safeguarded client funds — EUR", type: asset, normal_balance: debit,
+      currency: EUR, control: false, dimensions: [entity], parent: "105",
+      description: "Segregated account holding customer money in EUR. DAILY IDENTITY, PER CURRENCY (M6, M9): 1050 = Σ(2000 + 2010) for EUR — not a total across currencies, and not against a combined balance. Funded and drained only by SG-01 / SG-02; no commingling in either direction.",
+      reconciles_to: "bank:camt053:<IBAN-SAFEGUARD-EUR>" }
+  - { code: "1051", name: "Safeguarded client funds — GBP", type: asset, normal_balance: debit,
+      currency: GBP, control: false, dimensions: [entity], parent: "105",
+      description: "As 1050, GBP. DAILY IDENTITY: 1051 = Σ(2000 + 2010) for GBP. A GBP wallet liability safeguarded in EUR cash is a breach the EUR check cannot see.",
+      reconciles_to: "bank:camt053:<IBAN-SAFEGUARD-GBP>" }
+  - { code: "1052", name: "Safeguarded client funds — USD", type: asset, normal_balance: debit,
+      currency: USD, control: false, dimensions: [entity], parent: "105",
+      description: "As 1050, USD. DAILY IDENTITY: 1052 = Σ(2000 + 2010) for USD.",
+      reconciles_to: "bank:camt053:<IBAN-SAFEGUARD-USD>" }
+  - { code: "1200", name: "PSP receivable — <Adyen>", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Funds held by the PSP. A RECEIVABLE, exposed to PSP insolvency and reserve policy — never booked as cash.",
+      reconciles_to: "psp:balance_report:<adyen>" }
+  - { code: "1220", name: "Customer receivable — negative balance recovery", type: asset, normal_balance: debit,
+      currency: multi, control: true, dimensions: [account_id, entity],
+      description: "A wallet driven below zero by a chargeback. A debit wallet balance is credit you never underwrote — reclassify here, provision, and find the control that failed.",
+      reconciles_to: null }
+  - { code: "1250", name: "Interest receivable", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Interest accrued (IN-01) but not yet received. Cleared when the bank credits it.",
+      reconciles_to: null }
+  - { code: "1300", name: "VAT receivable (input VAT)", type: asset, normal_balance: debit,
+      currency: EUR, control: false, dimensions: [entity],
+      description: "Recoverable VAT on supplier invoices, including PSP fees (TX-01).",
+      reconciles_to: "tax:vat_return" }
+  - { code: "1500", name: "Settlement in transit — PSP to bank", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "The PSP has paid out; the bank has not yet credited. Without it, money is in neither account for a day and you book the bank credit before it happened.",
+      reconciles_to: "derived:psp_payout_vs_bank" }
+  - { code: "1510", name: "Payouts in transit", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Merchant payout instructed (PO-01), not yet debited by the bank (PO-02). 'Sent' is not 'settled'.",
+      reconciles_to: "derived:payout_vs_bank" }
+  - { code: "1900", name: "Suspense — unreconciled", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Value that has moved and cannot yet be explained. Balance must oscillate near zero; MONOTONIC GROWTH IS AN INCIDENT, not a backlog. Every item has an owner and an age (M9).",
+      reconciles_to: "recon:break_inventory" }
+
+  # ── 2000–2999 LIABILITIES ──────────────────────────────────────────────────────────────────────
+  # 20xx customer funds · 21xx tax · 22xx payables · 23xx deferred and provisions · 29xx FX position
+  - { code: "2000", name: "Customer wallet — available", type: liability, normal_balance: credit,
+      currency: multi, control: true, dimensions: [account_id, entity],
+      description: "Your users' money is YOUR LIABILITY — you hold the cash, you owe it to them. Control account: per-wallet detail lives on the dimension, not in the chart. Safeguarded PER CURRENCY: Σ(2000 + 2010) for a currency = the 105x account for that same currency, daily (M6, M9).",
+      reconciles_to: "derived:safeguarding_identity_by_currency" }
+  - { code: "2010", name: "Customer wallet — reserved", type: liability, normal_balance: credit,
+      currency: multi, control: true, dimensions: [account_id, entity],
+      description: "Funds held against an authorised purchase (PU-01). Separate account so 'available' is a balance, not a balance minus a query (M13). Reserved is still client money: it sits inside the per-currency safeguarding identity alongside 2000.",
+      reconciles_to: "derived:open_holds" }
+  - { code: "2100", name: "VAT payable (output VAT)", type: liability, normal_balance: credit,
+      currency: EUR, control: false, dimensions: [entity],
+      description: "VAT charged on platform commission (PU-02) and reverse-charge output (TX-01b).",
+      reconciles_to: "tax:vat_return" }
+  - { code: "2200", name: "Merchant payable", type: liability, normal_balance: credit,
+      currency: multi, control: true, dimensions: [merchant_id, entity],
+      description: "Owed to sellers. A DEBIT balance here means you paid more than you owed — overpayment or a double payout; check idempotency (M7).",
+      reconciles_to: "derived:sum_equals_payout_queue" }
+  - { code: "2300", name: "Deferred revenue / contract liability", type: liability, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      dormant: true, dormant_reason: "No recognition rule in POSTING-RULES.md — this wallet product earns its fee at capture (PU-02) and defers nothing. Add the rule before the first subscription or prepaid-credit SKU ships.",
+      description: "Billed but not yet earned (IFRS 15). Released to 4000 by the recognition run; the rollforward must tie, per currency and with no FX term (reconciliation-close.md §11.3).",
+      reconciles_to: "derived:revenue_waterfall" }
+  - { code: "2350", name: "Chargeback provision", type: liability, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Expected disputes on settled volume. The rate and basis are an accounting estimate owned by finance, not a constant in code.",
+      reconciles_to: null }
+  - { code: "2400", name: "Unapplied receipts", type: liability, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Money arrived, payer unknown. Credited HERE — never to revenue — while the identification queue is worked.",
+      reconciles_to: "recon:unidentified_receipts" }
+  - { code: "2900", name: "FX position (conversion bridge)", type: liability, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "The bridge that lets a conversion balance PER CURRENCY within one entry (FX-01, M2/M6). Revalued at close; the difference is realised/unrealised FX.",
+      reconciles_to: "derived:fx_position_by_currency" }
+
+  # ── 3000–3999 EQUITY ───────────────────────────────────────────────────────────────────────────
+  - { code: "3000", name: "Share capital", type: equity, normal_balance: credit,
+      currency: EUR, control: false, dimensions: [entity],
+      dormant: true, dormant_reason: "No posting rule — capital events are board-approved manual journals, never automated (M11).",
+      description: "Issued capital.", reconciles_to: null }
+  - { code: "3100", name: "Retained earnings", type: equity, normal_balance: credit,
+      currency: EUR, control: false, dimensions: [entity],
+      dormant: true, dormant_reason: "No posting rule — reached only by the year-end closing entry, which is a close procedure, not a transaction rule.",
+      description: "Prior years' accumulated result. Income and expense accounts close here at year end.", reconciles_to: null }
+  - { code: "3900", name: "Opening balance equity", type: equity, normal_balance: credit,
+      currency: EUR, control: false, dimensions: [entity],
+      dormant: true, dormant_reason: "No posting rule — migration-only counter-account, and it must be zero after go-live (see validation: no_orphan_after_migration).",
+      description: "Migration-only counter-account. A non-zero balance after go-live means a migration was never finished.", reconciles_to: null }
+
+  # ── 4000–4999 INCOME ───────────────────────────────────────────────────────────────────────────
+  - { code: "4000", name: "Platform fee income", type: income, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Commission earned, NET of VAT (PU-02). Gross-vs-net here is the principal/agent judgement — get it signed.",
+      reconciles_to: "derived:revenue_report" }
+  - { code: "4100", name: "FX spread income", type: income, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "The margin over the mid rate charged to customers (FX-01). Its own account, never netted into the conversion (M16).",
+      reconciles_to: null }
+  - { code: "4200", name: "FX gain/(loss) — realised", type: income, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Arises on settlement of a foreign-currency balance. Net account: may carry a debit balance.",
+      reconciles_to: null }
+  - { code: "4210", name: "FX gain/(loss) — unrealised", type: income, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Period-end revaluation of open monetary balances. Reversed and recomputed each period, never carried forward as a plug.",
+      reconciles_to: null }
+  - { code: "4300", name: "Interest income", type: income, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Interest on safeguarded and operating balances (IN-01). Whether it is yours or the customer's is a contractual question.",
+      reconciles_to: null }
+
+  # ── 5000–6999 EXPENSE ──────────────────────────────────────────────────────────────────────────
+  # Cost of payments is split by TYPE. A single blended 'PSP fees' account makes the largest
+  # controllable cost line in a payments business unanalysable (M16).
+  - { code: "5000", name: "Cost of payments — PSP processing", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Acquirer/PSP markup (FE-01).", reconciles_to: "psp:balance_report:<adyen>" }
+  - { code: "5010", name: "Cost of payments — interchange", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Issuer fee via the scheme. Arrives on a different cycle from the funds.", reconciles_to: "psp:balance_report:<adyen>" }
+  - { code: "5020", name: "Cost of payments — scheme fees", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Network fees: many small per-transaction and monthly components.", reconciles_to: "psp:balance_report:<adyen>" }
+  - { code: "5030", name: "Cost of payments — refund fees", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Per-refund fee (RF-01). Separate from the refund itself.", reconciles_to: null }
+  - { code: "5100", name: "Chargeback losses", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Disputed value not recovered from the customer (CB-01b). Distinct from the fee.", reconciles_to: null }
+  - { code: "5110", name: "Chargeback fees", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Per-dispute scheme fee. NOT refunded when you win — which is why it is its own account.", reconciles_to: null }
+  - { code: "5200", name: "FX cost — provider spread", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Spread the PSP or bank charges US, booked separately from the conversion (M6, M16).", reconciles_to: null }
+  - { code: "6000", name: "Bank charges", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Transfer and account fees (PO-02). Often the first 'missing in ours' break a new system finds.", reconciles_to: "bank:camt053:<IBAN-EUR>" }
+  - { code: "6100", name: "Bad debt expense", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Customer receivables (1220) judged unrecoverable, and IFRS 9 expected-credit-loss movement.", reconciles_to: null }
+  - { code: "6200", name: "Reconciliation write-offs", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Breaks closed as unexplainable (WO-01), by approver tier. A REPORTED METRIC: growth means reconciliation is failing and the write-off is concealing it.", reconciles_to: "recon:writeoff_report" }
+  - { code: "6900", name: "Rounding difference", type: expense, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Sub-minor-unit residue with a real owner (RD-01, M5). Bounded and stable is fine; growth WITH VOLUME is a bug, not rounding.", reconciles_to: null }
+
+  # ── 9000–9999 MEMORANDUM (off balance sheet) ───────────────────────────────────────────────────
+  # Excluded from the statutory trial balance; still balance like any other entry (M2).
+  - { code: "9000", name: "Memo — card authorisations outstanding", type: asset, normal_balance: debit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Approved authorisations not yet captured (TU-01). An auth is a hold on someone else's account: not cash, not revenue, not a receivable (M13).",
+      reconciles_to: "psp:open_authorisations" }
+  - { code: "9010", name: "Memo — card authorisation offset", type: liability, normal_balance: credit,
+      currency: multi, control: false, dimensions: [entity],
+      description: "Counter-account to 9000. Released by TU-02 or TU-03; an unreleased memo is a phantom exposure that survives to the close.",
+      reconciles_to: null }
+
+# ─────────────────────────────────────────────────────────────────────────────────────────────────
+# validation — the checks this file must pass in CI before it is loaded into the ledger.
+# Implement as a test; a chart of accounts nobody validates drifts from the code within one quarter.
+validation:
+  - unique_codes: "No code appears twice, ever — including codes retired in a previous version."
+  - codes_immutable: "A code present in a prior version keeps the same `type` and `normal_balance`. Changing either reclassifies history."
+  - normal_balance_matches_type: "asset/expense → debit; liability/equity/income → credit."
+  - type_in_enum: "type ∈ {asset, liability, equity, income, expense}."
+  - currency_valid: "`currency` is a live ISO 4217 alpha-3 code or the literal `multi` (M4)."
+  - control_has_dimension: "Every account with `control: true` declares at least one subject dimension; a control leg with no dimension produces an unallocatable balance."
+  - non_control_has_no_subject_dimension: "Non-control accounts do not carry account_id/merchant_id — that is a control account wearing a disguise."
+  - leaves_only_postable: "Every account named as another account's `parent` carries `postable: false` and rejects postings; every leg of every posting rule targets an account with `postable: true`. A `parent` resolves to a code in this file, is never the account's own code, and the hierarchy is acyclic."
+  - reconciles_to_resolves: "Every non-null `reconciles_to` names a source that exists in the reconciliation config (M9)."
+  - referenced_by_posting_rules: "Every account code cited in POSTING-RULES.md — a rule leg, a rule note, or the worked example — and in the correcting entries of RECONCILIATION-RUNBOOK.md exists here and is postable. Conversely, every postable account here is cited by at least one of those, or carries `dormant: true`. Non-postable rollups are exempt: they exist to be reported through, not posted to."
+  - dormant_has_reason: "`dormant: true` carries a one-line `dormant_reason`, and no posting rule cites a dormant account — the day a rule starts using it, the flag comes off in the same PR."
+  - safeguarding_per_currency: "Every currency in `meta.transaction_currencies` has both a cash account and a safeguarding account. The daily control is `105x[ccy] = Σ(2000 + 2010)[ccy]`, computed and asserted PER CURRENCY and never summed across (M6, M9) — a single combined safeguarding total is the cross-currency sum this file forbids."
+  - no_orphan_after_migration: "3900 Opening balance equity is zero after go-live."
+  - owner_present: "meta.owner names a person, and meta.approved_by is not the same person as meta.owner (M11)."

@@ -295,6 +295,37 @@ export class PclMcpServer implements McpServer {
   }
 
   /**
+   * Find a resource registered under a URI template (e.g. `pcl://persona/{id}`)
+   * that matches a concrete URI. Without this, templated resources could be
+   * listed but never read, since lookup is otherwise an exact-match.
+   */
+  private matchResourceTemplate(
+    uri: string
+  ): { definition: McpResource; provider: ResourceProvider } | undefined {
+    for (const [template, resource] of this.resources) {
+      if (!template.includes('{')) {
+        continue;
+      }
+
+      // `{name}` matches a single path segment; everything else is literal.
+      const pattern = template
+        .split(/(\{[^}]+\})/)
+        .map((part) =>
+          /^\{[^}]+\}$/.test(part)
+            ? '([^/]+)'
+            : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        )
+        .join('');
+
+      if (new RegExp(`^${pattern}$`).test(uri)) {
+        return resource;
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
    * Handle resources/read request
    */
   private async handleResourcesRead(
@@ -309,7 +340,8 @@ export class PclMcpServer implements McpServer {
       );
     }
 
-    const resource = this.resources.get(params.uri);
+    const resource =
+      this.resources.get(params.uri) ?? this.matchResourceTemplate(params.uri);
 
     if (!resource) {
       return createJsonRpcErrorResponse(

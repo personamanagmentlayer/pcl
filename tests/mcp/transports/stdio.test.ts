@@ -57,70 +57,50 @@ describe('StdioTransport', () => {
   let mockStdin: MockReadable;
   let mockStdout: MockWritable;
   let transport: StdioTransport;
-  let originalStdin: any;
-  let originalStdout: any;
+  /**
+   * The transport reads process.stdin/stdout through module bindings captured
+   * at import time, so redefining `process` could never reach it. Injecting
+   * the streams is both what the transport supports and what makes these
+   * tests hermetic.
+   */
+  const streams = (): StdioTransportConfig => ({
+    input: mockStdin,
+    output: mockStdout,
+  });
 
   beforeEach(() => {
     mockStdin = new MockReadable();
     mockStdout = new MockWritable();
-
-    // Save originals
-    originalStdin = process.stdin;
-    originalStdout = process.stdout;
-
-    // Replace stdin and stdout
-    Object.defineProperty(process, 'stdin', {
-      value: mockStdin,
-      writable: true,
-      configurable: true,
-    });
-    Object.defineProperty(process, 'stdout', {
-      value: mockStdout,
-      writable: true,
-      configurable: true,
-    });
   });
 
   afterEach(async () => {
     if (transport) {
       await transport.close();
     }
-
-    // Restore originals
-    Object.defineProperty(process, 'stdin', {
-      value: originalStdin,
-      writable: true,
-      configurable: true,
-    });
-    Object.defineProperty(process, 'stdout', {
-      value: originalStdout,
-      writable: true,
-      configurable: true,
-    });
   });
 
   describe('Constructor', () => {
     it('should create transport with default config', () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       expect(transport).toBeDefined();
       expect(transport.isConnected()).toBe(false);
     });
 
     it('should create transport with debug enabled', () => {
-      transport = new StdioTransport({ debug: true });
+      transport = new StdioTransport({ debug: true, ...streams() });
 
       expect(transport).toBeDefined();
     });
 
     it('should create transport with debug disabled', () => {
-      transport = new StdioTransport({ debug: false });
+      transport = new StdioTransport({ debug: false, ...streams() });
 
       expect(transport).toBeDefined();
     });
 
     it('should create transport with empty config', () => {
-      transport = new StdioTransport({});
+      transport = new StdioTransport({ ...streams() });
 
       expect(transport).toBeDefined();
     });
@@ -128,13 +108,13 @@ describe('StdioTransport', () => {
 
   describe('Connection Lifecycle', () => {
     it('should not be connected initially', () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       expect(transport.isConnected()).toBe(false);
     });
 
     it('should connect when onMessage is called', () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       transport.onMessage(() => {});
 
@@ -142,7 +122,7 @@ describe('StdioTransport', () => {
     });
 
     it('should disconnect after close', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       expect(transport.isConnected()).toBe(true);
@@ -153,7 +133,7 @@ describe('StdioTransport', () => {
     });
 
     it('should handle multiple close calls', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       await transport.close();
@@ -163,7 +143,7 @@ describe('StdioTransport', () => {
     });
 
     it('should handle close without connection', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       await transport.close();
 
@@ -171,7 +151,7 @@ describe('StdioTransport', () => {
     });
 
     it('should not reconnect after close', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       await transport.close();
@@ -182,7 +162,7 @@ describe('StdioTransport', () => {
 
   describe('Message Sending', () => {
     it('should send request message', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       const request: McpRequest = {
@@ -198,7 +178,7 @@ describe('StdioTransport', () => {
     });
 
     it('should send request with params', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       const request: McpRequest = {
@@ -216,7 +196,7 @@ describe('StdioTransport', () => {
     });
 
     it('should throw when sending while disconnected', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       const request: McpRequest = {
         jsonrpc: '2.0',
@@ -230,7 +210,7 @@ describe('StdioTransport', () => {
     });
 
     it('should append newline to message', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       const request: McpRequest = {
@@ -246,7 +226,7 @@ describe('StdioTransport', () => {
     });
 
     it('should send multiple messages', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       await transport.send({
@@ -265,7 +245,7 @@ describe('StdioTransport', () => {
     });
 
     it('should handle response messages', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       const response: McpResponse = {
@@ -281,7 +261,7 @@ describe('StdioTransport', () => {
     });
 
     it('should handle error response messages', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       const response: McpResponse = {
@@ -302,175 +282,193 @@ describe('StdioTransport', () => {
   });
 
   describe('Message Receiving', () => {
-    it('should receive response message', (done) => {
-      transport = new StdioTransport();
+    it('should receive response message', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
 
-      const response: McpResponse = {
-        jsonrpc: '2.0',
-        result: { data: 'test' },
-        id: 1,
-      };
+        const response: McpResponse = {
+          jsonrpc: '2.0',
+          result: { data: 'test' },
+          id: 1,
+        };
 
-      transport.onMessage((message) => {
-        expect(message).toEqual(response);
-        done();
-      });
-
-      mockStdin.simulateInput(JSON.stringify(response) + '\n');
-    });
-
-    it('should receive multiple messages', (done) => {
-      transport = new StdioTransport();
-      const received: McpResponse[] = [];
-
-      transport.onMessage((message) => {
-        received.push(message);
-
-        if (received.length === 2) {
-          expect(received[0].id).toBe(1);
-          expect(received[1].id).toBe(2);
+        transport.onMessage((message) => {
+          expect(message).toEqual(response);
           done();
-        }
+        });
+
+        mockStdin.simulateInput(JSON.stringify(response) + '\n');
       });
-
-      mockStdin.simulateInput(
-        JSON.stringify({ jsonrpc: '2.0', result: {}, id: 1 }) + '\n'
-      );
-      mockStdin.simulateInput(
-        JSON.stringify({ jsonrpc: '2.0', result: {}, id: 2 }) + '\n'
-      );
     });
 
-    it('should ignore empty lines', (done) => {
-      transport = new StdioTransport();
-      let callCount = 0;
+    it('should receive multiple messages', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
+        const received: McpResponse[] = [];
 
-      transport.onMessage(() => {
-        callCount++;
+        transport.onMessage((message) => {
+          received.push(message);
+
+          if (received.length === 2) {
+            expect(received[0].id).toBe(1);
+            expect(received[1].id).toBe(2);
+            done();
+          }
+        });
+
+        mockStdin.simulateInput(
+          JSON.stringify({ jsonrpc: '2.0', result: {}, id: 1 }) + '\n'
+        );
+        mockStdin.simulateInput(
+          JSON.stringify({ jsonrpc: '2.0', result: {}, id: 2 }) + '\n'
+        );
       });
-
-      mockStdin.simulateInput('\n');
-      mockStdin.simulateInput('   \n');
-      mockStdin.simulateInput('\t\n');
-
-      setTimeout(() => {
-        expect(callCount).toBe(0);
-        done();
-      }, 10);
     });
 
-    it('should handle whitespace-only lines', (done) => {
-      transport = new StdioTransport();
-      let callCount = 0;
+    it('should ignore empty lines', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
+        let callCount = 0;
 
-      transport.onMessage(() => {
-        callCount++;
+        transport.onMessage(() => {
+          callCount++;
+        });
+
+        mockStdin.simulateInput('\n');
+        mockStdin.simulateInput('   \n');
+        mockStdin.simulateInput('\t\n');
+
+        setTimeout(() => {
+          expect(callCount).toBe(0);
+          done();
+        }, 10);
       });
-
-      mockStdin.simulateInput('     \n');
-      mockStdin.simulateInput('\t\t\n');
-
-      setTimeout(() => {
-        expect(callCount).toBe(0);
-        done();
-      }, 10);
     });
 
-    it('should handle malformed JSON gracefully', (done) => {
-      transport = new StdioTransport({ debug: false });
+    it('should handle whitespace-only lines', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
+        let callCount = 0;
 
-      transport.onMessage(() => {
-        // Should not be called
-        throw new Error('Should not receive malformed JSON');
+        transport.onMessage(() => {
+          callCount++;
+        });
+
+        mockStdin.simulateInput('     \n');
+        mockStdin.simulateInput('\t\t\n');
+
+        setTimeout(() => {
+          expect(callCount).toBe(0);
+          done();
+        }, 10);
       });
-
-      mockStdin.simulateInput('invalid json\n');
-
-      setTimeout(() => {
-        done();
-      }, 10);
     });
 
-    it('should handle incomplete JSON gracefully', (done) => {
-      transport = new StdioTransport({ debug: false });
+    it('should handle malformed JSON gracefully', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport({ debug: false, ...streams() });
 
-      transport.onMessage(() => {
-        throw new Error('Should not receive incomplete JSON');
+        transport.onMessage(() => {
+          // Should not be called
+          throw new Error('Should not receive malformed JSON');
+        });
+
+        mockStdin.simulateInput('invalid json\n');
+
+        setTimeout(() => {
+          done();
+        }, 10);
       });
-
-      mockStdin.simulateInput('{"jsonrpc": "2.0", "result": \n');
-
-      setTimeout(() => {
-        done();
-      }, 10);
     });
 
-    it('should handle stdin close event', (done) => {
-      transport = new StdioTransport();
+    it('should handle incomplete JSON gracefully', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport({ debug: false, ...streams() });
 
-      transport.onMessage(() => {});
+        transport.onMessage(() => {
+          throw new Error('Should not receive incomplete JSON');
+        });
 
-      expect(transport.isConnected()).toBe(true);
+        mockStdin.simulateInput('{"jsonrpc": "2.0", "result": \n');
 
-      mockStdin.simulateEnd();
-
-      setTimeout(() => {
-        expect(transport.isConnected()).toBe(false);
-        done();
-      }, 10);
-    });
-
-    it('should parse error responses correctly', (done) => {
-      transport = new StdioTransport();
-
-      const errorResponse: McpResponse = {
-        jsonrpc: '2.0',
-        error: {
-          code: -32600,
-          message: 'Invalid Request',
-          data: { details: 'Missing method' },
-        },
-        id: 1,
-      };
-
-      transport.onMessage((message) => {
-        expect(message).toEqual(errorResponse);
-        if ('error' in message) {
-          expect(message.error.code).toBe(-32600);
-          expect(message.error.data).toEqual({ details: 'Missing method' });
-        }
-        done();
+        setTimeout(() => {
+          done();
+        }, 10);
       });
-
-      mockStdin.simulateInput(JSON.stringify(errorResponse) + '\n');
     });
 
-    it('should handle messages with complex data structures', (done) => {
-      transport = new StdioTransport();
+    it('should handle stdin close event', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
 
-      const complexResponse: McpResponse = {
-        jsonrpc: '2.0',
-        result: {
-          nested: {
-            array: [1, 2, { key: 'value' }],
-            obj: { a: 1, b: 2 },
+        transport.onMessage(() => {});
+
+        expect(transport.isConnected()).toBe(true);
+
+        mockStdin.simulateEnd();
+
+        setTimeout(() => {
+          expect(transport.isConnected()).toBe(false);
+          done();
+        }, 10);
+      });
+    });
+
+    it('should parse error responses correctly', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
+
+        const errorResponse: McpResponse = {
+          jsonrpc: '2.0',
+          error: {
+            code: -32600,
+            message: 'Invalid Request',
+            data: { details: 'Missing method' },
           },
-        },
-        id: 1,
-      };
+          id: 1,
+        };
 
-      transport.onMessage((message) => {
-        expect(message).toEqual(complexResponse);
-        done();
+        transport.onMessage((message) => {
+          expect(message).toEqual(errorResponse);
+          if ('error' in message) {
+            expect(message.error.code).toBe(-32600);
+            expect(message.error.data).toEqual({ details: 'Missing method' });
+          }
+          done();
+        });
+
+        mockStdin.simulateInput(JSON.stringify(errorResponse) + '\n');
       });
+    });
 
-      mockStdin.simulateInput(JSON.stringify(complexResponse) + '\n');
+    it('should handle messages with complex data structures', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
+
+        const complexResponse: McpResponse = {
+          jsonrpc: '2.0',
+          result: {
+            nested: {
+              array: [1, 2, { key: 'value' }],
+              obj: { a: 1, b: 2 },
+            },
+          },
+          id: 1,
+        };
+
+        transport.onMessage((message) => {
+          expect(message).toEqual(complexResponse);
+          done();
+        });
+
+        mockStdin.simulateInput(JSON.stringify(complexResponse) + '\n');
+      });
     });
   });
 
   describe('Bidirectional Communication', () => {
     it('should handle request and response cycle', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       const response: McpResponse = {
         jsonrpc: '2.0',
@@ -497,7 +495,7 @@ describe('StdioTransport', () => {
     });
 
     it('should handle concurrent messages', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       const received: McpResponse[] = [];
 
       transport.onMessage((message) => {
@@ -536,7 +534,7 @@ describe('StdioTransport', () => {
         .spyOn(console, 'error')
         .mockImplementation(() => {});
 
-      transport = new StdioTransport({ debug: true });
+      transport = new StdioTransport({ debug: true, ...streams() });
       transport.onMessage(() => {});
 
       await transport.send({
@@ -555,7 +553,7 @@ describe('StdioTransport', () => {
         .spyOn(console, 'error')
         .mockImplementation(() => {});
 
-      transport = new StdioTransport({ debug: false });
+      transport = new StdioTransport({ debug: false, ...streams() });
       transport.onMessage(() => {});
 
       await transport.send({
@@ -569,48 +567,52 @@ describe('StdioTransport', () => {
       consoleErrorSpy.mockRestore();
     });
 
-    it('should log parse errors in debug mode', (done) => {
-      const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {});
+    it('should log parse errors in debug mode', async () => {
+      await new Promise<void>((done) => {
+        const consoleErrorSpy = vi
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
 
-      transport = new StdioTransport({ debug: true });
-      transport.onMessage(() => {});
+        transport = new StdioTransport({ debug: true, ...streams() });
+        transport.onMessage(() => {});
 
-      mockStdin.simulateInput('invalid json\n');
+        mockStdin.simulateInput('invalid json\n');
 
-      setTimeout(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
-          expect.stringContaining('Parse error')
-        );
-        consoleErrorSpy.mockRestore();
-        done();
-      }, 10);
+        setTimeout(() => {
+          expect(consoleErrorSpy).toHaveBeenCalledWith(
+            expect.stringContaining('Parse error')
+          );
+          consoleErrorSpy.mockRestore();
+          done();
+        }, 10);
+      });
     });
 
-    it('should log stdin close in debug mode', (done) => {
-      const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {});
+    it('should log stdin close in debug mode', async () => {
+      await new Promise<void>((done) => {
+        const consoleErrorSpy = vi
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
 
-      transport = new StdioTransport({ debug: true });
-      transport.onMessage(() => {});
+        transport = new StdioTransport({ debug: true, ...streams() });
+        transport.onMessage(() => {});
 
-      mockStdin.simulateEnd();
+        mockStdin.simulateEnd();
 
-      setTimeout(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
-          expect.stringContaining('Stdin closed')
-        );
-        consoleErrorSpy.mockRestore();
-        done();
-      }, 10);
+        setTimeout(() => {
+          expect(consoleErrorSpy).toHaveBeenCalledWith(
+            expect.stringContaining('Stdin closed')
+          );
+          consoleErrorSpy.mockRestore();
+          done();
+        }, 10);
+      });
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle setting message handler multiple times', () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       transport.onMessage(() => {});
       transport.onMessage(() => {});
@@ -619,33 +621,35 @@ describe('StdioTransport', () => {
       expect(transport.isConnected()).toBe(true);
     });
 
-    it('should only use the latest message handler', (done) => {
-      transport = new StdioTransport();
+    it('should only use the latest message handler', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
 
-      let handler1Called = false;
-      let handler2Called = false;
+        let handler1Called = false;
+        let handler2Called = false;
 
-      transport.onMessage(() => {
-        handler1Called = true;
+        transport.onMessage(() => {
+          handler1Called = true;
+        });
+
+        transport.onMessage(() => {
+          handler2Called = true;
+        });
+
+        mockStdin.simulateInput(
+          JSON.stringify({ jsonrpc: '2.0', result: {}, id: 1 }) + '\n'
+        );
+
+        setTimeout(() => {
+          expect(handler1Called).toBe(false);
+          expect(handler2Called).toBe(true);
+          done();
+        }, 10);
       });
-
-      transport.onMessage(() => {
-        handler2Called = true;
-      });
-
-      mockStdin.simulateInput(
-        JSON.stringify({ jsonrpc: '2.0', result: {}, id: 1 }) + '\n'
-      );
-
-      setTimeout(() => {
-        expect(handler1Called).toBe(false);
-        expect(handler2Called).toBe(true);
-        done();
-      }, 10);
     });
 
     it('should handle null id in messages', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       await transport.send({
@@ -658,21 +662,23 @@ describe('StdioTransport', () => {
       expect(written).toContain('"id":null');
     });
 
-    it('should handle messages without id', (done) => {
-      transport = new StdioTransport();
+    it('should handle messages without id', async () => {
+      await new Promise<void>((done) => {
+        transport = new StdioTransport(streams());
 
-      transport.onMessage((message) => {
-        expect('id' in message).toBe(true);
-        done();
+        transport.onMessage((message) => {
+          expect('id' in message).toBe(true);
+          done();
+        });
+
+        mockStdin.simulateInput(
+          JSON.stringify({ jsonrpc: '2.0', result: {}, id: 1 }) + '\n'
+        );
       });
-
-      mockStdin.simulateInput(
-        JSON.stringify({ jsonrpc: '2.0', result: {}, id: 1 }) + '\n'
-      );
     });
 
     it('should clear message handler on close', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
 
       let callCount = 0;
       transport.onMessage(() => {
@@ -691,7 +697,7 @@ describe('StdioTransport', () => {
     });
 
     it('should handle large messages', async () => {
-      transport = new StdioTransport();
+      transport = new StdioTransport(streams());
       transport.onMessage(() => {});
 
       const largeData = 'x'.repeat(10000);

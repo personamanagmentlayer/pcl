@@ -225,10 +225,20 @@ export const PCL_SNIPPETS: SnippetDefinition[] = [
  * Get snippets applicable in the current context
  */
 export function getSnippetsForContext(context: string): SnippetDefinition[] {
+  // A snippet with no declared contexts is valid everywhere; otherwise it must
+  // list the requested context. Accepting anything tagged 'global' regardless
+  // of the request would offer top-level declarations inside a block.
+  //
+  // A context nobody declares (or an empty one) means the caller could not
+  // determine where the cursor is: fall back to the top level rather than
+  // returning nothing.
+  const knownContexts = new Set(
+    PCL_SNIPPETS.flatMap((snippet) => snippet.contexts ?? [])
+  );
+  const effectiveContext = knownContexts.has(context) ? context : 'global';
+
   return PCL_SNIPPETS.filter(
     (snippet) =>
-      !snippet.contexts ||
-      snippet.contexts.includes(context) ||
-      snippet.contexts.includes('global')
+      !snippet.contexts || snippet.contexts.includes(effectiveContext)
   ).sort((a, b) => (a.sortPriority || 100) - (b.sortPriority || 100));
 }

@@ -1,0 +1,46 @@
+entry_id,line_id,sequence,account,account_type,direction,amount,currency,event_time,posted_at,period,idem_key,provider_event_id,reversal_of,status,rate,memo
+E01,L0001,1,1000 Cash-PSP,asset,debit,100.00,EUR,2026-08-03T09:14:22Z,2026-08-03T09:14:23Z,2026-08,topup-2026-08-03-user42-01,evt_psp_8a31f0,,posted,,Card top-up EUR 100.00 for user:42
+E01,L0002,2,2000.10 User-wallets,liability,credit,100.00,EUR,2026-08-03T09:14:22Z,2026-08-03T09:14:23Z,2026-08,topup-2026-08-03-user42-01,evt_psp_8a31f0,,posted,,Credit wallet user:42 for card top-up
+E02,L0003,3,5000 PSP-cost,expense,debit,2.00,EUR,2026-08-03T09:14:22Z,2026-08-03T09:14:24Z,2026-08,pspfee-2026-08-03-user42-01,evt_psp_8a31f1,,posted,,PSP processing fee on top-up for user:42
+E02,L0004,4,1000 Cash-PSP,asset,credit,2.00,EUR,2026-08-03T09:14:22Z,2026-08-03T09:14:24Z,2026-08,pspfee-2026-08-03-user42-01,evt_psp_8a31f1,,posted,,PSP retains processing fee from balance
+E03,L0005,5,2000.10 User-wallets,liability,debit,30.00,EUR,2026-08-05T14:02:11Z,2026-08-05T14:02:12Z,2026-08,purchase-2026-08-05-ord9001,evt_ord_9001,,posted,,Debit wallet user:42 for order 9001
+E03,L0006,6,2200.10 Merchant-payable,liability,credit,27.00,EUR,2026-08-05T14:02:11Z,2026-08-05T14:02:12Z,2026-08,purchase-2026-08-05-ord9001,evt_ord_9001,,posted,,Amount owed to merch:7 for order 9001
+E03,L0007,7,4000 Fee-income,income,credit,2.50,EUR,2026-08-05T14:02:11Z,2026-08-05T14:02:12Z,2026-08,purchase-2026-08-05-ord9001,evt_ord_9001,,posted,,Platform commission net of VAT on order 9001
+E03,L0008,8,2100 VAT-payable,liability,credit,0.50,EUR,2026-08-05T14:02:11Z,2026-08-05T14:02:12Z,2026-08,purchase-2026-08-05-ord9001,evt_ord_9001,,posted,,VAT at 20 percent on commission for order 9001
+E04,L0009,9,2000.10 User-wallets,liability,credit,30.00,EUR,2026-08-06T10:31:05Z,2026-08-06T10:31:06Z,2026-08,refund-2026-08-06-ord9001,evt_ord_9001_refund,E03,posted,,Refund order 9001 to wallet user:42 - reverses E03
+E04,L0010,10,2200.10 Merchant-payable,liability,debit,27.00,EUR,2026-08-06T10:31:05Z,2026-08-06T10:31:06Z,2026-08,refund-2026-08-06-ord9001,evt_ord_9001_refund,E03,posted,,Reverse amount owed to merch:7 for order 9001
+E04,L0011,11,4000 Fee-income,income,debit,2.50,EUR,2026-08-06T10:31:05Z,2026-08-06T10:31:06Z,2026-08,refund-2026-08-06-ord9001,evt_ord_9001_refund,E03,posted,,Reverse platform commission on order 9001
+E04,L0012,12,2100 VAT-payable,liability,debit,0.50,EUR,2026-08-06T10:31:05Z,2026-08-06T10:31:06Z,2026-08,refund-2026-08-06-ord9001,evt_ord_9001_refund,E03,posted,,Reverse VAT on commission for order 9001
+E05,L0013,13,2000.10 User-wallets,liability,debit,50.00,EUR,2026-08-08T16:45:00Z,2026-08-08T16:45:01Z,2026-08,purchase-2026-08-08-ord9002,evt_ord_9002,,posted,,Debit wallet user:42 for order 9002
+E05,L0014,14,2200.10 Merchant-payable,liability,credit,44.00,EUR,2026-08-08T16:45:00Z,2026-08-08T16:45:01Z,2026-08,purchase-2026-08-08-ord9002,evt_ord_9002,,posted,,Amount owed to merch:7 for order 9002
+E05,L0015,15,4000 Fee-income,income,credit,5.00,EUR,2026-08-08T16:45:00Z,2026-08-08T16:45:01Z,2026-08,purchase-2026-08-08-ord9002,evt_ord_9002,,posted,,Platform commission net of VAT on order 9002
+E05,L0016,16,2100 VAT-payable,liability,credit,1.00,EUR,2026-08-08T16:45:00Z,2026-08-08T16:45:01Z,2026-08,purchase-2026-08-08-ord9002,evt_ord_9002,,posted,,VAT at 20 percent on commission for order 9002
+E06,L0017,17,1500 Settlement-in-transit,asset,debit,98.00,EUR,2026-08-10T02:00:00Z,2026-08-10T02:05:00Z,2026-08,settle-2026-08-10-eur-01,evt_psp_settle_5501,,posted,,PSP settlement EUR 98.00 initiated to bank
+E06,L0018,18,1000 Cash-PSP,asset,credit,98.00,EUR,2026-08-10T02:00:00Z,2026-08-10T02:05:00Z,2026-08,settle-2026-08-10-eur-01,evt_psp_settle_5501,,posted,,Release EUR balance held at PSP on settlement
+E07,L0019,19,1010 Cash-bank,asset,debit,98.00,EUR,2026-08-11T08:00:00Z,2026-08-11T08:12:00Z,2026-08,settleland-2026-08-11-eur-01,evt_bank_stmt_7711,,posted,,PSP settlement EUR 98.00 credited on bank statement
+E07,L0020,20,1500 Settlement-in-transit,asset,credit,98.00,EUR,2026-08-11T08:00:00Z,2026-08-11T08:12:00Z,2026-08,settleland-2026-08-11-eur-01,evt_bank_stmt_7711,,posted,,Clear settlement in transit on bank credit
+E08,L0021,21,2200.10 Merchant-payable,liability,debit,44.00,EUR,2026-08-12T11:00:00Z,2026-08-12T11:00:03Z,2026-08,payout-2026-08-12-merch7-01,evt_bank_pay_3301,,posted,,Settle payable to merch:7 by SEPA payout
+E08,L0022,22,1010 Cash-bank,asset,credit,44.00,EUR,2026-08-12T11:00:00Z,2026-08-12T11:00:03Z,2026-08,payout-2026-08-12-merch7-01,evt_bank_pay_3301,,posted,,SEPA payout EUR 44.00 to merch:7
+E09,L0023,23,6000 Bank-charges,expense,debit,0.20,EUR,2026-08-12T11:00:00Z,2026-08-12T11:00:04Z,2026-08,bankfee-2026-08-12-merch7-01,evt_bank_fee_3302,,posted,,Bank charge on SEPA payout to merch:7
+E09,L0024,24,1010 Cash-bank,asset,credit,0.20,EUR,2026-08-12T11:00:00Z,2026-08-12T11:00:04Z,2026-08,bankfee-2026-08-12-merch7-01,evt_bank_fee_3302,,posted,,Bank debits charge for outbound payout
+E10,L0025,25,1000 Cash-PSP,asset,debit,200.00,USD,2026-08-14T13:22:09Z,2026-08-14T13:22:10Z,2026-08,topup-2026-08-14-user88-01,evt_psp_8b02c4,,posted,,Card top-up USD 200.00 for user:88
+E10,L0026,26,2000.10 User-wallets,liability,credit,200.00,USD,2026-08-14T13:22:09Z,2026-08-14T13:22:10Z,2026-08,topup-2026-08-14-user88-01,evt_psp_8b02c4,,posted,,Credit wallet user:88 for card top-up
+E11,L0027,27,5000 PSP-cost,expense,debit,4.00,USD,2026-08-14T13:22:09Z,2026-08-14T13:22:11Z,2026-08,pspfee-2026-08-14-user88-01,evt_psp_8b02c5,,posted,,PSP processing fee on top-up for user:88
+E11,L0028,28,1000 Cash-PSP,asset,credit,4.00,USD,2026-08-14T13:22:09Z,2026-08-14T13:22:11Z,2026-08,pspfee-2026-08-14-user88-01,evt_psp_8b02c5,,posted,,PSP retains processing fee from USD balance
+E12,L0029,29,1500 Settlement-in-transit,asset,debit,196.00,USD,2026-08-15T02:00:00Z,2026-08-15T02:06:00Z,2026-08,settle-2026-08-15-usd-01,evt_psp_settle_5502,,posted,,PSP settlement USD 196.00 initiated to bank
+E12,L0030,30,1000 Cash-PSP,asset,credit,196.00,USD,2026-08-15T02:00:00Z,2026-08-15T02:06:00Z,2026-08,settle-2026-08-15-usd-01,evt_psp_settle_5502,,posted,,Release USD balance held at PSP on settlement
+E13,L0031,31,1010 Cash-bank,asset,debit,196.00,USD,2026-08-16T08:00:00Z,2026-08-16T08:15:00Z,2026-08,settleland-2026-08-16-usd-01,evt_bank_stmt_7712,,posted,,PSP settlement USD 196.00 credited on bank statement
+E13,L0032,32,1500 Settlement-in-transit,asset,credit,196.00,USD,2026-08-16T08:00:00Z,2026-08-16T08:15:00Z,2026-08,settleland-2026-08-16-usd-01,evt_bank_stmt_7712,,posted,,Clear USD settlement in transit on bank credit
+E14,L0033,33,2000.10 User-wallets,liability,debit,80.00,USD,2026-08-18T19:05:44Z,2026-08-18T19:05:45Z,2026-08,purchase-2026-08-18-ord9003,evt_ord_9003,,posted,,Debit wallet user:88 for order 9003
+E14,L0034,34,2200.10 Merchant-payable,liability,credit,72.00,USD,2026-08-18T19:05:44Z,2026-08-18T19:05:45Z,2026-08,purchase-2026-08-18-ord9003,evt_ord_9003,,posted,,Amount owed to merch:9 for order 9003
+E14,L0035,35,4000 Fee-income,income,credit,8.00,USD,2026-08-18T19:05:44Z,2026-08-18T19:05:45Z,2026-08,purchase-2026-08-18-ord9003,evt_ord_9003,,posted,,Platform commission on order 9003 - no VAT in this book
+E15,L0036,36,2200.10 Merchant-payable,liability,debit,72.00,USD,2026-08-19T11:30:00Z,2026-08-19T11:30:02Z,2026-08,payout-2026-08-19-merch9-01,evt_bank_pay_3303,,posted,,Settle payable to merch:9 by wire payout
+E15,L0037,37,1010 Cash-bank,asset,credit,72.00,USD,2026-08-19T11:30:00Z,2026-08-19T11:30:02Z,2026-08,payout-2026-08-19-merch9-01,evt_bank_pay_3303,,posted,,Wire payout USD 72.00 to merch:9
+E16,L0038,38,1000 Cash-PSP,asset,debit,30000,JPY,2026-08-20T04:10:00Z,2026-08-20T04:10:01Z,2026-08,topup-2026-08-20-user91-01,evt_psp_8c55d0,,posted,,Card top-up JPY 30000 for user:91
+E16,L0039,39,2000.10 User-wallets,liability,credit,30000,JPY,2026-08-20T04:10:00Z,2026-08-20T04:10:01Z,2026-08,topup-2026-08-20-user91-01,evt_psp_8c55d0,,posted,,Credit wallet user:91 for card top-up
+E17,L0040,40,2900 FX-position,liability,debit,20.00,EUR,2026-08-21T15:00:00Z,2026-08-21T15:00:02Z,2026-08,fx-2026-08-21-eurusd-01,evt_fx_2201,,posted,1.0800,FX conversion EUR leg - EUR 20.00 sold into position
+E17,L0041,41,1010 Cash-bank,asset,credit,20.00,EUR,2026-08-21T15:00:00Z,2026-08-21T15:00:02Z,2026-08,fx-2026-08-21-eurusd-01,evt_fx_2201,,posted,1.0800,FX conversion EUR leg - EUR 20.00 debited from bank
+E17,L0042,42,1010 Cash-bank,asset,debit,21.60,USD,2026-08-21T15:00:00Z,2026-08-21T15:00:02Z,2026-08,fx-2026-08-21-eurusd-01,evt_fx_2201,,posted,1.0800,FX conversion USD leg - USD 21.60 credited to bank at 1.0800
+E17,L0043,43,2900 FX-position,liability,credit,21.60,USD,2026-08-21T15:00:00Z,2026-08-21T15:00:02Z,2026-08,fx-2026-08-21-eurusd-01,evt_fx_2201,,posted,1.0800,FX conversion USD leg - USD 21.60 released from position
+E18,L0044,44,6000 Bank-charges,expense,debit,0.35,EUR,2026-08-31T23:40:00Z,2026-09-02T07:15:00Z,2026-08,bankfee-2026-08-31-close-01,evt_bank_fee_3304,,posted,,Bank charge incurred 31 Aug 23:40 UTC - close-window item booked 2 Sep into period 2026-08
+E18,L0045,45,2300 Accrued-expenses,liability,credit,0.35,EUR,2026-08-31T23:40:00Z,2026-09-02T07:15:00Z,2026-08,bankfee-2026-08-31-close-01,evt_bank_fee_3304,,posted,,Accrue the 31 Aug bank charge - period follows the event time not the booking time

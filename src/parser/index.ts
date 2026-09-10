@@ -881,7 +881,22 @@ export class Parser {
     }
 
     // Property
-    return this.parsePropertyDeclaration(decorators, []);
+    const property = this.parsePropertyDeclaration(decorators, []);
+
+    // A workflow property with neither a type nor a value carries no
+    // information: it is a bare identifier left over from a malformed step
+    // sequence (`steps: A B C`). Reporting it beats silently absorbing it.
+    if (
+      property.kind === 'PropertyDeclaration' &&
+      property.type === null &&
+      property.initializer === null
+    ) {
+      this.error(
+        `Unexpected identifier "${property.name.name}" in workflow body: expected a property with a value`
+      );
+    }
+
+    return property;
   }
 
   private parseWorkflowInputDeclaration(): AST.WorkflowInputDeclaration {

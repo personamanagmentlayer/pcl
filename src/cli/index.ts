@@ -295,6 +295,7 @@ interface CommandOptions {
   skipDuplicates?: boolean;
   compressed?: boolean;
   purge?: boolean;
+  dryRun?: boolean;
   db?: string;
   host?: string;
   port?: number;
@@ -885,6 +886,8 @@ async function main(): Promise<number> {
       options.force = true;
     } else if (arg === '--purge') {
       options.purge = true;
+    } else if (arg === '--dry-run') {
+      options.dryRun = true;
     } else if (arg === '--db') {
       options.db = args[++i];
     } else if (arg === '--host') {
@@ -1019,6 +1022,7 @@ async function main(): Promise<number> {
       if (options.publish) registryOptions.publish = options.publish;
       if (options.force) registryOptions.force = options.force;
       if (options.purge) registryOptions.purge = options.purge;
+      if (options.dryRun) registryOptions.dryRun = options.dryRun;
       if (options.format) registryOptions.format = options.format;
       if (options.db) registryOptions.db = options.db;
       if (options.host) registryOptions.host = options.host;
